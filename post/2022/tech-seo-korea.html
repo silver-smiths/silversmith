@@ -5,74 +5,50 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description"
-        content="2024 구글코리아 GNI 워크숍 요약: 언론사 및 매체사의 광고 설정, 우수 광고 배치(PC/모바일), 프리미엄 인벤토리(AFS), 게시자 정책 관리, 코어 웹 바이탈(INP, LCP, CLS) 개선 가이드." />
-    <meta name="keywords" content="구글 GNI, 광고 수익화, AFS RSoC, 코어 웹 바이탈, INP, 무효 트래픽, 사이드레일, 전면 광고, 실버스미스" />
+        content="한국 검색 환경에서 Technical SEO가 필수인 이유. 웹 표준 스펙 준수, 사이트 구조 최적화, 그리고 링크 주스(Link Juice) 관리의 중요성을 분석합니다." />
+    <meta name="keywords" content="Tech SEO, 기술 SEO, 한국 SEO, 웹 표준, 사이트 구조, 링크 주스, 크롤링, 실버스미스" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
     <meta name="author" content="Silversmith" />
-    <link rel="canonical" href="https://silver-smiths.com/post/2024/gni-ad-monetization-2024.html" />
-    <link rel="alternate" hreflang="ko" href="https://silver-smiths.com/post/2024/gni-ad-monetization-2024.html" />
-    <link rel="alternate" hreflang="x-default"
-        href="https://silver-smiths.com/post/2024/gni-ad-monetization-2024.html" />
+    <link rel="canonical" href="https://silver-smiths.com/post/2022/tech-seo-korea.html" />
+    <link rel="alternate" hreflang="ko" href="https://silver-smiths.com/post/2022/tech-seo-korea.html" />
+    <link rel="alternate" hreflang="x-default" href="https://silver-smiths.com/post/2022/tech-seo-korea.html" />
 
     <meta property="og:type" content="article" />
-    <meta property="og:url" content="https://silver-smiths.com/post/2024/gni-ad-monetization-2024.html" />
-    <meta property="og:title" content="2024 구글코리아 GNI 워크숍: 광고 수익화 및 UX 개선 최신 가이드 — Silversmith" />
-    <meta property="og:description"
-        content="2024년 GNI 워크숍에서 다룬 광고 포맷 최적화 사례, 프리미엄 인벤토리, 무효 트래픽 관리, 코어 웹 바이탈(INP, LCP, CLS) 개선 전략을 정리합니다." />
+    <meta property="og:url" content="https://silver-smiths.com/post/2022/tech-seo-korea.html" />
+    <meta property="og:title" content="한국에서 Tech SEO가 꼭 필요한 이유 — Silversmith" />
+    <meta property="og:description" content="한국 검색 환경에서 Technical SEO가 필수인 이유. 웹 표준 스펙 준수, 사이트 구조, 링크 주스 관리를 분석합니다." />
     <meta property="og:image" content="https://silver-smiths.com/images/og-image.png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Silversmith 대표 이미지" />
-    <meta property="og:locale" content="ko_KR" />
-    <meta property="og:site_name" content="Silversmith" />
-    <meta property="article:published_time" content="2024-08-27T00:00:00+09:00" />
+    <meta property="article:published_time" content="2022-07-28T00:00:00+09:00" />
     <meta property="article:author" content="Silversmith" />
-    <meta property="article:section" content="Ad Monetization" />
-    <meta property="article:tag" content="광고 수익화, GNI, 코어 웹 바이탈, AFS, INP" />
+    <meta property="article:section" content="SEO" />
+    <meta property="article:tag" content="Tech SEO, 웹 표준, 사이트 구조, 링크 주스" />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="2024 구글코리아 GNI 워크숍: 광고 수익화 및 UX 개선 최신 가이드 — Silversmith" />
-    <meta name="twitter:description"
-        content="2024년 GNI 워크숍에서 다룬 광고 포맷 최적화 사례, 프리미엄 인벤토리, 무효 트래픽 관리, 코어 웹 바이탈(INP, LCP, CLS) 개선 전략을 정리합니다." />
+    <meta name="twitter:title" content="한국에서 Tech SEO가 꼭 필요한 이유 — Silversmith" />
+    <meta name="twitter:description" content="웹 표준과 링크 주스 배분을 중심으로 한 테크니컬 SEO 가이드" />
     <meta name="twitter:image" content="https://silver-smiths.com/images/og-image.png" />
 
-    <title>2024 구글코리아 GNI 워크숍: 광고 수익화 및 UX 개선 최신 가이드 — Silversmith</title>
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "WebPage",
-          "@id": "https://silver-smiths.com/post/2024/gni-ad-monetization-2024.html#webpage",
-          "url": "https://silver-smiths.com/post/2024/gni-ad-monetization-2024.html",
-          "name": "2024 구글코리아 GNI 워크숍: 광고 수익화 및 UX 개선 최신 가이드 — Silversmith",
-          "description": "2024 구글코리아 GNI 워크숍 요약: 언론사 광고 우선순위 설정, PC/모바일 최적 광고 크기, AFS, 무효 트래픽 관리, Core Web Vitals 최적화를 다룹니다.",
-          "isPartOf": { "@id": "https://silver-smiths.com/#website" },
-          "about": { "@id": "https://silver-smiths.com/#org" }
-        }
-      ]
-    }
-    </script>
+    <title>한국에서 Tech SEO가 꼭 필요한 이유 — Silversmith</title>
 
     <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Article",
-    "@id": "https://silver-smiths.com/post/2024/gni-ad-monetization-2024.html",
-    "headline": "2024 구글코리아 GNI 워크숍: 광고 수익화 및 UX 개선 최신 가이드",
-    "description": "2024 구글코리아 GNI 워크숍 요약: 언론사 광고 우선순위 설정, PC/모바일 최적 광고 크기, AFS, 무효 트래픽 관리, Core Web Vitals 최적화를 다룹니다.",
+    "@id": "https://silver-smiths.com/post/2022/tech-seo-korea.html",
+    "headline": "한국에서 Tech SEO가 꼭 필요한 이유",
+    "description": "한국 검색 환경에서 Technical SEO가 필수인 이유. 웹 표준 렌더링, 사이트 계층 구조, 링크 주스 관점의 중요성을 다룹니다.",
     "author": { "@type": "Organization", "@id": "https://silver-smiths.com/#org", "name": "Silversmith" },
     "publisher": { "@type": "Organization", "@id": "https://silver-smiths.com/#org" },
-    "datePublished": "2024-08-27",
-    "dateModified": "2024-08-27",
-    "url": "https://silver-smiths.com/post/2024/gni-ad-monetization-2024.html",
+    "datePublished": "2022-07-28",
+    "dateModified": "2022-07-28",
+    "url": "https://silver-smiths.com/post/2022/tech-seo-korea.html",
     "image": "https://silver-smiths.com/images/og-image.png",
     "inLanguage": "ko",
-    "keywords": ["광고 수익화", "구글", "GNI", "AFS", "코어 웹 바이탈", "INP"],
+    "keywords": ["Tech SEO", "한국 SEO", "웹 표준", "크롤링", "사이트 구조", "링크 쥬스"],
     "isPartOf": { "@type": "WebSite", "@id": "https://silver-smiths.com/#website" }
   }
   </script>
+
 
     <!-- Google Tag Manager -->
     <script>(function (w, d, s, l, i) {
@@ -255,29 +231,29 @@
                     <span class="breadcrumb-sep" aria-hidden="true">›</span>
                     <a href="../../story.html">스토리</a>
                     <span class="breadcrumb-sep" aria-hidden="true">›</span>
-                    <span aria-current="page">Ad Monetization</span>
+                    <span aria-current="page">Tech SEO</span>
                 </nav>
                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem;">
-                    <span class="tag">구글 GNI</span>
-                    <span class="tag">광고 수익화</span>
-                    <span class="tag">코어 웹 바이탈</span>
+                    <span class="tag">SEO</span>
+                    <span class="tag">Tech SEO</span>
+                    <span class="tag">한국 시장</span>
                 </div>
                 <h1
                     style="font-size: clamp(1.75rem, 4.5vw, 2.8rem); font-weight: 900; letter-spacing: -0.04em; line-height: 1.15; margin-bottom: 1.25rem;">
-                    2024 구글코리아 GNI 워크숍:<br><span class="accent-silver">광고 수익화 & UX 최적화 가이드</span>
+                    한국에서 <span class="accent-silver">Tech SEO</span>가<br>꼭 필요한 이유
                 </h1>
                 <p
                     style="color: var(--clr-text-muted); font-size: 1.05rem; line-height: 1.75; max-width: 580px; margin-bottom: 2rem;">
-                    2024년 8월 27일, 구글코리아 GNI 워크숍에서 공유된 언론사 및 매체사의 최신 수익 극대화 전략, 광고 포맷 최적화, 그리고 코어 웹 바이탈(INP 포함) 개선 방법을
-                    살펴봅니다.
+                    "콘텐츠가 왕(Content is King)"이라는 명제는 아직도 유효합니다. 그러나 기틀이 잡히지 않은 왕국에선 왕의 목소리가 백성에게 닿지 않습니다. 웹 표준 중심의 테크니컬
+                    가이드를 정리합니다.
                 </p>
                 <div
                     style="display: flex; align-items: center; gap: 1rem; font-size: 0.82rem; color: var(--clr-text-dim);">
                     <span>Silversmith</span>
                     <span>·</span>
-                    <time datetime="2024-08-27">2024년 8월 27일</time>
+                    <time datetime="2022-07-28">2022년 7월 28일</time>
                     <span>·</span>
-                    <span>읽는 시간 11분</span>
+                    <span>읽는 시간 8분</span>
                 </div>
             </div>
         </div>
@@ -287,88 +263,89 @@
         <!-- 본문 -->
         <article class="post-body container-narrow" style="padding-bottom: 5rem;">
 
-            <h2>1. 언론사 수익 현황 및 기본 광고 설정</h2>
-            <p>국내 언론사 총매출액의 약 <strong>65.5%</strong>가 광고 수익에서 발생하는 만큼, 광고의 전략적 노출은 매체사 운영에 절대적인 비중을 차지합니다.</p>
-            <p>광고 슬롯을 설정하고 판매할 때는 수익 극대화를 위해 <strong>1) 직접 판매, 2) 프로그래매틱, 3) 하우스 광고</strong>의 순서로 우선순위를 두어 송출하는 것이
-                권장됩니다. 또한, 광고는 메인, 기사 본문 등 사용자에게 실제로 가치 있는 페이지에만 배치해야 하며, 등록 화면이나 정책 센터같이 가치가 없거나 기계적인 페이지에는 광고 게재를 제외해야
-                합니다.</p>
+            <p>한국의 디지털 환경을 논할 때 자주 등장하는 말이 있습니다. <strong>"어차피 검색은 네이버니까, 블로그 상위 노출만 잡으면 되지요."</strong></p>
 
-            <h2>2. 실적이 우수한 광고 크기 및 배치 (최적화)</h2>
+            <p>그러나 최근 모바일 검색 환경의 변화와 다양한 브라우저(크롬, 사파리 등)의 대중화로 구글의 한국 시장 검색 점유율이 나날이 높아지고 있습니다. 정보성(Informational) 쿼리를
+                검색하는 사용자층은 이미 구글로 대거 이동한 상태입니다. 더 늦기 전에 글로벌 스탠다드에 맞게 검색 엔진 최적화(SEO)의 체질을 개선해야 할 때입니다.</p>
 
-            <h3>데스크톱 (PC) 환경</h3>
-            <p>전통적으로 수익 실적이 가장 우수한 크기는 다음과 같습니다.</p>
+            <h2>1. 파편화된 한국 웹의 현실 — 웹 표준의 부재</h2>
+
+            <p>안타깝게도 다수의 국내 웹사이트들은 화려한 비주얼과 동적 플래시/스크립트 기반 구축 관행으로 인해, 정작 검색엔진 로봇(Crawler)의 시각에서는 닫힌 상자와 같습니다. 가장 기초가 되는
+                웹 표준과 접근성이 확보되어 있지 않은 것입니다.</p>
+
+            <p>Technical SEO의 시작점은 검색 봇이 텍스트, 이미지, 그리고 페이지 간의 연결 고리를 <strong>'안정적이고 막힘없이' 읽어갈 수 있도록</strong> 하는 것입니다.
+            </p>
+
             <ul>
-                <li><strong>728x90 (리더보드)</strong>: 상단 영역</li>
-                <li><strong>300x600 (하프 페이지) / 160x600 (수평형 스카이스크래퍼)</strong>: 사이드바 영역</li>
-                <li><strong>336x280 (큰 직사각형)</strong>: 본문 중간 혹은 하단</li>
+                <li><strong>시맨틱 마크업(Semantic Markup):</strong> 제목 태그(H1, H2)부터 단락 구성까지 적절한 HTML5 규칙을 준수하여 구조를 잡아야 합니다.
+                </li>
+                <li><strong>모바일 친화성(Mobile-Friendliness):</strong> 구글의 '모바일 퍼스트 인덱싱(Mobile-First Indexing)' 기조에 따라, 뷰포트를
+                    설정하고 반응형 기술을 구현해야 합니다.</li>
             </ul>
-            <p>특히 최근에는 <strong>사이드레일(Side-rail)</strong> 설정을 통해 화면 좌우 스크롤을 무시하고 항상 보이도록 하는 고정 광고 방식이 매우 효과적인 Viewability
-                상승을 견인하고 있습니다.</p>
-
-            <h3>모바일 환경</h3>
-            <ul>
-                <li><strong>300x250 (중간 직사각형), 300x50, 320x50</strong> 크기의 배너가 절대적으로 유리합니다.</li>
-                <li>모바일 화면 상단 또는 하단에 항상 고정되어 따라다니는 <strong>앵커 광고(Anchor Ads)</strong>를 활용하면 전체적인 실적(CPM 및 CTR)을 크게 끌어올릴
-                    수 있습니다.</li>
-            </ul>
-
-            <h2>3. 프리미엄 인벤토리 및 안정적 수익원 (AFS) 활용</h2>
-
-            <h3>프리미엄 광고 적극 도입</h3>
-            <p>디스플레이 배너를 넘어, 사용자 이탈을 방어하면서도 뛰어난 단가를 자랑하는 프리미엄 광고 포맷의 도입이 필수적입니다.</p>
-            <ul>
-                <li><strong>전면 광고(Interstitial Ads)</strong>: 페이지 이동 사이에 화면 전체로 노출되는 광고.</li>
-                <li><strong>보상형 광고(Rewarded Ads)</strong>: 운세, 투표, 프리미엄 아티클 등 사용자가 원하는 콘텐츠를 보는 조건으로 제공.</li>
-                <li><strong>광고 인텐트(Ad Intents)</strong>: 텍스트 내에서 검색 의도 기반으로 나타나는 대화 상자 포맷.</li>
-                <li><strong>뉴스레터 광고</strong>: 이메일 본문에 삽입 (GAM360 전용 기능).</li>
-            </ul>
-
-            <h3>AFS (AdSense for Search) RSoC의 장점</h3>
-            <p>콘텐츠와 상호 연관된 검색어 목록을 보여주고, 사용자가 이를 클릭 시 구글 검색 광고 페이지를 노출하여 수익을 쉐어하는 방식입니다. 일반적인 경제 또는 광고 시장 경기 하락 시기에도
-                <strong>안정적인 매출</strong>을 달성할 수 있는 방어적 수익원으로서의 장점이 큽니다.</p>
-
-            <h2>4. 게시자 정책 준수 및 위반 관리</h2>
-            <p>아무리 트래픽이 많아도 정책을 위반하면 하루아침에 수익 창출이 막힐 수 있습니다.</p>
-
-            <h3>제한 콘텐츠 및 브랜드 안전성</h3>
-            <p>성적, 충격적, 폭발물, 담배/주류 등 제한된 콘텐츠가 포함된 페이지에는 기계적으로 광고 코드가 제외되도록 필터링 기술이 적용되어야 합니다. 또한, 자사 브랜드 안전성을 위해 매체 측에서도
-                원치 않는 특정 광고주 URL이나 카테고리를 차단 목록에 유지할 수 있습니다.</p>
-
-            <h3>무효 활동 (Invalid Traffic) 경계</h3>
-            <p>광고가 콘텐츠 본문을 가리는 등의 악의적인 광고 방해, 매체의 자기 클릭 유도, 자동화 봇(Bot)을 이용한 <strong>무효 트래픽</strong> 발생은 '계정 영구 정지 및
-                폐쇄'라는 치명적인 결과를 초래합니다. 수시로 구글 애드센스 또는 애드매니저의 <strong>'정책 센터'</strong>에 접속하여 경고나 조치 사항이 없는지 확인해야 합니다.</p>
 
             <div class="callout">
-                <strong>🚨 정책 최우선 관리 체계</strong><br>
-                수익 최적화 이전에 가장 먼저 해야 할 일은 '정책 모니터링'입니다. 위반 트래픽과 잘못된 레이아웃 배치는 장기적으로 매체의 명성과 수익을 크게 훼손시킵니다.
+                <strong>💡 실버스미스 인사이트</strong><br>
+                자바스크립트 기반의 렌더링 프레임워크(React, Vue 등)를 무분별하게 적용할 경우 구글 봇이 콘텐츠 자체를 비어 있는 화면(Empty Body)으로 인식해버릴 수 있습니다. SSR
+                또는 다이나믹 렌더링 도입은 최신 웹 환경에서 가장 핵심적인 Tech SEO 과제 중 하나입니다.
             </div>
 
-            <h2>5. 트래픽 관리 및 코어 웹 바이탈 (UX) 개선</h2>
-            <p>현대 웹 생태계에서 웹 접속의 <strong>59%</strong> 이상이 모바일 기기에서 발생하므로, 모바일 속도와 다각화된 트래픽 소스 확보가 핵심 과제로 떠올랐습니다.</p>
+            <h2>2. 사이트 구조 — 검색 엔진이 좋아하는 길(Path)</h2>
 
-            <h3>Core Web Vitals 핵심 지표 목표치</h3>
-            <p>구글은 원활한 사용자 경험(UX)을 확보하기 위해 Google PageSpeed Insights 점수를 최소 90점 이상 유지할 것을 강력히 권장합니다.</p>
+            <p>Tech SEO의 핵심은 잘 기획된 <strong>디렉터리/계층 구조(Site Architecture)</strong>입니다.</p>
+
+            <p>검색 봇은 마치 도서관에서 책을 무작위로 열어보는 것이 아니라 철저하게 목차와 인덱스를 타고 이동합니다. 가장 중요한 카테고리와 페이지들이 얕은 뎁스(Depth 2~3)에 위치하도록 URL
+                설계를 최적화해야 합니다.</p>
+
             <ul>
-                <li><strong>LCP (가장 큰 콘텐츠 렌더링 시간)</strong>: 화면의 메인 요소가 화면에 그려질 때까지의 시간. <strong>2.5초 이하 권장.</strong>
-                </li>
-                <li><strong>INP (다음 페인트에 대한 상호작용)</strong>: 기존 FID를 대체한 새로운 반응성 지표. 사용자의 클릭이나 키보드 입력 시 브라우저가 시각적 응답을 완료할
-                    때까지의 시간. <strong>0.2초 이하 권장.</strong></li>
-                <li><strong>CLS (시각적 안정성)</strong>: 화면 로드 중 요소의 밀림 현상. 광고 배치 시 사전 레이아웃 크기 할당 필수. <strong>0.1 이하
-                        권장.</strong></li>
+                <li>사용자와 크롤러 모두 직관적으로 이해할 수 있는 <strong>URL 슬러그(Slug)</strong>를 구성하세요.</li>
+                <li>의미 없는 무한 매개변수나 세션 ID 노출을 피하여 불필요한 크롤링 예산 낭비를 막아야 합니다.</li>
+                <li>논리적인 <strong>비즈니스 카테고리 트리</strong>에 기반하여 하위 문서를 연결합니다.</li>
             </ul>
 
-            <p>궁극적으로 방문자의 체류 시간과 스크롤 깊이 등 상세 사용자 데이터를 정밀하게 분석하여, 사용자가 불편해하는 체감성능과 레이아웃 병목을 지속적으로 개선해 나가야 합니다.</p>
+            <h2>3. 링크 주스(Link Juice) — 페이지 권위의 흐름</h2>
+
+            <p>Tech SEO를 관통하는 또 하나의 아주 중요한 개념이자, 한국 시장에서 의외로 가볍게 여겨지는 부분이 바로 <strong>Link Juice (링크 흐름)</strong>입니다.</p>
+
+            <p>웹 생태계에서 '백링크'가 중요한 랭킹 요소라는 건 이미 잘 알려진 사실입니다. 하지만, 외부로부터 힘을 부여받았다 한들 내부 연결 구조(Internal Linking)가 단절되어 있으면
+                그 힘은 웹사이트 전반에 균등하게 퍼지지 못하고 고립됩니다.</p>
+
+            <p>링크 주스를 올바르게 배분하는 전략은 다음과 같습니다:</p>
+
+            <ul>
+                <li><strong>빵가루 내비게이션(Breadcrumb Navigation)</strong>: 현재의 위치뿐만 아니라 상위 카테고리로 링크 주스를 원활히 피드백하는 구조적 기틀을
+                    마련합니다.</li>
+                <li><strong>관련 문맥 링크(Contextual Links)</strong>: 본문 내 유사한 주제를 다루는 포스트로 앵커 텍스트 링크를 연결하여, 핵심 테마를 하나로 엮고
+                    권위를 분배합니다.</li>
+                <li><strong>Orphan Page 처리</strong>: 그 어떤 내부 링크도 수신 받지 못해 떠돌고 있는 '고립된 페이지(Orphan Page)'들을 식별하여 트리를
+                    수선합니다.</li>
+            </ul>
+
+            <h2>4. Canonical & 구조화 데이터 기초</h2>
+
+            <p>하나의 제품이 PC 쇼핑몰, 모바일 몰, 혹은 파라미터 조합에 따라 3~4개의 각기 다른 URL로 복제 되어 보이는 현상. 이는 구글이 가장 싫어하는 <strong>중복
+                    문서(Duplicate Content)</strong> 이슈입니다. 이를 방어하기 위해 대표 URL을 지정해 주는 <code>rel="canonical"</code>의 적용은 기술
+                SEO의 첫걸음입니다.</p>
+
+            <p>또한 최근 검색 결과 노출 형태(SERP)의 트렌드로 점차 Rich Result(별점, FAQ 등)의 중요성이 부각되고 있습니다. 기계가 읽을 수 있는 초기 형태의
+                <code>Schema.org</code> 마크업 규칙을 적절히 탑재하여 검색면에서의 CTR을 높이는 전략도 병행해야 합니다.</p>
+
+            <h2>마치며</h2>
+
+            <p>한국 시장에서 네이버의 입지를 완전히 배제할 수는 없겠지만, 검색엔진의 언어(웹 표준)를 깊이 이해하고 준수하는 일은 장기적으로 <strong>모든 검색 매체 성능 개선</strong>의
+                초석이 됩니다.</p>
+
+            <p>기술적 결함이 없는 투명한 사이트 구조 위에서, 건강한 링크 주스의 순환 고리를 만드세요. 그 단단한 뼈대 위로 올려진 콘텐츠야말로 장기적으로 살아남는 자산이 될 것입니다.</p>
 
             <hr class="post-divider" />
 
             <!-- CTA -->
             <div
                 style="text-align: center; padding: 2rem; background: var(--clr-bg-card); border: 1px solid var(--clr-border); border-radius: var(--radius-lg);">
-                <p class="section-eyebrow" style="margin-bottom: 0.75rem;">Silversmith Ad Monetization</p>
-                <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.75rem;">애드테크 파트너가 필요하신가요?</h2>
-                <p style="color: var(--clr-text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">AFS 적용부터 Core Web
-                    Vitals 최적의 INP/CLS 세팅까지.<br />실제 성과로 증명하는 실버스미스의 수익화 솔루션을 만나보세요.</p>
-                <a href="../../contact.html" class="btn btn-primary" id="cta-ad-monetization-2024">수익 최적화 문의하기 →</a>
+                <p class="section-eyebrow" style="margin-bottom: 0.75rem;">Silversmith SEO Consulting</p>
+                <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.75rem;">기술 SEO 감사가 필요하신가요?</h2>
+                <p style="color: var(--clr-text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">실버스미스가 귀사의 사이트를 20년
+                    경험으로 점검해 드립니다.</p>
+                <a href="../../contact.html" class="btn btn-primary" id="cta-tech-seo">무료 상담 신청하기 →</a>
             </div>
 
         </article>
@@ -382,6 +359,7 @@
                 <div class="footer-links">
                     <a href="../../story.html">스토리</a>
                     <a href="../../contact.html">문의</a>
+                    <a href="../../privacy.html">개인정보처리방침</a>
                     <a href="../../">홈</a>
                 </div>
             </div>

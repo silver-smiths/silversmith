@@ -5,36 +5,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description"
-        content="구글코리아 GNI 워크숍 요약: 매체사의 트래픽 및 광고 수익 증대 전략(CPM, Fill rate, Viewability), AdSense 및 Ad Manager 기초 활용법, 그리고 게시자 정책(무효 트래픽 방지 등) 준수 가이드." />
-    <meta name="keywords" content="구글 GNI, 광고 수익화, CPM, 애드센스, 애드매니저, 무효 트래픽, 코어 웹 바이탈, 퍼블리셔 정책, 실버스미스" />
+        content="Core Web Vitals(코어 웹 바이탈) 완벽 가이드. 2022년 구글 스탠다드에 맞추어 LCP, FID, CLS 지표의 핵심 개념과 최적화 방법을 알아봅니다." />
+    <meta name="keywords" content="Core Web Vitals, 코어 웹 바이탈, LCP, FID, CLS, 구글 SEO, 기술 SEO, 웹 성능, 실버스미스" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
     <meta name="author" content="Silversmith" />
-    <link rel="canonical" href="https://silver-smiths.com/post/2023/gni-ad-monetization.html" />
-    <link rel="alternate" hreflang="ko" href="https://silver-smiths.com/post/2023/gni-ad-monetization.html" />
-    <link rel="alternate" hreflang="x-default" href="https://silver-smiths.com/post/2023/gni-ad-monetization.html" />
+    <link rel="canonical" href="https://silver-smiths.com/post/2022/core-web-vitals.html" />
+    <link rel="alternate" hreflang="ko" href="https://silver-smiths.com/post/2022/core-web-vitals.html" />
+    <link rel="alternate" hreflang="x-default" href="https://silver-smiths.com/post/2022/core-web-vitals.html" />
 
     <meta property="og:type" content="article" />
-    <meta property="og:url" content="https://silver-smiths.com/post/2023/gni-ad-monetization.html" />
-    <meta property="og:title" content="구글코리아 GNI 워크숍: 퍼블리셔 광고 수익화 A to Z — Silversmith" />
-    <meta property="og:description"
-        content="구글 GNI 워크숍을 통해 알아본 트래픽/광고 수익 증대 전략, 애드센스/애드매니저 기초, 그리고 무효 트래픽 등 게시자 정책 위반 방지 가이드입니다." />
+    <meta property="og:url" content="https://silver-smiths.com/post/2022/core-web-vitals.html" />
+    <meta property="og:title" content="Core Web Vitals(코어 웹 바이탈) 완벽 가이드 — Silversmith" />
+    <meta property="og:description" content="2022년 구글 스탠다드에 맞추어 LCP, FID, CLS 지표의 핵심 개념과 최적화 방법을 알아봅니다." />
     <meta property="og:image" content="https://silver-smiths.com/images/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Silversmith 대표 이미지" />
     <meta property="og:locale" content="ko_KR" />
     <meta property="og:site_name" content="Silversmith" />
-    <meta property="article:published_time" content="2023-10-26T00:00:00+09:00" />
+    <meta property="article:published_time" content="2022-10-20T00:00:00+09:00" />
     <meta property="article:author" content="Silversmith" />
-    <meta property="article:section" content="Ad Monetization" />
-    <meta property="article:tag" content="광고 수익화, GNI, 애드센스, 애드매니저, 정책" />
+    <meta property="article:section" content="SEO" />
+    <meta property="article:tag" content="SEO, Core Web Vitals, 웹 성능" />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="구글코리아 GNI 워크숍: 퍼블리셔 광고 수익화 A to Z — Silversmith" />
-    <meta name="twitter:description" content="구글 GNI 워크숍을 통해 알아본 광고 수익 최적화와 계정/무효트래픽 정책 가이드." />
+    <meta name="twitter:title" content="Core Web Vitals(코어 웹 바이탈) 완벽 가이드 — Silversmith" />
+    <meta name="twitter:description" content="2022년 구글 스탠다드에 맞추어 LCP, FID, CLS 지표의 핵심 개념과 최적화 방법을 알아봅니다." />
     <meta name="twitter:image" content="https://silver-smiths.com/images/og-image.png" />
 
-    <title>구글코리아 GNI 워크숍: 퍼블리셔 광고 수익화 A to Z — Silversmith</title>
+    <title>Core Web Vitals(코어 웹 바이탈) 완벽 가이드 — Silversmith</title>
 
     <script type="application/ld+json">
     {
@@ -42,10 +41,10 @@
       "@graph": [
         {
           "@type": "WebPage",
-          "@id": "https://silver-smiths.com/post/2023/gni-ad-monetization.html#webpage",
-          "url": "https://silver-smiths.com/post/2023/gni-ad-monetization.html",
-          "name": "구글코리아 GNI 워크숍: 퍼블리셔 광고 수익화 A to Z — Silversmith",
-          "description": "구글코리아 GNI 워크숍 요약: 매체사의 트래픽 및 광고 수익 증대 전략, 애드센스와 애드매니저의 차이점, 무효 트래픽 등 게시자 정책 위반 가이드를 제공합니다.",
+          "@id": "https://silver-smiths.com/post/2022/core-web-vitals.html#webpage",
+          "url": "https://silver-smiths.com/post/2022/core-web-vitals.html",
+          "name": "Core Web Vitals(코어 웹 바이탈) 완벽 가이드 — Silversmith",
+          "description": "Core Web Vitals(코어 웹 바이탈) 완벽 가이드. 2022년 구글 스탠다드에 맞추어 LCP, FID, CLS 지표의 핵심 개념과 최적화 방법을 알아봅니다.",
           "isPartOf": { "@id": "https://silver-smiths.com/#website" },
           "about": { "@id": "https://silver-smiths.com/#org" }
         }
@@ -57,17 +56,17 @@
   {
     "@context": "https://schema.org",
     "@type": "Article",
-    "@id": "https://silver-smiths.com/post/2023/gni-ad-monetization.html",
-    "headline": "구글코리아 GNI 워크숍: 퍼블리셔 광고 수익화 A to Z",
-    "description": "구글코리아 GNI 워크숍 요약: 매체사의 트래픽 및 광고 수익 증대 전략, 애드센스와 애드매니저의 차이점, 무효 트래픽 등 게시자 정책 위반 가이드를 제공합니다.",
+    "@id": "https://silver-smiths.com/post/2022/core-web-vitals.html",
+    "headline": "Core Web Vitals(코어 웹 바이탈) 완벽 가이드",
+    "description": "2022년 구글 스탠다드에 맞추어 LCP, FID, CLS 지표의 핵심 개념과 최적화 방법을 알아봅니다.",
     "author": { "@type": "Organization", "@id": "https://silver-smiths.com/#org", "name": "Silversmith" },
     "publisher": { "@type": "Organization", "@id": "https://silver-smiths.com/#org" },
-    "datePublished": "2023-10-26",
-    "dateModified": "2023-10-26",
-    "url": "https://silver-smiths.com/post/2023/gni-ad-monetization.html",
+    "datePublished": "2022-10-20",
+    "dateModified": "2022-10-20",
+    "url": "https://silver-smiths.com/post/2022/core-web-vitals.html",
     "image": "https://silver-smiths.com/images/og-image.png",
     "inLanguage": "ko",
-    "keywords": ["광고 수익화", "구글", "GNI", "CPM", "애드센스", "애드매니저"],
+    "keywords": ["Core Web Vitals", "LCP", "FID", "CLS", "구글 SEO", "웹 성능"],
     "isPartOf": { "@type": "WebSite", "@id": "https://silver-smiths.com/#website" }
   }
   </script>
@@ -153,7 +152,6 @@
             style="display:none;visibility:hidden"></iframe>
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
-
 
     <header>
         <nav id="main-nav" aria-label="주 내비게이션">
@@ -253,28 +251,29 @@
                     <span class="breadcrumb-sep" aria-hidden="true">›</span>
                     <a href="../../story.html">스토리</a>
                     <span class="breadcrumb-sep" aria-hidden="true">›</span>
-                    <span aria-current="page">Ad Monetization</span>
+                    <span aria-current="page">Tech SEO</span>
                 </nav>
                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem;">
-                    <span class="tag">구글 GNI</span>
-                    <span class="tag">광고 수익화</span>
-                    <span class="tag">정책 가이드</span>
+                    <span class="tag">SEO</span>
+                    <span class="tag">성능 최적화</span>
+                    <span class="tag">Core Web Vitals</span>
                 </div>
                 <h1
                     style="font-size: clamp(1.75rem, 4.5vw, 2.8rem); font-weight: 900; letter-spacing: -0.04em; line-height: 1.15; margin-bottom: 1.25rem;">
-                    구글코리아 GNI 워크숍:<br><span class="accent-silver">광고 수익화 A to Z</span>
+                    <span class="accent-silver">Core Web Vitals</span><br>완벽 이해 가이드
                 </h1>
                 <p
                     style="color: var(--clr-text-muted); font-size: 1.05rem; line-height: 1.75; max-width: 580px; margin-bottom: 2rem;">
-                    2023년 10월 26일, 구글코리아 GNI 워크숍에서 다뤄진 퍼블리셔(언론사/매체사)를 위한 트래픽 증대 및 광고 수익화, 그리고 핵심 정책 준수 가이드를 요약합니다.
+                    구글이 2021년부터 정식 랭킹 팩터로 도입한 코어 웹 바이탈. 한국 시장에서도 점유율 확대와 맞물려 피할 수 없는 필수 최적화 과제가 되었습니다. 2022년 관점으로 세 가지
+                    핵심 지표(LCP, FID, CLS)에 대해 자세히 알아봅니다.
                 </p>
                 <div
                     style="display: flex; align-items: center; gap: 1rem; font-size: 0.82rem; color: var(--clr-text-dim);">
                     <span>Silversmith</span>
                     <span>·</span>
-                    <time datetime="2023-10-26">2023년 10월 26일</time>
+                    <time datetime="2022-10-20">2022년 10월 20일</time>
                     <span>·</span>
-                    <span>읽는 시간 10분</span>
+                    <span>읽는 시간 11분</span>
                 </div>
             </div>
         </div>
@@ -284,77 +283,100 @@
         <!-- 본문 -->
         <article class="post-body container-narrow" style="padding-bottom: 5rem;">
 
-            <h2>1. 트래픽 및 광고 수익 증대 고려사항 (수익화 준비)</h2>
+            <p>과거의 SEO가 키워드를 어떻게 욱여넣느냐의 싸움이었다면, 현대의 SEO, 특히 <strong>Technical SEO</strong>의 화두는 '방문자가 얼마나 쾌적한 환경에서 사이트를
+                이용할 수 있는가'를 정량적으로 증명하는 데 있습니다.</p>
 
-            <h3>트래픽 증대 전략</h3>
-            <p>국내 포털의 인링크/아웃링크 정책 변화에 맞춰 매체사는 자체 트래픽(Direct/Organic)을 늘리기 위한 근본적인 고민이 필요합니다. 이를 위해 검색엔진뿐만 아니라 <strong>구글
-                    디스커버(Google Discover)</strong> 등 다양한 트래픽 유입 소스를 확보해야 합니다.</p>
-            <p>특히 자체 웹사이트 방문자의 사용자 경험(UX)을 극대화시켜 이탈을 방지하려면, 페이지 로딩 성능 및 레이아웃 안정성을 측정하는 <strong>코어 웹 바이탈(Core Web Vitals:
-                    LCP, FID, CLS)</strong>의 지속적인 관리가 필수적입니다.</p>
+            <p>구글은 이를 측정하기 위해 <strong>Core Web Vitals (코어 웹 바이탈)</strong>이라는 3가지 핵심 지표를 세상에 발표했고, 이는 2021년 중반부터 모바일 트래픽의
+                공식 랭킹 알고리즘에 편입되었습니다. 그리고 2022년인 지금, 이는 PC 검사 결과에까지 도입되며 전 방위적인 필수 스펙으로 자리잡았습니다.</p>
 
-            <h3>수익 증대 전략</h3>
-            <p>트래픽이 확보되었다면, 광고 수익을 극대화하기 위해 다음 3가지 핵심 지표를 관리해야 합니다.</p>
+            <h2>코어 웹 바이탈의 3가지 핵심 지표</h2>
+
+            <p>구글은 웹페이지의 사용자 경험(UX) 품질을 판단하기 위해 크게 '로딩 성능', '상호작용 속도', '시각적 안정성'이라는 세 축을 사용합니다.</p>
+
+            <h3>1. LCP (Largest Contentful Paint) — 로딩 성능</h3>
+
+            <p>LCP는 페이지가 처음 화면에 렌더링될 때, 뷰포트 내에서 <strong>가장 큰 크기를 차지하는 이미지나 텍스트 블록이 렌더링을 완료하는 데 걸리는 시간</strong>을 뜻합니다.
+            </p>
+
             <ul>
-                <li><strong>CPM (1천 회 노출당 단가)</strong>: 노출 대비 얼마나 높은 단가를 달성하는가</li>
-                <li><strong>Ad Fill Rate (광고 게재율)</strong>: 요청한 광고 슬롯에 실제 광고가 얼마나 꽉 채워져 송출되는가</li>
-                <li><strong>Viewability (조회가능성)</strong>: 로드된 광고가 사용자 화면에 실제로 보이는가</li>
-            </ul>
-            <p>최근에는 단순한 일반 배너 광고에만 의존하기보다는, <strong>전면 광고, 리워드 광고, 동영상 광고, 앵커(하단 고정) 광고</strong> 등 상대적으로 CPM 단가가 매우 높은
-                구글의 프리미엄 광고 상품들을 적극적으로 도입하는 매체들이 가장 높은 수익 성장을 보이고 있습니다.</p>
-
-            <h2>2. 구글 광고 수익화 제품 기초 활용</h2>
-            <p>언론사를 비롯한 웹사이트 운영자들은 구글이 제공하는 두 가지 핵심 광고 플랫폼을 사용합니다.</p>
-
-            <h3>Google AdSense (구글 애드센스)</h3>
-            <p>주로 중소형 매체사를 대상으로 하며, <strong>구글 네트워크 광고만 단독으로 제공</strong>하여 시스템이 복잡하지 않은 것이 특징입니다.</p>
-            <ul>
-                <li>클릭 몇 번만으로 자동 광고(Auto Ads)를 켤 수 있어 설정과 관리가 매우 쉽습니다.</li>
-                <li>오로지 구글이 보유한 수요(Demand) 내에서만 최적화가 진행됩니다.</li>
-            </ul>
-
-            <h3>Google Ad Manager (구글 애드매니저)</h3>
-            <p>대형 매체사(또는 MCM 파트너를 통한 중소형 매체사)를 위해 설계된 강력한 통합 광고 서버 솔루션입니다.</p>
-            <ul>
-                <li>구글 네트워크뿐만 아니라 매체사가 <strong>직접 계약한 광고주(Direct Deal)</strong> 광고나 <strong>타사 애드 네트워크</strong>들을 모두 연결해
-                    가장 단가가 높은 광고를 골라 송출할 수 있습니다(헤더비딩, Open Bidding 등).</li>
-                <li>상세한 단위 통제와 세밀한 수동 컨트롤이 가능해 전담 운영팀이 있을 경우 수익 극대화에 유리합니다.</li>
+                <li><strong>목표치</strong>: 2.5초 이하 (훌륭함), 4.0초 초과 (나쁨)</li>
+                <li>과거 구글이 사용했던 FCP(First Contentful Paint)와 다르게, "사용자가 실질적인 메인 콘텐츠를 볼 수 있게 된 시점"을 더 정확하게 대변하는 지표입니다.
+                </li>
             </ul>
 
             <div class="callout">
-                <strong>💡 수익 지표의 분석</strong><br>
-                네트워크 광고 수익은 기본적으로 <code>노출수 × 클릭률(CTR) × 클릭당 단가(CPC)</code>의 곱으로 발생합니다. 복잡한 개별 수치를 쫓기보다 이를 종합 환산한
-                <strong>CPM (1천 노출당 수익)</strong>을 핵심 기준 지표(North Star metric)로 설정하고 트렌드를 분석하는 것이 올바른 방법입니다.
+                <strong>🔧 LCP 개선의 첫걸음</strong><br>
+                대부분의 국내 미디어/커머스 사이트에서 LCP 저하의 주범은 <strong>용량이 큰 Hero 이미지</strong>이거나 <strong>초기 로딩을 지연시키는 무거운 JS/CSS
+                    파일</strong>입니다. 서버 응답 시간(TTFB) 최적화, 이미지 압축 및 WebP 전환, 렌더링 차단 리소스(Render-blocking resource) 제거를 통해 눈에
+                띄게 개선할 수 있습니다.
             </div>
 
-            <h2>3. 구글 게시자 정책 및 위반 방지</h2>
-            <p>구글은 광고주 보호와 건강한 웹 생태계 유지를 위해 매우 엄격한 <strong>게시자 정책(Publisher Policies)</strong>을 운영합니다. 정책 위반 시 즉각 게재
-                제한(Ad serving limit) 혹은 계정 정지 처분을 받을 수 있습니다.</p>
+            <h3>2. FID (First Input Delay) — 상호작용 속도</h3>
 
-            <h3>의도하지 않은 클릭(Accidental Click)과 Confirmed Click</h3>
-            <p>가장 흔하고 뼈아픈 위반 사례 중 하나입니다. 사이트의 주요 메뉴나 탐색 버튼에 광고를 너무 가깝게 붙이거나, 페이지 스크롤 속도보다 광고 로딩이 느려(CLS 불량) 사용자가 실수로 광고를
-                누르게 만드는 행위입니다.</p>
-            <p>이 행위가 누적되면 구글 시스템은 해당 사이트에 <strong>'Confirmed Click (확인 클릭)'</strong> 페널티를 부여합니다. 즉, 사용자가 광고를 탭하면 바로 이동하지
-                않고 "사이트를 방문하시겠습니까?"라는 팝업을 한 번 더 띄우게 됩니다. 이 페널티에 걸리는 순간 사이트의 CTR은 바닥을 치고 RPM(수익률)이 심각하게 급락합니다.</p>
+            <p>FID는 사용자가 페이지와 처음 상호작용할 때(버튼 클릭, 링크 탭하기 등)부터 <strong>브라우저가 해당 상호작용에 응답하여 처리를 시작하기까지 걸리는 지연
+                    시간</strong>입니다.</p>
 
-            <h3>무효 트래픽(Invalid Traffic - IVT) 주의</h3>
-            <p>친구, 지인, 내부 직원이 반복적으로 자사 광고를 클릭하거나 자동화된 봇(Bot) 트래픽이 유입되어 발생한 클릭을 뜻합니다. 구글은 이를 악의적 혹은 비정상적 트래픽으로 간주하여 익월 정산
-                시 발생한 <strong>광고 수익의 98% 이상을 무효 처리 및 차감</strong>할 수 있으므로 구글 애널리틱스 등을 통한 철저한 트래픽 성질 관리가 필요합니다.</p>
+            <ul>
+                <li><strong>목표치</strong>: 100밀리초 이하 (훌륭함), 300밀리초 초과 (나쁨)</li>
+                <li>화면은 다 뜬 것 같은데, 터치를 해도 한동안 아무런 반응이 없는 답답한 현상. 이것이 바로 FID 저하의 전형적인 사례입니다.</li>
+            </ul>
 
-            <h3>서드파티 쿠키(3rd-party Cookies) 중단 대비</h3>
-            <p>보안 정책 강화로 향후 사파리와 크롬 환경 등에서 서드파티 쿠키 지원이 중단될 예정입니다. 이렇게 되면 사용자의 방문 기록을 추적하는 리타겟팅(맞춤형 광고) 정밀도가 떨어져, 전반적인 광고
-                단가와 매체의 수익 감소로 이어질 수 있습니다.</p>
-            <p>매체사는 이메일 구독, 회원가입 유도 등을 통해 자사 보유 데이터(1st-party Data)를 선제적으로 확보하는 전략적 대비를 시작해야 합니다.</p>
+            <p>이는 대개 메인 스레드(Main Thread)가 무거운 자바스크립트를 로딩하고 파싱하느라 바빠서, 사용자의 입력 이벤트를 제때 처리하지 못할 때 발생합니다. 코드 스플리팅(Code
+                Splitting)이나 타사(Third-party) 스크립트 실행 시점 지연(Deferring)으로 이 문제를 완화할 수 있습니다.</p>
+
+            <h3>3. CLS (Cumulative Layout Shift) — 시각적 안정성</h3>
+
+            <p>CLS는 페이지가 로딩되는 과정에서 예기치 않게 발생하는 <strong>모든 레이아웃의 레이아웃 이동(Shift) 위치 변경 점수의 합계</strong>입니다.</p>
+
+            <ul>
+                <li><strong>목표치</strong>: 0.1 이하 (훌륭함), 0.25 초과 (나쁨)</li>
+                <li>기사를 읽으려고 하거나 버튼을 누르려던 찰나, 위쪽에서 난데없이 광고 배너 창이나 이미지가 로드되면서 터치하고자 했던 버튼이 엉뚱한 곳으로 밀려버린 경험이 한 번쯤은 있으실
+                    겁니다. 구글은 이 현상을 '사용자를 짜증 나게 하는 아주 나쁜 요소'로 봅니다.</li>
+                <li>나쁜 CLS로 인해 발생하는 사용자 경험 악화는 광고 수익화 관점에서도 무효 트래픽 유발로 판단되어, 사이트 퀄리티 저하 및 수익금 감소(차감)로 이어질 수 있습니다. 따라서
+                    반드시 개선되어야 합니다.</li>
+            </ul>
+
+            <p>CLS를 개선하려면 이미지나 영상 태그 또는 광고 지면에 항상 명시적인 가로(width) / 세로(height) 비율 크기를 부여하여 로드 전부터 브라우저가 공간을 확보해 두도록 하는 것이
+                가장 쉬운 해결책입니다.</p>
+
+            <hr>
+
+            <h2>Core Web Vitals는 완벽한가?</h2>
+
+            <p>물론 이 지표들이 절대적인 진리는 아닙니다. 많은 한국 SEO 실무자들이 "페이지 속도 최적화에 몇 달을 쏟아 코어 웹 바이탈 점수를 100점으로 만들었지만, 트래픽 유입 순위에는 변동이
+                없다"고 토로하곤 합니다.</p>
+
+            <p>하지만 여기서 주목해야 할 점은 코어 웹 바이탈이 <strong>Tie-breaker(동점자 우선순위 결정)</strong> 역할로서 작동한다는 것입니다.</p>
+
+            <p>콘텐츠 품질, ব্যাক링크 프로필, 사이트 내 주제 전문성 등이 비슷한 두 개의 사이트가 경쟁 중일 때, 구글은 사용자가 사이트에 체류할 때 답답함을 덜 느끼는 쪽의 손을 들어줍니다.
+                경쟁이 치열한 키워드나 산업일수록, 이 미세한 '렌더링 차이'가 상위 세 자리(Top 3)의 승패를 결정짓는 핵심 요소로 작용합니다.</p>
+
+            <div class="callout">
+                <strong>💡 실버스미스 인사이트</strong><br>
+                Core Web Vitals는 단발적인 개선 이벤트가 아닙니다. 기능 및 콘텐츠 업데이트, 새로운 광고 스크립트 도입 등이 발생할 때마다 필연적으로 지표는 흔들립니다. 그렇기 때문에
+                Lighthouse(크롬 내장기능) 또는 PageSpeed Insights와 Search Console 환경을 기반으로 한 <strong>지속적인 모니터링 환경(CI/CD 성능
+                    테스트)</strong>을 구축해 두는 것이
+                권장됩니다.
+            </div>
+
+            <h2>마치며</h2>
+
+            <p>한국의 무선 인터넷 속도는 세계 최고 수준이지만, 그렇다고 해서 무겁고 불안정한 웹페이지가 용인되는 것은 아닙니다. 오히려 빠른 네트워크 속도에 비례해 '밀리초' 단위의 반응성까지 따지는
+                사용자들의 눈높이에 맞추어야 합니다.</p>
+
+            <p>만약 사이트 트래픽과 경쟁 우위 확보가 가장 중요한 과제라면, 이번 주 당신의 IT 팀장에게 "우리 사이트의 LCP 지표는 몇 초인가요?"라고 질문해 보는 것부터 최적화 여정을 시작해
+                보세요.</p>
 
             <hr class="post-divider" />
 
             <!-- CTA -->
             <div
                 style="text-align: center; padding: 2rem; background: var(--clr-bg-card); border: 1px solid var(--clr-border); border-radius: var(--radius-lg);">
-                <p class="section-eyebrow" style="margin-bottom: 0.75rem;">Silversmith Ad Monetization</p>
-                <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.75rem;">광고 수익을 한 차원 높이고 싶으십니까?</h2>
-                <p style="color: var(--clr-text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">트래픽 분석, 광고 포맷 최적화,
-                    애드매니저 세팅 및 정책 관리까지.<br />애드테크 전문가 그룹과 함께 매체의 수익성을 극대화하세요.</p>
-                <a href="../../contact.html" class="btn btn-primary" id="cta-ad-monetization">수익화 컨설팅 살펴보기 →</a>
+                <p class="section-eyebrow" style="margin-bottom: 0.75rem;">Silversmith SEO Consulting</p>
+                <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.75rem;">웹 성능 점검이 필요하신가요?</h2>
+                <p style="color: var(--clr-text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">코어 웹 바이탈 진단부터 렌더링
+                    아키텍처 개선까지, 실버스미스가 명확한 로드맵을 제시해 드립니다.</p>
+                <a href="../../contact.html" class="btn btn-primary" id="cta-tech-seo">SEO 기술 컨설팅 문의하기 →</a>
             </div>
 
         </article>
@@ -368,6 +390,7 @@
                 <div class="footer-links">
                     <a href="../../story.html">스토리</a>
                     <a href="../../contact.html">문의</a>
+                    <a href="../../privacy.html">개인정보처리방침</a>
                     <a href="../../">홈</a>
                 </div>
             </div>
