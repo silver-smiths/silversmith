@@ -9,6 +9,20 @@
 
   <!-- 포스팅 -->
   <url>
+    <loc>https://silver-smiths.com/post/2026/gam-ad-speed-guide.html</loc>
+    <lastmod>2026-03-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Silversmith</news:name>
+        <news:language>ko</news:language>
+      </news:publication>
+      <news:publication_date>2026-03-22</news:publication_date>
+      <news:title>GAM 광고속도 지표 완전 가이드 — 측정기준·측정항목과 해결방법</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://silver-smiths.com/post/2025/ggeujag-activity.html</loc>
     <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
