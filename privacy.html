@@ -114,6 +114,66 @@
             padding-left: 1.5rem;
             margin-bottom: 1rem;
         }
+
+        /* 아코디언 */
+        .privacy-section h2 {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .privacy-section h2::after {
+            content: '';
+            display: inline-block;
+            width: 0.6rem;
+            height: 0.6rem;
+            border-right: 2px solid var(--clr-text-muted);
+            border-bottom: 2px solid var(--clr-text-muted);
+            transform: rotate(45deg);
+            transition: transform 0.25s ease;
+            flex-shrink: 0;
+            margin-left: 1rem;
+        }
+
+        .privacy-section.is-open h2::after {
+            transform: rotate(-135deg);
+        }
+
+        .privacy-section-body {
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.35s ease, opacity 0.25s ease;
+            opacity: 0;
+        }
+
+        .privacy-section.is-open .privacy-section-body {
+            max-height: 9999px;
+            opacity: 1;
+        }
+
+        .privacy-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .privacy-table th,
+        .privacy-table td {
+            border: 1px solid var(--clr-border);
+            padding: 0.6rem 0.9rem;
+            text-align: left;
+            color: var(--clr-text-muted);
+            line-height: 1.6;
+        }
+
+        .privacy-table th {
+            background: rgba(255, 255, 255, 0.05);
+            font-weight: 600;
+            color: var(--clr-text);
+        }
     </style>
 </head>
 
@@ -154,52 +214,397 @@
                     이용합니다. 이 과정에서 맞춤형 광고(Targeted Ads) 송출을 위해 비식별화된 데이터가 수집 및 전송될 수 있습니다.</p>
 
                 <h3>이용하는 주요 광고 플랫폼</h3>
-                <ul>
-                    <li>구글 (Google AdMob, Google Ad Manager)</li>
-                    <li>메타 (Meta Audience Network)</li>
-                    <li>앱러빈 (AppLovin)</li>
-                    <li>팽글 (Pangle)</li>
-                    <li>디지털 터빈 (Digital Turbine)</li>
-                    <li>몰로코 (Moloco)</li>
-                </ul>
+                <table class="privacy-table">
+                    <thead>
+                        <tr>
+                            <th>파트너사</th>
+                            <th>주요 제품</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>구글</td>
+                            <td>Google AdMob, Google Ad Manager</td>
+                        </tr>
+                        <tr>
+                            <td>메타</td>
+                            <td>Meta Audience Network</td>
+                        </tr>
+                        <tr>
+                            <td>앱러빈</td>
+                            <td>AppLovin</td>
+                        </tr>
+                        <tr>
+                            <td>팽글</td>
+                            <td>Pangle</td>
+                        </tr>
+                        <tr>
+                            <td>디지털 터빈</td>
+                            <td>Digital Turbine</td>
+                        </tr>
+                        <tr>
+                            <td>몰로코</td>
+                            <td>Moloco 등</td>
+                        </tr>
+                    </tbody>
+                </table>
 
                 <h3>수집 및 공유되는 정보의 종류</h3>
-                <p>광고 식별자(ADID/IDFA), 쿠키(Cookie), 사용자의 IP 주소, 디바이스 정보(OS 버전, 기기 모델 등), 대략적인 위치 정보(국가/도시 단위) 등이 자동 수집되어
-                    상기 파트너사에 제공될 수 있습니다. <strong>수집되는 정보는 개인을 특정할 수 없는 비식별 데이터</strong>입니다.</p>
+                <table class="privacy-table">
+                    <thead>
+                        <tr>
+                            <th>수집 항목</th>
+                            <th>비고</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>광고 식별자</td>
+                            <td>ADID (Android), IDFA (iOS)</td>
+                        </tr>
+                        <tr>
+                            <td>쿠키(Cookie)</td>
+                            <td>웹 브라우저 환경</td>
+                        </tr>
+                        <tr>
+                            <td>IP 주소</td>
+                            <td>SDK를 통해 자동 수집</td>
+                        </tr>
+                        <tr>
+                            <td>디바이스 정보</td>
+                            <td>OS 버전, 기기 모델 등</td>
+                        </tr>
+                        <tr>
+                            <td>대략적인 위치 정보</td>
+                            <td>국가/도시 단위 (비식별)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="margin-top:0.5rem;"><strong>수집되는 정보는 개인을 특정할 수 없는 비식별 데이터</strong>이며, 상기 파트너사에 제공될 수 있습니다.</p>
             </div>
 
             <div class="privacy-section">
-                <h2>2. SA/DA 검색 및 디스플레이 광고 대행 관련</h2>
+                <h2>2. 광고 대행 관련 정보 수집 및 이용</h2>
+
+                <h3>2-1. 검색 및 디스플레이 광고 대행</h3>
                 <p>회사는 광고주 고객사를 대행하여 퍼포먼스 마케팅(Search Ads, Display Ads 등)을 수행합니다. 이 과정에서 광고주 웹사이트 내에 추적 태그(픽셀, 스크립트 등)를
                     설치하여 방문자의 행동 데이터를 분석하고 리타겟팅(Re-targeting) 캠페인을 진행할 수 있습니다.</p>
 
                 <h3>이용하는 주요 SA/DA 플랫폼</h3>
-                <ul>
-                    <li>구글 (Google Ads, Google Analytics 4)</li>
-                    <li>메타 (Meta Ads - Facebook/Instagram)</li>
-                    <li>네이버 (Naver Search/Display Ads)</li>
-                    <li>카카오 (Kakao Moment)</li>
-                </ul>
+                <table class="privacy-table">
+                    <thead>
+                        <tr>
+                            <th>파트너사</th>
+                            <th>주요 제품</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>구글</td>
+                            <td>Google Ads, Google Analytics 4</td>
+                        </tr>
+                        <tr>
+                            <td>메타</td>
+                            <td>Meta Ads (Facebook / Instagram)</td>
+                        </tr>
+                        <tr>
+                            <td>네이버</td>
+                            <td>Naver Search / Display Ads</td>
+                        </tr>
+                        <tr>
+                            <td>카카오</td>
+                            <td>Kakao Moment 등</td>
+                        </tr>
+                    </tbody>
+                </table>
 
                 <h3>데이터의 활용</h3>
-                <p>광고 클릭 이력, 웹사이트 방문 기록, 장바구니 담기 및 구매 전환 이력, IP 주소 및 디바이스 정보가 수집되며, 이는 오직 광고주의 마케팅 효율 분석 및 맞춤형 타겟팅 광고
-                    목적으로만 사용됩니다.</p>
+                <table class="privacy-table">
+                    <thead>
+                        <tr>
+                            <th>수집 항목</th>
+                            <th>활용 목적</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>광고 클릭 이력</td>
+                            <td>광고 효율 분석 및 리타겟팅</td>
+                        </tr>
+                        <tr>
+                            <td>웹사이트 방문 기록</td>
+                            <td>방문자 행동 분석</td>
+                        </tr>
+                        <tr>
+                            <td>구매 전환 이력</td>
+                            <td>전환율 측정 및 캠페인 최적화</td>
+                        </tr>
+                        <tr>
+                            <td>IP 주소 / 디바이스 정보</td>
+                            <td>타겟팅 및 중복 방지</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>2-2. 문자 메시지(SMS/LMS/RCS) 광고 송출 대행</h3>
+                <p>회사는 광고주를 대신하여 타겟 고객에게 문자 메시지 광고(RCS 등) 대행 서비스를 제공합니다.</p>
+
+                <h3>데이터 처리 방식</h3>
+                <table class="privacy-table">
+                    <thead>
+                        <tr>
+                            <th>항목</th>
+                            <th>처리 내용</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>취급 데이터</td>
+                            <td>마케팅 수신동의가 완료된 휴대폰 번호 등 식별 정보</td>
+                        </tr>
+                        <tr>
+                            <td>데이터 출처</td>
+                            <td>고객사(광고주)로부터 위탁받은 데이터에 한함</td>
+                        </tr>
+                        <tr>
+                            <td>파기 시점</td>
+                            <td>메시지 발송 목적 달성 즉시 또는 계약 종료 시</td>
+                        </tr>
+                        <tr>
+                            <td>보안 기준</td>
+                            <td>각 문자 메시지 발송 서비스 정책 및 관련 법령 준수</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <div class="privacy-section">
-                <h2>3. SKT 문자 메시지(SMS/LMS/RCS) 광고 송출 관련</h2>
-                <p>회사는 광고주를 대신하여 타겟 고객에게 SKT(SK텔레콤) 통신망을 기반으로 한 문자 메시지 광고(RCS 등) 대행 서비스를 제공합니다.</p>
+                <h2>3. 모바일 앱 서비스 관련</h2>
+                <p>회사가 운영하는 'AI 감성 일기' 앱 '미록담(MeRokDam)'은 아래와 같이 개인정보를 수집·이용합니다.</p>
 
-                <h3>데이터 처리 방식</h3>
+                <h3>수집하는 개인정보 항목</h3>
+                <table class="privacy-table">
+                    <thead>
+                        <tr>
+                            <th>항목</th>
+                            <th>수집 내용</th>
+                            <th>저장 위치</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>건강 데이터</td>
+                            <td>걸음 수, 수면 시간, 심박수, 소모 칼로리</td>
+                            <td>기기 내 (Health Connect / HealthKit 경유)</td>
+                        </tr>
+                        <tr>
+                            <td>위치 데이터</td>
+                            <td>방문 장소 이력 (Significant Location Changes 기반)</td>
+                            <td>기기 내</td>
+                        </tr>
+                        <tr>
+                            <td>캘린더</td>
+                            <td>일정 제목, 시간, 장소</td>
+                            <td>기기 내</td>
+                        </tr>
+                        <tr>
+                            <td>사진</td>
+                            <td>Vision AI 분석 요청 시 이미지</td>
+                            <td>Gemini API 임시 전송 후 즉시 파기 / 피드 게시 선택 시 Supabase</td>
+                        </tr>
+                        <tr>
+                            <td>통화 기록</td>
+                            <td>통화 건수, 총 시간 (Android 전용)</td>
+                            <td>기기 내</td>
+                        </tr>
+                        <tr>
+                            <td>앱 사용 시간</td>
+                            <td>카테고리별 사용 시간 (Android 전용)</td>
+                            <td>기기 내</td>
+                        </tr>
+                        <tr>
+                            <td>일기 원문</td>
+                            <td>AES-256 암호화 저장 / 피드 게시 후 서버 저장</td>
+                            <td>기기 내 + Supabase (게시 시)</td>
+                        </tr>
+                        <tr>
+                            <td>앱 충돌 로그·진단</td>
+                            <td>오류 로그, 기기 진단 정보</td>
+                            <td>Firebase Crashlytics</td>
+                        </tr>
+                        <tr>
+                            <td>광고 식별자</td>
+                            <td>ADID (Android), IDFA (iOS)</td>
+                            <td>타겟팅 사용자 대상 광고 게재 목적</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>수집 및 이용 목적</h3>
+                <table class="privacy-table">
+                    <thead>
+                        <tr>
+                            <th>목적</th>
+                            <th>내용</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>서비스 제공</td>
+                            <td>AI 일기 생성 기능 운영</td>
+                        </tr>
+                        <tr>
+                            <td>앱 안정성 모니터링</td>
+                            <td>Firebase Crashlytics를 통한 오류 수집 및 개선</td>
+                        </tr>
+                        <tr>
+                            <td>맞춤 광고 타겟팅</td>
+                            <td>일기 텍스트 기반 IAB 카테고리 분류 (타겟팅 사용자 대상) — 건강·위치 원시 데이터는 광고 목적 불사용</td>
+                        </tr>
+                        <tr>
+                            <td>소셜 피드 서비스</td>
+                            <td>사용자가 공개 선택한 게시물 제공</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>제3자 제공 현황</h3>
+                <table class="privacy-table">
+                    <thead>
+                        <tr>
+                            <th>수신자</th>
+                            <th>전달 정보</th>
+                            <th>목적</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Firebase Crashlytics (Google)</td>
+                            <td>앱 충돌 로그, 기기 진단 정보</td>
+                            <td>앱 안정성 모니터링</td>
+                        </tr>
+                        <tr>
+                            <td>Google Ad Manager</td>
+                            <td>광고 식별자 (ADID/IDFA)</td>
+                            <td>타겟팅 광고 게재</td>
+                        </tr>
+                        <tr>
+                            <td>Gemini API (Google)</td>
+                            <td>익명화 요약 텍스트, Vision AI 이미지 (분석 후 즉시 파기)</td>
+                            <td>AI 일기 생성</td>
+                        </tr>
+                        <tr>
+                            <td>Supabase</td>
+                            <td>비식별 IAB 태그, 등급 정보, 게시물 정보</td>
+                            <td>피드 서비스 운영</td>
+                        </tr>
+                        <tr>
+                            <td>OpenWeatherMap</td>
+                            <td>현재 위치 좌표 (위도/경도, 일시 전달)</td>
+                            <td>날씨 정보 조회 — 서버 미저장</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Health Connect (Android) 전용 정책</h3>
                 <ul>
-                    <li>이 과정에서 <strong>사용자의 암호화된 휴대폰 번호</strong> 등 마케팅 수신동의가 완료된 식별 정보가 취급될 수 있습니다.</li>
-                    <li>회사는 고객사(광고주)로부터 위탁받은 데이터만을 안전하게 처리하며, 메시지 발송 목적 달성 즉시 또는 계약 종료 시 해당 데이터를 안전하게 파기합니다.</li>
-                    <li>위탁 처리 과정은 SKT 및 관련 법령의 보안 기준을 철저히 준수합니다.</li>
+                    <li>건강 데이터는 AI 일기 생성 목적으로만 사용하며 광고 타겟팅에 사용하지 않습니다</li>
+                    <li>건강 데이터는 제3자 광고 네트워크와 공유하지 않습니다</li>
+                    <li>건강 데이터는 기기 로컬에만 저장되며 서버로 전송되지 않습니다</li>
+                </ul>
+
+                <h3>데이터 보관 및 삭제</h3>
+                <table class="privacy-table">
+                    <thead>
+                        <tr>
+                            <th>데이터 항목</th>
+                            <th>보관 기간 / 삭제 조건</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>건강·캘린더·통화·앱 사용 데이터</td>
+                            <td>앱 삭제 또는 계정 탈퇴 시 즉시 삭제</td>
+                        </tr>
+                        <tr>
+                            <td>위치 데이터</td>
+                            <td>수집일로부터 30일 경과 시 자동 삭제</td>
+                        </tr>
+                        <tr>
+                            <td>Vision AI 분석 이미지</td>
+                            <td>분석 완료 즉시 파기 (저장 없음)</td>
+                        </tr>
+                        <tr>
+                            <td>서버(Supabase) 저장 데이터</td>
+                            <td>계정 탈퇴 시 전체 삭제</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="margin-top:0.5rem;">앱 내 <strong>'설정 → 계정 탈퇴'</strong> 메뉴를 통해 언제든지 데이터 삭제를 요청할 수 있습니다.</p>
+            </div>
+
+            <div class="privacy-section">
+                <h2>4. 데스크톱 앱 서비스 관련</h2>
+
+                <h3>4-1. YouTube Auto-Translator (Chrome 확장 프로그램)</h3>
+                <p>회사가 제공하는 'YouTube Auto-Translator'는 YouTube 자막을 Google Gemini AI를 이용해 자동 번역하는 Chrome 브라우저 확장 프로그램입니다.
+                </p>
+
+                <h3>수집하는 개인정보</h3>
+                <p>본 확장 프로그램은 <strong>개인정보를 수집하지 않습니다.</strong> 회사 서버로 전송되는 데이터는 없습니다.</p>
+
+                <h3>브라우저 로컬에 저장되는 정보</h3>
+                <p>아래 데이터는 사용자의 브라우저(<code>chrome.storage.local</code>)에만 저장되며 외부로 전송되지 않습니다. 확장 프로그램을 제거하면 즉시 삭제됩니다.
+                </p>
+                <table class="privacy-table">
+                    <thead>
+                        <tr>
+                            <th>항목</th>
+                            <th>저장 목적</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Gemini API 키</td>
+                            <td>Google Gemini API 인증</td>
+                        </tr>
+                        <tr>
+                            <td>선택한 모델</td>
+                            <td>사용자 설정 유지</td>
+                        </tr>
+                        <tr>
+                            <td>번역 대상 언어</td>
+                            <td>사용자 설정 유지</td>
+                        </tr>
+                        <tr>
+                            <td>번역 히스토리</td>
+                            <td>확장 프로그램 내 이전 번역 결과 표시</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>제3자 전송 정보</h3>
+                <p>번역 기능 사용 시, 현재 YouTube 영상의 자막 텍스트가 번역 처리를 위해 <strong>Google Gemini API</strong>로 전송됩니다.</p>
+                <ul>
+                    <li><strong>전송 정보</strong>: 자막 텍스트 (개인정보 미포함)</li>
+                    <li><strong>수신자</strong>: Google LLC (Gemini API)</li>
+                    <li><strong>목적</strong>: AI 기반 자막 번역</li>
+                    <li><strong>API 키</strong>: 사용자 브라우저에서 Google API로 직접 전송되며, 회사 서버를 경유하지 않습니다</li>
+                </ul>
+                <p>Google의 데이터 처리 방침은 <a href="https://policies.google.com/privacy" target="_blank"
+                        style="color:var(--clr-accent2);text-decoration:underline;">Google 개인정보처리방침</a>을 참조하시기 바랍니다.</p>
+
+                <h3>수집하지 않는 정보</h3>
+                <ul>
+                    <li>사용자 이름, 이메일 등 개인 식별 정보</li>
+                    <li>브라우저 방문 기록</li>
+                    <li>YouTube 계정 정보</li>
+                    <li>쿠키, 광고 식별자</li>
                 </ul>
             </div>
 
             <div class="privacy-section">
-                <h2>4. 이용자의 권리 및 거부권(Opt-out) 행사 방법</h2>
+                <h2>5. 이용자의 권리 및 거부권(Opt-out) 행사 방법</h2>
                 <p>이용자는 언제든지 맞춤형 광고 수신이나 개인정보(비식별 식별자 포함)의 수집을 거부할 수 있습니다.</p>
 
                 <h3>모바일 기기 앱 광고 식별자(ADID/IDFA) 수집 거부</h3>
@@ -215,57 +620,6 @@
                     <li>구글 Ads 설정: <a href="https://myadcenter.google.com/" target="_blank"
                             style="color:var(--clr-accent2);text-decoration:underline;">Google 내 광고 센터</a>에서 맞춤설정 해제
                     </li>
-                </ul>
-            </div>
-
-            <div class="privacy-section">
-                <h2>5. 미록담(MeRokDam) 앱 서비스 관련</h2>
-                <p>회사가 운영하는 'AI 감성 일기' 앱 '미록담(MeRokDam)'은 아래와 같이 개인정보를 수집·이용합니다.</p>
-
-                <h3>수집하는 개인정보 항목</h3>
-                <ul>
-                    <li><strong>건강 데이터</strong>: 걸음 수, 수면 시간, 심박수, 소모 칼로리 (Health Connect / HealthKit 경유, 기기 내 저장)</li>
-                    <li><strong>위치 데이터</strong>: 방문 장소 이력 (Significant Location Changes 기반, 기기 내 저장, 30일 보관 후 자동 삭제)</li>
-                    <li><strong>캘린더</strong>: 일정 제목, 시간, 장소 (기기 내 저장)</li>
-                    <li><strong>사진</strong>: Vision AI 분석 요청 시 이미지 (Gemini API 임시 전송 후 즉시 파기), 피드 게시 선택 시 Supabase 저장</li>
-                    <li><strong>통화 기록</strong>: 통화 건수, 총 시간 (Android 전용, 기기 내 저장)</li>
-                    <li><strong>앱 사용 시간</strong>: 카테고리별 (Android 전용, 기기 내 저장)</li>
-                    <li><strong>일기 원문</strong>: 기기 내 AES-256 암호화 저장 (서버 미전송)</li>
-                    <li><strong>앱 충돌 로그·진단</strong>: Firebase Crashlytics 전송</li>
-                    <li><strong>광고 식별자</strong>: ADID (Android), IDFA (iOS) — 무료 사용자 대상 광고 게재 목적</li>
-                </ul>
-
-                <h3>수집 및 이용 목적</h3>
-                <ul>
-                    <li>AI 일기 생성 서비스 제공</li>
-                    <li>앱 안정성 모니터링 (Firebase Crashlytics)</li>
-                    <li>사용자 일기 텍스트(UGC) 기반 IAB 카테고리 분류를 통한 맞춤 광고 타겟팅 (무료 사용자 대상) — 건강·위치 등 원시 데이터는 광고 목적으로 사용하지 않습니다</li>
-                    <li>소셜 피드 서비스 제공 (사용자가 공개 선택한 게시물)</li>
-                </ul>
-
-                <h3>제3자 제공 현황</h3>
-                <ul>
-                    <li><strong>Firebase Crashlytics (Google)</strong>: 앱 충돌 로그, 기기 진단 정보</li>
-                    <li><strong>Google Ad Manager</strong>: 광고 식별자(ADID/IDFA) — 무료 사용자 광고 게재</li>
-                    <li><strong>Gemini API (Google)</strong>: 일기 생성용 익명화 요약 텍스트, Vision AI 분석 요청 시 이미지(분석 완료 즉시 파기)</li>
-                    <li><strong>Supabase</strong>: 비식별 IAB 태그, 등급 정보, 사용자가 공개 선택한 게시물</li>
-                    <li><strong>OpenWeatherMap</strong>: 날씨 데이터 조회를 위해 현재 위치 좌표(위도/경도)를 일시적으로 전달합니다. 위치 좌표는 OpenWeatherMap 서버에 저장되지 않으며 날씨 정보 반환 후 즉시 처리됩니다.</li>
-                </ul>
-
-                <h3>Health Connect (Android) 전용 정책</h3>
-                <ul>
-                    <li>건강 데이터는 AI 일기 생성 목적으로만 사용하며 광고 타겟팅에 사용하지 않습니다</li>
-                    <li>건강 데이터는 제3자 광고 네트워크와 공유하지 않습니다</li>
-                    <li>건강 데이터는 기기 로컬에만 저장되며 서버로 전송되지 않습니다</li>
-                </ul>
-
-                <h3>데이터 보관 및 삭제</h3>
-                <ul>
-                    <li>건강·캘린더·통화·앱 사용 데이터: 기기 내 암호화 저장, 앱 삭제 또는 계정 탈퇴 시 즉시 삭제</li>
-                    <li>위치 데이터: 수집일로부터 30일 경과 시 자동 삭제</li>
-                    <li>Vision AI 분석 이미지: 분석 완료 즉시 파기 (저장 없음)</li>
-                    <li>계정 탈퇴 시: 기기 내 모든 데이터 및 서버(Supabase) 저장 데이터 전체 삭제</li>
-                    <li>앱 내 '설정 → 계정 탈퇴' 메뉴를 통해 언제든지 데이터 삭제를 요청할 수 있습니다</li>
                 </ul>
             </div>
 
@@ -319,11 +673,40 @@
                 </nav>
             </div>
             <div class="footer-bottom">
-                <p class="footer-copy">© 2026 실버스미스 주식회사 · 사업자등록번호 272-87-02545 · 대표이사 윤정희 · <a href="mailto:help@silver-smiths.com" style="color:inherit">help@silver-smiths.com</a></p>
+                <p class="footer-copy">© 2026 실버스미스 주식회사 · 사업자등록번호 272-87-02545 · 대표이사 윤정희 · <a
+                        href="mailto:help@silver-smiths.com" style="color:inherit">help@silver-smiths.com</a></p>
             </div>
         </div>
     </footer>
     <script src="js/main.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.privacy-section').forEach(function (section) {
+                var h2 = section.querySelector('h2');
+                if (!h2) return;
+
+                // h2 이후의 모든 형제 노드를 body div로 감싸기
+                var body = document.createElement('div');
+                body.className = 'privacy-section-body';
+                var node = h2.nextSibling;
+                while (node) {
+                    var next = node.nextSibling;
+                    body.appendChild(node);
+                    node = next;
+                }
+                section.appendChild(body);
+
+                // 첫 번째 섹션은 기본으로 열어두기
+                if (section === document.querySelector('.privacy-section')) {
+                    section.classList.add('is-open');
+                }
+
+                h2.addEventListener('click', function () {
+                    section.classList.toggle('is-open');
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
