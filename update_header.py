@@ -51,10 +51,11 @@ def process_file(filepath):
     # Depth logic based on rel_path from '.'
     rel_path = os.path.relpath(filepath, ".")
     # Count of directory separators
-    # E.g. 'index.html' -> 0 separators -> depth 0
-    # E.g. 'project/youtube-auto-translator.html' -> 1 separator -> depth 1
-    depth = rel_path.count(os.sep)
-    root_prefix = "../" * depth
+    if os.path.basename(filepath) == "404.html":
+        root_prefix = "/"
+    else:
+        depth = rel_path.count(os.sep)
+        root_prefix = "../" * depth
     
     with open(filepath, "r", encoding="utf-8") as f:
         content = f.read()
