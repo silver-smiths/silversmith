@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ko" prefix="og: https://ogp.me/ns#">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="자막 자동 번역&등록기 for YouTube 크레딧 충전 — Gemini AI 기반 YouTube 자막 자동 번역·등록 서비스 크레딧 상품" />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Silversmith" />
+    <link rel="canonical" href="https://silver-smiths.com/project/ytat-credits.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://silver-smiths.com/project/ytat-credits.html" />
+    <meta property="og:title" content="YTAT 크레딧 충전 — 자막 자동 번역&등록기 | Silversmith" />
+    <meta property="og:description" content="자막 자동 번역&등록기 for YouTube 크레딧 충전 상품" />
+    <meta property="og:image" content="https://silver-smiths.com/images/og-image.png" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:site_name" content="Silversmith" />
+
+    <title>YTAT 크레딧 충전 — 자막 자동 번역&amp;등록기 | Silversmith</title>
+
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+            var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true; j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-MQT4J6J');
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="../css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="preload" href="../css/pages.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript>
+        <link rel="stylesheet" href="../css/style.css" />
+        <link rel="stylesheet" href="../css/pages.css" />
+    </noscript>
+
+    <style>
+        html, body { background: #080d1a; color: #d4daf0; font-family: 'Noto Sans KR', 'Inter', sans-serif; overflow-x: hidden; }
+        #main-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; display: flex; align-items: center; justify-content: space-between; padding: 1rem clamp(1.25rem, 4vw, 2.5rem); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(8,13,26,.88); border-bottom: 1px solid rgba(148,163,210,.12); }
+        .nav-logo { font-size: 1.4rem; font-weight: 800; letter-spacing: -.04em; background: linear-gradient(135deg,#c8cdd6,#e8ecf4,#a8b0c0,#d0d8e8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+        .credits-hero {
+            padding: 8rem 1.5rem 4rem;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .credits-hero h1 {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            margin-bottom: 1rem;
+            color: #e8ecf4;
+        }
+        .credits-hero p {
+            font-size: 1.05rem;
+            color: #7a85a3;
+            line-height: 1.7;
+        }
+
+        /* 충전 폼 */
+        .charge-section {
+            max-width: 520px;
+            margin: 0 auto;
+            padding: 0 1.5rem 4rem;
+        }
+        .charge-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(148,163,210,0.15);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+        .charge-box h2 {
+            font-size: 1rem; font-weight: 700;
+            color: #9aa0b8; margin-bottom: 1rem;
+            text-transform: uppercase; letter-spacing: 0.05em;
+        }
+        .amount-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .amount-btn {
+            padding: 10px 4px;
+            border: 1px solid rgba(148,163,210,0.2);
+            border-radius: 8px;
+            background: transparent;
+            color: #9aa0b8;
+            font-size: 0.85rem; font-weight: 700;
+            cursor: pointer; text-align: center;
+            transition: border-color 0.15s, background 0.15s, color 0.15s;
+        }
+        .amount-btn:hover { border-color: rgba(187,134,252,0.4); color: #BB86FC; }
+        .amount-btn.selected {
+            border-color: #BB86FC;
+            background: rgba(187,134,252,0.12);
+            color: #BB86FC;
+        }
+        .amount-input {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(148,163,210,0.2);
+            border-radius: 8px;
+            color: #e8ecf4; font-size: 0.95rem;
+            margin-bottom: 1.25rem;
+            outline: none;
+        }
+        .amount-input:focus { border-color: rgba(187,134,252,0.5); }
+        .amount-input::placeholder { color: #4a5068; }
+        .amount-usd {
+            font-size: 0.8rem; color: #4a5068;
+            margin-top: -1rem; margin-bottom: 1.25rem;
+            text-align: right;
+        }
+        .service-features {
+            list-style: none; padding: 0;
+            margin: 0 0 1.5rem;
+            display: flex; flex-direction: column; gap: 0.5rem;
+        }
+        .service-features li {
+            font-size: 0.88rem; color: #7a85a3;
+            display: flex; align-items: flex-start; gap: 0.5rem;
+        }
+        .service-features li::before { content: '✓'; color: #03DAC6; font-weight: 700; flex-shrink: 0; }
+        /* 결제 수단 탭 */
+        .pay-tabs {
+            display: flex; gap: 8px; margin-bottom: 1.5rem;
+        }
+        .pay-tab {
+            flex: 1; padding: 10px;
+            border: 1px solid rgba(148,163,210,0.2);
+            border-radius: 8px;
+            background: transparent;
+            color: #7a85a3; font-size: 0.88rem; font-weight: 700;
+            cursor: pointer; text-align: center;
+            transition: all 0.15s;
+        }
+        .pay-tab.active {
+            border-color: #BB86FC;
+            background: rgba(187,134,252,0.12);
+            color: #BB86FC;
+        }
+        .pay-panel { display: none; }
+        .pay-panel.active { display: block; }
+
+        /* 계좌이체 */
+        .bank-box {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(148,163,210,0.15);
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1rem;
+        }
+        .bank-label { font-size: 0.75rem; color: #4a5068; margin-bottom: 4px; }
+        .bank-value { font-size: 1rem; font-weight: 700; color: #e8ecf4; letter-spacing: 0.03em; }
+        .bank-copy {
+            display: inline-block; margin-left: 8px;
+            font-size: 0.75rem; color: #BB86FC;
+            cursor: pointer; text-decoration: underline;
+            background: none; border: none;
+        }
+        .transfer-input {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(148,163,210,0.2);
+            border-radius: 8px;
+            color: #e8ecf4; font-size: 0.9rem;
+            margin-bottom: 0.75rem; outline: none;
+        }
+        .transfer-input:focus { border-color: rgba(187,134,252,0.5); }
+        .transfer-input::placeholder { color: #4a5068; }
+        .transfer-notice {
+            font-size: 0.78rem; color: #4a5068;
+            margin-bottom: 1.25rem; line-height: 1.6;
+        }
+
+        .btn-charge {
+            display: block; width: 100%;
+            padding: 1rem;
+            background: #BB86FC; color: #000;
+            border: none; border-radius: 10px;
+            font-size: 1rem; font-weight: 800;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-charge:hover { background: #c99dfc; }
+
+        /* 서비스 안내 박스 */
+        .info-section {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1.5rem 6rem;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+        }
+        .info-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(148,163,210,0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .info-card h3 {
+            font-size: 0.95rem; font-weight: 700;
+            color: #BB86FC; margin-bottom: 0.75rem;
+        }
+        .info-card p, .info-card li {
+            font-size: 0.88rem; color: #7a85a3;
+            line-height: 1.7; margin-bottom: 0.4rem;
+        }
+        .info-card ul { padding-left: 1rem; }
+    </style>
+</head>
+
+<body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MQT4J6J" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    <header>
+        <nav id="main-nav" aria-label="주 내비게이션">
+            <a href="../index.html" class="nav-logo" aria-label="Silversmith 홈">Silver<span>smith</span></a>
+            <ul class="nav-links" role="list">
+                <li class="nav-group">
+                    <a href="../index.html#consulting">컨설팅 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+                    <div class="nav-dropdown">
+                        <a href="../consulting/seo-aeo-geo.html">SEO / AEO / GEO</a>
+                        <a href="../consulting/ax-rpa.html">AX / RPA</a>
+                        <a href="../consulting/ad-monetization.html">Ad Monetization</a>
+                    </div>
+                </li>
+                <li class="nav-group">
+                    <a href="../index.html#service">에이전시 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+                    <div class="nav-dropdown">
+                        <a href="../agency/search-display-ads.html">SA/DA 광고</a>
+                        <a href="../agency/sms-lms-mms-rcs.html">SKT 문자광고</a>
+                    </div>
+                </li>
+                <li class="nav-group">
+                    <a href="../index.html#projects">프로젝트 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+                    <div class="nav-dropdown">
+                        <a href="../project/ggeujag.html">그작그작</a>
+                        <a href="../project/youtube-auto-translator.html">자막 자동 번역&amp;등록기</a>
+                        <a href="../project/jsbin.html">JSBin.kr</a>
+                        <span style="color:var(--clr-text-muted);cursor:default">MeRokDam (공사중)</span>
+                    </div>
+                </li>
+                <li><a href="../story.html">스토리</a></li>
+                <li><a href="../contact.html" class="btn-nav">문의하기</a></li>
+            </ul>
+            <button class="nav-toggle" id="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="nav-overlay">
+                <span></span><span></span><span></span>
+            </button>
+        </nav>
+    </header>
+
+    <div class="nav-overlay" id="nav-overlay" role="dialog" aria-label="모바일 메뉴">
+        <button class="nav-acc-btn" aria-expanded="false">프로젝트 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+        <div class="nav-acc-items">
+            <a href="../project/ggeujag.html">그작그작</a>
+            <a href="../project/youtube-auto-translator.html">자막 자동 번역&amp;등록기</a>
+        </div>
+        <a href="../contact.html" class="btn-nav-mobile" style="margin-top:1rem">문의하기</a>
+    </div>
+
+    <main>
+        <!-- 히어로 -->
+        <div class="credits-hero">
+            <h1>자막 자동 번역&amp;등록기<br>크레딧 충전</h1>
+            <p>Gemini AI로 YouTube 자막을 26개 언어로 자동 번역·등록합니다.<br>크레딧을 충전하면 API 키 없이 바로 사용할 수 있습니다.</p>
+        </div>
+
+        <!-- 충전 폼 -->
+        <section class="charge-section" aria-label="크레딧 충전">
+            <div class="charge-box">
+
+                <!-- 통화 선택 -->
+                <h2>통화 선택</h2>
+                <div class="pay-tabs" style="margin-bottom:1.25rem;">
+                    <button class="pay-tab active" onclick="switchCurrency('KRW', this)">🇰🇷 KRW (원화)</button>
+                    <button class="pay-tab" onclick="switchCurrency('USD', this)">🌐 USD (달러)</button>
+                </div>
+
+                <!-- 금액 선택 -->
+                <h2>충전 금액 선택</h2>
+                <div class="amount-grid" id="amountGrid">
+                    <button class="amount-btn" onclick="selectAmount(0, this)">₩10,000</button>
+                    <button class="amount-btn selected" onclick="selectAmount(1, this)">₩20,000</button>
+                    <button class="amount-btn" onclick="selectAmount(2, this)">₩50,000</button>
+                    <button class="amount-btn" onclick="selectAmount(-1, this)">직접 입력</button>
+                </div>
+                <input type="number" class="amount-input" id="amountInput" value="20000" placeholder="금액 입력">
+                <div class="amount-usd" id="amountSub">≈ $14.29 (고정환율 ₩1,400/$1 기준)</div>
+
+                <ul class="service-features">
+                    <li>결제·송금 확인 후 즉시 크레딧 지급</li>
+                    <li>API 키 없이 최대 26개 언어 동시 번역</li>
+                    <li>유효기간 결제일로부터 1년</li>
+                    <li>미사용 크레딧은 결제 후 7일 이내 환불 가능</li>
+                </ul>
+
+                <!-- 결제 수단 탭 -->
+                <h2 style="margin-top:0.25rem;">결제 수단</h2>
+                <div class="pay-tabs">
+                    <button class="pay-tab active" id="tabCard" onclick="switchTab('card', this)">💳 카드 결제</button>
+                    <button class="pay-tab" id="tabBank" onclick="switchTab('bank', this)">🏦 계좌 송금</button>
+                </div>
+
+                <!-- 카드 결제 패널 -->
+                <div class="pay-panel active" id="panel-card">
+                    <button class="btn-charge" id="btnCharge" onclick="openPayment()">₩20,000 카드 결제</button>
+                </div>
+
+                <!-- 계좌 송금 패널 (KRW) -->
+                <div class="pay-panel" id="panel-bank-krw">
+                    <div class="bank-box">
+                        <div class="bank-label">입금 계좌 (KRW)</div>
+                        <div class="bank-value">신한은행 100-037-466615 <button class="bank-copy" onclick="copyAccount('100-037-466615')">복사</button></div>
+                        <div class="bank-label" style="margin-top:8px;">예금주</div>
+                        <div class="bank-value" style="font-size:0.9rem;">실버스미스 주식회사</div>
+                    </div>
+                    <form action="https://formsubmit.co/help@silver-smiths.com" method="POST">
+                        <input type="hidden" name="subject" value="[YTAT] KRW 송금 확인 요청">
+                        <input type="hidden" name="_replyto" id="hiddenEmailKrw">
+                        <input type="hidden" name="amount" id="hiddenAmountKrw">
+                        <input type="text" class="transfer-input" name="name" placeholder="입금자명 (통장 표시 이름)" required>
+                        <input type="email" class="transfer-input" name="email" placeholder="크레딧 지급받을 이메일" required oninput="document.getElementById('hiddenEmailKrw').value=this.value">
+                        <input type="text" class="transfer-input" name="transfer_date" placeholder="송금 일시 (예: 2026-05-04 14:30)" required>
+                        <div class="transfer-notice">※ 확인 후 평일 영업시간(10:00~18:00) 내 지급됩니다.</div>
+                        <button type="submit" class="btn-charge" id="btnTransferKrw">₩20,000 송금 완료 확인</button>
+                    </form>
+                </div>
+
+                <!-- 계좌 송금 패널 (USD) -->
+                <div class="pay-panel" id="panel-bank-usd">
+                    <div class="bank-box">
+                        <div class="bank-label">Foreign Currency Account</div>
+                        <div class="bank-value">Shinhan Bank 180-042-567817 <button class="bank-copy" onclick="copyAccount('180-042-567817')">Copy</button></div>
+                        <div class="bank-label" style="margin-top:8px;">Beneficiary</div>
+                        <div class="bank-value" style="font-size:0.9rem;">Silversmith Inc.</div>
+                        <div class="bank-label" style="margin-top:8px;">SWIFT Code</div>
+                        <div class="bank-value" style="font-size:0.9rem;">SHBKKRSE <button class="bank-copy" onclick="copyAccount('SHBKKRSE')">Copy</button></div>
+                    </div>
+                    <div class="transfer-notice" style="margin-bottom:1rem;">
+                        💡 International wire transfer fees may apply depending on your bank.<br>
+                        Card payment (coming soon) is recommended for international users.
+                    </div>
+                    <form action="https://formsubmit.co/help@silver-smiths.com" method="POST">
+                        <input type="hidden" name="subject" value="[YTAT] USD Wire Transfer Confirmation">
+                        <input type="hidden" name="_replyto" id="hiddenEmailUsd">
+                        <input type="hidden" name="amount" id="hiddenAmountUsd">
+                        <input type="text" class="transfer-input" name="name" placeholder="Sender name (as shown in bank)" required>
+                        <input type="email" class="transfer-input" name="email" placeholder="Email to receive credits" required oninput="document.getElementById('hiddenEmailUsd').value=this.value">
+                        <input type="text" class="transfer-input" name="transfer_date" placeholder="Transfer date/time (e.g. 2026-05-04 14:30 KST)" required>
+                        <div class="transfer-notice">※ Credits will be issued within business hours (Mon–Fri 10:00–18:00 KST).</div>
+                        <button type="submit" class="btn-charge" id="btnTransferUsd">$20.00 Transfer Confirmed</button>
+                    </form>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 서비스 안내 -->
+        <section class="info-section" aria-label="서비스 안내">
+
+            <div class="info-card">
+                <h3>⚡ 크레딧 지급</h3>
+                <ul>
+                    <li><strong style="color:#e8ecf4">카드 결제</strong>: 결제 완료 즉시 자동 지급</li>
+                    <li><strong style="color:#e8ecf4">계좌 송금 (KRW)</strong>: 입금 확인 후 평일 영업시간(10:00~18:00) 내 지급</li>
+                    <li><strong style="color:#e8ecf4">계좌 송금 (USD)</strong>: 국제 송금 확인 후 1~2 영업일 내 지급</li>
+                    <li>유효기간: 지급일로부터 <strong style="color:#e8ecf4">1년</strong></li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>💳 결제 수단</h3>
+                <ul>
+                    <li>카드 결제: 국내외 신용·체크카드 (준비 중)</li>
+                    <li>KRW 계좌이체: 신한은행 100-037-466615</li>
+                    <li>USD 해외 송금: 신한은행 180-042-567817 (SWIFT: SHBKKRSE)</li>
+                    <li>고정환율 ₩1,400 = $1 적용</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>↩️ 환불 정책</h3>
+                <ul>
+                    <li>충전 후 <strong style="color:#e8ecf4">7일 이내</strong> 미사용 크레딧 전액 환불 가능</li>
+                    <li>일부 사용 시 잔여분에 한해 환불 가능</li>
+                    <li>환불 시 결제·송금 수수료(최대 5%) 공제</li>
+                    <li>계좌이체 환불은 송금 수수료 실비 추가 공제될 수 있음</li>
+                    <li>환불 신청: <a href="mailto:help@silver-smiths.com" style="color:#BB86FC">help@silver-smiths.com</a></li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>❌ 취소 및 교환 불가 사항</h3>
+                <ul>
+                    <li>충전 후 7일 초과 시 환불 불가</li>
+                    <li>사용된 크레딧 환불 불가</li>
+                    <li>크레딧 타인 양도 및 현금 교환 불가</li>
+                    <li>입금 후 취소 요청은 미지급 상태에서만 처리 가능</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>📞 고객센터</h3>
+                <p>전화: <a href="tel:050714084101" style="color:#BB86FC">0507-1408-4101</a></p>
+                <p>이메일: <a href="mailto:help@silver-smiths.com" style="color:#BB86FC">help@silver-smiths.com</a></p>
+                <p style="margin-top:0.5rem">운영시간: 평일 10:00 ~ 18:00 (KST)</p>
+                <p>계좌이체 확인 지연 문의 시 송금 증빙 첨부 요망</p>
+            </div>
+
+            <div class="info-card">
+                <h3>📌 유의사항</h3>
+                <ul>
+                    <li>AI 번역 결과의 정확성은 보장하지 않습니다</li>
+                    <li>크레딧 소진 시 번역이 즉시 중단됩니다</li>
+                    <li>입금자명이 다를 경우 처리가 지연될 수 있습니다</li>
+                    <li>국제 송금 수수료는 발신 은행 정책에 따라 별도 발생합니다</li>
+                </ul>
+            </div>
+
+        </section>
+    </main>
+
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="../index.html" class="footer-logo" aria-label="Silversmith 홈">Silversmith</a>
+                    <p class="footer-tagline">전략 · 기술 · 제품으로 디지털 성장을 가속합니다</p>
+                </div>
+                <nav class="footer-nav" aria-label="푸터 내비게이션">
+                    <div class="footer-col">
+                        <h3>컨설팅</h3>
+                        <ul role="list">
+                            <li><a href="../consulting/seo-aeo-geo.html">SEO / AEO / GEO</a></li>
+                            <li><a href="../consulting/ax-rpa.html">AX / RPA</a></li>
+                            <li><a href="../consulting/ad-monetization.html">Ad Monetization</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h3>서비스 & 프로젝트</h3>
+                        <ul role="list">
+                            <li><a href="../agency/search-display-ads.html">SA/DA 광고</a></li>
+                            <li><a href="../agency/sms-lms-mms-rcs.html">SKT 문자광고</a></li>
+                            <li><a href="../project/ggeujag.html">그작그작</a></li>
+                            <li><a href="../project/youtube-auto-translator.html">자막 자동 번역&amp;등록기</a></li>
+                            <li><a href="../project/jsbin.html">JSBin.kr</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h3>회사</h3>
+                        <ul role="list">
+                            <li><a href="../story.html">회사 스토리</a></li>
+                            <li><a href="../contact.html">문의하기</a></li>
+                            <li><a href="../privacy.html">개인정보처리방침</a></li>
+                            <li><a href="../terms.html">이용약관</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copy">© 2026 실버스미스 주식회사 · 사업자등록번호 272-87-02545 · 대표이사 윤정희 · <a href="mailto:help@silver-smiths.com" style="color:inherit">help@silver-smiths.com</a><br>경기도 양평군 양서면 식곡길 109-46 · <a href="tel:050714084101" style="color:inherit">0507-1408-4101</a> · 통신판매업신고번호 제2024-경기양평-1546호</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js" defer></script>
+    <script>
+        const KRW_RATE = 1400;
+        const PRESETS = {
+            KRW: [10000, 20000, 50000],
+            USD: [10, 20, 50]
+        };
+        let curCurrency = 'KRW';
+        let curTab = 'card';
+
+        function switchCurrency(currency, btn) {
+            curCurrency = currency;
+            document.querySelectorAll('.pay-tabs button[onclick^="switchCurrency"]').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // 금액 버튼 레이블 갱신
+            const p = PRESETS[currency];
+            const btns = document.querySelectorAll('#amountGrid .amount-btn');
+            const sym = currency === 'KRW' ? '₩' : '$';
+            btns[0].textContent = sym + p[0].toLocaleString();
+            btns[1].textContent = sym + p[1].toLocaleString();
+            btns[2].textContent = sym + p[2].toLocaleString();
+            btns[3].textContent = currency === 'KRW' ? '직접 입력' : 'Custom';
+
+            // 선택된 값 기본값 세팅
+            btns.forEach(b => b.classList.remove('selected'));
+            btns[1].classList.add('selected');
+            document.getElementById('amountInput').value = p[1];
+            document.getElementById('amountInput').placeholder = currency === 'KRW' ? '금액 입력 (최소 ₩10,000)' : 'Enter amount (min $10)';
+
+            // 계좌 송금 탭 가능 여부
+            document.getElementById('tabBank').disabled = false;
+
+            updateAll();
+            switchTab(curTab, document.getElementById('tab' + curTab.charAt(0).toUpperCase() + curTab.slice(1)));
+        }
+
+        function selectAmount(idx, btn) {
+            document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            if (idx === -1) {
+                document.getElementById('amountInput').focus();
+            } else {
+                document.getElementById('amountInput').value = PRESETS[curCurrency][idx];
+                updateAll();
+            }
+        }
+
+        function updateAll() {
+            const val = parseFloat(document.getElementById('amountInput').value) || 0;
+            const isKRW = curCurrency === 'KRW';
+            const sym = isKRW ? '₩' : '$';
+            const fmt = isKRW ? sym + Math.round(val).toLocaleString() : sym + val.toFixed(2);
+
+            if (isKRW) {
+                document.getElementById('amountSub').textContent = '≈ $' + (val / KRW_RATE).toFixed(2) + ' (고정환율 ₩1,400/$1 기준)';
+            } else {
+                document.getElementById('amountSub').textContent = '≈ ₩' + Math.round(val * KRW_RATE).toLocaleString() + ' (고정환율 ₩1,400/$1 기준)';
+            }
+
+            document.getElementById('btnCharge').textContent = fmt + (isKRW ? ' 카드 결제' : ' Card Payment');
+            if (document.getElementById('btnTransferKrw')) document.getElementById('btnTransferKrw').textContent = fmt + ' 송금 완료 확인';
+            if (document.getElementById('btnTransferUsd')) document.getElementById('btnTransferUsd').textContent = fmt + ' Transfer Confirmed';
+            if (document.getElementById('hiddenAmountKrw')) document.getElementById('hiddenAmountKrw').value = fmt;
+            if (document.getElementById('hiddenAmountUsd')) document.getElementById('hiddenAmountUsd').value = fmt;
+        }
+
+        document.getElementById('amountInput').addEventListener('input', updateAll);
+
+        function switchTab(tab, btn) {
+            curTab = tab;
+            document.querySelectorAll('.pay-tab').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.pay-panel').forEach(p => p.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+
+            if (tab === 'card') {
+                document.getElementById('panel-card').classList.add('active');
+            } else {
+                const bankPanel = curCurrency === 'KRW' ? 'panel-bank-krw' : 'panel-bank-usd';
+                document.getElementById(bankPanel).classList.add('active');
+            }
+        }
+
+        function copyAccount(val) {
+            navigator.clipboard.writeText(val).then(() => {
+                alert('복사됐습니다: ' + val);
+            });
+        }
+
+        function openPayment() {
+            const val = parseFloat(document.getElementById('amountInput').value) || 0;
+            const min = curCurrency === 'KRW' ? 10000 : 10;
+            if (val < min) {
+                alert(curCurrency === 'KRW' ? '최소 충전 금액은 ₩10,000입니다.' : 'Minimum amount is $10.');
+                return;
+            }
+            alert(curCurrency === 'KRW'
+                ? '현재 카드 결제 시스템 연동 작업이 진행 중입니다.\n\n문의: help@silver-smiths.com\n전화: 0507-1408-4101'
+                : 'Card payment integration is coming soon.\n\nContact: help@silver-smiths.com');
+        }
+    </script>
+</body>
+</html>
