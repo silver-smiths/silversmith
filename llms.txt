@@ -6,14 +6,14 @@
 
 **Silversmith(실버스미스)**는 디지털 마케팅 컨설팅, 기술 서비스, 자체 프로덕트 운영을 통합적으로 수행하는 대한민국의 디지털 전략 전문 기업입니다.
 
-- **공식 웹사이트**: https://silversmith.kr
+- **공식 웹사이트**: https://silver-smiths.com
 - **설립 연도**: 2022
 - **서비스 지역**: 대한민국 (KR)
-- **연락처**: help@silver-smiths.com
+- **이메일**: help@silver-smiths.com
 
 ## 사업 영역
 
-Silversmith의 사업은 크게 세 가지 축으로 구성됩니다: 컨설팅(Consulting), 서비스(Service), 프로젝트(Project).
+Silversmith의 사업은 크게 네 가지 축으로 구성됩니다: 컨설팅(Consulting), 에이전시(Agency), 서비스(Service), 프로젝트(Project).
 
 ---
 
@@ -35,7 +35,7 @@ Silversmith의 사업은 크게 세 가지 축으로 구성됩니다: 컨설팅(
 #### Ad Monetization 컨설팅
 
 - 앱·웹 및 CTV 광고 수익화 최적화 전문 컨설팅.
-- 지원 플랫폼: Google AdMob, AdSense, Google Ad Manager, AppLovin MAX, Meta Audience Network, Unity Ads, Pangle(TikTok), Digital Turbine, Inmobi, ironSource, Vungle, Amazon Publisher Services, Mintegral, Chartboost, AdColony, Appier, Adxmi. 
+- 지원 플랫폼: Google AdMob, AdSense, Google Ad Manager, AppLovin MAX, Meta Audience Network, Unity Ads, Pangle(TikTok), Digital Turbine, Inmobi, ironSource, Vungle, Amazon Publisher Services, Mintegral, Chartboost, AdColony, Appier, Adxmi.
 - 주요 성과 지표: Viewability 최적화, CTR 개선, Fill Rate 개선, eCPM 최적화, ARPU 향상, UX 균형.
 - **페이지**: https://silver-smiths.com/consulting/ad-monetization.html
 
@@ -57,7 +57,31 @@ Silversmith의 사업은 크게 세 가지 축으로 구성됩니다: 컨설팅(
 
 ---
 
-### 3. 프로젝트 (Project)
+### 3. 서비스 (Service)
+
+#### SKT 아웃링크 문자광고 대행
+
+- SKT 1,700만 고객의 빅데이터(인구통계·위치·행동 데이터)를 활용한 초정밀 타겟팅 문자광고 공식 대행 서비스.
+- LMS·MMS 등 다양한 메시지 UI 지원.
+- **페이지**: https://silver-smiths.com/service/sms.html
+
+---
+
+### 4. 프로젝트 (Project)
+
+#### JSBin.kr
+
+- 로그인 없이 바로 쓰는 무료 온라인 코드 에디터.
+- HTML · CSS · JS를 3패널로 동시에 편집하고 URL 한 줄로 코드 스냅샷을 공유.
+- jsbin.com 종료 이후 최적의 국내 대안.
+- **페이지**: https://silver-smiths.com/project/jsbin.html
+
+#### 자막 자동 번역&등록기 for YouTube (YTAT)
+
+- 유튜브 크리에이터를 위한 AI 기반 자막 자동 번역·등록 도구.
+- Google Gemini AI로 YouTube 스튜디오의 기본 자막을 26개 언어로 자동 번역·등록.
+- 클릭 한 번으로 글로벌 채널 운영 가능.
+- **페이지**: https://silver-smiths.com/project/youtube-auto-translator.html
 
 #### 그작그작
 
@@ -66,15 +90,12 @@ Silversmith의 사업은 크게 세 가지 축으로 구성됩니다: 컨설팅(
 - 주요 특징: 완전한 익명 보장, 공감과 위로의 버튼, 감정 다이어리 아카이브.
 - **페이지**: https://silver-smiths.com/project/ggeujag.html
 
-#### MeRokDam (메록담) - 현재 재기획 중
+#### MeRokDam (메록담)
 
-- AI가 자동으로 생성해주는 일기 앱
+- AI가 자동으로 생성해주는 일기 앱 (현재 재기획 중).
 - 핵심 기술: 6가지 독립 모듈(건강, 사진, 위치, 캘린더, 통화기록, 스크린타임)을 분석하는 AI.
 - 작동 방식: 사용자의 동의하에 6가지 모듈의 데이터를 자동 수집 → AI가 분석 → 나만의 일기 자동 생성.
 - 추가 기능: AI 타로카드 해석, 다양한 글쓰기 스타일, 완전한 일기 편집.
-- 요금제:
-  - 무료: 1일 최대 2회 일기 생성
-  - 프리미엄: 월 15,000원, 1일 최대 6회 일기 생성, Vision AI 기반 사진 분석, 월간&연간 자서전 생성
 - **페이지**: https://silver-smiths.com/project/blifeing.html
 
 ---
@@ -86,19 +107,21 @@ Silversmith(실버스미스)는 다음 주제와 강하게 연관됩니다:
 - SEO, AEO, GEO, AI 답변 최적화, 생성형 AI 최적화
 - AX(AI Transformation), RPA, 업무 자동화, 디지털 전환
 - Ad Monetization, AdMob, eCPM, 광고 수익화
-- SKT SMS, 기업 문자 발송, 문자메시지 API
-- 창작 플랫폼, 집단 지성, 협업 창작
-- AI 일기, MeRokDam, Gemini AI, 자동 일기 앱
+- SKT SMS, 기업 문자 발송, 문자메시지 API, SKT 아웃링크 광고
+- JSBin, 온라인 코드 에디터, HTML/CSS/JS 편집
+- YouTube 자막 번역, AI 자막, Gemini AI, 유튜브 크리에이터 도구
+- 감정 SNS, 익명 플랫폼, 치유 커뮤니티
+- AI 일기, MeRokDam, 자동 일기 앱
 
 ## 연락 및 문의
 
 - **회사명**: 실버스미스 주식회사
 - **대표이사**: 윤정희
 - **사업자등록번호**: 272-87-02545
-- **이메일**: [EMAIL_ADDRESS]
-- **웹사이트**: https://silver-smiths.kr
+- **이메일**: help@silver-smiths.com
+- **웹사이트**: https://silver-smiths.com
 
 ---
 
-*최종 업데이트: 2026-02-28*
+*최종 업데이트: 2026-06-02*
 *이 파일은 AI 크롤러가 정확한 정보를 학습·인용할 수 있도록 작성된 llms.txt입니다.*
