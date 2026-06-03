@@ -423,7 +423,7 @@
             <div class="info-card">
                 <h3>💳 결제 수단</h3>
                 <ul>
-                    <li>카드 결제: 국내외 신용·체크카드 (준비 중)</li>
+                    <li>카드 결제: 국내외 신용·체크카드</li>
                     <li>KRW 계좌이체: 신한은행 100-037-466615</li>
                     <li>USD 해외 송금: 신한은행 180-042-567817 (SWIFT: SHBKKRSE)</li>
                     <li>고정환율 ₩1,400 = $1 적용</li>
@@ -519,6 +519,8 @@
     </footer>
 
     <script src="../js/main.js" defer></script>
+    <!-- Portone V1 SDK -->
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
     <script>
         const KRW_RATE = 1400;
         const PRESETS = {
@@ -614,9 +616,30 @@
                 alert(curCurrency === 'KRW' ? '최소 충전 금액은 ₩10,000입니다.' : 'Minimum amount is $10.');
                 return;
             }
-            alert(curCurrency === 'KRW'
-                ? '현재 카드 결제 시스템 연동 작업이 진행 중입니다.\n\n문의: help@silver-smiths.com\n전화: 0507-1408-4101'
-                : 'Card payment integration is coming soon.\n\nContact: help@silver-smiths.com');
+
+            // Portone V1 초기화
+            IMP.init('imp23332530');
+
+            const merchantUid = 'ytat_' + Date.now();
+            const isKRW = curCurrency === 'KRW';
+
+            IMP.request_pay({
+                pg:           'kakaopay',          // 카카오페이 (기본)
+                pay_method:   'card',
+                merchant_uid: merchantUid,
+                name:         'YTAT 크레딧 충전',
+                amount:       val,
+                currency:     isKRW ? 'KRW' : 'USD',
+                buyer_email:  '',
+                buyer_name:   '',
+                m_redirect_url: 'https://silver-smiths.com/project/ytat-credits.html',
+            }, function(rsp) {
+                if (rsp.success) {
+                    alert('결제가 완료되었습니다!\n크레딧이 곧 지급됩니다.\n\nimp_uid: ' + rsp.imp_uid);
+                } else {
+                    alert('결제 실패: ' + rsp.error_msg);
+                }
+            });
         }
     </script>
 </body>
