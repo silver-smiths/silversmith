@@ -334,15 +334,14 @@
                     <button class="amount-btn" onclick="selectAmount(0, this)">₩10,000</button>
                     <button class="amount-btn selected" onclick="selectAmount(1, this)">₩20,000</button>
                     <button class="amount-btn" onclick="selectAmount(2, this)">₩50,000</button>
-                    <button class="amount-btn" onclick="selectAmount(-1, this)">직접 입력</button>
                 </div>
-                <input type="number" class="amount-input" id="amountInput" value="20000" placeholder="금액 입력">
+                <input type="number" class="amount-input" id="amountInput" value="20000" placeholder="금액 입력" style="display:none">
                 <div class="amount-usd" id="amountSub">≈ $14.29 (고정환율 ₩1,400/$1 기준)</div>
 
                 <ul class="service-features">
                     <li>결제·송금 확인 후 즉시 크레딧 지급</li>
                     <li>API 키 없이 최대 26개 언어 동시 번역</li>
-                    <li>유효기간 결제일로부터 1년</li>
+                    <li>유효기간 결제일로부터 <strong>3개월</strong> / 기간 만료 시 자동 소멸 (자동 갱신 없음)</li>
                     <li>미사용 크레딧은 결제 후 7일 이내 환불 가능</li>
                 </ul>
 
@@ -416,7 +415,7 @@
                     <li><strong style="color:#e8ecf4">카드 결제</strong>: 결제 완료 즉시 자동 지급</li>
                     <li><strong style="color:#e8ecf4">계좌 송금 (KRW)</strong>: 입금 확인 후 평일 영업시간(10:00~18:00) 내 지급</li>
                     <li><strong style="color:#e8ecf4">계좌 송금 (USD)</strong>: 국제 송금 확인 후 1~2 영업일 내 지급</li>
-                    <li>유효기간: 지급일로부터 <strong style="color:#e8ecf4">1년</strong></li>
+                    <li>유효기간: 지급일로부터 <strong style="color:#e8ecf4">3개월</strong> / 기간 만료 시 잔여 크레딧 자동 소멸 (자동 갱신 없음)</li>
                 </ul>
             </div>
 
@@ -535,26 +534,31 @@
             document.querySelectorAll('.pay-tabs button[onclick^="switchCurrency"]').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
-            // 금액 버튼 레이블 갱신
+            // 금액 버튼 레이블 갱신 (3개 프리셋만)
             const p = PRESETS[currency];
             const btns = document.querySelectorAll('#amountGrid .amount-btn');
             const sym = currency === 'KRW' ? '₩' : '$';
             btns[0].textContent = sym + p[0].toLocaleString();
             btns[1].textContent = sym + p[1].toLocaleString();
             btns[2].textContent = sym + p[2].toLocaleString();
-            btns[3].textContent = currency === 'KRW' ? '직접 입력' : 'Custom';
 
             // 선택된 값 기본값 세팅
             btns.forEach(b => b.classList.remove('selected'));
             btns[1].classList.add('selected');
             document.getElementById('amountInput').value = p[1];
-            document.getElementById('amountInput').placeholder = currency === 'KRW' ? '금액 입력 (최소 ₩10,000)' : 'Enter amount (min $10)';
 
-            // 계좌 송금 탭 가능 여부
-            document.getElementById('tabBank').disabled = false;
+            // USD 선택 시: 카드 결제 탭 숨기고 계좌송금 자동 선택
+            const tabCard = document.getElementById('tabCard');
+            if (currency === 'USD') {
+                tabCard.style.display = 'none';
+                curTab = 'bank';
+                switchTab('bank', document.getElementById('tabBank'));
+            } else {
+                tabCard.style.display = '';
+                switchTab(curTab, document.getElementById('tab' + curTab.charAt(0).toUpperCase() + curTab.slice(1)));
+            }
 
             updateAll();
-            switchTab(curTab, document.getElementById('tab' + curTab.charAt(0).toUpperCase() + curTab.slice(1)));
         }
 
         function selectAmount(idx, btn) {
