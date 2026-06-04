@@ -80,7 +80,7 @@
         }
         .amount-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 8px;
             margin-bottom: 8px;
         }
@@ -336,12 +336,12 @@
                     <button class="amount-btn" onclick="selectAmount(2, this)">₩50,000</button>
                 </div>
                 <input type="number" class="amount-input" id="amountInput" value="20000" placeholder="금액 입력" style="display:none">
-                <div class="amount-usd" id="amountSub">≈ $14.29 (고정환율 ₩1,400/$1 기준)</div>
+                <div class="amount-usd" id="amountSub" style="min-height:1.4em;margin-top:0.4rem;">≈ $14.29 (고정환율 ₩1,400/$1 기준)</div>
 
                 <ul class="service-features">
                     <li>결제·송금 확인 후 즉시 크레딧 지급</li>
                     <li>API 키 없이 최대 26개 언어 동시 번역</li>
-                    <li>유효기간 결제일로부터 <strong>3개월</strong> / 기간 만료 시 자동 소멸 (자동 갱신 없음)</li>
+                    <li>유효기간: 결제일로부터 <strong>3개월</strong> (만료 시 자동 소멸)</li>
                     <li>미사용 크레딧은 결제 후 7일 이내 환불 가능</li>
                 </ul>
 
