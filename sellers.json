@@ -15,6 +15,20 @@
       "domain": "silver-smiths.com",
       "seller_type": "PUBLISHER",
       "is_confidential": 0
+    },
+    {
+      "seller_id": "pub-4450932908746444",
+      "name": "Silversmith",
+      "domain": "jsbin.kr",
+      "seller_type": "PUBLISHER",
+      "is_confidential": 0
+    },
+    {
+      "seller_id": "pub-4450932908746444",
+      "name": "Silversmith",
+      "domain": "y-to-x.com",
+      "seller_type": "PUBLISHER",
+      "is_confidential": 0
     }
   ]
 }
