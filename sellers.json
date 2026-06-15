@@ -1,0 +1,29 @@
+{
+  "version": "1.0",
+  "identifiers": [
+    {
+      "name": "TAG-ID",
+      "value": "silversmith-silver-smiths-com"
+    }
+  ],
+  "contact_email": "help@silver-smiths.com",
+  "contact_address": "109-46 Sikgok-gil, Yangseo-myeon, Yangpyeong-gun, Gyeonggi-do, Republic of Korea",
+  "sellers": [
+    {
+      "seller_id": "pub-8348914243029142",
+      "name": "Silversmith",
+      "domain": "silver-smiths.com",
+      "seller_type": "PUBLISHER",
+      "is_confidential": 0,
+      "comment": "Silversmith main site — AdSense publisher"
+    },
+    {
+      "seller_id": "pub-4450932908746444",
+      "name": "Silversmith",
+      "domain": "silver-smiths.com",
+      "seller_type": "PUBLISHER",
+      "is_confidential": 0,
+      "comment": "Silversmith sub-account — AdSense publisher"
+    }
+  ]
+}
