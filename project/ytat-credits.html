@@ -677,8 +677,7 @@
             const isKRW = curCurrency === 'KRW';
 
             IMP.request_pay({
-                pg:           pgProvider,
-                channel_key:  pgProvider === 'kakaopay' ? 'channel-key-fef96058-39f6-4e49-9013-0baa2be407b8' : undefined,
+                pg:           pgProvider === 'kakaopay' ? 'kakaopay.CA01595644' : pgProvider,
                 pay_method:   'card',
                 merchant_uid: merchantUid,
                 name:         'YTAT 크레딧 충전',
