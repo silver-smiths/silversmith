@@ -640,19 +640,28 @@
 
             IMP.init('imp23332530');
 
+            const btnId = pgProvider === 'kakaopay' ? 'btnKakao' : 'btnCharge';
+            const btn = document.getElementById(btnId);
+            const origText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '처리 중...';
+
             // 익스텐션에서 checkout 세션 요청 (URL에 토큰 없이 안전하게 처리)
             let merchantUid = 'ytat_anon_' + Date.now(); // 익스텐션 미설치 fallback
             let isLinked = false;
 
             try {
                 if (typeof chrome !== 'undefined' && chrome.runtime) {
-                    const result = await new Promise((resolve) => {
-                        chrome.runtime.sendMessage(
-                            EXTENSION_ID,
-                            { type: 'YTAT_REQUEST_CHECKOUT', amount: val, currency: curCurrency },
-                            (res) => resolve(res)
-                        );
-                    });
+                    const result = await Promise.race([
+                        new Promise((resolve) => {
+                            chrome.runtime.sendMessage(
+                                EXTENSION_ID,
+                                { type: 'YTAT_REQUEST_CHECKOUT', amount: val, currency: curCurrency },
+                                (res) => resolve(res)
+                            );
+                        }),
+                        new Promise((resolve) => setTimeout(() => resolve(null), 3000)),
+                    ]);
                     if (result?.ok && result?.orderId) {
                         merchantUid = result.orderId;
                         isLinked = true;
@@ -661,6 +670,9 @@
             } catch (e) {
                 // 익스텐션 미설치 또는 미로그인 → fallback 진행
             }
+
+            btn.disabled = false;
+            btn.innerHTML = origText;
 
             const isKRW = curCurrency === 'KRW';
 
