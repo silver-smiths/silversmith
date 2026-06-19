@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YTAT 관리자</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #080d1a;
+      color: #d4daf0;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 14px;
+      min-height: 100vh;
+    }
+
+    /* ── 로딩 ── */
+    #loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-size: 16px;
+      color: #6b7faa;
+    }
+
+    /* ── 레이아웃 ── */
+    #app { display: none; }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8,13,26,.95);
+      border-bottom: 1px solid rgba(148,163,210,.12);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .header-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #e8ecf4;
+      margin-right: 32px;
+      padding: 16px 0;
+      white-space: nowrap;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      color: #6b7faa;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 16px 20px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: color .15s, border-color .15s;
+    }
+    .tab-btn.active {
+      color: #a78bfa;
+      border-bottom-color: #a78bfa;
+    }
+    .tab-btn:hover { color: #c4b5fd; }
+
+    .content { padding: 28px 24px; max-width: 1100px; margin: 0 auto; }
+
+    /* ── 공통 카드 ── */
+    .card {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(148,163,210,.1);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #8896b8;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin-bottom: 16px;
+    }
+
+    /* ── 통계 ── */
+    .date-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .date-input {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(148,163,210,.2);
+      border-radius: 8px;
+      color: #d4daf0;
+      padding: 7px 12px;
+      font-size: 13px;
+      outline: none;
+    }
+    .date-input:focus { border-color: #a78bfa; }
+
+    .btn {
+      background: #4f46e5;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .btn:hover { background: #4338ca; }
+    .btn-danger { background: #dc2626; }
+    .btn-danger:hover { background: #b91c1c; }
+    .btn-ghost {
+      background: rgba(255,255,255,.08);
+      color: #d4daf0;
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,.13); }
+
+    .chart-wrap { height: 280px; }
+
+    .table-tabs { display: flex; gap: 4px; margin-bottom: 14px; }
+    .table-tab {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(148,163,210,.15);
+      border-radius: 6px;
+      color: #6b7faa;
+      padding: 5px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .table-tab.active { background: #4f46e5; border-color: #4f46e5; color: #fff; }
+
+    /* ── 테이블 ── */
+    .tbl-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      color: #6b7faa;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(148,163,210,.12);
+      white-space: nowrap;
+    }
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(148,163,210,.07);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    tr:hover td { background: rgba(255,255,255,.03); cursor: pointer; }
+    tr.unread td { font-weight: 700; color: #e8ecf4; }
+    tr.read td { opacity: .4; }
+
+    /* ── 공지 ── */
+    .notice-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .action-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ── 모달 ── */
+    .modal-bg {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.7);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .modal-bg.open { display: flex; }
+
+    .modal {
+      background: #0f1629;
+      border: 1px solid rgba(148,163,210,.15);
+      border-radius: 16px;
+      padding: 28px;
+      width: 100%;
+      max-width: 640px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #e8ecf4;
+      margin-bottom: 20px;
+    }
+
+    .form-group { margin-bottom: 16px; }
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #8896b8;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(148,163,210,.2);
+      border-radius: 8px;
+      color: #d4daf0;
+      padding: 9px 12px;
+      font-size: 14px;
+      outline: none;
+      font-family: inherit;
+    }
+    .form-textarea { min-height: 160px; resize: vertical; }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: #a78bfa;
+    }
+    .form-select option { background: #0f1629; }
+
+    .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .badge-info { background: rgba(96,165,250,.15); color: #60a5fa; }
+    .badge-warn { background: rgba(251,191,36,.15); color: #fbbf24; }
+    .badge-critical { background: rgba(248,113,113,.15); color: #f87171; }
+
+    .empty { text-align: center; color: #6b7faa; padding: 40px; }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-top: 16px;
+      font-size: 13px;
+      color: #6b7faa;
+    }
+    .page-btn {
+      background: rgba(255,255,255,.07);
+      border: none;
+      border-radius: 6px;
+      color: #d4daf0;
+      padding: 5px 12px;
+      cursor: pointer;
+    }
+    .page-btn:disabled { opacity: .3; cursor: default; }
+  </style>
+</head>
+<body>
+
+<div id="loading">인증 확인 중...</div>
+
+<div id="app">
+  <header class="header">
+    <div class="header-title">🛠 YTAT Admin</div>
+    <button class="tab-btn active" onclick="showTab('stats')">통계</button>
+    <button class="tab-btn" onclick="showTab('notices')">공지</button>
+  </header>
+
+  <!-- ── 통계 ── -->
+  <div id="tab-stats" class="content">
+    <div class="date-row">
+      <input type="date" id="dateFrom" class="date-input">
+      <span style="color:#6b7faa;">~</span>
+      <input type="date" id="dateTo" class="date-input">
+      <button class="btn" onclick="loadStats()">조회</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">일별 현황</div>
+      <div class="chart-wrap"><canvas id="statsChart"></canvas></div>
+    </div>
+
+    <div class="card">
+      <div class="table-tabs">
+        <button class="table-tab active" onclick="switchTableTab('daily')">일별 보기</button>
+        <button class="table-tab" onclick="switchTableTab('user')">사용자별 보기</button>
+      </div>
+      <div class="tbl-wrap">
+        <table id="statsTable"></table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 공지 ── -->
+  <div id="tab-notices" class="content" style="display:none;">
+    <div class="notice-header">
+      <div class="action-bar" id="actionBar">
+        <span id="checkedCount" style="color:#6b7faa;font-size:13px;display:none;"></span>
+        <button class="btn btn-danger" id="btnDelete" style="display:none;" onclick="deleteSelected()">삭제</button>
+      </div>
+      <button class="btn" onclick="openNoticeModal()">+ 새 공지사항 작성</button>
+    </div>
+
+    <div class="card" style="padding:0;">
+      <div class="tbl-wrap">
+        <table id="noticesTable">
+          <thead>
+            <tr>
+              <th style="width:36px;"><input type="checkbox" id="chkAll" onchange="toggleAll(this)"></th>
+              <th>No</th>
+              <th>날짜</th>
+              <th>제목</th>
+              <th>작성자</th>
+              <th>상태</th>
+            </tr>
+          </thead>
+          <tbody id="noticesTbody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="noticesPagination"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 공지 작성/수정 모달 ── -->
+<div class="modal-bg" id="noticeModal">
+  <div class="modal">
+    <div class="modal-title" id="modalTitle">새 공지사항 작성</div>
+    <div class="form-group">
+      <label class="form-label">유형</label>
+      <select id="noticeType" class="form-select">
+        <option value="info">Info (파란색)</option>
+        <option value="warn">Warn (주황색)</option>
+        <option value="critical">Critical (빨간색)</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">제목</label>
+      <input type="text" id="noticeTitle" class="form-input" placeholder="공지 제목">
+    </div>
+    <div class="form-group">
+      <label class="form-label">내용</label>
+      <textarea id="noticeBody" class="form-textarea" placeholder="공지 내용을 입력하세요."></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">게시 여부</label>
+      <select id="noticePublished" class="form-select">
+        <option value="true">게시</option>
+        <option value="false">비게시</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeNoticeModal()">취소</button>
+      <button class="btn" id="btnModalSave" onclick="saveNotice()">저장</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const API_BASE    = 'https://backend-three-alpha-60.vercel.app';
+  const EXTENSION_ID = 'kpnbngocofkplaegflgeflpmdbpikoij';
+  const CREDITS_URL  = 'https://silver-smiths.com/project/ytat-credits.html';
+
+  let authToken = null;
+  let statsData  = { daily: [], byUser: [] };
+  let chartInst  = null;
+  let tableMode  = 'daily';
+  let noticesPage = 1;
+  let noticesTotalPages = 1;
+  let editingNoticeId = null;
+
+  // ── 인증 ───────────────────────────────────────────────
+  async function init() {
+    authToken = sessionStorage.getItem('ytat_admin_token');
+
+    if (!authToken) {
+      // credits 페이지 거치지 않고 직접 접근 시 익스텐션에서 토큰 획득 시도
+      authToken = await getTokenFromExtension();
+    }
+
+    if (!authToken) { return redirect(); }
+
+    try {
+      const res = await fetch(`${API_BASE}/admin/check`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+      if (!res.ok) return redirect();
+    } catch { return redirect(); }
+
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    initDefaultDates();
+    loadStats();
+  }
+
+  function redirect() {
+    location.href = CREDITS_URL;
+  }
+
+  async function getTokenFromExtension() {
+    if (typeof chrome === 'undefined' || !chrome.runtime) return null;
+    try {
+      const res = await Promise.race([
+        new Promise(resolve =>
+          chrome.runtime.sendMessage(EXTENSION_ID, { type: 'YTAT_GET_AUTH_TOKEN' }, resolve)
+        ),
+        new Promise(resolve => setTimeout(() => resolve(null), 3000)),
+      ]);
+      return res?.ok ? res.token : null;
+    } catch { return null; }
+  }
+
+  function authHeaders() {
+    return { Authorization: `Bearer ${authToken}`, 'Content-Type': 'application/json' };
+  }
+
+  // ── 탭 ─────────────────────────────────────────────────
+  function showTab(tab) {
+    document.getElementById('tab-stats').style.display   = tab === 'stats'   ? '' : 'none';
+    document.getElementById('tab-notices').style.display = tab === 'notices' ? '' : 'none';
+    document.querySelectorAll('.tab-btn').forEach((b, i) => {
+      b.classList.toggle('active', (i === 0 && tab === 'stats') || (i === 1 && tab === 'notices'));
+    });
+    if (tab === 'notices') loadNotices();
+  }
+
+  // ── 통계 ───────────────────────────────────────────────
+  function initDefaultDates() {
+    const to   = new Date();
+    const from = new Date(); from.setDate(from.getDate() - 29);
+    document.getElementById('dateTo').value   = to.toISOString().slice(0, 10);
+    document.getElementById('dateFrom').value = from.toISOString().slice(0, 10);
+  }
+
+  async function loadStats() {
+    const from = document.getElementById('dateFrom').value;
+    const to   = document.getElementById('dateTo').value;
+    if (!from || !to) return;
+
+    try {
+      const res = await fetch(`${API_BASE}/admin/stats?from=${from}&to=${to}`, {
+        headers: authHeaders(),
+      });
+      if (!res.ok) return;
+      statsData = await res.json();
+      renderChart();
+      renderStatsTable();
+    } catch (e) {
+      console.error('통계 로드 실패', e);
+    }
+  }
+
+  function renderChart() {
+    const { daily } = statsData;
+    const labels = daily.map(d => d.date.slice(5));
+
+    if (chartInst) chartInst.destroy();
+    chartInst = new Chart(document.getElementById('statsChart'), {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          { label: '접속자수', data: daily.map(d => d.users),    borderColor: '#60a5fa', tension: .3, fill: false, yAxisID: 'y' },
+          { label: '결제자수', data: daily.map(d => d.payments), borderColor: '#34d399', tension: .3, fill: false, yAxisID: 'y' },
+          { label: '토큰(K)', data: daily.map(d => +(d.tokens / 1000).toFixed(1)), borderColor: '#a78bfa', tension: .3, fill: false, yAxisID: 'y' },
+          { label: '매출($)', data: daily.map(d => d.revenue),  borderColor: '#fbbf24', tension: .3, fill: false, yAxisID: 'y2' },
+        ],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: '#8896b8', font: { size: 12 } } } },
+        scales: {
+          x:  { ticks: { color: '#6b7faa' }, grid: { color: 'rgba(148,163,210,.08)' } },
+          y:  { ticks: { color: '#6b7faa' }, grid: { color: 'rgba(148,163,210,.08)' }, position: 'left' },
+          y2: { ticks: { color: '#fbbf24' }, grid: { display: false }, position: 'right' },
+        },
+      },
+    });
+  }
+
+  function switchTableTab(mode) {
+    tableMode = mode;
+    document.querySelectorAll('.table-tab').forEach((b, i) => {
+      b.classList.toggle('active', (i === 0 && mode === 'daily') || (i === 1 && mode === 'user'));
+    });
+    renderStatsTable();
+  }
+
+  function renderStatsTable() {
+    const tbl = document.getElementById('statsTable');
+    if (tableMode === 'daily') {
+      tbl.innerHTML = `
+        <thead><tr>
+          <th>날짜</th><th>접속자수</th><th>토큰 사용량</th><th>확정 매출($)</th><th>결제자수</th>
+        </tr></thead>
+        <tbody>${statsData.daily.map(d => `
+          <tr>
+            <td>${d.date}</td><td>${d.users}</td>
+            <td>${d.tokens.toLocaleString()}</td>
+            <td>$${d.revenue.toFixed(2)}</td>
+            <td>${d.payments}</td>
+          </tr>`).join('') || '<tr><td colspan="5" class="empty">데이터 없음</td></tr>'}
+        </tbody>`;
+    } else {
+      tbl.innerHTML = `
+        <thead><tr>
+          <th>사용자</th><th>토큰 사용량</th><th>확정 매출($)</th><th>결제액($)</th>
+        </tr></thead>
+        <tbody>${statsData.byUser.map(u => `
+          <tr>
+            <td>${u.email}</td>
+            <td>${u.tokens.toLocaleString()}</td>
+            <td>$${u.revenue.toFixed(2)}</td>
+            <td>$${u.charged.toFixed(2)}</td>
+          </tr>`).join('') || '<tr><td colspan="4" class="empty">데이터 없음</td></tr>'}
+        </tbody>`;
+    }
+  }
+
+  // ── 공지 목록 ───────────────────────────────────────────
+  async function loadNotices(page = 1) {
+    noticesPage = page;
+    try {
+      const res = await fetch(`${API_BASE}/notices/admin/all?page=${page}`, {
+        headers: authHeaders(),
+      });
+      if (!res.ok) return;
+      const { notices, totalPages } = await res.json();
+      noticesTotalPages = totalPages || 1;
+      renderNotices(notices);
+      renderPagination();
+    } catch (e) { console.error('공지 로드 실패', e); }
+  }
+
+  function renderNotices(notices) {
+    const tbody = document.getElementById('noticesTbody');
+    if (!notices.length) {
+      tbody.innerHTML = '<tr><td colspan="6" class="empty">공지사항이 없습니다.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = notices.map((n, i) => {
+      const dt = n.created_at.replace('T', ' ').slice(0, 16);
+      const badgeType = n.type === 'warn' ? 'badge-warn' : n.type === 'critical' ? 'badge-critical' : 'badge-info';
+      const status = n.published
+        ? '<span style="color:#34d399;font-size:12px;">게시</span>'
+        : '<span style="color:#6b7faa;font-size:12px;">비게시</span>';
+      return `<tr onclick="openNoticeDetail('${n.id}', event)">
+        <td onclick="event.stopPropagation()"><input type="checkbox" class="row-chk" value="${n.id}" onchange="updateDeleteBtn()"></td>
+        <td style="color:#6b7faa;">${(noticesPage - 1) * 10 + i + 1}</td>
+        <td>${dt}</td>
+        <td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;">${n.title}</td>
+        <td style="color:#8896b8;">${n.author}</td>
+        <td>${status}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  function renderPagination() {
+    const pg = document.getElementById('noticesPagination');
+    pg.innerHTML = `
+      <button class="page-btn" onclick="loadNotices(${noticesPage - 1})" ${noticesPage <= 1 ? 'disabled' : ''}>← 이전</button>
+      <span>${noticesPage} / ${noticesTotalPages}</span>
+      <button class="page-btn" onclick="loadNotices(${noticesPage + 1})" ${noticesPage >= noticesTotalPages ? 'disabled' : ''}>다음 →</button>`;
+  }
+
+  function toggleAll(chk) {
+    document.querySelectorAll('.row-chk').forEach(c => c.checked = chk.checked);
+    updateDeleteBtn();
+  }
+
+  function updateDeleteBtn() {
+    const checked = document.querySelectorAll('.row-chk:checked');
+    document.getElementById('btnDelete').style.display    = checked.length ? 'inline-block' : 'none';
+    document.getElementById('checkedCount').style.display = checked.length ? 'inline' : 'none';
+    document.getElementById('checkedCount').textContent   = `${checked.length}개 선택됨`;
+  }
+
+  async function deleteSelected() {
+    const ids = [...document.querySelectorAll('.row-chk:checked')].map(c => c.value);
+    if (!ids.length) return;
+    if (!confirm(`${ids.length}개의 공지를 삭제하시겠습니까?`)) return;
+
+    await fetch(`${API_BASE}/notices`, {
+      method: 'DELETE',
+      headers: authHeaders(),
+      body: JSON.stringify({ ids }),
+    });
+    loadNotices(noticesPage);
+  }
+
+  // ── 공지 모달 (작성/수정) ──────────────────────────────
+  function openNoticeModal(notice = null) {
+    editingNoticeId = notice?.id || null;
+    document.getElementById('modalTitle').textContent = notice ? '공지사항 수정' : '새 공지사항 작성';
+    document.getElementById('noticeType').value      = notice?.type || 'info';
+    document.getElementById('noticeTitle').value     = notice?.title || '';
+    document.getElementById('noticeBody').value      = notice?.body || '';
+    document.getElementById('noticePublished').value = notice ? String(notice.published) : 'true';
+    document.getElementById('noticeModal').classList.add('open');
+  }
+
+  function closeNoticeModal() {
+    document.getElementById('noticeModal').classList.remove('open');
+    editingNoticeId = null;
+  }
+
+  async function saveNotice() {
+    const title     = document.getElementById('noticeTitle').value.trim();
+    const body      = document.getElementById('noticeBody').value.trim();
+    const type      = document.getElementById('noticeType').value;
+    const published = document.getElementById('noticePublished').value === 'true';
+
+    if (!title || !body) return alert('제목과 내용을 입력해주세요.');
+
+    if (editingNoticeId) {
+      if (!confirm('공지사항을 수정하시겠습니까?')) return;
+      await fetch(`${API_BASE}/notices/${editingNoticeId}`, {
+        method: 'PATCH',
+        headers: authHeaders(),
+        body: JSON.stringify({ title, body, type, published }),
+      });
+    } else {
+      await fetch(`${API_BASE}/notices`, {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({ title, body, type }),
+      });
+    }
+
+    closeNoticeModal();
+    loadNotices(noticesPage);
+  }
+
+  async function openNoticeDetail(id, e) {
+    if (e?.target?.type === 'checkbox') return;
+    try {
+      const res = await fetch(`${API_BASE}/notices/${id}`, { headers: authHeaders() });
+      const notice = await res.json();
+      openNoticeModal(notice);
+    } catch { alert('공지를 불러오지 못했습니다.'); }
+  }
+
+  // 모달 배경 클릭으로 닫기
+  document.getElementById('noticeModal').addEventListener('click', function(e) {
+    if (e.target === this) closeNoticeModal();
+  });
+
+  init();
+</script>
+</body>
+</html>
