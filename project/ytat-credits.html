@@ -699,37 +699,7 @@
             });
         }
 
-        // ── 관리자 버튼 ─────────────────────────────────────
-        const API_BASE = 'https://backend-three-alpha-60.vercel.app';
-
-        async function initAdminButton() {
-            if (typeof chrome === 'undefined' || !chrome.runtime) return;
-            try {
-                const res = await Promise.race([
-                    new Promise(resolve =>
-                        chrome.runtime.sendMessage(EXTENSION_ID, { type: 'YTAT_GET_AUTH_TOKEN' }, resolve)
-                    ),
-                    new Promise(resolve => setTimeout(() => resolve(null), 3000)),
-                ]);
-                if (!res?.ok || !res.token) return;
-
-                const check = await fetch(`${API_BASE}/admin/check`, {
-                    headers: { Authorization: `Bearer ${res.token}` },
-                });
-                if (!check.ok) return;
-
-                sessionStorage.setItem('ytat_admin_token', res.token);
-                document.getElementById('btnAdmin').style.display = 'flex';
-            } catch (e) {
-                // 비관리자 또는 익스텐션 미설치 — 버튼 미노출
-            }
-        }
-
-        initAdminButton();
     </script>
 
-<a id="btnAdmin" href="ytat-admin.html" style="display:none;position:fixed;bottom:24px;right:24px;background:#4f46e5;color:#fff;border-radius:10px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.3);align-items:center;gap:6px;text-decoration:none;z-index:999;">
-    🛠 관리자 페이지
-</a>
 </body>
 </html>
