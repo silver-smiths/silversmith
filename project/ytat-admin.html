@@ -508,10 +508,15 @@
 
   function renderStatsTable() {
     const tbl = document.getElementById('statsTable');
+    const fmtPayment = (usd, krw) => {
+      const usdStr = `$${usd.toFixed(4)}`;
+      const krwStr = krw > 0 ? `₩${krw.toLocaleString('ko-KR')}` : '-';
+      return `${usdStr} / ${krwStr}`;
+    };
     if (tableMode === 'daily') {
       tbl.innerHTML = `
         <thead><tr>
-          <th>날짜</th><th>접속자수</th><th>토큰 사용량</th><th>확정 매출($)</th><th>결제자수</th>
+          <th>날짜</th><th>접속자수</th><th>토큰 사용량</th><th>확정 매출($)</th><th>결제자수</th><th>결제금액(달러 / 원화)</th>
         </tr></thead>
         <tbody>${statsData.daily.map(d => `
           <tr>
@@ -519,19 +524,20 @@
             <td>${d.tokens.toLocaleString()}</td>
             <td>$${d.revenue.toFixed(4)}</td>
             <td>${d.payments}</td>
-          </tr>`).join('') || '<tr><td colspan="5" class="empty">데이터 없음</td></tr>'}
+            <td>${fmtPayment(d.chargedUsd, d.chargedKrw)}</td>
+          </tr>`).join('') || '<tr><td colspan="6" class="empty">데이터 없음</td></tr>'}
         </tbody>`;
     } else {
       tbl.innerHTML = `
         <thead><tr>
-          <th>사용자</th><th>토큰 사용량</th><th>확정 매출($)</th><th>결제액($)</th>
+          <th>사용자</th><th>토큰 사용량</th><th>확정 매출($)</th><th>결제금액(달러 / 원화)</th>
         </tr></thead>
         <tbody>${statsData.byUser.map(u => `
           <tr>
             <td>${u.email}</td>
             <td>${u.tokens.toLocaleString()}</td>
             <td>$${u.revenue.toFixed(4)}</td>
-            <td>$${u.charged.toFixed(4)}</td>
+            <td>${fmtPayment(u.chargedUsd, u.chargedKrw)}</td>
           </tr>`).join('') || '<tr><td colspan="4" class="empty">데이터 없음</td></tr>'}
         </tbody>`;
     }
