@@ -517,7 +517,7 @@
           <tr>
             <td>${d.date}</td><td>${d.users}</td>
             <td>${d.tokens.toLocaleString()}</td>
-            <td>$${d.revenue.toFixed(2)}</td>
+            <td>$${d.revenue.toFixed(4)}</td>
             <td>${d.payments}</td>
           </tr>`).join('') || '<tr><td colspan="5" class="empty">데이터 없음</td></tr>'}
         </tbody>`;
@@ -530,8 +530,8 @@
           <tr>
             <td>${u.email}</td>
             <td>${u.tokens.toLocaleString()}</td>
-            <td>$${u.revenue.toFixed(2)}</td>
-            <td>$${u.charged.toFixed(2)}</td>
+            <td>$${u.revenue.toFixed(4)}</td>
+            <td>$${u.charged.toFixed(4)}</td>
           </tr>`).join('') || '<tr><td colspan="4" class="empty">데이터 없음</td></tr>'}
         </tbody>`;
     }
