@@ -509,8 +509,8 @@
   function renderStatsTable() {
     const tbl = document.getElementById('statsTable');
     const fmtPayment = (usd, krw) => {
-      const usdStr = `$${usd.toFixed(4)}`;
-      const krwStr = krw > 0 ? `₩${krw.toLocaleString('ko-KR')}` : '-';
+      const usdStr = `$${(usd || 0).toFixed(4)}`;
+      const krwStr = (krw || 0) > 0 ? `₩${(krw).toLocaleString('ko-KR')}` : '-';
       return `${usdStr} / ${krwStr}`;
     };
     if (tableMode === 'daily') {
