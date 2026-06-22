@@ -364,7 +364,7 @@
                             💳 신용카드 결제
                         </button>
                         <button class="btn-charge" id="btnKakao" onclick="openPayment('kakaopay')" style="background:#FAE100;border-color:#FAE100;color:#000;">
-                            <img src="https://t1.kakaocdn.net/kakaobank_pro/kakao_pay/202110/assets/images/logo_kakao_pay.svg" alt="카카오페이" style="height:18px;vertical-align:middle;margin-right:4px;" onerror="this.style.display='none'">카카오페이
+                            카카오페이
                         </button>
                     </div>
                 </div>
@@ -598,7 +598,7 @@
 
             document.getElementById('btnCharge').textContent = '💳 신용카드 결제 ' + fmt;
             if (document.getElementById('btnKakao')) {
-                document.getElementById('btnKakao').innerHTML = `<img src="https://t1.kakaocdn.net/kakaobank_pro/kakao_pay/202110/assets/images/logo_kakao_pay.svg" alt="카카오페이" style="height:18px;vertical-align:middle;margin-right:4px;" onerror="this.style.display='none'">카카오페이 ${fmt}`;
+                document.getElementById('btnKakao').innerHTML = `카카오페이 ${fmt}`;
             }
             if (document.getElementById('btnTransferKrw')) document.getElementById('btnTransferKrw').textContent = fmt + ' 송금 완료 확인';
             if (document.getElementById('btnTransferUsd')) document.getElementById('btnTransferUsd').textContent = fmt + ' Transfer Confirmed';
