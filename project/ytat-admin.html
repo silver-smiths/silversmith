@@ -434,6 +434,11 @@
     return { Authorization: `Bearer ${authToken}`, 'Content-Type': 'application/json' };
   }
 
+  function escapeHtml(s) {
+    return String(s ?? '').replace(/[&<>"']/g, ch =>
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+  }
+
   // ── 탭 ─────────────────────────────────────────────────
   function showTab(tab) {
     document.getElementById('tab-stats').style.display   = tab === 'stats'   ? '' : 'none';
@@ -574,8 +579,8 @@
         <td onclick="event.stopPropagation()"><input type="checkbox" class="row-chk" value="${n.id}" onchange="updateDeleteBtn()"></td>
         <td style="color:#6b7faa;">${(noticesPage - 1) * 10 + i + 1}</td>
         <td>${dt}</td>
-        <td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;">${n.title}</td>
-        <td style="color:#8896b8;">${n.author}</td>
+        <td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(n.title)}</td>
+        <td style="color:#8896b8;">${escapeHtml(n.author)}</td>
         <td>${status}</td>
       </tr>`;
     }).join('');
@@ -660,7 +665,8 @@
   async function openNoticeDetail(id, e) {
     if (e?.target?.type === 'checkbox') return;
     try {
-      const res = await fetch(`${API_BASE}/notices/${id}`, { headers: authHeaders() });
+      const res = await fetch(`${API_BASE}/notices/admin/${id}`, { headers: authHeaders() });
+      if (!res.ok) throw new Error();
       const notice = await res.json();
       openNoticeModal(notice);
     } catch { alert('공지를 불러오지 못했습니다.'); }

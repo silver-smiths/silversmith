@@ -711,7 +711,7 @@
     const EXTENSION_ID = 'kpnbngocofkplaegflgeflpmdbpikoij';
     chrome.runtime.sendMessage(EXTENSION_ID, { type: 'YTAT_GET_AUTH_TOKEN' }, function (res) {
       if (chrome.runtime.lastError || !res?.ok || !res.token) return;
-      fetch('https://backend-three-alpha-60.vercel.app/admin/check', {
+      fetch('https://yt-auto-translator-api.1009yjh.workers.dev/admin/check', {
         headers: { Authorization: 'Bearer ' + res.token },
       }).then(r => {
         if (r.ok) {
