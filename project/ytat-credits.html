@@ -342,12 +342,12 @@
                     <button class="amount-btn" onclick="selectAmount(3, this)">₩50,000</button>
                 </div>
                 <input type="number" class="amount-input" id="amountInput" value="10000" placeholder="금액 입력" style="display:none">
-                <div class="amount-usd" id="amountSub" style="min-height:1.4em;margin-top:0.4rem;">≈ $7.14 (고정환율 ₩1,400/$1 기준)</div>
+                <div class="amount-usd" id="amountSub" style="min-height:1.4em;margin-top:0.4rem;">→ 10,000 크레딧 적립</div>
 
                 <ul class="service-features">
                     <li>결제·송금 확인 후 즉시 크레딧 지급</li>
                     <li>API 키 없이 최대 26개 언어 동시 번역</li>
-                    <li>유효기간: 결제일로부터 <strong>3개월</strong> (만료 시 자동 소멸)</li>
+                    <li>크레딧은 <strong>만료되지 않습니다</strong> (환불은 결제일로부터 3개월 이내, 결제 수단의 취소 정책에 따름)</li>
                     <li>미사용 크레딧은 결제 후 7일 이내 환불 가능</li>
                 </ul>
 
@@ -431,7 +431,7 @@
                     <li><strong style="color:#e8ecf4">카드 결제</strong>: 결제 완료 즉시 자동 지급</li>
                     <li><strong style="color:#e8ecf4">계좌 송금 (KRW)</strong>: 입금 확인 후 평일 영업시간(10:00~18:00) 내 지급</li>
                     <li><strong style="color:#e8ecf4">계좌 송금 (USD)</strong>: 국제 송금 확인 후 1~2 영업일 내 지급</li>
-                    <li>유효기간: 지급일로부터 <strong style="color:#e8ecf4">3개월</strong> / 기간 만료 시 잔여 크레딧 자동 소멸 (자동 갱신 없음)</li>
+                    <li>크레딧은 <strong style="color:#e8ecf4">만료되지 않습니다</strong> / 환불은 결제일로부터 3개월 이내, 결제 수단(PG사)의 취소 정책에 따라 가능</li>
                 </ul>
             </div>
 
@@ -441,7 +441,7 @@
                     <li>카드 결제: 국내외 신용·체크카드</li>
                     <li>KRW 계좌이체: 신한은행 100-037-466615</li>
                     <li>USD 해외 송금: 신한은행 180-042-567817 (SWIFT: SHBKKRSE)</li>
-                    <li>고정환율 ₩1,400 = $1 적용</li>
+                    <li>충전액 1원 = 1크레딧 (USD 결제는 ₩1,350 = $1 환산 적립)</li>
                 </ul>
             </div>
 
@@ -537,7 +537,7 @@
     <!-- Portone V1 SDK -->
     <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
     <script>
-        const KRW_RATE = 1400;
+        const KRW_RATE = 1350; // 백엔드 KRW_TO_USD_RATE와 동일 (USD 결제 크레딧 환산용)
         const PRESETS = {
             KRW: [5000, 10000, 30000, 50000],
             USD: [5, 10, 30, 50]
@@ -592,11 +592,10 @@
             const sym = isKRW ? '₩' : '$';
             const fmt = isKRW ? sym + Math.round(val).toLocaleString() : sym + val.toFixed(2);
 
-            if (isKRW) {
-                document.getElementById('amountSub').textContent = '≈ $' + (val / KRW_RATE).toFixed(2) + ' (고정환율 ₩1,400/$1 기준)';
-            } else {
-                document.getElementById('amountSub').textContent = '≈ ₩' + Math.round(val * KRW_RATE).toLocaleString() + ' (고정환율 ₩1,400/$1 기준)';
-            }
+            // 적립 크레딧 = 원화 1:1 (USD 결제는 ×환율). 백엔드 KRW_TO_USD_RATE와 동일하게 유지
+            const credits = isKRW ? Math.round(val) : Math.round(val * KRW_RATE);
+            document.getElementById('amountSub').textContent =
+                '→ ' + credits.toLocaleString() + ' 크레딧 적립' + (isKRW ? '' : ' (고정환율 ₩' + KRW_RATE.toLocaleString() + '/$1)');
 
             document.getElementById('btnCharge').textContent = '💳 신용카드 결제 ' + fmt;
             if (document.getElementById('btnKakao')) {
