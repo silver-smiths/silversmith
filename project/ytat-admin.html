@@ -488,7 +488,7 @@
           { label: '접속자수', data: daily.map(d => d.users),    borderColor: '#60a5fa', tension: .3, fill: false, yAxisID: 'y' },
           { label: '결제자수', data: daily.map(d => d.payments), borderColor: '#34d399', tension: .3, fill: false, yAxisID: 'y' },
           { label: '토큰(K)', data: daily.map(d => +(d.tokens / 1000).toFixed(1)), borderColor: '#a78bfa', tension: .3, fill: false, yAxisID: 'y' },
-          { label: '매출($)', data: daily.map(d => d.revenue),  borderColor: '#fbbf24', tension: .3, fill: false, yAxisID: 'y2' },
+          { label: '매출(크레딧)', data: daily.map(d => d.revenue),  borderColor: '#fbbf24', tension: .3, fill: false, yAxisID: 'y2' },
         ],
       },
       options: {
@@ -521,13 +521,13 @@
     if (tableMode === 'daily') {
       tbl.innerHTML = `
         <thead><tr>
-          <th>날짜</th><th>접속자수</th><th>토큰 사용량</th><th>확정 매출($)</th><th>결제자수</th><th>결제금액(달러 / 원화)</th>
+          <th>날짜</th><th>접속자수</th><th>토큰 사용량</th><th>확정 매출(크레딧)</th><th>결제자수</th><th>결제금액(달러 / 원화)</th>
         </tr></thead>
         <tbody>${statsData.daily.map(d => `
           <tr>
             <td>${d.date}</td><td>${d.users}</td>
             <td>${d.tokens.toLocaleString()}</td>
-            <td>$${d.revenue.toFixed(4)}</td>
+            <td>${Math.round(d.revenue).toLocaleString('ko-KR')}</td>
             <td>${d.payments}</td>
             <td>${fmtPayment(d.chargedUsd, d.chargedKrw)}</td>
           </tr>`).join('') || '<tr><td colspan="6" class="empty">데이터 없음</td></tr>'}
@@ -535,13 +535,13 @@
     } else {
       tbl.innerHTML = `
         <thead><tr>
-          <th>사용자</th><th>토큰 사용량</th><th>확정 매출($)</th><th>결제금액(달러 / 원화)</th>
+          <th>사용자</th><th>토큰 사용량</th><th>확정 매출(크레딧)</th><th>결제금액(달러 / 원화)</th>
         </tr></thead>
         <tbody>${statsData.byUser.map(u => `
           <tr>
-            <td>${u.email}</td>
+            <td>${escapeHtml(u.email)}</td>
             <td>${u.tokens.toLocaleString()}</td>
-            <td>$${u.revenue.toFixed(4)}</td>
+            <td>${Math.round(u.revenue).toLocaleString('ko-KR')}</td>
             <td>${fmtPayment(u.chargedUsd, u.chargedKrw)}</td>
           </tr>`).join('') || '<tr><td colspan="4" class="empty">데이터 없음</td></tr>'}
         </tbody>`;
