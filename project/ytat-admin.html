@@ -390,22 +390,14 @@
   let editingNoticeId = null;
 
   // ── 인증 ───────────────────────────────────────────────
+  // 익스텐션에서 세션 토큰(YouTube 권한 없음)을 교환받아 사용. Google 토큰은 페이지로 안 들어옴.
   async function init() {
-    authToken = sessionStorage.getItem('ytat_admin_token');
+    const sess = await getSessionFromExtension();
+    if (!sess || !sess.sessionToken) { return redirect(); }
+    if (!sess.isAdmin) { return redirect(); } // 관리자 아니면 진입 차단
 
-    if (!authToken) {
-      // credits 페이지 거치지 않고 직접 접근 시 익스텐션에서 토큰 획득 시도
-      authToken = await getTokenFromExtension();
-    }
-
-    if (!authToken) { return redirect(); }
-
-    try {
-      const res = await fetch(`${API_BASE}/admin/check`, {
-        headers: { Authorization: `Bearer ${authToken}` },
-      });
-      if (!res.ok) return redirect();
-    } catch { return redirect(); }
+    authToken = sess.sessionToken;
+    sessionStorage.setItem('ytat_admin_token', authToken);
 
     document.getElementById('loading').style.display = 'none';
     document.getElementById('app').style.display = 'block';
@@ -417,16 +409,15 @@
     location.href = CREDITS_URL;
   }
 
-  async function getTokenFromExtension() {
+  async function getSessionFromExtension() {
     if (typeof chrome === 'undefined' || !chrome.runtime) return null;
     try {
-      const res = await Promise.race([
+      return await Promise.race([
         new Promise(resolve =>
-          chrome.runtime.sendMessage(EXTENSION_ID, { type: 'YTAT_GET_AUTH_TOKEN' }, resolve)
+          chrome.runtime.sendMessage(EXTENSION_ID, { type: 'YTAT_GET_SESSION' }, resolve)
         ),
-        new Promise(resolve => setTimeout(() => resolve(null), 3000)),
+        new Promise(resolve => setTimeout(() => resolve(null), 4000)),
       ]);
-      return res?.ok ? res.token : null;
     } catch { return null; }
   }
 
