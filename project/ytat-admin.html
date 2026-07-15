@@ -448,6 +448,12 @@
     document.getElementById('dateFrom').value = from.toISOString().slice(0, 10);
   }
 
+  // 세션 만료(401) 공통 처리 — 새로고침하면 익스텐션에서 세션 재발급
+  function handleSessionExpired() {
+    alert('세션이 만료되었습니다. 페이지를 새로고침하면 자동으로 다시 로그인됩니다.');
+    location.reload();
+  }
+
   async function loadStats() {
     const from = document.getElementById('dateFrom').value;
     const to   = document.getElementById('dateTo').value;
@@ -457,6 +463,7 @@
       const res = await fetch(`${API_BASE}/admin/stats?from=${from}&to=${to}`, {
         headers: authHeaders(),
       });
+      if (res.status === 401) return handleSessionExpired();
       if (!res.ok) return;
       statsData = await res.json();
       renderChart();
@@ -634,21 +641,32 @@
 
     if (!title || !body) return alert('제목과 내용을 입력해주세요.');
 
-    if (editingNoticeId) {
-      if (!confirm('공지사항을 수정하시겠습니까?')) return;
-      await fetch(`${API_BASE}/notices/${editingNoticeId}`, {
-        method: 'PATCH',
-        headers: authHeaders(),
-        body: JSON.stringify({ title, body, type, published }),
-      });
-    } else {
-      await fetch(`${API_BASE}/notices`, {
-        method: 'POST',
-        headers: authHeaders(),
-        body: JSON.stringify({ title, body, type }),
-      });
+    let res;
+    try {
+      if (editingNoticeId) {
+        if (!confirm('공지사항을 수정하시겠습니까?')) return;
+        res = await fetch(`${API_BASE}/notices/${editingNoticeId}`, {
+          method: 'PATCH',
+          headers: authHeaders(),
+          body: JSON.stringify({ title, body, type, published }),
+        });
+      } else {
+        res = await fetch(`${API_BASE}/notices`, {
+          method: 'POST',
+          headers: authHeaders(),
+          body: JSON.stringify({ title, body, type }),
+        });
+      }
+    } catch {
+      return alert('네트워크 오류로 저장하지 못했습니다. 작성 내용은 그대로 있으니 다시 시도해 주세요.');
     }
 
+    if (res.status === 401) return handleSessionExpired(); // 새로고침 전 alert — 내용 유실 대비
+    if (!res.ok) {
+      return alert('저장에 실패했습니다. 작성 내용은 그대로 있으니 다시 시도해 주세요.');
+    }
+
+    // 성공 시에만 모달 닫고 목록 갱신
     closeNoticeModal();
     loadNotices(noticesPage);
   }
