@@ -284,6 +284,7 @@
     <div class="header-title">🛠 YTAT Admin</div>
     <button class="tab-btn active" onclick="showTab('stats')">통계</button>
     <button class="tab-btn" onclick="showTab('notices')">공지</button>
+    <button class="tab-btn" onclick="showTab('ops')">운영</button>
   </header>
 
   <!-- ── 통계 ── -->
@@ -308,6 +309,15 @@
       <div class="tbl-wrap">
         <table id="statsTable"></table>
       </div>
+    </div>
+  </div>
+
+  <!-- ── 운영(원격 스위치) ── -->
+  <div id="tab-ops" class="content" style="display:none;">
+    <div class="card">
+      <div class="card-title">🛠 원격 스위치 (kill-switch)</div>
+      <p style="color:#6b7faa;font-size:13px;margin:0 0 8px;">문제 발생 시 스토어 업데이트 없이 즉시 기능을 끌 수 있습니다. 익스텐션은 최대 1분 내 반영됩니다.</p>
+      <div id="opsSwitches">불러오는 중...</div>
     </div>
   </div>
 
@@ -432,12 +442,75 @@
 
   // ── 탭 ─────────────────────────────────────────────────
   function showTab(tab) {
-    document.getElementById('tab-stats').style.display   = tab === 'stats'   ? '' : 'none';
-    document.getElementById('tab-notices').style.display = tab === 'notices' ? '' : 'none';
-    document.querySelectorAll('.tab-btn').forEach((b, i) => {
-      b.classList.toggle('active', (i === 0 && tab === 'stats') || (i === 1 && tab === 'notices'));
+    const tabs = ['stats', 'notices', 'ops'];
+    tabs.forEach(t => {
+      const el = document.getElementById('tab-' + t);
+      if (el) el.style.display = t === tab ? '' : 'none';
     });
+    const btns = document.querySelectorAll('.tab-btn');
+    btns.forEach((b, i) => b.classList.toggle('active', i === tabs.indexOf(tab)));
     if (tab === 'notices') loadNotices();
+    if (tab === 'ops') loadOps();
+  }
+
+  // ── 운영: 원격 스위치 ───────────────────────────────────
+  async function loadOps() {
+    const box = document.getElementById('opsSwitches');
+    box.innerHTML = '불러오는 중...';
+    let cfg = {};
+    try {
+      const res = await fetch(`${API_BASE}/ops/config`);
+      if (!res.ok) throw new Error();
+      cfg = await res.json();
+    } catch { box.innerHTML = '<span style="color:#f87171;">설정을 불러오지 못했습니다.</span>'; return; }
+
+    const bool = (key, label) => `<label style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #23283a;">
+      <span>${label} <code style="color:#6b7faa;font-size:12px;">${key}</code></span>
+      <input type="checkbox" ${cfg[key] !== false ? 'checked' : ''} onchange="setSwitch('${key}', this.checked)">
+    </label>`;
+    const banner = cfg.banner || { message: '', level: 'info' };
+    const disabled = Array.isArray(cfg['lang.disabled']) ? cfg['lang.disabled'].join(', ') : '';
+    box.innerHTML =
+      bool('translate.enabled', '번역 전체 (마스터)') +
+      bool('translate.subtitles.enabled', '자막 번역') +
+      bool('translate.metadata.enabled', '제목·설명 번역') +
+      bool('payment.enabled', '결제 / 충전') +
+      `<div style="padding:10px 0;border-bottom:1px solid #23283a;">
+        <div>비활성 언어 코드 (쉼표 구분) <code style="color:#6b7faa;font-size:12px;">lang.disabled</code></div>
+        <input id="opsLangDisabled" class="date-input" style="width:100%;margin-top:6px;" value="${escapeHtml(disabled)}" placeholder="예: zh-TW, th">
+        <button class="btn" style="margin-top:6px;" onclick="saveLangDisabled()">저장</button>
+      </div>
+      <div style="padding:10px 0;">
+        <div>공지 배너 <code style="color:#6b7faa;font-size:12px;">banner</code> (비우면 숨김)</div>
+        <input id="opsBannerMsg" class="date-input" style="width:100%;margin-top:6px;" value="${escapeHtml(banner.message || '')}" placeholder="배너 문구">
+        <select id="opsBannerLevel" class="date-input" style="margin-top:6px;">
+          <option value="info" ${banner.level === 'info' ? 'selected' : ''}>info</option>
+          <option value="warn" ${banner.level === 'warn' ? 'selected' : ''}>warn</option>
+          <option value="critical" ${banner.level === 'critical' ? 'selected' : ''}>critical</option>
+        </select>
+        <button class="btn" style="margin-top:6px;" onclick="saveBanner()">저장</button>
+      </div>`;
+  }
+
+  async function patchConfig(key, value) {
+    try {
+      const res = await fetch(`${API_BASE}/ops/config`, {
+        method: 'PATCH', headers: authHeaders(), body: JSON.stringify({ key, value }),
+      });
+      if (res.status === 401) return handleSessionExpired();
+      if (!res.ok) { alert('저장에 실패했습니다.'); loadOps(); return; }
+    } catch { alert('네트워크 오류로 저장하지 못했습니다.'); loadOps(); }
+  }
+  function setSwitch(key, checked) { patchConfig(key, checked); }
+  function saveLangDisabled() {
+    const arr = document.getElementById('opsLangDisabled').value.split(',').map(s => s.trim()).filter(Boolean);
+    patchConfig('lang.disabled', arr);
+  }
+  function saveBanner() {
+    patchConfig('banner', {
+      message: document.getElementById('opsBannerMsg').value.trim(),
+      level: document.getElementById('opsBannerLevel').value,
+    });
   }
 
   // ── 통계 ───────────────────────────────────────────────
@@ -568,8 +641,9 @@
       return;
     }
     tbody.innerHTML = notices.map((n, i) => {
-      const dt = n.created_at.replace('T', ' ').slice(0, 16);
-      const badgeType = n.type === 'warn' ? 'badge-warn' : n.type === 'critical' ? 'badge-critical' : 'badge-info';
+      const dt = String(n.created_at || '').replace('T', ' ').slice(0, 16);
+      const typeLabel = n.type === 'critical' ? '🚨 중요' : n.type === 'warn' ? '⚠️ 안내' : '📢 공지';
+      const typeColor = n.type === 'critical' ? '#f87171' : n.type === 'warn' ? '#fbbf24' : '#a78bfa';
       const status = n.published
         ? '<span style="color:#34d399;font-size:12px;">게시</span>'
         : '<span style="color:#6b7faa;font-size:12px;">비게시</span>';
@@ -577,7 +651,7 @@
         <td onclick="event.stopPropagation()"><input type="checkbox" class="row-chk" value="${n.id}" onchange="updateDeleteBtn()"></td>
         <td style="color:#6b7faa;">${(noticesPage - 1) * 10 + i + 1}</td>
         <td>${dt}</td>
-        <td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(n.title)}</td>
+        <td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;"><span style="color:${typeColor};font-size:11px;margin-right:6px;">${typeLabel}</span>${escapeHtml(n.title)}</td>
         <td style="color:#8896b8;">${escapeHtml(n.author)}</td>
         <td>${status}</td>
       </tr>`;
@@ -654,7 +728,7 @@
         res = await fetch(`${API_BASE}/notices`, {
           method: 'POST',
           headers: authHeaders(),
-          body: JSON.stringify({ title, body, type }),
+          body: JSON.stringify({ title, body, type, published }),
         });
       }
     } catch {

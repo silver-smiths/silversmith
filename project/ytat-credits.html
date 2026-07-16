@@ -727,13 +727,32 @@
   // 어드민 계정에게만 버튼 노출 — 세션 교환 시 반환되는 is_admin으로 판단
   // (YouTube 권한 토큰을 페이지로 가져오지 않음)
   (function () {
+    // 리퍼럴 코드 캡처(?ref=CODE) — 로그인 후 자동 적용
+    try {
+      const ref = new URLSearchParams(location.search).get('ref');
+      if (ref) localStorage.setItem('ytat_ref', ref.trim());
+    } catch (e) {}
+
     if (typeof chrome === 'undefined' || !chrome.runtime) return;
     const EXTENSION_ID = 'kpnbngocofkplaegflgeflpmdbpikoij';
+    const API_BASE = 'https://yt-auto-translator-api.1009yjh.workers.dev';
     chrome.runtime.sendMessage(EXTENSION_ID, { type: 'YTAT_GET_SESSION' }, function (res) {
       if (chrome.runtime.lastError || !res?.ok) return;
       if (res.isAdmin) {
         const btn = document.getElementById('btnAdmin');
         if (btn) btn.style.display = 'flex';
+      }
+      // 저장된 추천 코드가 있으면 세션 토큰으로 1회 연결
+      const ref = localStorage.getItem('ytat_ref');
+      if (ref && res.sessionToken) {
+        fetch(`${API_BASE}/referral/apply`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + res.sessionToken },
+          body: JSON.stringify({ code: ref }),
+        }).then(function (r) {
+          // 성공/이미연결/잘못된코드 → 재시도 불필요 → 제거. 네트워크·서버오류만 유지
+          if (r.ok || r.status === 409 || r.status === 404 || r.status === 400) localStorage.removeItem('ytat_ref');
+        }).catch(function () {});
       }
     });
   })();
