@@ -394,6 +394,16 @@
 
                 <!-- 계좌 송금 패널 (USD) -->
                 <div class="pay-panel" id="panel-bank-usd">
+                    <!-- PayPal 결제 (USD) -->
+                    <div id="paypal-usd-wrap" style="margin-bottom:1.5rem;">
+                        <h3 style="font-size:0.9rem;color:#e8ecf4;margin:0 0 0.75rem;">💳 PayPal / Card</h3>
+                        <div id="paypal-sandbox-note" style="display:none;font-size:0.78rem;color:#e0a54a;margin-bottom:0.6rem;">🧪 Test (sandbox) mode — no real charge.</div>
+                        <div id="paypal-button-container"></div>
+                        <div id="paypal-fallback-note" style="display:none;font-size:0.78rem;color:#7a85a3;line-height:1.6;">
+                            Install the YTAT extension and sign in to enable PayPal checkout, or use the bank transfer below.
+                        </div>
+                        <div style="text-align:center;font-size:0.78rem;color:#4a5068;margin:1rem 0;">— or transfer to the account below —</div>
+                    </div>
                     <div class="bank-box">
                         <div class="bank-label">Foreign Currency Account</div>
                         <div class="bank-value">Shinhan Bank 180-042-567817 <button class="bank-copy" onclick="copyAccount('180-042-567817')">Copy</button></div>
@@ -738,6 +748,9 @@
     const API_BASE = 'https://yt-auto-translator-api.1009yjh.workers.dev';
     chrome.runtime.sendMessage(EXTENSION_ID, { type: 'YTAT_GET_SESSION' }, function (res) {
       if (chrome.runtime.lastError || !res?.ok) return;
+      // PayPal 결제용 세션 토큰 저장 + 버튼 렌더 트리거
+      window.__ytatSession = res.sessionToken;
+      if (window.__ytatOnSession) window.__ytatOnSession();
       if (res.isAdmin) {
         const btn = document.getElementById('btnAdmin');
         if (btn) btn.style.display = 'flex';
@@ -755,6 +768,72 @@
         }).catch(function () {});
       }
     });
+  })();
+</script>
+
+<!-- ── PayPal 결제 (USD) ── -->
+<script>
+  (function () {
+    const API_BASE = 'https://yt-auto-translator-api.1009yjh.workers.dev';
+    const container = document.getElementById('paypal-button-container');
+    if (!container) return;
+
+    let sdkReady = false, rendered = false;
+
+    // 세션이 도착하면(익스텐션 로그인) 렌더 시도 — YTAT_GET_SESSION 콜백에서 호출
+    window.__ytatOnSession = tryRender;
+
+    // 설정 조회 → PayPal SDK 주입
+    fetch(API_BASE + '/paypal/config').then(r => r.json()).then(cfg => {
+      if (!cfg.client_id) return; // 미설정 → PayPal 숨김(계좌송금만)
+      if (cfg.env === 'sandbox') {
+        const n = document.getElementById('paypal-sandbox-note');
+        if (n) n.style.display = 'block';
+      }
+      const s = document.createElement('script');
+      s.src = 'https://www.paypal.com/sdk/js?client-id=' + encodeURIComponent(cfg.client_id) + '&currency=USD&intent=capture';
+      s.onload = function () { sdkReady = true; tryRender(); };
+      document.head.appendChild(s);
+    }).catch(function () {});
+
+    // 익스텐션 미설치/미로그인 시 안내 (3초 후 세션 없으면)
+    setTimeout(function () {
+      if (!window.__ytatSession && !rendered) {
+        const f = document.getElementById('paypal-fallback-note');
+        if (f) f.style.display = 'block';
+      }
+    }, 3000);
+
+    function tryRender() {
+      if (!sdkReady || !window.__ytatSession || rendered || !window.paypal) return;
+      rendered = true;
+      const f = document.getElementById('paypal-fallback-note');
+      if (f) f.style.display = 'none';
+
+      window.paypal.Buttons({
+        style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal' },
+        createOrder: function () {
+          const amt = parseFloat(document.getElementById('amountInput').value) || 0;
+          if (amt < 5) { alert('Minimum amount is $5.'); return Promise.reject(new Error('min')); }
+          return fetch(API_BASE + '/credits/paypal/order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + window.__ytatSession },
+            body: JSON.stringify({ amount: amt }),
+          }).then(r => r.json()).then(d => { if (!d.id) throw new Error(d.error || 'order'); return d.id; });
+        },
+        onApprove: function (data) {
+          return fetch(API_BASE + '/credits/paypal/capture', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + window.__ytatSession },
+            body: JSON.stringify({ orderId: data.orderID }),
+          }).then(r => r.json()).then(d => {
+            if (d.ok) alert('Payment complete! Your credits will appear in the extension shortly.');
+            else alert('Payment could not be finalized: ' + (d.error || 'error'));
+          });
+        },
+        onError: function (err) { console.error('[paypal]', err); },
+      }).render('#paypal-button-container');
+    }
   })();
 </script>
 
