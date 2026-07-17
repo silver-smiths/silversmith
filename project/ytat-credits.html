@@ -318,23 +318,23 @@
     <main>
         <!-- 히어로 -->
         <div class="credits-hero">
-            <h1>자막 자동 번역&amp;등록기<br>크레딧 충전</h1>
-            <p>Gemini AI로 YouTube 자막을 15개 언어로 자동 번역·등록합니다.<br>크레딧을 충전하면 API 키 없이 바로 사용할 수 있습니다.</p>
+            <h1 data-i18n="heroTitle">자막 자동 번역&amp;등록기<br>크레딧 충전</h1>
+            <p data-i18n="heroSub">Gemini AI로 YouTube 자막을 15개 언어로 자동 번역·등록합니다.<br>크레딧을 충전하면 API 키 없이 바로 사용할 수 있습니다.</p>
         </div>
 
         <!-- 충전 폼 -->
         <section class="charge-section" aria-label="크레딧 충전">
             <div class="charge-box">
 
-                <!-- 통화 선택 -->
-                <h2>통화 선택</h2>
-                <div class="pay-tabs" style="margin-bottom:1.25rem;">
+                <!-- 통화 선택 (언어로 자동 잠금 — 기본 숨김) -->
+                <h2 id="currencyHeading" data-i18n="currencyHeading">통화 선택</h2>
+                <div class="pay-tabs" id="currencyTabs" style="margin-bottom:1.25rem;">
                     <button class="pay-tab active" onclick="switchCurrency('KRW', this)">🇰🇷 KRW (원화)</button>
                     <button class="pay-tab" onclick="switchCurrency('USD', this)">🌐 USD (달러)</button>
                 </div>
 
                 <!-- 금액 선택 -->
-                <h2>충전 금액 선택</h2>
+                <h2 data-i18n="amountHeading">충전 금액 선택</h2>
                 <div class="amount-grid" id="amountGrid">
                     <button class="amount-btn" onclick="selectAmount(0, this)">₩5,000</button>
                     <button class="amount-btn selected" onclick="selectAmount(1, this)">₩10,000</button>
@@ -344,7 +344,7 @@
                 <input type="number" class="amount-input" id="amountInput" value="10000" placeholder="금액 입력" style="display:none">
                 <div class="amount-usd" id="amountSub" style="min-height:1.4em;margin-top:0.4rem;">→ 10,000 크레딧 적립</div>
 
-                <ul class="service-features">
+                <ul class="service-features" data-i18n="features">
                     <li>결제·송금 확인 후 즉시 크레딧 지급</li>
                     <li>API 키 없이 최대 15개 언어 동시 번역</li>
                     <li>크레딧은 <strong>만료되지 않습니다</strong></li>
@@ -352,10 +352,10 @@
                 </ul>
 
                 <!-- 결제 수단 탭 -->
-                <h2 style="margin-top:0.25rem;">결제 수단</h2>
+                <h2 style="margin-top:0.25rem;" data-i18n="methodHeading">결제 수단</h2>
                 <div class="pay-tabs">
-                    <button class="pay-tab active" id="tabCard" onclick="switchTab('card', this)">💳 카드 결제</button>
-                    <button class="pay-tab" id="tabBank" onclick="switchTab('bank', this)">🏦 계좌 송금</button>
+                    <button class="pay-tab active" id="tabCard" onclick="switchTab('card', this)" data-i18n="tabCard">💳 카드 결제</button>
+                    <button class="pay-tab" id="tabBank" onclick="switchTab('bank', this)" data-i18n="tabBank">🏦 계좌 송금</button>
                 </div>
 
                 <!-- 카드 결제 패널 -->
@@ -436,8 +436,8 @@
         <section class="info-section" aria-label="서비스 안내">
 
             <div class="info-card">
-                <h3>⚡ 크레딧 지급</h3>
-                <ul>
+                <h3 data-i18n="infoGrantH">⚡ 크레딧 지급</h3>
+                <ul data-i18n="infoGrant">
                     <li><strong style="color:#e8ecf4">카드 결제</strong>: 결제 완료 즉시 자동 지급</li>
                     <li><strong style="color:#e8ecf4">계좌 송금 (KRW)</strong>: 입금 확인 후 평일 영업시간(10:00~18:00) 내 지급</li>
                     <li><strong style="color:#e8ecf4">계좌 송금 (USD)</strong>: 국제 송금 확인 후 1~2 영업일 내 지급</li>
@@ -446,8 +446,8 @@
             </div>
 
             <div class="info-card">
-                <h3>💳 결제 수단</h3>
-                <ul>
+                <h3 data-i18n="infoMethodH">💳 결제 수단</h3>
+                <ul data-i18n="infoMethod">
                     <li>카드 결제: 국내외 신용·체크카드</li>
                     <li>KRW 계좌이체: 신한은행 100-037-466615</li>
                     <li>USD 해외 송금: 신한은행 180-042-567817 (SWIFT: SHBKKRSE)</li>
@@ -456,8 +456,8 @@
             </div>
 
             <div class="info-card">
-                <h3>↩️ 환불 정책</h3>
-                <ul>
+                <h3 data-i18n="infoRefundH">↩️ 환불 정책</h3>
+                <ul data-i18n="infoRefund">
                     <li>결제 후 <strong style="color:#e8ecf4">7일 이내</strong>이고 크레딧을 사용하지 않은 경우: <strong style="color:#e8ecf4">전액 환불</strong>(수수료 공제 없음)</li>
                     <li>7일 경과 또는 일부 사용한 경우: 미사용 크레딧 잔액에 한해 환불하며, 결제·송금 수수료 실비를 공제합니다. 현금 환불 신청은 결제일로부터 <strong style="color:#e8ecf4">6개월 이내</strong> 가능합니다</li>
                     <li>크레딧 자체는 만료되지 않아 계속 사용할 수 있습니다</li>
@@ -468,8 +468,8 @@
             </div>
 
             <div class="info-card">
-                <h3>❌ 취소 및 교환 불가 사항</h3>
-                <ul>
+                <h3 data-i18n="infoCancelH">❌ 취소 및 교환 불가 사항</h3>
+                <ul data-i18n="infoCancel">
                     <li>이미 사용(소진)한 크레딧은 환불 불가</li>
                     <li>결제일로부터 6개월 경과 시 현금 환불 신청 불가 (크레딧 사용은 계속 가능)</li>
                     <li>크레딧의 타인 양도 및 현금 교환 불가</li>
@@ -478,16 +478,18 @@
             </div>
 
             <div class="info-card">
-                <h3>📞 고객센터</h3>
-                <p>전화: <a href="tel:050714084101" style="color:#BB86FC">0507-1408-4101</a></p>
-                <p>이메일: <a href="mailto:help@silver-smiths.com" style="color:#BB86FC">help@silver-smiths.com</a></p>
-                <p style="margin-top:0.5rem">운영시간: 평일 10:00 ~ 18:00 (KST)</p>
-                <p>계좌이체 확인 지연 문의 시 송금 증빙 첨부 요망</p>
+                <h3 data-i18n="infoSupportH">📞 고객센터</h3>
+                <div data-i18n="infoSupport">
+                    <p>전화: <a href="tel:050714084101" style="color:#BB86FC">0507-1408-4101</a></p>
+                    <p>이메일: <a href="mailto:help@silver-smiths.com" style="color:#BB86FC">help@silver-smiths.com</a></p>
+                    <p style="margin-top:0.5rem">운영시간: 평일 10:00 ~ 18:00 (KST)</p>
+                    <p>계좌이체 확인 지연 문의 시 송금 증빙 첨부 요망</p>
+                </div>
             </div>
 
             <div class="info-card">
-                <h3>📌 유의사항</h3>
-                <ul>
+                <h3 data-i18n="infoNoteH">📌 유의사항</h3>
+                <ul data-i18n="infoNote">
                     <li>AI 번역 결과의 정확성은 보장하지 않습니다</li>
                     <li>크레딧 소진 시 번역이 즉시 중단됩니다</li>
                     <li>입금자명이 다를 경우 처리가 지연될 수 있습니다</li>
@@ -555,6 +557,54 @@
         let curCurrency = 'KRW';
         let curTab = 'card';
 
+        // ── 접속 언어 감지 (?lang 우선, 없으면 브라우저 언어). 한국어면 ko, 그 외 en ──
+        const LANG = ((new URLSearchParams(location.search).get('lang') || navigator.language || 'en')
+                      .toLowerCase().startsWith('ko')) ? 'ko' : 'en';
+
+        // 영문 UI 문자열 (한국어는 HTML 기본값 그대로 사용)
+        const T_EN = {
+            heroTitle: 'Auto Subtitle Translator &amp; Publisher<br>Credit Top-up',
+            heroSub: 'Gemini AI auto-translates &amp; publishes your YouTube subtitles in 15 languages.<br>Top up credits and start right away — no API key needed.',
+            currencyHeading: 'Select currency',
+            amountHeading: 'Select amount',
+            methodHeading: 'Payment method',
+            tabCard: '💳 Card',
+            tabBank: '🏦 PayPal / Bank',
+            features: '<li>Credits added instantly after payment</li><li>Up to 15 languages at once, no API key</li><li>Credits <strong>never expire</strong></li><li>Unused credits are refundable per policy and law</li>',
+            infoGrantH: '⚡ Credit delivery',
+            infoGrant: '<li><strong style="color:#e8ecf4">Card / PayPal</strong>: credited automatically right after payment</li><li><strong style="color:#e8ecf4">Bank transfer (KRW)</strong>: within business hours (Mon–Fri 10:00–18:00 KST) after confirmation</li><li><strong style="color:#e8ecf4">Wire transfer (USD)</strong>: within 1–2 business days after confirmation</li><li>Credits <strong style="color:#e8ecf4">never expire</strong> — usable anytime after top-up</li>',
+            infoMethodH: '💳 Payment methods',
+            infoMethod: '<li>PayPal / international credit &amp; debit cards</li><li>KRW bank transfer: Shinhan Bank 100-037-466615</li><li>USD wire: Shinhan Bank 180-042-567817 (SWIFT: SHBKKRSE)</li><li>₩1 = 1 credit (USD converted at ₩1,350 = $1)</li>',
+            infoRefundH: '↩️ Refund policy',
+            infoRefund: '<li>Within <strong style="color:#e8ecf4">7 days</strong> of payment and credits unused: <strong style="color:#e8ecf4">full refund</strong> (no fees deducted)</li><li>After 7 days or partial use: refund is limited to the unused credit balance, less actual payment/transfer fees. Cash refund requests are accepted within <strong style="color:#e8ecf4">6 months</strong> of payment</li><li>Credits themselves never expire and remain usable</li><li>Card payments are refunded to the original card; if the card cancellation window has passed, a bank refund is issued instead (less transfer fees)</li><li>Used credits, transfers to others, and cash exchange are not allowed</li><li>Requests: <a href="mailto:help@silver-smiths.com" style="color:#BB86FC">help@silver-smiths.com</a></li>',
+            infoCancelH: '❌ Non-refundable / non-exchangeable',
+            infoCancel: '<li>Used (consumed) credits are non-refundable</li><li>Cash refund requests cannot be made after 6 months from payment (credits remain usable)</li><li>Credits cannot be transferred to others or exchanged for cash</li><li>Cancellation after deposit is only possible while credits are unissued</li>',
+            infoSupportH: '📞 Support',
+            infoSupport: '<p>Phone: <a href="tel:050714084101" style="color:#BB86FC">0507-1408-4101</a></p><p>Email: <a href="mailto:help@silver-smiths.com" style="color:#BB86FC">help@silver-smiths.com</a></p><p style="margin-top:0.5rem">Hours: Mon–Fri 10:00–18:00 (KST)</p><p>For delayed transfer confirmations, please attach proof of transfer</p>',
+            infoNoteH: '📌 Notes',
+            infoNote: '<li>Accuracy of AI translation is not guaranteed</li><li>Translation stops immediately when credits run out</li><li>Processing may be delayed if the sender name differs</li><li>International transfer fees may apply per your bank policy</li>',
+        };
+
+        function applyLangEn() {
+            document.querySelectorAll('[data-i18n]').forEach(function (el) {
+                const v = T_EN[el.getAttribute('data-i18n')];
+                if (v != null) el.innerHTML = v;
+            });
+        }
+
+        // 언어로 통화·결제수단 자동 잠금 (한국인=KRW/카카오페이, 외국인=USD/PayPal). 통화 토글 숨김.
+        function applyLang() {
+            document.documentElement.lang = LANG;
+            document.getElementById('currencyHeading').style.display = 'none';
+            document.getElementById('currencyTabs').style.display = 'none';
+            if (LANG === 'en') {
+                applyLangEn();
+                // USD 흐름으로 전환 (카드탭 숨김 → PayPal이 있는 계좌 패널 노출)
+                switchCurrency('USD', document.querySelector('#currencyTabs button:nth-child(2)'));
+            }
+            // ko는 KRW 기본값 유지 (PayPal은 USD 패널이라 자동 미노출)
+        }
+
         function switchCurrency(currency, btn) {
             curCurrency = currency;
             document.querySelectorAll('.pay-tabs button[onclick^="switchCurrency"]').forEach(b => b.classList.remove('active'));
@@ -605,7 +655,8 @@
             // 적립 크레딧 = 원화 1:1 (USD 결제는 ×환율). 백엔드 KRW_TO_USD_RATE와 동일하게 유지
             const credits = isKRW ? Math.round(val) : Math.round(val * KRW_RATE);
             document.getElementById('amountSub').textContent =
-                '→ ' + credits.toLocaleString() + ' 크레딧 적립' + (isKRW ? '' : ' (고정환율 ₩' + KRW_RATE.toLocaleString() + '/$1)');
+                '→ ' + credits.toLocaleString() + (LANG === 'en' ? ' credits' : ' 크레딧 적립')
+                + (isKRW ? '' : (LANG === 'en' ? ' (fixed ₩' + KRW_RATE.toLocaleString() + '/$1)' : ' (고정환율 ₩' + KRW_RATE.toLocaleString() + '/$1)'));
 
             document.getElementById('btnCharge').textContent = '💳 신용카드 결제 ' + fmt;
             if (document.getElementById('btnKakao')) {
@@ -621,10 +672,13 @@
 
         // 페이지 로드 시 버튼 라벨·hidden 금액을 현재 선택 금액과 동기화 (송금 버튼 오표기 방지)
         updateAll();
+        applyLang(); // 접속 언어로 UI·통화·결제수단 자동 적용
 
         // 계좌송금 확인 폼 제출 후 복귀 안내
         if (new URLSearchParams(location.search).get('transfer') === 'done') {
-            alert('송금 확인 요청이 접수되었습니다.\n평일 영업시간(10:00~18:00) 내에 크레딧이 지급됩니다.');
+            alert(LANG === 'en'
+                ? 'Your transfer confirmation has been received.\nCredits will be issued within business hours (Mon–Fri 10:00–18:00 KST).'
+                : '송금 확인 요청이 접수되었습니다.\n평일 영업시간(10:00~18:00) 내에 크레딧이 지급됩니다.');
         }
 
         function switchTab(tab, btn) {
@@ -643,7 +697,7 @@
 
         function copyAccount(val) {
             navigator.clipboard.writeText(val).then(() => {
-                alert('복사됐습니다: ' + val);
+                alert((LANG === 'en' ? 'Copied: ' : '복사됐습니다: ') + val);
             });
         }
 
