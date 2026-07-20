@@ -9,6 +9,20 @@
 
   <!-- 포스팅 -->
   <url>
+    <loc>https://silver-smiths.com/post/2026/youtube-multilingual-subtitles-guide.html</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Silversmith</news:name>
+        <news:language>ko</news:language>
+      </news:publication>
+      <news:publication_date>2026-07-19</news:publication_date>
+      <news:title>유튜브 해외 조회수 늘리는 법 — 자막·제목·설명 다국어화 완벽 가이드</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://silver-smiths.com/post/2026/gam-ad-speed-guide.html</loc>
     <lastmod>2026-03-22</lastmod>
     <changefreq>monthly</changefreq>
