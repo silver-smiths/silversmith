@@ -396,28 +396,11 @@
         <!-- 본문 -->
         <article class="post-body container-narrow" style="padding-bottom: 5rem;">
 
-            <p>콘텐츠는 좋은데 조회수가 어느 선에서 멈춘다 — 많은 크리에이터가 부딪히는 벽입니다. 썸네일을 바꾸고 편집을 다듬어도 넘기 어렵죠. 그런데 국내 시장만 보고 있다면, 성장의 절반을 스스로 닫아둔 것일 수 있습니다.</p>
+            <p>조회수를 늘리려 안 해본 게 없을 겁니다. 썸네일도 바꿔보고, 편집도 다듬고, 업로드 시간도 조정하고. 그런데 어느 선에서 딱 멈추죠. 저희가 디지털 마케팅을 대행하며 크리에이터들에게 가장 많이 들은 고민이 바로 이겁니다.</p>
 
-            <p>이 글에서는 <strong>왜 좋은 영상이 해외에서 안 보이는지</strong> 유튜브의 도달 구조를 뜯어보고, <strong>자막·제목·설명 다국어화로 새로운 시청자층을 여는 실전 방법</strong>을 정리합니다. 먼저 실제로 어떻게 동작하는지 데모부터 보시죠.</p>
+            <p>그리고 그 벽의 상당 부분은, 의외로 <strong>'언어'</strong>에 있었습니다. 유튜브의 추천·검색은 언어권별로 나뉘어 작동합니다. 제목·설명·자막이 한국어뿐이면, 내용이 아무리 좋아도 해외 시청자에게는 거의 노출되지 않습니다. 국내 시장에는 천장이 있지만, 언어를 열면 그만큼 새로운 시장이 생기죠.</p>
 
-            <div class="video-embed">
-                <iframe src="https://www.youtube.com/embed/5ogzSQOec40"
-                    title="유튜브 자막 14개 언어 자동 번역 — 실제 데모"
-                    loading="lazy"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen></iframe>
-            </div>
-
-            <div class="demo-stats">
-                <h3>📊 실제 데모 결과</h3>
-                <ul>
-                    <li><strong>영상 길이</strong>: 1분 51초 (자막이 많은 편)</li>
-                    <li><strong>선택 언어</strong>: 15개 → 원본이 한국어라 나머지 <strong>14개 언어</strong>로 번역·등록</li>
-                    <li><strong>소요 시간</strong>: 약 <strong>59초</strong></li>
-                    <li><strong>사용 크레딧</strong>: 1,244 (실제 사용량 기준 정산)</li>
-                </ul>
-                <p class="note">※ 소요 시간·크레딧은 영상 길이와 자막 양, 선택 언어 수에 따라 달라집니다.</p>
-            </div>
+            <p>문제는 — 그걸 아는 크리에이터도 대부분 <strong>'못 한다'</strong>는 겁니다. 왜일까요? 그리고 어떻게 하면 이 벽을 넘을 수 있을까요? 유튜브의 도달 구조부터 차근히 뜯어보겠습니다.</p>
 
             <hr style="margin: 2rem 0; border-color: rgba(148,163,210,.15);" />
 
@@ -468,15 +451,36 @@
 
             <hr style="margin: 2rem 0; border-color: rgba(148,163,210,.15);" />
 
-            <h2>자동화: 자막·제목·설명을 한 번에 다국어화</h2>
-            <p>이 반복 작업을 자동화하는 것이 <strong>자막 자동 번역&등록기(YTAT)</strong> 입니다. 크롬 확장 프로그램으로, 유튜브 스튜디오 안에서 다음을 처리합니다.</p>
+            <h2>그래서, 이 반복을 없애기로 했습니다</h2>
+            <p>언어마다 번역하고 하나하나 등록하는 그 반복 작업 — 이걸 <strong>클릭 한 번</strong>으로 끝내는 도구를 직접 만들었습니다. <strong>자막 자동 번역&등록기(YTAT)</strong>, 크롬 확장 프로그램입니다. 유튜브 스튜디오 안에서 다음을 처리합니다.</p>
             <ul>
                 <li><strong>자막 + 제목 + 설명</strong>을 Google Gemini AI로 <strong>최대 15개 언어 자동 번역</strong></li>
                 <li>번역 결과를 <strong>스튜디오에 그대로 자동 등록</strong> (언어별 수작업 불필요)</li>
                 <li><strong>API 키 없이</strong> 구글 로그인만으로 시작</li>
                 <li><strong>번역이 실패하면 과금 없음</strong> — 성공한 분량만 크레딧 차감</li>
             </ul>
-            <p>위 데모에서 보셨듯, 자막이 많은 1분 51초 영상도 14개 언어 번역·등록까지 약 59초면 끝납니다. 크리에이터는 콘텐츠에 집중하고, 다국어 도달은 도구가 대신하는 구조입니다.</p>
+            <p>말보다 보는 게 빠릅니다. 자막이 많은 <strong>1분 51초</strong> 영상을 여러 언어로 번역·등록하는 과정을 그대로 담았습니다.</p>
+
+            <div class="video-embed">
+                <iframe src="https://www.youtube.com/embed/5ogzSQOec40"
+                    title="유튜브 자막 14개 언어 자동 번역 — 실제 데모"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen></iframe>
+            </div>
+
+            <div class="demo-stats">
+                <h3>📊 실제 데모 결과</h3>
+                <ul>
+                    <li><strong>영상 길이</strong>: 1분 51초 (자막이 많은 편)</li>
+                    <li><strong>선택 언어</strong>: 15개 → 원본이 한국어라 나머지 <strong>14개 언어</strong>로 번역·등록</li>
+                    <li><strong>소요 시간</strong>: 약 <strong>59초</strong></li>
+                    <li><strong>사용 크레딧</strong>: 1,244 (실제 사용량 기준 정산)</li>
+                </ul>
+                <p class="note">※ 소요 시간·크레딧은 영상 길이와 자막 양, 선택 언어 수에 따라 달라집니다.</p>
+            </div>
+
+            <p>자막이 많은 2분 남짓 영상도 약 59초. 크리에이터는 콘텐츠에 집중하고, 다국어 도달은 도구가 대신하는 구조입니다.</p>
             <p><strong>사용 순서</strong></p>
             <ol>
                 <li>크롬에 설치 후 구글 로그인</li>
