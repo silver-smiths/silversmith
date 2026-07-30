@@ -9,6 +9,20 @@
 
   <!-- 포스팅 -->
   <url>
+    <loc>https://silver-smiths.com/post/2026/ad-monetization-knowhow-01.html</loc>
+    <lastmod>2026-07-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Silversmith</news:name>
+        <news:language>ko</news:language>
+      </news:publication>
+      <news:publication_date>2026-07-30</news:publication_date>
+      <news:title>게시자를 위한 광고 수익화 노하우 ① — 광고 표준·인벤토리 형식·다중 호출·뷰어빌리티</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://silver-smiths.com/post/2026/youtube-multilingual-subtitles-guide.html</loc>
     <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
