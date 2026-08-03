@@ -9,6 +9,20 @@
 
   <!-- 포스팅 -->
   <url>
+    <loc>https://silver-smiths.com/post/2026/y2x-address-converter.html</loc>
+    <lastmod>2026-07-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Silversmith</news:name>
+        <news:language>ko</news:language>
+      </news:publication>
+      <news:publication_date>2026-07-30</news:publication_date>
+      <news:title>신주소↔구주소 변환, 영문주소, 우편번호 조회까지 — 한 페이지로 끝내는 y-to-x 주소 변환기</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://silver-smiths.com/post/2026/ad-monetization-knowhow-01.html</loc>
     <lastmod>2026-07-30</lastmod>
     <changefreq>monthly</changefreq>
