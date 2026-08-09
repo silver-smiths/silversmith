@@ -9,6 +9,20 @@
 
   <!-- 포스팅 -->
   <url>
+    <loc>https://silver-smiths.com/post/2026/y2x-image-converter.html</loc>
+    <lastmod>2026-07-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Silversmith</news:name>
+        <news:language>ko</news:language>
+      </news:publication>
+      <news:publication_date>2026-07-30</news:publication_date>
+      <news:title>서버 업로드 없는 무료 이미지 변환기 — 포맷·용량·크기·배경 제거, y-to-x</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://silver-smiths.com/post/2026/y2x-address-converter.html</loc>
     <lastmod>2026-07-30</lastmod>
     <changefreq>monthly</changefreq>

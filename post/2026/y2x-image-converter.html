@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ko" prefix="og: https://ogp.me/ns#">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="사진을 서버에 올리지 않고 브라우저 안에서 처리하는 무료 이미지 변환기. 포맷 변환(JPG·PNG·WebP·AVIF)·용량/크기 조절·AI 배경 제거·GIF 제작·PDF 이미지 추출을 한 페이지에서. Silversmith가 만든 컨버팅 포털 y-to-x." />
+    <meta name="keywords" content="이미지 변환, 무료 이미지 변환기, WebP 변환, AVIF 변환, 이미지 용량 줄이기, 사진 크기 변환, AI 배경 제거, GIF 만들기, MP4 GIF 변환, PDF 이미지 추출, 서버 업로드 없는 이미지 변환, y-to-x, y2x, 실버스미스" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <meta name="author" content="Silversmith" />
+    <link rel="canonical" href="https://silver-smiths.com/post/2026/y2x-image-converter.html" />
+    <link rel="alternate" hreflang="ko" href="https://silver-smiths.com/post/2026/y2x-image-converter.html" />
+    <link rel="alternate" hreflang="x-default" href="https://silver-smiths.com/post/2026/y2x-image-converter.html" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://silver-smiths.com/post/2026/y2x-image-converter.html" />
+    <meta property="og:title" content="서버 업로드 없는 무료 이미지 변환기 — 포맷·용량·크기·배경 제거, y-to-x — Silversmith" />
+    <meta property="og:description" content="사진을 서버에 올리지 않고 브라우저 안에서 처리하는 무료 이미지 변환기. 포맷 변환(JPG·PNG·WebP·AVIF)·용량/크기 조절·AI 배경 제거·GIF 제작·PDF 이미지 추출을 한 페이지에서. Silversmith가 만든 컨버팅 포털 y-to-x." />
+    <meta property="og:image" content="https://silver-smiths.com/images/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Silversmith 대표 이미지" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:site_name" content="Silversmith" />
+    <meta property="article:published_time" content="2026-07-30T00:00:00+09:00" />
+    <meta property="article:author" content="Silversmith" />
+    <meta property="article:section" content="insight" />
+    <meta property="article:tag" content="이미지 변환, WebP·AVIF, AI 배경 제거, GIF, y-to-x" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="서버 업로드 없는 무료 이미지 변환기 — 포맷·용량·크기·배경 제거, y-to-x — Silversmith" />
+    <meta name="twitter:description" content="사진을 서버에 올리지 않고 브라우저 안에서 처리하는 무료 이미지 변환기. 포맷 변환(JPG·PNG·WebP·AVIF)·용량/크기 조절·AI 배경 제거·GIF 제작·PDF 이미지 추출을 한 페이지에서. Silversmith가 만든 컨버팅 포털 y-to-x." />
+    <meta name="twitter:image" content="https://silver-smiths.com/images/og-image.png" />
+
+    <title>서버 업로드 없는 무료 이미지 변환기 — 포맷·용량·크기·배경 제거, y-to-x — Silversmith</title>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebPage",
+          "@id": "https://silver-smiths.com/post/2026/y2x-image-converter.html#webpage",
+          "url": "https://silver-smiths.com/post/2026/y2x-image-converter.html",
+          "name": "서버 업로드 없는 무료 이미지 변환기 — 포맷·용량·크기·배경 제거, y-to-x — Silversmith",
+          "description": "사진을 서버에 올리지 않고 브라우저 안에서 처리하는 무료 이미지 변환기. 포맷 변환(JPG·PNG·WebP·AVIF)·용량/크기 조절·AI 배경 제거·GIF 제작·PDF 이미지 추출을 한 페이지에서. Silversmith가 만든 컨버팅 포털 y-to-x.",
+          "isPartOf": { "@id": "https://silver-smiths.com/#website" },
+          "about": { "@id": "https://silver-smiths.com/#org" },
+          "breadcrumb": { "@id": "https://silver-smiths.com/post/2026/y2x-image-converter.html#breadcrumb" }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://silver-smiths.com/post/2026/y2x-image-converter.html#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "홈", "item": "https://silver-smiths.com/" },
+            { "@type": "ListItem", "position": 2, "name": "스토리", "item": "https://silver-smiths.com/story.html" },
+            { "@type": "ListItem", "position": 3, "name": "서버 업로드 없는 무료 이미지 변환기 — 포맷·용량·크기·배경 제거, y-to-x" }
+          ]
+        }
+      ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://silver-smiths.com/post/2026/y2x-image-converter.html",
+      "headline": "서버 업로드 없는 무료 이미지 변환기 — 포맷·용량·크기·배경 제거, y-to-x",
+      "description": "사진을 서버에 올리지 않고 브라우저 안에서 처리하는 무료 이미지 변환기. 포맷 변환(JPG·PNG·WebP·AVIF)·용량/크기 조절·AI 배경 제거·GIF 제작·PDF 이미지 추출을 한 페이지에서. Silversmith가 만든 컨버팅 포털 y-to-x.",
+      "author": { "@type": "Organization", "@id": "https://silver-smiths.com/#org", "name": "Silversmith" },
+      "publisher": { "@type": "Organization", "@id": "https://silver-smiths.com/#org" },
+      "datePublished": "2026-07-30",
+      "dateModified": "2026-07-30",
+      "url": "https://silver-smiths.com/post/2026/y2x-image-converter.html",
+      "image": "https://silver-smiths.com/images/og-image.png",
+      "inLanguage": "ko",
+      "keywords": ["이미지 변환", "무료 이미지 변환기", "WebP 변환", "AVIF 변환", "AI 배경 제거", "GIF 만들기", "PDF 이미지 추출", "y-to-x 이미지 변환기"],
+      "isPartOf": { "@type": "WebSite", "@id": "https://silver-smiths.com/#website" }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "y-to-x 이미지 변환기는 정말 이미지가 서버로 전송되지 않나요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "네. 변환·배경 제거·GIF 제작 모두 브라우저 안에서 처리되며, 이미지 자체는 어디로도 전송되지 않습니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "배경 제거를 누르니 다운로드가 시작되는데 뭔가요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "사진을 서버로 보내지 않고 브라우저 안에서 AI를 실행하기 위한 처리 프로그램(약 100MB)입니다. 첫 이용 시 한 번만 받으며 이후에는 브라우저 캐시를 재사용합니다. 사진 자체는 어디로도 전송되지 않습니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "무료인가요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "무료이며 회원가입이 필요 없습니다. Silversmith가 만들어 운영하며 광고 수익으로 유지됩니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "여러 장을 한 번에 변환할 수 있나요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "네. 여러 장을 올리면 같은 설정으로 일괄 변환되고, ZIP 파일 하나로 자동 다운로드됩니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "파일 크기 제한이 있나요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "브라우저에서 처리하는 방식 특성상 기기 성능에 따라 달라질 수 있으나, 일반적인 사진·문서 이미지는 문제없이 처리됩니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "어떤 이미지 포맷으로 변환할 수 있나요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "JPG·PNG·WebP·AVIF로 변환할 수 있고, 포맷·품질·픽셀 크기를 한 화면에서 함께 설정합니다. WebP·AVIF는 같은 화질에 용량이 작아 웹사이트 로딩 개선에 유리합니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "AVIF로 변환했는데 일부 프로그램에서 안 열립니다.",
+          "acceptedAnswer": { "@type": "Answer", "text": "AVIF는 비교적 최신 포맷이라 오래된 뷰어·브라우저에서는 열리지 않을 수 있습니다. 어디서나 열려야 한다면 WebP 또는 JPG로 변환하는 것을 권장합니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "인터넷 연결 없이도 쓸 수 있나요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "이미지 처리 자체는 브라우저 안에서 이뤄지지만, 페이지와 AI 배경 제거용 프로그램을 처음 불러올 때는 인터넷 연결이 필요합니다. 한 번 불러온 뒤에는 브라우저 캐시를 재사용합니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "변환한 이미지를 상업적으로 사용해도 되나요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "y-to-x는 사용자가 올린 이미지를 변환만 해주는 도구이므로 결과물의 사용 권리는 원본 권리자에게 있습니다. 본인이 촬영·제작했거나 사용 권리를 가진 이미지라면 자유롭게 사용할 수 있습니다." }
+        }
+      ]
+    }
+    </script>
+
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-MQT4J6J');
+    </script>
+    <!-- End Google Tag Manager -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style"
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Noto+Serif+KR:wght@400;700&family=Inter:wght@400;500;700&display=swap"
+        onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript>
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Noto+Serif+KR:wght@400;700&family=Inter:wght@400;500;700&display=swap" />
+    </noscript>
+    <link rel="preload" href="../../css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="preload" href="../../css/pages.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript>
+        <link rel="stylesheet" href="../../css/style.css" />
+        <link rel="stylesheet" href="../../css/pages.css" />
+    </noscript>
+    <style>
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+        html,body{background:#080d1a;color:#d4daf0;font-family:'Noto Sans KR','Inter',sans-serif;height:auto !important;overflow:auto !important;}
+        #main-nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:1rem clamp(1.25rem,4vw,2.5rem);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(8,13,26,.88);border-bottom:1px solid rgba(148,163,210,.12);}
+        .nav-logo{font-size:1.4rem;font-weight:800;letter-spacing:-.04em;background:linear-gradient(135deg,#c8cdd6,#e8ecf4,#a8b0c0,#d0d8e8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .note-box{background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.25);border-radius:12px;padding:1.1rem 1.4rem;margin:2rem 0;font-size:0.92rem;line-height:1.75;color:#b8c2e0;}
+        .note-box strong{color:#8fb4ff;}
+    </style>
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MQT4J6J" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <header>
+    <nav id="main-nav" aria-label="주 내비게이션">
+      <a href="../../index.html" class="nav-logo" aria-label="Silversmith 홈">Silver<span>smith</span></a>
+      <ul class="nav-links" role="list">
+        <li class="nav-group">
+          <a href="../../index.html#consulting">컨설팅 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg></a>
+          <div class="nav-dropdown">
+            <a href="../../consulting/seo-aeo-geo.html">SEO / AEO / GEO</a>
+            <a href="../../consulting/ax-rpa.html">AX / RPA</a>
+            <a href="../../consulting/ad-monetization.html">Ad Monetization</a>
+          </div>
+        </li>
+        <li class="nav-group">
+          <a href="../../index.html#service">에이전시 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg></a>
+          <div class="nav-dropdown">
+            <a href="../../agency/search-display-ads.html">SA/DA 광고</a>
+            <a href="../../agency/sms-lms-mms-rcs.html">SKT 문자광고</a>
+          </div>
+        </li>
+        <li class="nav-group">
+          <a href="../../index.html#projects">프로젝트 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg></a>
+          <div class="nav-dropdown">
+            <a href="../../project/ggeujag.html">그작그작</a>
+            <a href="../../project/youtube-auto-translator.html">YouTube 자동번역기</a>
+            <a href="../../project/jsbin.html">JSBin.kr</a>
+            <a href="../../project/y-to-x.html">y-to-x</a>
+            <span style="color:var(--clr-text-muted);cursor:default">MeRokDam (공사중)</span>
+          </div>
+        </li>
+        <li><a href="../../story.html">스토리</a></li>
+        <li><a href="../../contact.html" class="btn-nav">문의하기</a></li>
+      </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="nav-overlay">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+    <div class="nav-overlay" id="nav-overlay" role="dialog" aria-label="모바일 메뉴">
+    <button class="nav-acc-btn" aria-expanded="false">
+      컨설팅 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </button>
+    <div class="nav-acc-items">
+      <a href="../../index.html#consulting">컨설팅 홈</a>
+      <a href="../../consulting/seo-aeo-geo.html">SEO / AEO / GEO</a>
+      <a href="../../consulting/ax-rpa.html">AX / RPA</a>
+      <a href="../../consulting/ad-monetization.html">Ad Monetization</a>
+    </div>
+
+    <button class="nav-acc-btn" aria-expanded="false">
+      에이전시 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </button>
+    <div class="nav-acc-items">
+      <a href="../../index.html#service">에이전시 홈</a>
+      <a href="../../agency/search-display-ads.html">SA/DA 광고</a>
+      <a href="../../agency/sms-lms-mms-rcs.html">SKT 문자광고</a>
+    </div>
+
+    <button class="nav-acc-btn" aria-expanded="false">
+      프로젝트 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </button>
+    <div class="nav-acc-items">
+      <a href="../../index.html#projects">프로젝트 홈</a>
+      <a href="../../project/ggeujag.html">그작그작</a>
+      <a href="../../project/youtube-auto-translator.html">YouTube 자동번역기</a>
+      <a href="../../project/jsbin.html">JSBin.kr</a>
+      <a href="../../project/y-to-x.html">y-to-x</a>
+      <span style="color:var(--clr-text-muted);cursor:default">MeRokDam (공사중)</span>
+    </div>
+
+    <a href="../../story.html" style="margin-top:0.5rem">스토리</a>
+    <a href="../../contact.html" class="btn-nav-mobile" style="margin-top:1rem">문의하기</a>
+  </div>
+
+    <main style="padding-top: 5rem; min-height: 100vh;">
+
+        <div style="padding: 4rem 0 3rem; position: relative; overflow: hidden;">
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at top left, rgba(37,99,235,0.1) 0%, transparent 60%);pointer-events:none;"></div>
+            <div class="container-narrow">
+                <nav class="breadcrumb" aria-label="브레드크럼" style="margin-bottom: 1.5rem;">
+                    <a href="../../">홈</a>
+                    <span class="breadcrumb-sep" aria-hidden="true">›</span>
+                    <a href="../../story.html">스토리</a>
+                    <span class="breadcrumb-sep" aria-hidden="true">›</span>
+                    <span aria-current="page">서버 업로드 없는 무료 이미지 변환기 — 포맷·용량·크기·배경 제거, y-to-x</span>
+                </nav>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem;">
+                    <span style="display:inline-block;padding:0.25rem 0.75rem;border:1px solid rgba(148,163,210,.25);border-radius:999px;font-size:0.75rem;color:var(--clr-text-muted);">이미지 변환</span>
+                    <span style="display:inline-block;padding:0.25rem 0.75rem;border:1px solid rgba(148,163,210,.25);border-radius:999px;font-size:0.75rem;color:var(--clr-text-muted);">WebP·AVIF</span>
+                    <span style="display:inline-block;padding:0.25rem 0.75rem;border:1px solid rgba(148,163,210,.25);border-radius:999px;font-size:0.75rem;color:var(--clr-text-muted);">AI 배경 제거</span>
+                    <span style="display:inline-block;padding:0.25rem 0.75rem;border:1px solid rgba(148,163,210,.25);border-radius:999px;font-size:0.75rem;color:var(--clr-text-muted);">GIF</span>
+                    <span style="display:inline-block;padding:0.25rem 0.75rem;border:1px solid rgba(148,163,210,.25);border-radius:999px;font-size:0.75rem;color:var(--clr-text-muted);">y-to-x</span>
+                </div>
+                <h1 style="font-size: clamp(1.75rem, 4.5vw, 2.8rem); font-weight: 900; letter-spacing: -0.04em; line-height: 1.15; margin-bottom: 1.25rem;">서버 업로드 없는 무료 이미지 변환기 — 포맷·용량·크기·배경 제거, y-to-x</h1>
+                <p style="color: var(--clr-text-muted); font-size: 1.05rem; line-height: 1.75; max-width: 600px; margin-bottom: 2rem;">사진을 서버에 올리지 않고 브라우저 안에서 처리하는 무료 이미지 변환기. 포맷 변환(JPG·PNG·WebP·AVIF)·용량/크기 조절·AI 배경 제거·GIF 제작·PDF 이미지 추출을 한 페이지에서. Silversmith가 만든 컨버팅 포털 y-to-x.</p>
+                <div style="display: flex; align-items: center; gap: 1rem; font-size: 0.82rem; color: var(--clr-text-dim);">
+                    <span>Silversmith</span>
+                    <span>·</span>
+                    <time datetime="2026-07-30">2026년 7월 30일</time>
+                    <span>·</span>
+                    <span>읽는 시간 8분</span>
+                </div>
+            </div>
+        </div>
+
+        <hr class="post-divider" style="max-width: 720px; margin: 0 auto 2.5rem;" />
+
+        <article class="post-body container-narrow" style="padding-bottom: 5rem;">
+
+            <p><strong>y-to-x 이미지 변환기</strong>(줄여서 y2x)는 사진을 서버에 올리지 않고 브라우저 안에서 포맷·용량·크기 변환과 배경 제거까지 처리하는 무료 도구입니다. <a href="https://y-to-x.com" target="_blank" rel="noopener" style="color:#8fb4ff;text-decoration:underline;text-underline-offset:2px;">y-to-x</a>는 <strong>Silversmith가 직접 만들어 운영하는 무료 온라인 컨버팅 포털</strong>로, 이미지 변환은 그중 하나입니다.</p>
+            <hr style="margin: 2.5rem 0 2rem; border-color: rgba(148,163,210,.2);" />
+
+            <h2>이미지 변환 사이트, '찜찜'하거나 '불편'하지 않았나요?</h2>
+            <p>이미지 변환 사이트를 쓰다 보면 두 가지 감정이 남습니다.</p>
+            <p>하나는 <strong>찜찜함</strong>. 가족사진, 신분증 사본, 업무 문서 캡처를 남의 서버에 업로드하면서 드는 생각 — "이 사진, 저 서버에 남는 거 아냐?" 삭제된다고는 하지만 확인할 방법이 없죠.</p>
+            <p>다른 하나는 <strong>번거로움</strong>. 포맷은 A사이트에서 바꾸고, 용량은 B사이트에서 줄이고, 크기는 C사이트에서 조절하고. 같은 이미지를 세 번 업로드하고 세 번 다운로드하는 여정. 그리고 매번 "다운로드 버튼이 어디지?" 하며 광고 사이를 헤매는 시간까지.</p>
+            <p>y-to-x 이미지 변환기는 이 두 가지를 동시에 해결하려고 만들었습니다. <strong>이미지는 브라우저 밖으로 나가지 않고, 작업은 클릭 한 번에 끝납니다.</strong></p>
+            <hr style="margin: 2.5rem 0 2rem; border-color: rgba(148,163,210,.2);" />
+
+            <h2>🔒 보안: 서버 업로드 없음 — 말이 아니라 구조입니다</h2>
+            <p>y-to-x의 이미지 도구는 변환·배경 제거·GIF 제작 전 과정이 <strong>사용자의 브라우저 안에서</strong> 처리됩니다.</p>
+            <ul>
+                <li>이미지가 네트워크로 전송되지 않으므로 <strong>유출될 서버 자체가 없습니다</strong></li>
+                <li>"업로드 → 서버 처리 → 다운로드" 대기가 없어 <strong>변환이 즉시 시작</strong>됩니다</li>
+                <li>신분증, 계약서, 사내 문서 캡처도 안심하고 변환할 수 있습니다</li>
+            </ul>
+            <hr style="margin: 2.5rem 0 2rem; border-color: rgba(148,163,210,.2);" />
+
+            <h2>⚡ 편의: 세 가지 작업을 한 번에, 다운로드는 자동으로</h2>
+            <h3>포맷 + 품질 + 크기 동시 설정</h3>
+            <p>한 화면에서 출력 포맷(JPG·PNG·WebP·AVIF), 품질 슬라이더, 픽셀 크기를 모두 설정하고 변환 버튼 한 번이면 끝. 사이트 세 곳을 순회할 필요가 없습니다. 변환 후엔 <strong>원본 대비 용량이 몇 % 줄었는지</strong>도 바로 보여줍니다.</p>
+            <h3>변환이 끝나면, 이미 다운로드되어 있습니다</h3>
+            <p>"변환 완료 → 결과 확인 → 다운로드 버튼 찾기" — 이 마지막 단계도 없앴습니다. 변환이 끝나는 순간 <strong>파일이 자동으로 다운로드</strong>됩니다. 여러 장이면 <strong>ZIP 하나로 자동으로 묶입니다.</strong> 수십 장을 변환해도 클릭은 한 번입니다.</p>
+            <p>다운로드 대신 <strong>클립보드 복사</strong>도 선택할 수 있습니다. 변환한 이미지를 문서나 채팅창에 바로 붙여넣을 때 편합니다.</p>
+            <hr style="margin: 2.5rem 0 2rem; border-color: rgba(148,163,210,.2);" />
+
+            <h2>한 페이지에 모인 네 가지 이미지 도구</h2>
+            <div style="overflow-x:auto;">
+                <table style="width:100%;border-collapse:collapse;font-size:0.9rem;margin-top:0.5rem;">
+                    <thead><tr><th style="text-align:left;padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.3);color:#d4daf0;font-weight:700;">도구</th><th style="text-align:left;padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.3);color:#d4daf0;font-weight:700;">핵심 기능</th><th style="text-align:left;padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.3);color:#d4daf0;font-weight:700;">출력</th></tr></thead>
+                    <tbody>
+                        <tr><td style="padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;"><strong>포맷 변환</strong></td><td style="padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">JPG·PNG·WebP·AVIF, 포맷·품질·크기 동시 설정, 일괄 변환</td><td style="padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">자동 다운로드/ZIP, 클립보드 복사</td></tr>
+                        <tr><td style="padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;"><strong>GIF 만들기</strong></td><td style="padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">여러 사진 → GIF, MP4 동영상 → GIF, 프레임 드래그 정렬</td><td style="padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">GIF 자동 다운로드</td></tr>
+                        <tr><td style="padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;"><strong>AI 배경 제거</strong></td><td style="padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">브라우저 내 AI로 배경 자동 제거</td><td style="padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">PNG(투명)·WebP·JPG</td></tr>
+                        <tr><td style="padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;"><strong>PDF 이미지 추출</strong></td><td style="padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">PDF 내 원본 이미지 추출(캡처 아님), 페이지 선택</td><td style="padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">원본 화질 이미지</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>① 포맷 변환 — JPG·PNG·WebP·AVIF</h3>
+            <p>포맷·품질·크기 동시 설정, 여러 장 일괄 변환, 즉시 다운로드. <strong>WebP·AVIF로 변환하면 같은 화질에 용량이 크게 줄어</strong> 블로그·웹사이트 로딩 개선에 효과적입니다.</p>
+
+            <p><strong>어떤 포맷을 골라야 할지 모르겠다면</strong> 아래 기준을 참고하세요. 용량은 대체로 <strong>AVIF &lt; WebP &lt; JPG &lt; PNG</strong> 순으로 작은 경우가 많습니다(이미지에 따라 다름).</p>
+            <div style="overflow-x:auto;">
+                <table style="width:100%;border-collapse:collapse;font-size:0.9rem;margin-top:0.5rem;">
+                    <thead><tr><th style="text-align:left;padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.3);color:#d4daf0;font-weight:700;">포맷</th><th style="text-align:left;padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.3);color:#d4daf0;font-weight:700;">특징</th><th style="text-align:left;padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.3);color:#d4daf0;font-weight:700;">이럴 때 추천</th></tr></thead>
+                    <tbody>
+                        <tr><td style="padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;"><strong>JPG</strong></td><td style="padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">사진에 적합, 투명 미지원, 어디서나 열림(범용 호환)</td><td style="padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">일반 사진, 최대 호환이 필요할 때</td></tr>
+                        <tr><td style="padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;"><strong>PNG</strong></td><td style="padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">무손실·투명 지원, 텍스트/로고 선명, 용량 큼</td><td style="padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">로고·아이콘, 투명 배경, 캡처 화면</td></tr>
+                        <tr><td style="padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;"><strong>WebP</strong></td><td style="padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">손실·무손실·투명 모두 지원, JPG·PNG보다 작음, 최신 브라우저 폭넓게 지원</td><td style="padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">웹사이트·블로그 기본 권장</td></tr>
+                        <tr><td style="padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;"><strong>AVIF</strong></td><td style="padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">최신 고효율, 같은 화질에 가장 작은 편, 지원 환경 확대 중</td><td style="padding:0.6rem 0.8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">용량 최우선, 최신 환경 대상</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>② GIF 만들기 — 이미지로도, 동영상으로도</h3>
+            <p>여러 장의 사진을 이어붙여 GIF 애니메이션으로. <strong>MP4 동영상 → GIF 변환</strong>도 지원합니다. 프레임 순서는 드래그로 조정하고, 완성되는 순간 자동 다운로드됩니다.</p>
+
+            <h3>③ AI 배경 제거</h3>
+            <p>상품 사진, 프로필 사진의 배경을 AI가 자동으로 제거합니다. 결과물은 PNG(투명배경)·WebP·JPG 중 원하는 포맷으로 즉시 받습니다.</p>
+            <p>이 작업까지도 <strong>브라우저 안에서 처리</strong>됩니다 — 인물 사진을 어디에도 업로드하지 않습니다. 그래서 첫 이용 시에만 AI 처리 프로그램(약 100MB)을 다운로드합니다. <strong>서버에 사진을 보내는 대신 AI를 내 브라우저로 가져오는 방식</strong>이라고 생각하시면 됩니다. 한 번 받아두면 이후에는 브라우저 캐시를 재사용해 바로 실행됩니다.</p>
+
+            <h3>④ PDF 이미지 추출</h3>
+            <p>PDF 안의 이미지가 필요할 때, 화면을 캡처하면 화질이 깨지고 확대하면 계단 현상이 생깁니다. y-to-x는 캡처가 아니라 <strong>PDF 파일 안에 저장된 이미지 원본을 그대로 꺼내는 방식</strong>입니다.</p>
+            <p>온라인에서 다운로드한 보고서·백서·제안서 속 도표나 사진을 원본 화질 그대로, 깨짐 없이 추출해 발표자료나 문서에 재사용할 수 있습니다. 페이지별로 이미지 개수를 확인하고, 원하는 페이지만 선택해서 추출할 수도 있습니다. <em>(저작권이 있는 자료는 이용 범위를 확인 후 사용하세요.)</em></p>
+            <hr style="margin: 2.5rem 0 2rem; border-color: rgba(148,163,210,.2);" />
+
+            <h2>이런 분들께 특히 유용합니다</h2>
+            <ul>
+                <li><strong>직장인</strong> — 민감한 업무 문서·캡처를 외부 서버에 올리지 않고 변환 (보안)</li>
+                <li><strong>블로거·웹사이트 운영자</strong> — 수십 장을 WebP/AVIF로 일괄 변환, ZIP으로 한 번에 (편의)</li>
+                <li><strong>온라인 셀러</strong> — 상품 사진 배경 제거부터 마켓별 포맷 변환까지 한 곳에서</li>
+                <li><strong>커뮤니티·SNS 이용자</strong> — 동영상 클립을 움짤로, 프로필 사진 배경 제거를 무료로</li>
+            </ul>
+            <hr style="margin: 2.5rem 0 2rem; border-color: rgba(148,163,210,.2);" />
+
+            <h2>사용 방법</h2>
+            <ol>
+                <li><a href="https://y-to-x.com/ko/image" target="_blank" rel="noopener" style="color:#8fb4ff;text-decoration:underline;text-underline-offset:2px;">y-to-x.com/ko/image</a> 접속 — 회원가입, 설치 없음</li>
+                <li>상단 탭에서 기능 선택 (포맷 변환 / GIF 만들기 / 배경 제거 / PDF 이미지 추출)</li>
+                <li>이미지를 드래그 앤 드롭</li>
+                <li>포맷·품질·크기 설정 → 변환 버튼</li>
+                <li>끝. 파일은 이미 다운로드되어 있습니다.</li>
+            </ol>
+            <hr style="margin: 2.5rem 0 2rem; border-color: rgba(148,163,210,.2);" />
+
+            <h2>자주 묻는 질문 (FAQ)</h2>
+            <p><strong>Q. 정말 이미지가 서버로 전송되지 않나요?</strong></p>
+            <p>네. 변환·배경 제거·GIF 제작 모두 브라우저 안에서 처리되며, 이미지 자체는 어디로도 전송되지 않습니다.</p>
+            <p><strong>Q. 배경 제거를 누르니 다운로드가 시작되는데 뭔가요?</strong></p>
+            <p>사진을 서버로 보내지 않고 브라우저 안에서 AI를 실행하기 위한 처리 프로그램(약 100MB)입니다. 첫 이용 시 한 번만 받으며, 이후에는 브라우저 캐시를 재사용합니다. 사진 자체는 어디로도 전송되지 않습니다.</p>
+            <p><strong>Q. 무료인가요?</strong></p>
+            <p>무료이며 회원가입이 필요 없습니다. Silversmith가 만들어 운영하며 광고 수익으로 유지됩니다.</p>
+            <p><strong>Q. 여러 장을 한 번에 변환할 수 있나요?</strong></p>
+            <p>네. 여러 장을 올리면 같은 설정으로 일괄 변환되고, ZIP 파일 하나로 자동 다운로드됩니다.</p>
+            <p><strong>Q. 파일 크기 제한이 있나요?</strong></p>
+            <p>브라우저에서 처리하는 방식 특성상 기기 성능에 따라 달라질 수 있으나, 일반적인 사진·문서 이미지는 문제없이 처리됩니다.</p>
+            <p><strong>Q. AVIF로 변환했는데 일부 프로그램·기기에서 안 열려요.</strong></p>
+            <p>AVIF는 비교적 최신 포맷이라 오래된 뷰어·브라우저에서는 열리지 않을 수 있습니다. 어디서나 열려야 한다면 <strong>WebP</strong> 또는 <strong>JPG</strong>로 변환하는 것을 권장합니다.</p>
+            <p><strong>Q. 인터넷 연결 없이도 쓸 수 있나요?</strong></p>
+            <p>이미지 처리 자체는 브라우저 안에서 이뤄지지만, 페이지와 AI 배경 제거용 프로그램을 <strong>처음 불러올 때는 인터넷 연결이 필요</strong>합니다. 한 번 불러온 뒤에는 브라우저 캐시를 재사용합니다.</p>
+            <p><strong>Q. 변환한 이미지를 상업적으로 사용해도 되나요?</strong></p>
+            <p>y-to-x는 사용자가 올린 이미지를 변환만 해주는 도구이므로, 변환 결과물의 사용 권리는 원본 이미지의 권리자에게 있습니다. <strong>본인이 촬영·제작했거나 사용 권리를 가진 이미지</strong>라면 자유롭게 사용할 수 있고, 타인의 저작물이라면 별도 이용 범위를 확인하세요.</p>
+
+            <hr style="margin: 2.5rem 0 2rem; border-color: rgba(148,163,210,.2);" />
+            <h2>함께 보면 좋은 글</h2>
+            <ul>
+                <li><a href="y2x-address-converter.html" style="color:#8fb4ff;text-decoration:underline;">도로명·지번·영문주소·우편번호 일괄 변환 — y-to-x 주소 변환기</a></li>
+                <li><a href="../../project/y-to-x.html" style="color:#8fb4ff;text-decoration:underline;">y-to-x 프로젝트 소개 — Silversmith의 무료 컨버팅 포털</a></li>
+            </ul>
+
+            <hr style="margin: 2.5rem 0; border-color: rgba(148,163,210,.15);" />
+            <div class="note-box">
+                <strong>👉 지금 무료로 써보기 — <a href="https://y-to-x.com/ko/image" target="_blank" rel="noopener" style="color:#8fb4ff;text-decoration:underline;text-underline-offset:2px;">y-to-x 이미지 변환기 바로가기</a></strong><br>
+                이미지 변환 외에도 <a href="https://y-to-x.com" target="_blank" rel="noopener" style="color:#8fb4ff;text-decoration:underline;text-underline-offset:2px;">y-to-x</a>에는 주소 변환, 환율 계산기, YouTube 자막 추출, 단위 변환 등 일상적인 변환 도구가 모여 있습니다. y-to-x는 Silversmith가 직접 만들어 운영하며, 서비스 전반은 <a href="../../project/y-to-x.html" style="color:#8fb4ff;text-decoration:underline;">y-to-x 프로젝트 소개</a>에서 확인할 수 있습니다.
+            </div>
+
+            <script type="application/ld+json">
+            {
+              "@context": "https://schema.org",
+              "@type": "SoftwareApplication",
+              "@id": "https://y-to-x.com/ko/image#app",
+              "name": "y-to-x 이미지 변환기",
+              "alternateName": "y2x 이미지 변환기",
+              "url": "https://y-to-x.com/ko/image",
+              "applicationCategory": "MultimediaApplication",
+              "operatingSystem": "Web",
+              "inLanguage": "ko",
+              "description": "사진을 서버에 올리지 않고 브라우저 안에서 포맷 변환(JPG·PNG·WebP·AVIF)·용량/크기 조절·AI 배경 제거·GIF 제작·PDF 이미지 추출을 처리하는 무료 이미지 도구.",
+              "featureList": ["포맷 변환 JPG·PNG·WebP·AVIF", "품질·크기 동시 설정", "일괄 변환 및 ZIP 다운로드", "AI 배경 제거", "이미지·동영상 GIF 제작", "PDF 이미지 원본 추출"],
+              "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+              "author": { "@type": "Organization", "@id": "https://silver-smiths.com/#org", "name": "Silversmith" },
+              "publisher": { "@type": "Organization", "@id": "https://silver-smiths.com/#org" },
+              "isPartOf": { "@type": "WebApplication", "name": "y-to-x", "url": "https://y-to-x.com" }
+            }
+            </script>
+
+            <script type="application/ld+json">
+            {
+              "@context": "https://schema.org",
+              "@type": "HowTo",
+              "name": "y-to-x 이미지 변환기 사용 방법",
+              "description": "사진을 서버에 올리지 않고 브라우저에서 이미지를 변환·배경 제거·GIF 제작하는 방법.",
+              "step": [
+                { "@type": "HowToStep", "position": 1, "name": "접속", "text": "y-to-x.com/ko/image에 접속합니다. 회원가입·설치가 필요 없습니다.", "url": "https://y-to-x.com/ko/image" },
+                { "@type": "HowToStep", "position": 2, "name": "기능 선택", "text": "상단 탭에서 포맷 변환·GIF 만들기·배경 제거·PDF 이미지 추출 중 원하는 기능을 선택합니다." },
+                { "@type": "HowToStep", "position": 3, "name": "이미지 올리기", "text": "이미지를 드래그 앤 드롭으로 올립니다. 이미지는 브라우저 안에서만 처리됩니다." },
+                { "@type": "HowToStep", "position": 4, "name": "설정 후 변환", "text": "포맷·품질·크기를 설정하고 변환 버튼을 누릅니다." },
+                { "@type": "HowToStep", "position": 5, "name": "완료", "text": "변환이 끝나는 순간 파일이 자동으로 다운로드됩니다. 여러 장이면 ZIP으로 묶입니다." }
+              ]
+            }
+            </script>
+
+        </article>
+    </main>
+
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="../../index.html" class="footer-logo" aria-label="Silversmith 홈">Silversmith</a>
+                    <p class="footer-tagline">전략 · 기술 · 제품으로 디지털 성장을 가속합니다</p>
+                </div>
+                <nav class="footer-nav" aria-label="푸터 내비게이션">
+                    <div class="footer-col">
+                        <h3>컨설팅</h3>
+                        <ul role="list">
+                            <li><a href="../../consulting/seo-aeo-geo.html">SEO / AEO / GEO</a></li>
+                            <li><a href="../../consulting/ax-rpa.html">AX / RPA</a></li>
+                            <li><a href="../../consulting/ad-monetization.html">Ad Monetization</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h3>서비스 & 프로젝트</h3>
+                        <ul role="list">
+                            <li><a href="../../agency/search-display-ads.html">SA/DA 광고</a></li>
+                            <li><a href="../../agency/sms-lms-mms-rcs.html">SKT 문자광고</a></li>
+                            <li><a href="../../project/ggeujag.html">그작그작</a></li>
+                            <li><a href="../../project/youtube-auto-translator.html">YouTube 자동번역기</a></li>
+                            <li><a href="../../project/jsbin.html">JSBin.kr</a></li>
+                            <li><a href="../../project/y-to-x.html">y-to-x</a></li>
+                            <li><span style="color:var(--clr-text-muted);cursor:default">MeRokDam (공사중)</span></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h3>회사</h3>
+                        <ul role="list">
+                            <li><a href="../../story.html">회사 스토리</a></li>
+                            <li><a href="../../contact.html">문의하기</a></li>
+                            <li><a href="../../privacy.html">개인정보처리방침</a></li>
+                            <li><a href="../../terms.html">이용약관</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copy">© 2026 실버스미스 주식회사 · 사업자등록번호 272-87-02545 · 대표이사 윤정희 · <a href="mailto:help@silver-smiths.com" style="color:inherit">help@silver-smiths.com</a><br>경기도 양평군 양서면 식곡길 109-46 · <a href="tel:050714084101" style="color:inherit">0507-1408-4101</a> · 통신판매업신고번호 제2024-경기양평-1546호</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../../js/main.js" defer></script>
+</body>
+</html>
