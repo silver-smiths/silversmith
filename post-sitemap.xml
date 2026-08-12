@@ -9,6 +9,20 @@
 
   <!-- 포스팅 -->
   <url>
+    <loc>https://silver-smiths.com/post/2026/y2x-media-text-extract.html</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Silversmith</news:name>
+        <news:language>ko</news:language>
+      </news:publication>
+      <news:publication_date>2026-08-13</news:publication_date>
+      <news:title>유튜브 자막·웹페이지 본문 텍스트 추출 — AI에 바로 넣는 자료 수집법, y-to-x</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://silver-smiths.com/post/2026/y2x-image-converter.html</loc>
     <lastmod>2026-07-30</lastmod>
     <changefreq>monthly</changefreq>

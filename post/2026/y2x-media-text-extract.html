@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ko" prefix="og: https://ogp.me/ns#">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="유튜브 영상 자막과 웹페이지 본문을 URL 하나로 깨끗한 텍스트로 추출하는 무료 도구. 자동 생성 자막·타임스탬프·마크다운 구조 추출 지원. ChatGPT·Claude·Gemini에 바로 넣는 AI 자료 수집 워크플로와 프롬프트까지. Silversmith가 만든 컨버팅 포털 y-to-x." />
+    <meta name="keywords" content="유튜브 자막 추출, 유튜브 자막 다운로드, 자동생성 자막, 웹페이지 텍스트 추출, 본문 추출, 아티클 텍스트, 마크다운 목차 추출, AI 자료 수집, ChatGPT 요약, y-to-x, y2x, 실버스미스" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <meta name="author" content="Silversmith" />
+    <link rel="canonical" href="https://silver-smiths.com/post/2026/y2x-media-text-extract.html" />
+    <link rel="alternate" hreflang="ko" href="https://silver-smiths.com/post/2026/y2x-media-text-extract.html" />
+    <link rel="alternate" hreflang="x-default" href="https://silver-smiths.com/post/2026/y2x-media-text-extract.html" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://silver-smiths.com/post/2026/y2x-media-text-extract.html" />
+    <meta property="og:title" content="유튜브 자막·웹페이지 본문 텍스트 추출 — AI에 바로 넣는 자료 수집법, y-to-x — Silversmith" />
+    <meta property="og:description" content="유튜브 영상 자막과 웹페이지 본문을 URL 하나로 깨끗한 텍스트로 추출하는 무료 도구. 자동 생성 자막·타임스탬프·마크다운 구조 추출 지원. ChatGPT·Claude·Gemini에 바로 넣는 AI 자료 수집 워크플로와 프롬프트까지. Silversmith가 만든 컨버팅 포털 y-to-x." />
+    <meta property="og:image" content="https://silver-smiths.com/images/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Silversmith 대표 이미지" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:site_name" content="Silversmith" />
+    <meta property="article:published_time" content="2026-08-13T00:00:00+09:00" />
+    <meta property="article:author" content="Silversmith" />
+    <meta property="article:section" content="insight" />
+    <meta property="article:tag" content="유튜브 자막 추출, 웹 본문 추출, AI 워크플로, 마크다운, y-to-x" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="유튜브 자막·웹페이지 본문 텍스트 추출 — AI에 바로 넣는 자료 수집법, y-to-x — Silversmith" />
+    <meta name="twitter:description" content="유튜브 영상 자막과 웹페이지 본문을 URL 하나로 깨끗한 텍스트로 추출하는 무료 도구. 자동 생성 자막·타임스탬프·마크다운 구조 추출 지원. ChatGPT·Claude·Gemini에 바로 넣는 AI 자료 수집 워크플로와 프롬프트까지. Silversmith가 만든 컨버팅 포털 y-to-x." />
+    <meta name="twitter:image" content="https://silver-smiths.com/images/og-image.png" />
+
+    <title>유튜브 자막·웹페이지 본문 텍스트 추출 — AI에 바로 넣는 자료 수집법, y-to-x — Silversmith</title>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebPage",
+          "@id": "https://silver-smiths.com/post/2026/y2x-media-text-extract.html#webpage",
+          "url": "https://silver-smiths.com/post/2026/y2x-media-text-extract.html",
+          "name": "유튜브 자막·웹페이지 본문 텍스트 추출 — AI에 바로 넣는 자료 수집법, y-to-x — Silversmith",
+          "description": "유튜브 영상 자막과 웹페이지 본문을 URL 하나로 깨끗한 텍스트로 추출하는 무료 도구. 자동 생성 자막·타임스탬프·마크다운 구조 추출 지원. ChatGPT·Claude·Gemini에 바로 넣는 AI 자료 수집 워크플로와 프롬프트까지. Silversmith가 만든 컨버팅 포털 y-to-x.",
+          "isPartOf": { "@id": "https://silver-smiths.com/#website" },
+          "about": { "@id": "https://silver-smiths.com/#org" },
+          "breadcrumb": { "@id": "https://silver-smiths.com/post/2026/y2x-media-text-extract.html#breadcrumb" }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://silver-smiths.com/post/2026/y2x-media-text-extract.html#breadcrumb",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "홈", "item": "https://silver-smiths.com/" },
+            { "@type": "ListItem", "position": 2, "name": "스토리", "item": "https://silver-smiths.com/story.html" },
+            { "@type": "ListItem", "position": 3, "name": "유튜브 자막·웹페이지 본문 텍스트 추출 — AI에 바로 넣는 자료 수집법, y-to-x" }
+          ]
+        }
+      ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "@id": "https://silver-smiths.com/post/2026/y2x-media-text-extract.html",
+      "headline": "유튜브 자막·웹페이지 본문 텍스트 추출 — AI에 바로 넣는 자료 수집법, y-to-x",
+      "description": "유튜브 영상 자막과 웹페이지 본문을 URL 하나로 깨끗한 텍스트로 추출하는 무료 도구. 자동 생성 자막·타임스탬프·마크다운 구조 추출 지원. ChatGPT·Claude·Gemini에 바로 넣는 AI 자료 수집 워크플로와 프롬프트까지. Silversmith가 만든 컨버팅 포털 y-to-x.",
+      "author": { "@type": "Organization", "@id": "https://silver-smiths.com/#org", "name": "Silversmith" },
+      "publisher": { "@type": "Organization", "@id": "https://silver-smiths.com/#org" },
+      "datePublished": "2026-08-13",
+      "dateModified": "2026-08-13",
+      "url": "https://silver-smiths.com/post/2026/y2x-media-text-extract.html",
+      "image": "https://silver-smiths.com/images/og-image.png",
+      "inLanguage": "ko",
+      "keywords": ["유튜브 자막 추출", "웹페이지 텍스트 추출", "자동 생성 자막", "AI 요약 자료", "마크다운 구조 추출", "y-to-x 미디어 변환", "텍스트 추출"],
+      "isPartOf": { "@type": "WebSite", "@id": "https://silver-smiths.com/#website" }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "y-to-x 미디어 변환·텍스트 추출은 회원가입이 필요한가요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "아니요. 두 도구 모두 회원가입·로그인 없이 사용합니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "정말 무료인가요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "네. 다만 서비스 운영(유료 API 비용)을 위해 일부 기능은 짧은 광고 시청 후 이용할 수 있습니다. 결제나 구독은 없습니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "유튜브 자동 생성 자막도 추출되나요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "네. 제작자가 등록한 자막은 물론 유튜브가 자동 생성한 자막도 지원합니다. 자동 생성 자막은 음성 인식 특성상 오탈자가 있을 수 있습니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "자막이 아예 없는 영상도 되나요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "자막 트랙이 하나도 없는 영상(음악 영상 등)은 추출할 자막이 없어 영상 정보만 제공됩니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "어떤 유튜브 URL 형식을 지원하나요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "일반 영상 URL, 단축 URL(youtu.be), Shorts URL, 11자리 영상 ID 직접 입력을 모두 지원합니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "웹페이지 추출이 안 되는 사이트도 있나요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "로그인이 필요한 페이지, 유료 구독 콘텐츠 등 접근이 제한된 페이지는 추출할 수 없습니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "추출한 텍스트를 상업적으로 써도 되나요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "도구는 자유롭게 사용하실 수 있지만, 추출된 콘텐츠(자막·본문)의 저작권은 원저작자에게 있습니다. 요약·참고를 넘어 게시·배포하는 경우 원저작자의 이용 조건을 확인하세요." }
+        }
+      ]
+    }
+    </script>
+
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-MQT4J6J');
+    </script>
+    <!-- End Google Tag Manager -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style"
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Noto+Serif+KR:wght@400;700&family=Inter:wght@400;500;700&display=swap"
+        onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript>
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Noto+Serif+KR:wght@400;700&family=Inter:wght@400;500;700&display=swap" />
+    </noscript>
+    <link rel="preload" href="../../css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="preload" href="../../css/pages.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript>
+        <link rel="stylesheet" href="../../css/style.css" />
+        <link rel="stylesheet" href="../../css/pages.css" />
+    </noscript>
+    <style>
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+        html,body{background:#080d1a;color:#d4daf0;font-family:'Noto Sans KR','Inter',sans-serif;height:auto !important;overflow:auto !important;}
+        #main-nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:1rem clamp(1.25rem,4vw,2.5rem);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(8,13,26,.88);border-bottom:1px solid rgba(148,163,210,.12);}
+        .nav-logo{font-size:1.4rem;font-weight:800;letter-spacing:-.04em;background:linear-gradient(135deg,#c8cdd6,#e8ecf4,#a8b0c0,#d0d8e8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .note-box{background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.25);border-radius:12px;padding:1.1rem 1.4rem;margin:2rem 0;font-size:0.92rem;line-height:1.75;color:#b8c2e0;}
+        .note-box strong{color:#8fb4ff;}
+    </style>
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MQT4J6J" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <header>
+    <nav id="main-nav" aria-label="주 내비게이션">
+      <a href="../../index.html" class="nav-logo" aria-label="Silversmith 홈">Silver<span>smith</span></a>
+      <ul class="nav-links" role="list">
+        <li class="nav-group">
+          <a href="../../index.html#consulting">컨설팅 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg></a>
+          <div class="nav-dropdown">
+            <a href="../../consulting/seo-aeo-geo.html">SEO / AEO / GEO</a>
+            <a href="../../consulting/ax-rpa.html">AX / RPA</a>
+            <a href="../../consulting/ad-monetization.html">Ad Monetization</a>
+          </div>
+        </li>
+        <li class="nav-group">
+          <a href="../../index.html#service">에이전시 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg></a>
+          <div class="nav-dropdown">
+            <a href="../../agency/search-display-ads.html">SA/DA 광고</a>
+            <a href="../../agency/sms-lms-mms-rcs.html">SKT 문자광고</a>
+          </div>
+        </li>
+        <li class="nav-group">
+          <a href="../../index.html#projects">프로젝트 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg></a>
+          <div class="nav-dropdown">
+            <a href="../../project/ggeujag.html">그작그작</a>
+            <a href="../../project/youtube-auto-translator.html">YouTube 자동번역기</a>
+            <a href="../../project/jsbin.html">JSBin.kr</a>
+            <a href="../../project/y-to-x.html">y-to-x</a>
+            <span style="color:var(--clr-text-muted);cursor:default">MeRokDam (공사중)</span>
+          </div>
+        </li>
+        <li><a href="../../story.html">스토리</a></li>
+        <li><a href="../../contact.html" class="btn-nav">문의하기</a></li>
+      </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="nav-overlay">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+    <div class="nav-overlay" id="nav-overlay" role="dialog" aria-label="모바일 메뉴">
+    <button class="nav-acc-btn" aria-expanded="false">
+      컨설팅 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </button>
+    <div class="nav-acc-items">
+      <a href="../../index.html#consulting">컨설팅 홈</a>
+      <a href="../../consulting/seo-aeo-geo.html">SEO / AEO / GEO</a>
+      <a href="../../consulting/ax-rpa.html">AX / RPA</a>
+      <a href="../../consulting/ad-monetization.html">Ad Monetization</a>
+    </div>
+
+    <button class="nav-acc-btn" aria-expanded="false">
+      에이전시 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </button>
+    <div class="nav-acc-items">
+      <a href="../../index.html#service">에이전시 홈</a>
+      <a href="../../agency/search-display-ads.html">SA/DA 광고</a>
+      <a href="../../agency/sms-lms-mms-rcs.html">SKT 문자광고</a>
+    </div>
+
+    <button class="nav-acc-btn" aria-expanded="false">
+      프로젝트 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </button>
+    <div class="nav-acc-items">
+      <a href="../../index.html#projects">프로젝트 홈</a>
+      <a href="../../project/ggeujag.html">그작그작</a>
+      <a href="../../project/youtube-auto-translator.html">YouTube 자동번역기</a>
+      <a href="../../project/jsbin.html">JSBin.kr</a>
+      <a href="../../project/y-to-x.html">y-to-x</a>
+      <span style="color:var(--clr-text-muted);cursor:default">MeRokDam (공사중)</span>
+    </div>
+
+    <a href="../../story.html" style="margin-top:0.5rem">스토리</a>
+    <a href="../../contact.html" class="btn-nav-mobile" style="margin-top:1rem">문의하기</a>
+  </div>
+
+    <main style="padding-top: 5rem; min-height: 100vh;">
+
+        <div style="padding: 4rem 0 3rem; position: relative; overflow: hidden;">
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at top left, rgba(37,99,235,0.1) 0%, transparent 60%);pointer-events:none;"></div>
+            <div class="container-narrow">
+                <nav class="breadcrumb" aria-label="브레드크럼" style="margin-bottom: 1.5rem;">
+                    <a href="../../">홈</a>
+                    <span class="breadcrumb-sep" aria-hidden="true">›</span>
+                    <a href="../../story.html">스토리</a>
+                    <span class="breadcrumb-sep" aria-hidden="true">›</span>
+                    <span aria-current="page">유튜브 자막·웹페이지 본문 텍스트 추출 — AI에 바로 넣는 자료 수집법, y-to-x</span>
+                </nav>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem;">
+                    <span style="display:inline-block;padding:0.25rem 0.75rem;border:1px solid rgba(148,163,210,.25);border-radius:999px;font-size:0.75rem;color:var(--clr-text-muted);">유튜브 자막 추출</span>
+                    <span style="display:inline-block;padding:0.25rem 0.75rem;border:1px solid rgba(148,163,210,.25);border-radius:999px;font-size:0.75rem;color:var(--clr-text-muted);">웹 본문 추출</span>
+                    <span style="display:inline-block;padding:0.25rem 0.75rem;border:1px solid rgba(148,163,210,.25);border-radius:999px;font-size:0.75rem;color:var(--clr-text-muted);">AI 워크플로</span>
+                    <span style="display:inline-block;padding:0.25rem 0.75rem;border:1px solid rgba(148,163,210,.25);border-radius:999px;font-size:0.75rem;color:var(--clr-text-muted);">마크다운</span>
+                    <span style="display:inline-block;padding:0.25rem 0.75rem;border:1px solid rgba(148,163,210,.25);border-radius:999px;font-size:0.75rem;color:var(--clr-text-muted);">y-to-x</span>
+                </div>
+                <h1 style="font-size: clamp(1.75rem, 4.5vw, 2.8rem); font-weight: 900; letter-spacing: -0.04em; line-height: 1.15; margin-bottom: 1.25rem;">유튜브 자막·웹페이지 본문 텍스트 추출 — AI에 바로 넣는 자료 수집법, y-to-x</h1>
+                <p style="color: var(--clr-text-muted); font-size: 1.05rem; line-height: 1.75; max-width: 600px; margin-bottom: 2rem;">유튜브 영상 자막과 웹페이지 본문을 URL 하나로 깨끗한 텍스트로 추출하는 무료 도구. 자동 생성 자막·타임스탬프·마크다운 구조 추출 지원. ChatGPT·Claude·Gemini에 바로 넣는 AI 자료 수집 워크플로와 프롬프트까지. Silversmith가 만든 컨버팅 포털 y-to-x.</p>
+                <div style="display: flex; align-items: center; gap: 1rem; font-size: 0.82rem; color: var(--clr-text-dim);">
+                    <span>Silversmith</span>
+                    <span>·</span>
+                    <time datetime="2026-08-13">2026년 8월 13일</time>
+                    <span>·</span>
+                    <span>읽는 시간 10분</span>
+                </div>
+            </div>
+        </div>
+
+        <hr class="post-divider" style="max-width: 720px; margin: 0 auto 2.5rem;" />
+
+        <article class="post-body container-narrow" style="padding-bottom: 5rem;">
+
+            <p><strong>y-to-x 미디어 변환·텍스트 추출</strong>(줄여서 y2x)은 유튜브 영상과 웹페이지를 <strong>AI에 바로 넣을 수 있는 깨끗한 텍스트</strong>로 바꿔주는 무료 도구입니다. <a href="https://y-to-x.com" target="_blank" rel="noopener" style="color:#8fb4ff;text-decoration:underline;text-underline-offset:2px;">y-to-x</a>는 <strong>Silversmith가 직접 만들어 운영하는 무료 온라인 컨버팅 포털</strong>로, 이 두 도구는 그중 하나입니다.</p>
+            <hr style="margin: 2.5rem 0 2rem; border-color: rgba(148,163,210,.2);" />
+
+            <h2>자료는 넘치는데, 왜 정리는 늘 어려울까</h2>
+            <p>공부하려고, 일하려고 모아둔 자료 목록을 열어봅니다. 유튜브 강의 영상 세 개, 업계 아티클 다섯 개, 참고하려고 저장한 경쟁사 블로그 두 개. 자료는 충분합니다. 문제는 이걸 <strong>쓸 수 있는 형태로 만드는 일</strong>입니다.</p>
+            <p>영상은 1시간을 다시 봐야 내용을 꺼낼 수 있습니다. 2배속으로 돌려도 30분이고, 받아 적다 보면 놓치는 내용이 생깁니다. 웹 아티클은 복사하면 되지 않냐고요? 드래그해서 붙여넣는 순간 알게 됩니다 — 광고 문구, "관련 기사 보기", 사이드바 메뉴, 구독 유도 배너가 본문 사이사이에 껴서 딸려 온다는 걸요.</p>
+            <p>그리고 2020년대 중반의 우리에게는 이 문제가 더 커졌습니다. <strong>자료를 AI에 넣는 시대</strong>가 됐기 때문입니다.</p>
+            <hr style="margin: 2.5rem 0 2rem; border-color: rgba(148,163,210,.2);" />
+
+            <h2>AI 시대, 자료 수집의 병목은 '텍스트화'</h2>
+            <p>ChatGPT, Claude, Gemini 같은 AI로 요약하고, 비교하고, 초안을 만드는 건 이제 특별한 기술이 아닙니다. 그런데 막상 해보면 AI 활용의 진짜 병목은 프롬프트가 아니라 <strong>자료를 텍스트로 만드는 단계</strong>라는 걸 깨닫게 됩니다.</p>
+            <ul>
+                <li>유튜브 영상은 URL을 AI에 넣어도 내용을 읽지 못하는 경우가 대부분입니다</li>
+                <li>웹페이지를 통째로 복사하면 광고와 메뉴가 섞여 AI가 본문을 헷갈립니다</li>
+                <li><strong>지저분한 입력은 지저분한 출력으로 돌아옵니다</strong> — 요약 품질은 입력 품질을 넘지 못합니다</li>
+            </ul>
+            <p>y-to-x의 <a href="https://y-to-x.com/ko/media" target="_blank" rel="noopener" style="color:#8fb4ff;text-decoration:underline;text-underline-offset:2px;">미디어 변환</a>과 <a href="https://y-to-x.com/ko/text" target="_blank" rel="noopener" style="color:#8fb4ff;text-decoration:underline;text-underline-offset:2px;">텍스트 추출</a>은 이 병목을 없애는 한 쌍의 도구입니다. 영상이든 웹페이지든, <strong>URL 하나를 넣으면 AI에 바로 넣을 수 있는 깨끗한 텍스트</strong>가 나옵니다.</p>
+
+            <div style="overflow-x:auto;">
+                <table style="{TABLE_CSS}">
+                    <thead><tr><th {TH}>도구</th><th {TH}>입력</th><th {TH}>출력</th></tr></thead>
+                    <tbody>
+                        <tr><td {TD}><strong>🎬 미디어 변환</strong></td><td {TD}>유튜브 URL(일반·youtu.be·Shorts·영상 ID)</td><td {TD}>자막 전문(언어 선택·자동생성·타임스탬프 옵션) + 영상 정보(제목·채널·설명·조회수)</td></tr>
+                        <tr><td {TD}><strong>📄 텍스트 추출</strong></td><td {TD}>웹페이지 URL</td><td {TD}>광고·메뉴 제거한 본문 텍스트 + 글자수, 또는 헤딩 구조(마크다운 목차)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr style="margin: 2.5rem 0 2rem; border-color: rgba(148,163,210,.2);" />
+
+            <h2>🎬 도구 1: 미디어 변환 — 유튜브 영상을 텍스트로</h2>
+            <p><a href="https://y-to-x.com/ko/media" target="_blank" rel="noopener" style="color:#8fb4ff;text-decoration:underline;text-underline-offset:2px;">y-to-x.com/ko/media</a>에 유튜브 URL을 붙여넣으면 두 가지가 나옵니다.</p>
+
+            <h3>영상 정보 한 번에</h3>
+            <p>제목, 채널명, 설명 전문, 조회수, 재생 시간이 즉시 추출됩니다. 영상 설명에 있는 링크·타임라인·참고자료 목록을 복사하거나, 채널명·제목·URL이 정리된 텍스트 파일로 다운로드할 수 있습니다. 영상 여러 개를 아카이빙할 때 하나하나 열어볼 필요가 없습니다.</p>
+
+            <h3>자막 전문 추출 — 이 도구의 핵심</h3>
+            <ul>
+                <li><strong>모든 등록 언어 지원</strong> — 영어·한국어·일본어·중국어 등 영상에 올라온 자막 언어를 선택해서 추출</li>
+                <li><strong>자동 생성 자막 지원</strong> — 제작자가 자막을 안 올렸어도 유튜브의 자동 생성(Auto-generated) 자막으로 추출 가능. 사실상 말이 있는 영상 대부분이 대상이 됩니다</li>
+                <li><strong>타임스탬프 포함/제외 선택</strong> — <code>[3:24] 이 부분에서 중요한 것은...</code> 형태로 받거나, 순수 텍스트만 받거나</li>
+                <li>복사 버튼 한 번, 또는 .txt 파일 다운로드</li>
+            </ul>
+            <p>지원 URL 형식도 까다롭지 않습니다. 일반 URL(youtube.com/watch?v=...), 단축 URL(youtu.be/...), Shorts, 11자리 영상 ID 직접 입력까지 전부 받습니다. 유튜브 앱에서 '공유 → 링크 복사'한 그대로 붙여넣으면 됩니다.</p>
+
+            <h3>어디에 쓰냐면</h3>
+            <ul>
+                <li>1시간 강의 영상 → 자막 추출 → AI 요약 → 강의 노트</li>
+                <li>해외 컨퍼런스 발표 → 영어 자막 추출 → AI 번역·요약 → 한국어 브리핑</li>
+                <li>내 채널 영상들 → 자막 백업 → 블로그 글로 재가공 (크리에이터의 원소스 멀티유즈)</li>
+                <li>인터뷰 영상 → 타임스탬프 포함 추출 → 인용 위치까지 정확한 기사·리포트</li>
+            </ul>
+            <hr style="margin: 2.5rem 0 2rem; border-color: rgba(148,163,210,.2);" />
+
+            <h2>📄 도구 2: 텍스트 추출 — 웹페이지를 텍스트로</h2>
+            <p><a href="https://y-to-x.com/ko/text" target="_blank" rel="noopener" style="color:#8fb4ff;text-decoration:underline;text-underline-offset:2px;">y-to-x.com/ko/text</a>에 아티클 URL을 붙여넣으면:</p>
+
+            <h3>본문만 깔끔하게</h3>
+            <p>광고, 내비게이션 메뉴, 사이드바, 추천 글, 구독 배너를 걷어내고 <strong>제목과 본문 텍스트만</strong> 추출합니다. 글자수·단어수도 함께 표시되어 분량 확인까지 한 번에 됩니다. 전체 복사 버튼으로 클립보드에 담아 바로 다음 작업으로 넘어가면 됩니다.</p>
+
+            <h3>웹사이트 구조(목차) 추출</h3>
+            <p>본문이 아니라 사이트가 어떻게 구성됐는지가 필요할 때가 있습니다. 잘 만든 가이드 문서나 경쟁사 페이지의 헤딩(제목) 구조 말이죠. '구조' 탭에 URL을 넣으면 페이지의 <strong>헤딩 아웃라인이 마크다운 목차</strong>로 추출됩니다.</p>
+
+            <h3>마크다운 뷰어·에디터 내장</h3>
+            <p>추출한 구조를 그 자리에서 편집하고, 실시간 미리보기로 확인하고, 마크다운(.md)이나 HTML로 복사·다운로드할 수 있습니다. 별도의 마크다운 에디터를 열 필요가 없습니다.</p>
+            <hr style="margin: 2.5rem 0 2rem; border-color: rgba(148,163,210,.2);" />
+
+            <h2>🤖 실전: 두 도구를 조합한 AI 워크플로 4가지</h2>
+            <p>이론은 그만하고, 실제로 어떻게 쓰는지 <strong>프롬프트까지 통째로 공개</strong>합니다.</p>
+
+            <h3>시나리오 1 — 영상 강의를 스터디 노트로</h3>
+            <p>① 미디어 변환에서 강의 영상 자막 추출(타임스탬프 제외, 텍스트만) → ② AI에 붙여넣고:</p>
+            <div style="background:rgba(148,163,210,.08);border-left:3px solid #8fb4ff;border-radius:6px;padding:0.9rem 1.1rem;margin:0.75rem 0;font-size:0.9rem;color:#c8d0e8;line-height:1.7;">"다음은 강의 자막 전문이야. ① 핵심 개념 5개를 각각 3줄로 정리하고 ② 시험에 나올 만한 예상 질문 10개를 만들어줘. 자막이라 문장이 끊겨 있으니 문맥으로 보정해서 읽어."</div>
+            <p>영상 10개짜리 커리큘럼도 한나절이면 노트 세트가 됩니다.</p>
+            <p style="color:var(--clr-text-dim);font-size:0.9rem;"><strong>팁:</strong> 자동 생성 자막은 구두점이 없어서 AI에게 "문장 끊김을 보정해서 읽어라"고 한 줄 넣어주면 품질이 눈에 띄게 좋아집니다.</p>
+
+            <h3>시나리오 2 — 아티클 5개를 리서치 요약본으로</h3>
+            <p>① 텍스트 추출로 참고 아티클 5개를 각각 추출 → ② AI에 순서대로 붙여넣고:</p>
+            <div style="background:rgba(148,163,210,.08);border-left:3px solid #8fb4ff;border-radius:6px;padding:0.9rem 1.1rem;margin:0.75rem 0;font-size:0.9rem;color:#c8d0e8;line-height:1.7;">"아티클 5개를 줄게. 전부 읽고 ① 공통되는 주장 ② 서로 충돌하는 주장 ③ 한 곳에서만 다루는 독자적 내용을 표로 정리해줘. 각 항목에 출처 번호를 달아줘."</div>
+            <p>드래그 복사였다면 광고 문구가 섞여 "이 아티클은 구독을 권유하고 있다" 같은 오독이 나옵니다. <strong>깨끗한 본문만 넣는 것이 요약 품질의 절반</strong>입니다.</p>
+
+            <h3>시나리오 3 — 잘 만든 페이지의 구조를 벤치마킹</h3>
+            <p>① 텍스트 추출의 '구조' 탭에서 참고 사이트의 헤딩 아웃라인 추출 → ② AI에:</p>
+            <div style="background:rgba(148,163,210,.08);border-left:3px solid #8fb4ff;border-radius:6px;padding:0.9rem 1.1rem;margin:0.75rem 0;font-size:0.9rem;color:#c8d0e8;line-height:1.7;">"이건 잘 만들어진 가이드 문서의 목차 구조야. 이 구조의 장점을 분석하고, 같은 구조로 '[우리 주제]' 가이드의 목차를 짜줘."</div>
+            <p>콘텐츠의 뼈대 설계가 10분 안에 끝납니다. <em>(구조를 참고하는 것과 내용을 베끼는 것은 다릅니다 — 후자는 하지 마세요.)</em></p>
+
+            <h3>시나리오 4 — 해외 영상 자료를 한국어 브리핑으로</h3>
+            <p>① 영어 강연·발표 영상의 자막 추출 → ② AI에:</p>
+            <div style="background:rgba(148,163,210,.08);border-left:3px solid #8fb4ff;border-radius:6px;padding:0.9rem 1.1rem;margin:0.75rem 0;font-size:0.9rem;color:#c8d0e8;line-height:1.7;">"영어 발표 자막이야. ① 한국어로 500자 요약 ② 발표자의 핵심 주장 3개 ③ 우리 업계(디지털 마케팅)에 적용할 시사점 2개를 정리해줘."</div>
+            <p>리스닝 실력과 무관하게 해외 자료를 소화할 수 있게 됩니다.</p>
+            <hr style="margin: 2.5rem 0 2rem; border-color: rgba(148,163,210,.2);" />
+
+            <h2>AI 없이도 쓸 곳은 많습니다</h2>
+            <ul>
+                <li><strong>인용 정리</strong> — 논문·리포트에 영상 발언을 인용할 때 타임스탬프 포함 자막으로 정확한 출처 표기</li>
+                <li><strong>자막 아카이빙</strong> — 내 채널 영상의 자막을 .txt로 백업</li>
+                <li><strong>스크랩</strong> — 사라질지 모르는 아티클의 본문을 텍스트로 보관</li>
+                <li><strong>번역 의뢰 준비</strong> — 영상 자막을 추출해서 번역가에게 텍스트로 전달</li>
+            </ul>
+            <hr style="margin: 2.5rem 0 2rem; border-color: rgba(148,163,210,.2);" />
+
+            <h2>자주 묻는 질문 (FAQ)</h2>
+            <p><strong>Q. 회원가입이 필요한가요?</strong></p>
+            <p>아니요. 두 도구 모두 회원가입·로그인 없이 사용합니다.</p>
+            <p><strong>Q. 정말 무료인가요?</strong></p>
+            <p>네. 다만 서비스 운영(유료 API 비용)을 위해 일부 기능은 짧은 광고 시청 후 이용할 수 있습니다. 결제나 구독은 없습니다.</p>
+            <p><strong>Q. 자동 생성 자막도 추출되나요?</strong></p>
+            <p>네. 제작자가 등록한 자막은 물론 유튜브가 자동 생성한 자막도 지원합니다. 자동 생성 자막은 음성 인식 특성상 오탈자가 있을 수 있습니다.</p>
+            <p><strong>Q. 자막이 아예 없는 영상도 되나요?</strong></p>
+            <p>자막 트랙이 하나도 없는 영상(음악 영상 등)은 추출할 자막이 없어 영상 정보만 제공됩니다.</p>
+            <p><strong>Q. 어떤 유튜브 URL 형식을 지원하나요?</strong></p>
+            <p>일반 영상 URL, 단축 URL(youtu.be), Shorts URL, 11자리 영상 ID 직접 입력을 모두 지원합니다.</p>
+            <p><strong>Q. 웹페이지 추출이 안 되는 사이트도 있나요?</strong></p>
+            <p>로그인이 필요한 페이지, 유료 구독 콘텐츠 등 접근이 제한된 페이지는 추출할 수 없습니다.</p>
+            <p><strong>Q. 추출한 텍스트를 상업적으로 써도 되나요?</strong></p>
+            <p>도구는 자유롭게 사용하실 수 있지만, 추출된 콘텐츠(자막, 본문)의 저작권은 원저작자에게 있습니다. 요약·참고를 넘어 게시·배포하는 경우 원저작자의 이용 조건을 확인하세요.</p>
+
+            <hr style="margin: 2.5rem 0 2rem; border-color: rgba(148,163,210,.2);" />
+            <h2>함께 보면 좋은 글</h2>
+            <ul>
+                <li><a href="y2x-image-converter.html" style="color:#8fb4ff;text-decoration:underline;">서버 업로드 없는 무료 이미지 변환기 — 포맷·용량·크기·배경 제거</a></li>
+                <li><a href="y2x-address-converter.html" style="color:#8fb4ff;text-decoration:underline;">도로명·지번·영문주소·우편번호 일괄 변환 — y-to-x 주소 변환기</a></li>
+                <li><a href="../../project/y-to-x.html" style="color:#8fb4ff;text-decoration:underline;">y-to-x 프로젝트 소개 — Silversmith의 무료 컨버팅 포털</a></li>
+            </ul>
+
+            <hr style="margin: 2.5rem 0; border-color: rgba(148,163,210,.15);" />
+            <div class="note-box">
+                <strong>👉 지금 무료로 써보기 — <a href="https://y-to-x.com/ko/media" target="_blank" rel="noopener" style="color:#8fb4ff;text-decoration:underline;text-underline-offset:2px;">유튜브 → 텍스트 (미디어 변환)</a> · <a href="https://y-to-x.com/ko/text" target="_blank" rel="noopener" style="color:#8fb4ff;text-decoration:underline;text-underline-offset:2px;">웹페이지 → 텍스트 (텍스트 추출)</a></strong><br>
+                이 밖에도 <a href="https://y-to-x.com" target="_blank" rel="noopener" style="color:#8fb4ff;text-decoration:underline;text-underline-offset:2px;">y-to-x</a>에는 이미지 변환, 주소 변환, 환율 계산기, 단위 변환 등 일상적인 변환 도구가 모여 있습니다. y-to-x는 Silversmith가 직접 만들어 운영하며, 서비스 전반은 <a href="../../project/y-to-x.html" style="color:#8fb4ff;text-decoration:underline;">y-to-x 프로젝트 소개</a>에서 확인할 수 있습니다.
+            </div>
+
+            <script type="application/ld+json">
+            {
+              "@context": "https://schema.org",
+              "@type": "SoftwareApplication",
+              "@id": "https://y-to-x.com/ko/media#app",
+              "name": "y-to-x 미디어 변환 (유튜브 자막 추출)",
+              "alternateName": "y2x 미디어 변환",
+              "url": "https://y-to-x.com/ko/media",
+              "applicationCategory": "UtilitiesApplication",
+              "operatingSystem": "Web",
+              "inLanguage": "ko",
+              "description": "유튜브 URL을 넣으면 자막 전문(언어 선택·자동생성·타임스탬프 옵션)과 영상 정보(제목·채널·설명·조회수)를 추출하는 무료 도구.",
+              "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+              "author": { "@type": "Organization", "@id": "https://silver-smiths.com/#org", "name": "Silversmith" },
+              "publisher": { "@type": "Organization", "@id": "https://silver-smiths.com/#org" },
+              "isPartOf": { "@type": "WebApplication", "name": "y-to-x", "url": "https://y-to-x.com" }
+            }
+            </script>
+            <script type="application/ld+json">
+            {
+              "@context": "https://schema.org",
+              "@type": "SoftwareApplication",
+              "@id": "https://y-to-x.com/ko/text#app",
+              "name": "y-to-x 텍스트 추출 (웹페이지 본문·구조)",
+              "alternateName": "y2x 텍스트 추출",
+              "url": "https://y-to-x.com/ko/text",
+              "applicationCategory": "UtilitiesApplication",
+              "operatingSystem": "Web",
+              "inLanguage": "ko",
+              "description": "웹페이지 URL을 넣으면 광고·메뉴를 제거한 본문 텍스트 또는 헤딩 구조(마크다운 목차)를 추출하는 무료 도구. 마크다운 뷰어·에디터 내장.",
+              "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+              "author": { "@type": "Organization", "@id": "https://silver-smiths.com/#org", "name": "Silversmith" },
+              "publisher": { "@type": "Organization", "@id": "https://silver-smiths.com/#org" },
+              "isPartOf": { "@type": "WebApplication", "name": "y-to-x", "url": "https://y-to-x.com" }
+            }
+            </script>
+            <script type="application/ld+json">
+            {
+              "@context": "https://schema.org",
+              "@type": "HowTo",
+              "name": "유튜브 영상을 AI 요약용 텍스트로 만드는 방법",
+              "description": "y-to-x 미디어 변환으로 유튜브 자막을 추출해 ChatGPT·Claude·Gemini 등 AI 요약에 활용하는 절차.",
+              "step": [
+                { "@type": "HowToStep", "position": 1, "name": "URL 붙여넣기", "text": "y-to-x.com/ko/media에 유튜브 URL(일반·youtu.be·Shorts·영상 ID)을 붙여넣습니다.", "url": "https://y-to-x.com/ko/media" },
+                { "@type": "HowToStep", "position": 2, "name": "자막 언어·옵션 선택", "text": "추출할 자막 언어와 타임스탬프 포함 여부를 선택합니다. 자동 생성 자막도 지원합니다." },
+                { "@type": "HowToStep", "position": 3, "name": "자막 추출", "text": "자막 전문을 복사하거나 .txt 파일로 내려받습니다." },
+                { "@type": "HowToStep", "position": 4, "name": "AI에 요약 요청", "text": "추출한 자막을 AI에 붙여넣고 핵심 정리·예상 질문·번역 등을 요청합니다. 자동 생성 자막은 '문장 끊김을 보정해 읽어라'를 덧붙이면 품질이 좋아집니다." }
+              ]
+            }
+            </script>
+
+        </article>
+    </main>
+
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="../../index.html" class="footer-logo" aria-label="Silversmith 홈">Silversmith</a>
+                    <p class="footer-tagline">전략 · 기술 · 제품으로 디지털 성장을 가속합니다</p>
+                </div>
+                <nav class="footer-nav" aria-label="푸터 내비게이션">
+                    <div class="footer-col">
+                        <h3>컨설팅</h3>
+                        <ul role="list">
+                            <li><a href="../../consulting/seo-aeo-geo.html">SEO / AEO / GEO</a></li>
+                            <li><a href="../../consulting/ax-rpa.html">AX / RPA</a></li>
+                            <li><a href="../../consulting/ad-monetization.html">Ad Monetization</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h3>서비스 & 프로젝트</h3>
+                        <ul role="list">
+                            <li><a href="../../agency/search-display-ads.html">SA/DA 광고</a></li>
+                            <li><a href="../../agency/sms-lms-mms-rcs.html">SKT 문자광고</a></li>
+                            <li><a href="../../project/ggeujag.html">그작그작</a></li>
+                            <li><a href="../../project/youtube-auto-translator.html">YouTube 자동번역기</a></li>
+                            <li><a href="../../project/jsbin.html">JSBin.kr</a></li>
+                            <li><a href="../../project/y-to-x.html">y-to-x</a></li>
+                            <li><span style="color:var(--clr-text-muted);cursor:default">MeRokDam (공사중)</span></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h3>회사</h3>
+                        <ul role="list">
+                            <li><a href="../../story.html">회사 스토리</a></li>
+                            <li><a href="../../contact.html">문의하기</a></li>
+                            <li><a href="../../privacy.html">개인정보처리방침</a></li>
+                            <li><a href="../../terms.html">이용약관</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copy">© 2026 실버스미스 주식회사 · 사업자등록번호 272-87-02545 · 대표이사 윤정희 · <a href="mailto:help@silver-smiths.com" style="color:inherit">help@silver-smiths.com</a><br>경기도 양평군 양서면 식곡길 109-46 · <a href="tel:050714084101" style="color:inherit">0507-1408-4101</a> · 통신판매업신고번호 제2024-경기양평-1546호</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../../js/main.js" defer></script>
+</body>
+</html>
