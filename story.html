@@ -240,16 +240,18 @@
             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2.5rem;" role="list"
                 aria-label="카테고리 필터">
                 <button class="story-filter-btn active" data-cat="all" onclick="filterStory(this,'all')">전체</button>
+                <button class="story-filter-btn" data-cat="admon" onclick="filterStory(this,'admon')">광고 수익화</button>
                 <button class="story-filter-btn" data-cat="seo" onclick="filterStory(this,'seo')">SEO / AEO</button>
                 <button class="story-filter-btn" data-cat="project" onclick="filterStory(this,'project')">프로젝트</button>
-                <button class="story-filter-btn" data-cat="insight" onclick="filterStory(this,'insight')">인사이트</button>
+                <button class="story-filter-btn" data-cat="ytox" onclick="filterStory(this,'ytox')">y-to-x.com</button>
+                <button class="story-filter-btn" data-cat="ytat" onclick="filterStory(this,'ytat')">ytat</button>
             </div>
 
             <!-- 포스팅 그리드 -->
             <div class="story-grid" id="story-grid">
 
                 <!-- 포스트: y-to-x 미디어 변환·텍스트 추출 소개 -->
-                <a href="post/2026/y2x-media-text-extract.html" class="story-card reveal" data-cat="insight"
+                <a href="post/2026/y2x-media-text-extract.html" class="story-card reveal" data-cat="insight ytox"
                     id="post-y2x-media-text" aria-label="y-to-x 미디어 변환·텍스트 추출 소개 포스팅 읽기">
                     <div class="story-card-thumb" style="background: linear-gradient(135deg, #2a1030, #102a3a);">
                         <span style="font-size: 3.5rem; z-index: 1; position: relative;">🎬</span>
@@ -267,7 +269,7 @@
                 </a>
 
                 <!-- 포스트: y-to-x 이미지 변환기 소개 -->
-                <a href="post/2026/y2x-image-converter.html" class="story-card reveal" data-cat="insight"
+                <a href="post/2026/y2x-image-converter.html" class="story-card reveal" data-cat="insight ytox"
                     id="post-y2x-image" aria-label="y-to-x 이미지 변환기 소개 포스팅 읽기">
                     <div class="story-card-thumb" style="background: linear-gradient(135deg, #2a1030, #10233a);">
                         <span style="font-size: 3.5rem; z-index: 1; position: relative;">🖼️</span>
@@ -285,7 +287,7 @@
                 </a>
 
                 <!-- 포스트: y-to-x 주소 변환기 소개 -->
-                <a href="post/2026/y2x-address-converter.html" class="story-card reveal" data-cat="insight"
+                <a href="post/2026/y2x-address-converter.html" class="story-card reveal" data-cat="insight ytox"
                     id="post-y2x-address" aria-label="y2x 주소 변환기 소개 포스팅 읽기">
                     <div class="story-card-thumb" style="background: linear-gradient(135deg, #10233a, #14324a);">
                         <span style="font-size: 3.5rem; z-index: 1; position: relative;">📮</span>
@@ -303,7 +305,7 @@
                 </a>
 
                 <!-- 포스트: 게시자를 위한 광고 수익화 노하우 (통합 가이드) -->
-                <a href="post/2026/ad-monetization-knowhow-01.html" class="story-card reveal" data-cat="insight"
+                <a href="post/2026/ad-monetization-knowhow-01.html" class="story-card reveal" data-cat="insight admon"
                     id="post-ad-monetization-knowhow" aria-label="게시자를 위한 광고 수익화 노하우 포스팅 읽기">
                     <div class="story-card-thumb" style="background: linear-gradient(135deg, #1a1030, #104a2a);">
                         <span style="font-size: 3.5rem; z-index: 1; position: relative;">📢</span>
@@ -321,7 +323,7 @@
                 </a>
 
                 <!-- 포스트: 유튜브 해외 조회수 늘리는 법 — 자막·제목·설명 다국어화 (최신) -->
-                <a href="post/2026/youtube-multilingual-subtitles-guide.html" class="story-card reveal" data-cat="insight"
+                <a href="post/2026/youtube-multilingual-subtitles-guide.html" class="story-card reveal" data-cat="insight ytat"
                     id="post-youtube-multilingual" aria-label="유튜브 다국어화 완벽 가이드 포스팅 읽기">
                     <div class="story-card-thumb" style="background: linear-gradient(135deg, #2a1030, #4a1a3a);">
                         <span style="font-size: 3.5rem; z-index: 1; position: relative;">🌍</span>
@@ -339,7 +341,7 @@
                 </a>
 
                 <!-- 포스트: GAM 광고속도 지표 완전 가이드 — 측정기준·측정항목과 해결방법 -->
-                <a href="post/2026/gam-ad-speed-guide.html" class="story-card reveal" data-cat="insight"
+                <a href="post/2026/gam-ad-speed-guide.html" class="story-card reveal" data-cat="insight admon"
                     id="post-gam-ad-speed-guide" aria-label="GAM 광고속도 지표 완전 가이드 포스팅 읽기">
                     <div class="story-card-thumb" style="background: linear-gradient(135deg, #102a3a, #1a4a50);">
                         <span style="font-size: 3.5rem; z-index: 1; position: relative;">💰</span>
@@ -376,7 +378,7 @@
                 </a>
 
                 <!-- 포스트 2: 2025 안드로이드 TV 서밋 AI Ray -->
-                <a href="post/2025/ai-ray-android-tv.html" class="story-card reveal reveal-delay-1" data-cat="insight"
+                <a href="post/2025/ai-ray-android-tv.html" class="story-card reveal reveal-delay-1" data-cat="insight admon"
                     id="post-ai-ray-android-tv" aria-label="2025 구글 안드로이드 TV 서밋 요약 포스팅 읽기">
                     <div class="story-card-thumb" style="background: linear-gradient(135deg, #102a3a, #1a4a50);">
                         <span style="font-size: 3.5rem; z-index: 1; position: relative;">📺</span>
@@ -396,7 +398,7 @@
 
                 <!-- 포스트 3: 2025 미디어 파트너스 데이 AI Ray -->
                 <a href="post/2025/ai-ray-brand-safety.html" class="story-card reveal reveal-delay-1"
-                    data-cat="insight" id="post-ai-ray-2025" aria-label="2025 구글 미디어 파트너스 데이 요약 포스팅 읽기">
+                    data-cat="insight admon" id="post-ai-ray-2025" aria-label="2025 구글 미디어 파트너스 데이 요약 포스팅 읽기">
                     <div class="story-card-thumb" style="background: linear-gradient(135deg, #1f1122, #3b1932);">
                         <span style="font-size: 3.5rem; z-index: 1; position: relative;">🛡️</span>
                     </div>
@@ -415,7 +417,7 @@
 
                 <!-- 포스트 3: 2025 GNI Ad Monetization -->
                 <a href="post/2025/gni-ad-monetization-2025.html" class="story-card reveal reveal-delay-1"
-                    data-cat="insight" id="post-ad-monetization-2025" aria-label="2025 구글 GNI 워크숍 요약 포스팅 읽기">
+                    data-cat="insight admon" id="post-ad-monetization-2025" aria-label="2025 구글 GNI 워크숍 요약 포스팅 읽기">
                     <div class="story-card-thumb" style="background: linear-gradient(135deg, #2a0a2a, #4a154a);">
                         <span style="font-size: 3.5rem; z-index: 1; position: relative;">🤖</span>
                     </div>
@@ -434,7 +436,7 @@
 
                 <!-- 포스트 3: 2024 GNI Ad Monetization -->
                 <a href="post/2024/gni-ad-monetization-2024.html" class="story-card reveal reveal-delay-1"
-                    data-cat="insight" id="post-ad-monetization-2024" aria-label="2024 구글 GNI 워크숍 요약 포스팅 읽기">
+                    data-cat="insight admon" id="post-ad-monetization-2024" aria-label="2024 구글 GNI 워크숍 요약 포스팅 읽기">
                     <div class="story-card-thumb" style="background: linear-gradient(135deg, #0f2a3a, #1a4a60);">
                         <span style="font-size: 3.5rem; z-index: 1; position: relative;">🚀</span>
                     </div>
@@ -453,7 +455,7 @@
 
                 <!-- 포스트 3: GNI Ad Monetization -->
                 <a href="post/2023/gni-ad-monetization.html" class="story-card reveal reveal-delay-1"
-                    data-cat="insight" id="post-ad-monetization" aria-label="구글코리아 GNI 워크숍 요약 포스팅 읽기">
+                    data-cat="insight admon" id="post-ad-monetization" aria-label="구글코리아 GNI 워크숍 요약 포스팅 읽기">
                     <div class="story-card-thumb" style="background: linear-gradient(135deg, #3a2210, #502f1a);">
                         <span style="font-size: 3.5rem; z-index: 1; position: relative;">📈</span>
                     </div>
@@ -590,7 +592,8 @@
             document.querySelectorAll('.story-filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             document.querySelectorAll('.story-card').forEach(card => {
-                card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+                const cats = (card.dataset.cat || '').split(/\s+/);
+                card.style.display = (cat === 'all' || cats.includes(cat)) ? '' : 'none';
             });
         }
     </script>
