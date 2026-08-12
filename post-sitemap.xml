@@ -9,6 +9,20 @@
 
   <!-- 포스팅 -->
   <url>
+    <loc>https://silver-smiths.com/post/2026/ad-monetization-knowhow-02.html</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Silversmith</news:name>
+        <news:language>ko</news:language>
+      </news:publication>
+      <news:publication_date>2026-08-13</news:publication_date>
+      <news:title>광고 수익화 노하우 ② — UI·사용자 패턴으로 광고 단가를 끌어올리는 법</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://silver-smiths.com/post/2026/y2x-media-text-extract.html</loc>
     <lastmod>2026-08-13</lastmod>
     <changefreq>monthly</changefreq>
