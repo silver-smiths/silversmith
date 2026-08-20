@@ -416,68 +416,124 @@
             </div>
 
             <div class="privacy-section">
-                <h2>3. 모바일 앱 서비스 관련</h2>
-                <p>회사가 운영하는 'AI 감성 일기' 앱 '미록담(MeRokDam)'은 아래와 같이 개인정보를 수집·이용합니다.</p>
+                <h2>3. 모바일 앱 서비스 관련 (미록담 / MeRokDam)</h2>
+                <p>회사가 운영하는 'AI 감성 일기' 앱 <strong>'미록담(MeRokDam)'</strong>은 아래와 같이 개인정보를 수집·이용합니다. 본 조항은 Apple App Store 및 Google Play의 개인정보 처리 라벨과 동일한 기준으로 작성되었습니다. <strong>미록담은 이용자를 앱·웹 전반에 걸쳐 추적(App Tracking Transparency 상의 추적)하지 않으며, 광고는 비개인화(문맥) 방식으로만 게재합니다.</strong></p>
 
-                <h3>수집하는 개인정보 항목</h3>
+                <h3>3-1. 수집하는 개인정보 항목</h3>
                 <table class="privacy-table">
                     <thead>
                         <tr>
-                            <th>항목</th>
-                            <th>수집 내용</th>
-                            <th>저장 위치</th>
+                            <th>대분류</th>
+                            <th>세부 항목</th>
+                            <th>수집 내용 / 목적</th>
+                            <th>저장·처리 위치</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>건강 데이터</td>
-                            <td>걸음 수, 수면 시간, 심박수, 소모 칼로리</td>
-                            <td>기기 내 (Health Connect / HealthKit 경유)</td>
+                            <td>연락처 정보</td>
+                            <td>이메일 주소</td>
+                            <td>Apple/소셜 로그인 계정 식별, 문의 응대</td>
+                            <td>Supabase 계정</td>
                         </tr>
                         <tr>
-                            <td>위치 데이터</td>
-                            <td>방문 장소 이력 (Significant Location Changes 기반)</td>
+                            <td>연락처 정보</td>
+                            <td>이름(닉네임·표시 이름)</td>
+                            <td>앱 내 표시 이름</td>
+                            <td>Supabase 계정</td>
+                        </tr>
+                        <tr>
+                            <td>건강·피트니스</td>
+                            <td>건강(수면·심박·생리주기 등)</td>
+                            <td>AI 일기 문맥 생성</td>
+                            <td>기기 내 (HealthKit / Health Connect 경유)</td>
+                        </tr>
+                        <tr>
+                            <td>건강·피트니스</td>
+                            <td>피트니스(걸음·운동 기록)</td>
+                            <td>AI 일기 문맥 생성</td>
                             <td>기기 내</td>
                         </tr>
                         <tr>
-                            <td>캘린더</td>
-                            <td>일정 제목, 시간, 장소</td>
-                            <td>기기 내</td>
+                            <td>위치</td>
+                            <td>대략적인 위치(동네 수준)</td>
+                            <td>"성수동에서의 하루" 같은 일기 문맥 및 <strong>지역 기반(문맥) 광고</strong> — <strong>정확한 위치는 수집하지 않음</strong></td>
+                            <td>기기 내 / 국내외 네트워크 광고(대략적 위치)</td>
                         </tr>
                         <tr>
-                            <td>사진</td>
-                            <td>Vision AI 분석 요청 시 이미지</td>
-                            <td>Gemini API 임시 전송 후 즉시 파기 / 피드 게시 선택 시 Supabase</td>
+                            <td>사용자 콘텐츠</td>
+                            <td>사진 또는 비디오</td>
+                            <td>일기 첨부(선택). Vision AI 분석 요청 시에만 전송</td>
+                            <td>기기 내 + 피드 게시 시 Supabase / Vision 분석 시 Gemini API 임시 전송 후 즉시 파기</td>
                         </tr>
                         <tr>
-                            <td>통화 기록</td>
-                            <td>통화 건수, 총 시간 (Android 전용)</td>
-                            <td>기기 내</td>
+                            <td>사용자 콘텐츠</td>
+                            <td>일기 본문·공개 피드 게시물</td>
+                            <td>일기 작성·소셜 피드 — <strong>제3자에게 제공하지 않음</strong></td>
+                            <td>기기 내(AES-256 암호화) + 게시 시 Supabase</td>
                         </tr>
                         <tr>
-                            <td>앱 사용 시간</td>
-                            <td>카테고리별 사용 시간 (Android 전용)</td>
-                            <td>기기 내</td>
+                            <td>사용자 콘텐츠</td>
+                            <td>고객 지원 문의</td>
+                            <td>문의 응대</td>
+                            <td>Supabase</td>
                         </tr>
                         <tr>
-                            <td>일기 원문</td>
-                            <td>AES-256 암호화 저장 / 피드 게시 후 서버 저장</td>
-                            <td>기기 내 + Supabase (게시 시)</td>
+                            <td>식별자</td>
+                            <td>사용자 ID</td>
+                            <td>계정 식별</td>
+                            <td>Supabase 계정 UUID</td>
                         </tr>
                         <tr>
-                            <td>앱 충돌 로그·진단</td>
-                            <td>오류 로그, 기기 진단 정보</td>
+                            <td>식별자</td>
+                            <td>기기 ID / 앱 인스턴스 ID</td>
+                            <td>광고 표시(비개인화), 분석 — <strong>추적 아님</strong></td>
+                            <td>국내외 네트워크 광고 / Firebase</td>
+                        </tr>
+                        <tr>
+                            <td>사용 현황 데이터</td>
+                            <td>제품 상호작용</td>
+                            <td>Firebase 애널리틱스 + 자체 이벤트(보상형 광고 1일 5회 한도 집계 등 앱 기능)</td>
+                            <td>Firebase</td>
+                        </tr>
+                        <tr>
+                            <td>사용 현황 데이터</td>
+                            <td>광고 데이터</td>
+                            <td>광고 노출·클릭 (비개인화·문맥 광고)</td>
+                            <td>국내외 네트워크 광고</td>
+                        </tr>
+                        <tr>
+                            <td>진단</td>
+                            <td>충돌·실적·기타 진단</td>
+                            <td>앱 안정성 모니터링(스택 트레이스, 기기·OS 정보 등)</td>
                             <td>Firebase Crashlytics</td>
                         </tr>
                         <tr>
-                            <td>광고 식별자</td>
-                            <td>ADID (Android), IDFA (iOS)</td>
-                            <td>타겟팅 사용자 대상 광고 게재 목적</td>
+                            <td>구매</td>
+                            <td>구매(구독) 내역</td>
+                            <td>구독 상태(퍼플/골드 등) 판별</td>
+                            <td>Apple/Google 결제 + Supabase(상태값)</td>
+                        </tr>
+                        <tr>
+                            <td>기기 내 처리(Android)</td>
+                            <td>앱 사용 시간</td>
+                            <td>일기 문맥 생성 (Android 전용, 서버 미전송)</td>
+                            <td>기기 내</td>
                         </tr>
                     </tbody>
                 </table>
 
-                <h3>수집 및 이용 목적</h3>
+                <h3>3-2. 수집하지 않는 항목</h3>
+                <p>미록담은 아래 항목을 <strong>수집하지 않습니다.</strong></p>
+                <ul>
+                    <li><strong>민감한 정보</strong> — 인종·민족, 성적 지향, 임신·출산, 장애, 종교·철학적 신념, 정치 성향, 노동조합 가입 등</li>
+                    <li><strong>정확한 위치(Precise Location)</strong> — 동네 수준의 대략적 위치만 사용</li>
+                    <li><strong>연락처(주소록), 전화번호, 주소</strong></li>
+                    <li><strong>금융 정보</strong> — 결제는 Apple/Google이 처리하며, 회사는 카드번호 등 결제수단 정보를 열람하지 않습니다</li>
+                    <li><strong>검색·브라우징 기록, 오디오(음성) 데이터, 이메일·문자메시지 본문</strong></li>
+                </ul>
+
+                <h3>3-3. 수집 및 이용 목적</h3>
                 <table class="privacy-table">
                     <thead>
                         <tr>
@@ -487,25 +543,39 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>서비스 제공</td>
-                            <td>AI 일기 생성 기능 운영</td>
+                            <td>앱 기능 제공</td>
+                            <td>계정 식별·로그인, AI 일기 생성, 소셜 피드, 문의 응대, 구독 상태 판별, 보상형 광고 한도 집계</td>
                         </tr>
                         <tr>
-                            <td>앱 안정성 모니터링</td>
-                            <td>Firebase Crashlytics를 통한 오류 수집 및 개선</td>
+                            <td>제품 개인화</td>
+                            <td>건강·피트니스·대략적 위치를 <strong>일기 문맥 생성</strong>에 활용 (해당 원시 데이터는 광고에 사용하지 않음)</td>
                         </tr>
                         <tr>
-                            <td>맞춤 광고 타겟팅</td>
-                            <td>일기 텍스트 기반 IAB 카테고리 분류 (타겟팅 사용자 대상) — 건강·위치 원시 데이터는 광고 목적 불사용</td>
+                            <td>분석</td>
+                            <td>Firebase 애널리틱스·자체 이벤트로 사용 현황 파악 및 서비스 개선</td>
                         </tr>
                         <tr>
-                            <td>소셜 피드 서비스</td>
-                            <td>사용자가 공개 선택한 게시물 제공</td>
+                            <td>앱 안정성</td>
+                            <td>Firebase Crashlytics 진단 정보로 오류 수집·개선</td>
+                        </tr>
+                        <tr>
+                            <td>광고(비개인화)</td>
+                            <td>국내외 네트워크 광고를 통한 <strong>비개인화(문맥) 광고</strong> 게재 — 3-5 참고</td>
                         </tr>
                     </tbody>
                 </table>
 
-                <h3>제3자 제공 현황</h3>
+                <h3>3-4. 진단 데이터에 관한 안내</h3>
+                <p>충돌 데이터(Crash Data)와 기타 진단 데이터는 Firebase Crashlytics를 통해 수집되며, 스택 트레이스·충돌 시점 앱 상태·기기 및 OS 정보 등을 포함합니다. 실적 데이터(Performance Data)는 회사 SDK가 별도로 수집하지 않으나, 진단 목적의 데이터가 함께 처리될 수 있어 라벨상 '진단'으로 표시합니다.</p>
+
+                <h3>3-5. 광고 — 비개인화(문맥) 광고 및 추적</h3>
+                <ul>
+                    <li>미록담은 <strong>국내외 네트워크 광고</strong>를 통해 광고를 게재하며, <strong>이용자 프로필 기반의 개인 맞춤(personalized) 광고가 아닌 비개인화(문맥) 광고</strong>로 운영합니다. 이용 중인 구체적인 국내외 광고 네트워크 목록은 본 방침 하단에 별도로 표기합니다.</li>
+                    <li>기기 ID·광고 식별자는 광고 표시, 노출 빈도 제어, 부정 클릭 방지 목적으로 처리되며, <strong>이용자를 앱·웹 전반에 걸쳐 추적하지 않습니다(App Tracking Transparency 상 '추적' 아님).</strong></li>
+                    <li><strong>일기 내용과 건강·피트니스 데이터는 광고에 사용하지 않습니다.</strong> 다만 <strong>대략적 위치(동네 수준)는 지역 기반(문맥) 광고에 활용될 수 있습니다.</strong></li>
+                </ul>
+
+                <h3>3-6. 제3자 제공 및 처리위탁</h3>
                 <table class="privacy-table">
                     <thead>
                         <tr>
@@ -516,14 +586,14 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Firebase Crashlytics (Google)</td>
-                            <td>앱 충돌 로그, 기기 진단 정보</td>
-                            <td>앱 안정성 모니터링</td>
+                            <td>Firebase Crashlytics / Analytics (Google)</td>
+                            <td>진단 정보, 앱 인스턴스 ID, 사용 현황 이벤트</td>
+                            <td>앱 안정성·분석</td>
                         </tr>
                         <tr>
-                            <td>Google Ad Manager</td>
-                            <td>광고 식별자 (ADID/IDFA)</td>
-                            <td>타겟팅 광고 게재</td>
+                            <td>국내외 네트워크 광고 <a href="#ad-networks" style="color:var(--clr-accent2);text-decoration:underline;">(하단 별도 표기)</a></td>
+                            <td>기기 ID/광고 식별자, 대략적 위치, 광고 노출·클릭</td>
+                            <td>비개인화(문맥) 광고 게재</td>
                         </tr>
                         <tr>
                             <td>Gemini API (Google)</td>
@@ -532,22 +602,27 @@
                         </tr>
                         <tr>
                             <td>Supabase</td>
-                            <td>비식별 IAB 태그, 등급 정보, 게시물 정보</td>
-                            <td>피드 서비스 운영</td>
+                            <td>계정 정보, 게시물, 구독 상태값</td>
+                            <td>계정·피드·구독 서비스 운영</td>
                         </tr>
                         <tr>
                             <td>OpenWeatherMap</td>
-                            <td>현재 위치 좌표 (위도/경도, 일시 전달)</td>
+                            <td>대략적 위치 좌표 (일시 전달)</td>
                             <td>날씨 정보 조회 — 서버 미저장</td>
+                        </tr>
+                        <tr>
+                            <td>Apple / Google</td>
+                            <td>결제·구독 처리 (회사는 결제수단 정보 미열람)</td>
+                            <td>인앱 결제</td>
                         </tr>
                     </tbody>
                 </table>
 
-                <h3>Health Connect (Android) 전용 정책</h3>
+                <h3>건강 데이터 전용 정책 (HealthKit / Health Connect)</h3>
                 <ul>
-                    <li>건강 데이터는 AI 일기 생성 목적으로만 사용하며 광고 타겟팅에 사용하지 않습니다</li>
+                    <li>건강·피트니스 데이터는 AI 일기 생성(문맥) 목적으로만 사용하며 광고에 사용하지 않습니다</li>
                     <li>건강 데이터는 제3자 광고 네트워크와 공유하지 않습니다</li>
-                    <li>건강 데이터는 기기 로컬에만 저장되며 서버로 전송되지 않습니다</li>
+                    <li>건강 데이터는 기기 로컬에서 처리되며 회사 서버로 전송·저장하지 않습니다</li>
                 </ul>
 
                 <h3>데이터 보관 및 삭제</h3>
@@ -560,11 +635,11 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>건강·캘린더·통화·앱 사용 데이터</td>
-                            <td>앱 삭제 또는 계정 탈퇴 시 즉시 삭제</td>
+                            <td>건강·피트니스·캘린더·앱 사용 데이터</td>
+                            <td>기기 내 처리, 앱 삭제 또는 계정 탈퇴 시 즉시 삭제</td>
                         </tr>
                         <tr>
-                            <td>위치 데이터</td>
+                            <td>대략적 위치 데이터</td>
                             <td>수집일로부터 30일 경과 시 자동 삭제</td>
                         </tr>
                         <tr>
@@ -572,12 +647,42 @@
                             <td>분석 완료 즉시 파기 (저장 없음)</td>
                         </tr>
                         <tr>
-                            <td>서버(Supabase) 저장 데이터</td>
+                            <td>계정 정보·게시물·구독 상태 등 서버(Supabase) 저장 데이터</td>
                             <td>계정 탈퇴 시 전체 삭제</td>
                         </tr>
                     </tbody>
                 </table>
                 <p style="margin-top:0.5rem;">앱 내 <strong>'설정 → 계정 탈퇴'</strong> 메뉴를 통해 언제든지 데이터 삭제를 요청할 수 있습니다.</p>
+
+                <h3>3-7. App Store 개인정보 라벨 요약</h3>
+                <p>Apple App Store에 표시되는 개인정보 처리 라벨 요약입니다. 모든 항목은 <strong>'추적(Tracking)'에 사용되지 않습니다.</strong></p>
+                <table class="privacy-table">
+                    <thead>
+                        <tr>
+                            <th>대분류</th>
+                            <th>세부 항목</th>
+                            <th>사용자에 연결됨</th>
+                            <th>목적</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>연락처 정보</td><td>이메일 주소, 이름</td><td>예</td><td>앱 기능</td></tr>
+                        <tr><td>건강 및 피트니스</td><td>건강, 피트니스</td><td>예</td><td>앱 기능, 제품 개인화</td></tr>
+                        <tr><td>위치</td><td>대략적인 위치</td><td>예</td><td>앱 기능, 제품 개인화, 제3자 광고</td></tr>
+                        <tr><td>사용자 콘텐츠</td><td>사진·비디오, 기타 콘텐츠, 고객 지원</td><td>예</td><td>앱 기능</td></tr>
+                        <tr><td>식별자</td><td>사용자 ID, 기기 ID</td><td>예</td><td>앱 기능, 분석, 제3자 광고</td></tr>
+                        <tr><td>사용 현황 데이터</td><td>제품 상호작용, 광고 데이터</td><td>예</td><td>앱 기능, 분석, 제3자 광고</td></tr>
+                        <tr><td>진단</td><td>충돌·실적·기타 진단</td><td>아니요</td><td>앱 기능, 분석</td></tr>
+                        <tr><td>구매</td><td>구매 내역</td><td>예</td><td>앱 기능</td></tr>
+                    </tbody>
+                </table>
+                <p style="font-size:0.85rem;color:var(--clr-text-muted);margin-top:0.5rem;">※ 민감한 정보·연락처(주소록)·금융 정보·검색 기록·정확한 위치·오디오 데이터는 수집하지 않습니다. 본 앱 조항 최종 개정: 2026-08-13.</p>
+
+                <h3 id="ad-networks">3-8. 국내외 광고 네트워크 목록 (별도 표기)</h3>
+                <p>미록담이 비개인화(문맥) 광고 게재를 위해 이용하는 국내외 광고 네트워크는 다음과 같습니다. 네트워크 구성은 운영 상황에 따라 변경될 수 있으며, 각 사업자의 데이터 처리 방침은 해당 사업자 정책을 따릅니다.</p>
+                <ul>
+                    <li>[광고 네트워크 목록을 여기에 표기 — 예: Google AdMob, 국내 미디에이션 SDK 등]</li>
+                </ul>
             </div>
 
             <div class="privacy-section">
