@@ -60,7 +60,9 @@
       #cls-slot{transition:none;}
       .cls-creative{width:100%;height:var(--cls-adh);border-radius:10px;overflow:hidden;position:relative;background:linear-gradient(135deg,#1b2a4d,#122038);border:1px solid rgba(120,150,220,.35);}
       .cls-creative svg{position:absolute;inset:0;width:100%;height:100%;}
-      .cls-ph{display:flex;align-items:center;justify-content:center;height:var(--cls-adh);color:#6b7799;font-size:.8rem;border:1px dashed rgba(148,163,210,.3);border-radius:10px;}
+      .cls-ph{display:flex;align-items:center;justify-content:center;color:#6b7799;font-size:.8rem;border:1px dashed rgba(148,163,210,.3);border-radius:10px;padding:.4rem;box-sizing:border-box;}
+      #cls-adwrap.good .cls-ph{height:var(--cls-adh);}
+      #cls-adwrap.bad .cls-ph{min-height:26px;}
     </style>
 
     <style>
@@ -297,10 +299,10 @@
         wrap.classList.add(mode);
         var badge=document.getElementById('cls-badge');
         // 실시간 CLS 측정 (사용자 입력과 무관한 layout-shift만 합산)
-        var cls=0;
+        var cls=0, measuring=false;
         try{
           new PerformanceObserver(function(list){
-            for(var e of list.getEntries()){ if(!e.hadRecentInput) cls+=e.value; }
+            for(var e of list.getEntries()){ if(measuring) cls+=e.value; }
             badge.className='sc-badge '+(cls>=0.1?'bad':(cls>0.01?'bad':'good'));
             badge.innerHTML='실시간 CLS <b>'+cls.toFixed(3)+'</b>';
           }).observe({type:'layout-shift',buffered:true});
@@ -323,7 +325,7 @@
         var inner=document.getElementById('cls-inner');
         var revealed=false;
         function reveal(){
-          if(revealed)return; revealed=true;
+          if(revealed)return; revealed=true; measuring=true;
           // GPT 샘플 시도 → 실패 시 크리에이티브 폴백
           var filled=false;
           try{
@@ -341,10 +343,19 @@
             setTimeout(function(){ if(!filled){ inner.innerHTML=creative(); } },2200);
           }catch(e){ inner.innerHTML=creative(); }
         }
-        // 나쁜 예시: 예약 없이 1.6초 뒤 삽입 → 밀림 발생 / 좋은 예시: 예약된 자리에 삽입 → 밀림 없음
+        // 광고가 화면(뷰포트)에 들어오는 순간 지연 삽입 → 나쁜 예시(자리 미예약)는 그때 콘텐츠가 밀림
         var ph=document.getElementById('cls-ph');
-        if(ph) ph.textContent='광고 로딩 중… (1.6초)';
-        setTimeout(reveal,1600);
+        if(ph) ph.textContent = (mode==='bad' ? '광고 자리(예약 없음) — 스크롤하면 로드됩니다' : '광고 자리(예약됨) — 스크롤하면 로드됩니다');
+        var slot=document.getElementById('cls-slot');
+        var io=new IntersectionObserver(function(ents){
+          ents.forEach(function(e){
+            if(e.isIntersecting){ io.disconnect();
+              if(ph) ph.textContent='광고 로딩 중…';
+              setTimeout(reveal, 600);
+            }
+          });
+        }, {rootMargin:'0px 0px -15% 0px', threshold:.2});
+        io.observe(slot);
       })();
       </script>
 

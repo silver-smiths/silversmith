@@ -256,10 +256,9 @@
       <script>
       (function(){
         var mode=window.SC_MODE||'good';
-        var list=document.getElementById('lz-list'), cntB=document.getElementById('lz-count'),
-            timeB=document.getElementById('lz-time'), badge=document.getElementById('lz-badge');
-        var TOTAL=6, initialLoaded=0, t0=performance.now(), firstScreenDone=false;
-        badge.className='sc-badge '+(mode==='good'?'good':'bad');
+        var badge=document.getElementById('lz-badge'), timeB=document.getElementById('lz-time'), cntB=document.getElementById('lz-count');
+        var TOTAL=6, loaded=0, requested=0;
+        var list=document.getElementById('lz-list');
         function block(i){
           var w=document.createElement('div');
           var filler='<p style="color:#8a95b8;line-height:1.9;">본문 단락 '+i+' — 사용자는 콘텐츠를 읽으며 아래로 스크롤합니다. 화면에 들어오지 않은 광고는 아직 필요하지 않습니다.</p>';
@@ -269,36 +268,30 @@
         }
         for(var i=1;i<=TOTAL;i++) list.appendChild(block(i));
         var slots=[].slice.call(document.querySelectorAll('.sc-ad[data-idx]'));
+        function refresh(){
+          badge.className='sc-badge '+(loaded>3?'bad':'good');
+          badge.innerHTML='로드됨 <b>'+loaded+'/'+TOTAL+'</b>';
+          if(cntB){ cntB.className='sc-badge '+(requested>3?'bad':'good'); cntB.innerHTML='요청됨 <b>'+requested+'/'+TOTAL+'</b>'; }
+        }
         function load(ad){
-          if(ad.dataset.loaded)return; ad.dataset.loaded='1';
-          var msg=ad.querySelector('.msg'); msg.textContent='로딩…';
+          if(ad.dataset.loaded)return; ad.dataset.loaded='1'; requested++;
+          var msg=ad.querySelector('.msg'); msg.textContent='로딩…'; refresh();
           setTimeout(function(){
             ad.style.background='linear-gradient(135deg,#12203a,#0d1730)'; ad.style.borderColor='rgba(120,150,220,.45)';
             msg.style.color='#9fb4e6'; msg.innerHTML='✅ 광고 #'+ad.dataset.idx+' 로드됨';
-          },700);
+            loaded++; refresh();
+          }, 1100);
         }
-        function markInitial(n){ initialLoaded=n; cntB.innerHTML='초기 요청 <b>'+n+'/'+TOTAL+'</b>'; cntB.className='sc-badge '+(n>3?'bad':'good'); }
+        refresh();
         if(mode==='bad'){
-          // 즉시 전부 로드
-          markInitial(TOTAL);
+          if(timeB){ timeB.className='sc-badge bad'; timeB.innerHTML='초기 요청 <b>6개 즉시</b>'; }
           slots.forEach(load);
-          badge.innerHTML='초기 로드 <b>6개 즉시</b>';
-          timeB.innerHTML='초기 로드 <b>무거움</b>'; timeB.className='sc-badge bad';
         } else {
-          // 지연 로딩: 뷰포트 근처만
+          if(timeB){ timeB.className='sc-badge good'; timeB.innerHTML='방식 <b>lazy load</b>'; }
           var io=new IntersectionObserver(function(ents){
-            ents.forEach(function(e){ if(e.isIntersecting){ load(e.target); io.unobserve(e.target);
-              var loaded=document.querySelectorAll('.sc-ad[data-loaded]').length;
-              if(loaded>initialLoaded && document.querySelector('.sc-seg')){ cntB.innerHTML='로드됨 <b>'+loaded+'/'+TOTAL+'</b>'; }
-            }});
-          },{rootMargin:'200px'});
-          slots.forEach(function(s){io.observe(s);});
-          // 초기(첫 화면) 카운트
-          setTimeout(function(){
-            var n=document.querySelectorAll('.sc-ad[data-loaded]').length; markInitial(n||1);
-            badge.innerHTML='초기 로드 <b>'+(n||1)+'개만</b>';
-            timeB.innerHTML='초기 로드 <b>가벼움</b>'; timeB.className='sc-badge good';
-          },400);
+            ents.forEach(function(e){ if(e.isIntersecting){ io.unobserve(e.target); load(e.target); } });
+          }, {rootMargin:'0px 0px 0px 0px', threshold:.25});
+          slots.forEach(function(s){ io.observe(s); });
         }
       })();
       </script>
