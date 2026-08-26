@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ko" prefix="og: https://ogp.me/ns#">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="화면 밖 광고까지 한꺼번에 요청하면 초기 로딩이 무거워집니다. 지연 로딩(lazy load) 적용/미적용에 따른 초기 로드 광고 수와 로딩 시간을 비교하는 데모." />
+    <meta name="keywords" content="지연 로딩, lazy load, IntersectionObserver, 광고 지연 로딩, 초기 로딩, 광고 수익화, Core Web Vitals, Silversmith" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="author" content="Silversmith" />
+    <link rel="canonical" href="https://silver-smiths.com/consulting/self-check-lazyload.html" />
+    <link rel="alternate" hreflang="ko" href="https://silver-smiths.com/consulting/self-check-lazyload.html" />
+    <link rel="alternate" hreflang="x-default" href="https://silver-smiths.com/consulting/self-check-lazyload.html" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://silver-smiths.com/consulting/self-check-lazyload.html" />
+    <meta property="og:title" content="지연 로딩 미적용 (좋은/나쁜 예시) — Silversmith" />
+    <meta property="og:description" content="화면 밖 광고까지 한꺼번에 요청하면 초기 로딩이 무거워집니다. 지연 로딩(lazy load) 적용/미적용에 따른 초기 로드 광고 수와 로딩 시간을 비교하는 데모." />
+    <meta property="og:image" content="https://silver-smiths.com/images/og-image.png" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:site_name" content="Silversmith" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="지연 로딩 미적용 (좋은/나쁜 예시) — Silversmith" />
+    <meta name="twitter:description" content="화면 밖 광고까지 한꺼번에 요청하면 초기 로딩이 무거워집니다. 지연 로딩(lazy load) 적용/미적용에 따른 초기 로드 광고 수와 로딩 시간을 비교하는 데모." />
+    <meta name="twitter:image" content="https://silver-smiths.com/images/og-image.png" />
+    <title>지연 로딩 미적용 (좋은/나쁜 예시) — Silversmith</title>
+
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"Article","headline":"지연 로딩 미적용","description":"지연 로딩 적용/미적용에 따른 초기 광고 로드량과 속도를 비교하는 데모.",
+     "author":{"@type":"Organization","name":"Silversmith","@id":"https://silver-smiths.com/#org"},
+     "publisher":{"@type":"Organization","@id":"https://silver-smiths.com/#org"},
+     "inLanguage":"ko","url":"https://silver-smiths.com/consulting/self-check-lazyload.html",
+     "breadcrumb":{"@type":"BreadcrumbList","itemListElement":[
+       {"@type":"ListItem","position":1,"name":"홈","item":"https://silver-smiths.com/"},
+       {"@type":"ListItem","position":2,"name":"컨설팅","item":"https://silver-smiths.com/#consulting"},
+       {"@type":"ListItem","position":3,"name":"자가진단","item":"https://silver-smiths.com/consulting/self-check.html"},
+       {"@type":"ListItem","position":4,"name":"지연 로딩 미적용"}]}}
+    </script>
+
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+            var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true; j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-MQT4J6J');</script>
+    <!-- End Google Tag Manager -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Inter:wght@400;500;700;900&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Inter:wght@400;500;700;900&display=swap" /></noscript>
+    <link rel="preload" href="../css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="preload" href="../css/pages.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="../css/style.css" /><link rel="stylesheet" href="../css/pages.css" /></noscript>
+
+    <style>
+      .sc-wrap{max-width:1080px;margin:0 auto;padding:0 1.25rem;}
+      .sc-toolbar{position:sticky;top:56px;z-index:40;display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;justify-content:space-between;
+        background:rgba(10,14,26,.92);backdrop-filter:blur(10px);border:1px solid rgba(148,163,210,.18);border-radius:14px;padding:.7rem 1rem;margin:1rem auto;}
+      .sc-seg{display:inline-flex;background:#0e1626;border:1px solid rgba(148,163,210,.25);border-radius:999px;padding:.25rem;}
+      .sc-seg button{border:0;background:transparent;color:#9aa7c7;font-weight:700;font-size:.9rem;padding:.5rem 1.1rem;border-radius:999px;cursor:pointer;transition:.15s;}
+      .sc-seg button.good.active{background:#16351f;color:#5ee08a;box-shadow:0 0 0 1px #22c55e inset;}
+      .sc-seg button.bad.active{background:#3a1620;color:#ff7a90;box-shadow:0 0 0 1px #ef4444 inset;}
+      .sc-badge{display:inline-flex;align-items:center;gap:.5rem;font-size:.85rem;font-weight:700;padding:.45rem .8rem;border-radius:10px;border:1px solid rgba(148,163,210,.2);}
+      .sc-badge b{font-variant-numeric:tabular-nums;font-size:1.05rem;}
+      .sc-badge.good{background:rgba(34,197,94,.1);color:#5ee08a;border-color:rgba(34,197,94,.35);}
+      .sc-badge.bad{background:rgba(239,68,68,.1);color:#ff8098;border-color:rgba(239,68,68,.35);}
+      .sc-replay{border:1px solid rgba(148,163,210,.3);background:#0e1626;color:#cdd6ef;font-weight:700;font-size:.85rem;padding:.5rem .9rem;border-radius:10px;cursor:pointer;}
+      .sc-replay:hover{border-color:#8fb4ff;color:#fff;}
+      .sc-note{font-size:.85rem;color:#7a85a3;margin:.5rem 0 0;}
+      /* 데모용 기사 콘텐츠 */
+      .sc-article{background:#0b1120;border:1px solid rgba(148,163,210,.14);border-radius:16px;padding:1.5rem clamp(1rem,3vw,2rem);margin:1rem auto 3rem;}
+      .sc-article h2{font-size:clamp(1.3rem,3vw,1.8rem);font-weight:800;color:#eef2ff;margin:.2rem 0 .6rem;letter-spacing:-.02em;}
+      .sc-byline{font-size:.8rem;color:#6b7799;margin-bottom:1rem;}
+      .sc-article p{color:#aeb8d4;line-height:1.85;margin:.9rem 0;font-size:.98rem;}
+      .sc-img{display:block;width:100%;border-radius:12px;margin:1.1rem 0;}
+      .sc-marker{display:flex;align-items:center;gap:.6rem;font-size:.8rem;font-weight:700;color:#ffb454;border-top:2px dashed #ffb454;padding-top:.5rem;margin:.4rem 0;}
+      /* 광고 슬롯 */
+      .sc-adwrap{margin:1.2rem 0;}
+      .sc-adlabel{font-size:.68rem;letter-spacing:.12em;color:#6b7799;text-transform:uppercase;margin-bottom:.35rem;text-align:center;}
+      .sc-ad{position:relative;overflow:hidden;background:linear-gradient(135deg,#12203a,#0d1730);border:1px solid rgba(120,150,220,.3);border-radius:10px;
+        display:flex;align-items:center;justify-content:center;color:#9fb4e6;font-weight:700;}
+      .sc-ad .sc-adinner{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
+      .sc-console{background:#080d18;border:1px solid rgba(148,163,210,.2);border-radius:12px;padding:1rem;font-family:'Courier New',monospace;font-size:.82rem;color:#93c5a8;max-height:280px;overflow:auto;}
+      .sc-console .hop{padding:.25rem 0;border-bottom:1px solid rgba(148,163,210,.08);}
+      .sc-console .fill{color:#5ee08a;font-weight:700;}
+      .sc-console .nofill{color:#ff8098;}
+      .sc-console .goog{color:#ffd166;}
+      .sc-metrics{display:flex;flex-wrap:wrap;gap:.6rem;margin:.4rem 0 1rem;}
+      @media(max-width:640px){ .sc-toolbar{top:56px;} }
+    </style>
+</head>
+<body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MQT4J6J" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <header>
+    <nav id="main-nav" aria-label="주 내비게이션">
+      <a href="../index.html" class="nav-logo" aria-label="Silversmith 홈">Silver<span>smith</span></a>
+      <ul class="nav-links" role="list">
+        <li class="nav-group">
+          <a href="../index.html#consulting">컨설팅 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg></a>
+          <div class="nav-dropdown">
+            <a href="../consulting/ad-monetization.html">Ad Monetization</a>
+            <a href="../consulting/seo-aeo-geo.html">SEO / AEO / GEO</a>
+            <a href="../consulting/ax-rpa.html">AX / RPA</a>
+            <a href="../consulting/self-check.html">자가진단</a>
+          </div>
+        </li>
+        <li class="nav-group">
+          <a href="../index.html#service">에이전시 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg></a>
+          <div class="nav-dropdown">
+            <a href="../agency/search-display-ads.html">SA/DA 광고</a>
+            <a href="../agency/sms-lms-mms-rcs.html">SKT 문자광고</a>
+          </div>
+        </li>
+        <li class="nav-group">
+          <a href="../index.html#projects">프로젝트 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg></a>
+          <div class="nav-dropdown">
+            <a href="../project/ggeujag.html">그작그작</a>
+            <a href="../project/youtube-auto-translator.html">YouTube 자동번역기</a>
+            <a href="../project/jsbin.html">JSBin.kr</a>
+            <a href="../project/y-to-x.html">y-to-x</a>
+            <span style="color:var(--clr-text-muted);cursor:default">MeRokDam (공사중)</span>
+          </div>
+        </li>
+        <li><a href="../story.html">스토리</a></li>
+        <li><a href="../contact.html" class="btn-nav">문의하기</a></li>
+      </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="nav-overlay">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <div class="nav-overlay" id="nav-overlay" role="dialog" aria-label="모바일 메뉴">
+    <button class="nav-acc-btn" aria-expanded="false">
+      컨설팅 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </button>
+    <div class="nav-acc-items">
+      <a href="../index.html#consulting">컨설팅 홈</a>
+      <a href="../consulting/ad-monetization.html">Ad Monetization</a>
+      <a href="../consulting/seo-aeo-geo.html">SEO / AEO / GEO</a>
+      <a href="../consulting/ax-rpa.html">AX / RPA</a>
+      <a href="../consulting/self-check.html">자가진단</a>
+    </div>
+
+    <button class="nav-acc-btn" aria-expanded="false">
+      에이전시 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </button>
+    <div class="nav-acc-items">
+      <a href="../index.html#service">에이전시 홈</a>
+      <a href="../agency/search-display-ads.html">SA/DA 광고</a>
+      <a href="../agency/sms-lms-mms-rcs.html">SKT 문자광고</a>
+    </div>
+
+    <button class="nav-acc-btn" aria-expanded="false">
+      프로젝트 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </button>
+    <div class="nav-acc-items">
+      <a href="../index.html#projects">프로젝트 홈</a>
+      <a href="../project/ggeujag.html">그작그작</a>
+      <a href="../project/youtube-auto-translator.html">YouTube 자동번역기</a>
+      <a href="../project/jsbin.html">JSBin.kr</a>
+      <a href="../project/y-to-x.html">y-to-x</a>
+      <span style="color:var(--clr-text-muted);cursor:default">MeRokDam (공사중)</span>
+    </div>
+
+    <a href="../story.html" style="margin-top:0.5rem">스토리</a>
+    <a href="../contact.html" class="btn-nav-mobile" style="margin-top:1rem">문의하기</a>
+  </div>
+
+    <main>
+
+        <section class="page-hero" aria-label="페이지 헤더">
+            <div class="container">
+                <nav class="breadcrumb" aria-label="브레드크럼">
+                    <a href="../index.html">홈</a>
+                    <span class="breadcrumb-sep" aria-hidden="true">›</span>
+                    <a href="../index.html#consulting">컨설팅</a>
+                    <span class="breadcrumb-sep" aria-hidden="true">›</span>
+                    <a href="self-check.html">자가진단</a>
+                    <span class="breadcrumb-sep" aria-hidden="true">›</span>
+                    <span>지연 로딩 미적용</span>
+                </nav>
+                <div class="page-hero-eyebrow"><span class="tag tag-gold">Self-Check</span></div>
+                <h1 style="font-size:clamp(1.8rem,4.5vw,2.8rem);font-weight:900;letter-spacing:-.03em;line-height:1.15;margin:.6rem 0 1rem;">지연 로딩 — <span class="accent-gold">처음에 다 부르면</span> 안 됩니다</h1>
+                <p style="color:var(--clr-text-muted);font-size:1.05rem;line-height:1.75;max-width:640px;">화면 밖 광고까지 페이지 로드 시 한꺼번에 요청하면 초기 로딩이 무거워집니다. 좋은/나쁜 예시를 전환해 초기 로드 광고 수와 로딩 시간을 비교하세요. 좋은 예시에서는 스크롤할 때 광고가 순차 로드됩니다.</p>
+            </div>
+        </section>
+
+      <div class="sc-toolbar">
+        <div class="sc-seg" role="tablist" aria-label="예시 전환">
+          <button class="good" data-mode="good" role="tab">✅ 좋은 예시</button>
+          <button class="bad" data-mode="bad" role="tab">⛔ 나쁜 예시</button>
+        </div>
+        <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;">
+          <span class="sc-badge" id="lz-badge">초기 로드 <b>–</b></span>
+          <button class="sc-replay" id="sc-replay">↻ 다시 재생</button>
+        </div>
+      </div>
+      <script>
+        (function(){
+          var params=new URLSearchParams(location.search);
+          var mode=params.get('mode')==='bad'?'bad':'good';
+          window.SC_MODE=mode;
+          document.addEventListener('DOMContentLoaded',function(){
+            document.querySelectorAll('.sc-seg button').forEach(function(b){
+              if(b.dataset.mode===mode)b.classList.add('active');
+              b.addEventListener('click',function(){ location.search='?mode='+b.dataset.mode; });
+            });
+            var r=document.getElementById('sc-replay');
+            if(r)r.addEventListener('click',function(){ location.search='?mode='+mode; });
+          });
+        })();
+      </script>
+
+      <div class="sc-wrap">
+        <div class="sc-metrics">
+          <span class="sc-badge" id="lz-count">초기 요청 <b>0/6</b></span>
+          <span class="sc-badge" id="lz-time">초기 로드 <b>–</b></span>
+        </div>
+        <p class="sc-note">아래로 스크롤해 보세요. <b>좋은 예시</b>에서는 화면에 가까워질 때마다 광고가 로드됩니다.</p>
+        <div id="lz-list" style="display:grid;gap:2.2rem;margin:1rem 0 3rem;"></div>
+      </div>
+
+      <section class="section" style="padding-top:0;">
+        <div class="sc-wrap">
+          <div class="feature-card" style="background:rgba(255,255,255,.03);border:1px solid rgba(148,163,210,.14);border-radius:14px;padding:1.4rem;">
+            <h3 style="color:#eef2ff;margin-bottom:.6rem;">차이를 확인했나요?</h3>
+            <p style="color:#aeb8d4;line-height:1.85;"><b style="color:#ff8098;">나쁜 예시</b> — 페이지가 열리자마자 화면 밖 광고까지 <b>6개 전부</b>를 즉시 요청합니다. 초기 네트워크가 몰려 첫 화면이 느려지고, 정작 사용자가 보지도 않을 하단 광고에 자원을 씁니다.</p>
+            <p style="color:#aeb8d4;line-height:1.85;"><b style="color:#5ee08a;">좋은 예시</b> — 첫 화면 광고만 로드하고, 나머지는 <b>지연 로딩(lazy load)</b>으로 뷰포트에 가까워질 때 요청합니다. 초기 요청이 줄어 첫 화면이 빨라지고, 실제로 보이는 광고에만 자원을 씁니다. <b>권장:</b> 접힘 광고는 IntersectionObserver 등으로 지연 로딩하세요.</p>
+          </div>
+        </div>
+      </section>
+
+        <section class="section">
+          <div class="sc-wrap">
+            <a href="self-check.html" style="color:#8fb4ff;text-decoration:underline;">← 자가진단 홈으로</a>
+            <p class="sc-note" style="margin-top:1rem;">본 데모는 이해를 돕기 위한 시뮬레이션이며, 광고는 Google 테스트(샘플) 또는 예시 소재로 표시됩니다. 실제 수치는 매체·환경에 따라 달라질 수 있습니다.</p>
+          </div>
+        </section>
+
+      <script>
+      (function(){
+        var mode=window.SC_MODE||'good';
+        var list=document.getElementById('lz-list'), cntB=document.getElementById('lz-count'),
+            timeB=document.getElementById('lz-time'), badge=document.getElementById('lz-badge');
+        var TOTAL=6, initialLoaded=0, t0=performance.now(), firstScreenDone=false;
+        badge.className='sc-badge '+(mode==='good'?'good':'bad');
+        function block(i){
+          var w=document.createElement('div');
+          var filler='<p style="color:#8a95b8;line-height:1.9;">본문 단락 '+i+' — 사용자는 콘텐츠를 읽으며 아래로 스크롤합니다. 화면에 들어오지 않은 광고는 아직 필요하지 않습니다.</p>';
+          w.innerHTML=filler+'<div class="sc-adwrap"><div class="sc-adlabel">광고 슬롯 #'+i+'</div>'
+            +'<div class="sc-ad" data-idx="'+i+'" style="height:180px;"><div class="sc-adinner"><span class="msg" style="color:#6b7799;font-size:.82rem;">대기…</span></div></div></div>';
+          return w;
+        }
+        for(var i=1;i<=TOTAL;i++) list.appendChild(block(i));
+        var slots=[].slice.call(document.querySelectorAll('.sc-ad[data-idx]'));
+        function load(ad){
+          if(ad.dataset.loaded)return; ad.dataset.loaded='1';
+          var msg=ad.querySelector('.msg'); msg.textContent='로딩…';
+          setTimeout(function(){
+            ad.style.background='linear-gradient(135deg,#12203a,#0d1730)'; ad.style.borderColor='rgba(120,150,220,.45)';
+            msg.style.color='#9fb4e6'; msg.innerHTML='✅ 광고 #'+ad.dataset.idx+' 로드됨';
+          },700);
+        }
+        function markInitial(n){ initialLoaded=n; cntB.innerHTML='초기 요청 <b>'+n+'/'+TOTAL+'</b>'; cntB.className='sc-badge '+(n>3?'bad':'good'); }
+        if(mode==='bad'){
+          // 즉시 전부 로드
+          markInitial(TOTAL);
+          slots.forEach(load);
+          badge.innerHTML='초기 로드 <b>6개 즉시</b>';
+          timeB.innerHTML='초기 로드 <b>무거움</b>'; timeB.className='sc-badge bad';
+        } else {
+          // 지연 로딩: 뷰포트 근처만
+          var io=new IntersectionObserver(function(ents){
+            ents.forEach(function(e){ if(e.isIntersecting){ load(e.target); io.unobserve(e.target);
+              var loaded=document.querySelectorAll('.sc-ad[data-loaded]').length;
+              if(loaded>initialLoaded && document.querySelector('.sc-seg')){ cntB.innerHTML='로드됨 <b>'+loaded+'/'+TOTAL+'</b>'; }
+            }});
+          },{rootMargin:'200px'});
+          slots.forEach(function(s){io.observe(s);});
+          // 초기(첫 화면) 카운트
+          setTimeout(function(){
+            var n=document.querySelectorAll('.sc-ad[data-loaded]').length; markInitial(n||1);
+            badge.innerHTML='초기 로드 <b>'+(n||1)+'개만</b>';
+            timeB.innerHTML='초기 로드 <b>가벼움</b>'; timeB.className='sc-badge good';
+          },400);
+        }
+      })();
+      </script>
+
+    </main>
+  <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="../index.html" class="footer-logo" aria-label="Silversmith 홈">Silversmith</a>
+                    <p class="footer-tagline">전략 · 기술 · 제품으로 디지털 성장을 가속합니다</p>
+                </div>
+                <nav class="footer-nav" aria-label="푸터 내비게이션">
+                    <div class="footer-col">
+                        <h3>컨설팅</h3>
+                        <ul role="list">
+                            <li><a href="../consulting/seo-aeo-geo.html">SEO / AEO / GEO</a></li>
+                            <li><a href="../consulting/ax-rpa.html">AX / RPA</a></li>
+                            <li><a href="../consulting/ad-monetization.html">Ad Monetization</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h3>서비스 & 프로젝트</h3>
+                        <ul role="list">
+                            <li><a href="../agency/search-display-ads.html">SA/DA 광고</a></li>
+                            <li><a href="../agency/sms-lms-mms-rcs.html">SKT 문자광고</a></li>
+                            <li><a href="../project/ggeujag.html">그작그작</a></li>
+                            <li><a href="../project/youtube-auto-translator.html">YouTube 자동번역기</a></li>
+                            <li><a href="../project/jsbin.html">JSBin.kr</a></li>
+                            <li><a href="../project/y-to-x.html">y-to-x</a></li>
+                            <li><span style="color:var(--clr-text-muted);cursor:default">MeRokDam (공사중)</span></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h3>회사</h3>
+                        <ul role="list">
+                            <li><a href="../story.html">회사 스토리</a></li>
+                            <li><a href="../contact.html">문의하기</a></li>
+                            <li><a href="../privacy.html">개인정보처리방침</a></li>
+                            <li><a href="../terms.html">이용약관</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copy">© 2026 실버스미스 주식회사 · 사업자등록번호 272-87-02545 · 대표이사 윤정희 · <a href="mailto:help@silver-smiths.com" style="color:inherit">help@silver-smiths.com</a><br>경기도 양평군 양서면 식곡길 109-46 · <a href="tel:050714084101" style="color:inherit">0507-1408-4101</a> · 통신판매업신고번호 제2024-경기양평-1546호</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js" defer></script>
+</body>
+</html>
