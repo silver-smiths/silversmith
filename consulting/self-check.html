@@ -64,6 +64,16 @@
 
     <style>
       .sc-wrap{max-width:1080px;margin:0 auto;padding:0 1.25rem;}
+      .sc-cardgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.1rem;margin-top:1.5rem;}
+      .sc-card{display:flex;flex-direction:column;gap:.5rem;text-decoration:none;background:rgba(255,255,255,.03);border:1px solid rgba(148,163,210,.18);border-radius:16px;padding:1.5rem;transition:transform .18s,box-shadow .18s,border-color .18s;cursor:pointer;position:relative;}
+      .sc-card:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(0,0,0,.4);border-color:#8fb4ff!important;}
+      .sc-card:focus-visible{outline:2px solid #8fb4ff;outline-offset:3px;}
+      .sc-card .ic{font-size:2rem;line-height:1;}
+      .sc-card h3{color:#eef2ff;font-size:1.1rem;font-weight:800;margin:0;}
+      .sc-card p{color:#9aa7c7;font-size:.9rem;line-height:1.6;margin:0;}
+      .sc-card .badge{align-self:flex-start;font-size:.72rem;font-weight:700;padding:.22rem .75rem;border-radius:20px;border:1px solid;}
+      .sc-card::after{content:"▶ 데모 열기";margin-top:.4rem;color:#8fb4ff;font-weight:700;font-size:.82rem;letter-spacing:.02em;}
+      .sc-card:hover::after{text-decoration:underline;}
       .sc-toolbar{position:sticky;top:56px;z-index:40;display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;justify-content:space-between;
         background:rgba(10,14,26,.92);backdrop-filter:blur(10px);border:1px solid rgba(148,163,210,.18);border-radius:14px;padding:.7rem 1rem;margin:1rem auto;}
       .sc-seg{display:inline-flex;background:#0e1626;border:1px solid rgba(148,163,210,.25);border-radius:999px;padding:.25rem;}
@@ -240,24 +250,24 @@
               <h2 class="section-title">예시 <span class="accent-gold">보기</span></h2>
               <p class="section-desc">각 카드에서 <b>좋은 예시 / 나쁜 예시</b>를 전환하며 실제 동작을 직접 확인하세요. PC·모바일 모두 최적화되어 있습니다.</p>
             </div>
-            <div class="sc-wrap tool-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));">
-              <a class="tool-card" href="self-check-cls.html" style="border-color:rgba(255,180,84,.3);">
-                <span class="tool-card-icon">📐</span>
+            <div class="sc-wrap sc-cardgrid">
+              <a class="sc-card" href="self-check-cls.html" style="border-color:rgba(255,180,84,.3);">
+                <span class="ic">📐</span>
                 <h3>CLS 진단</h3>
                 <p>Google 테스트 광고·샘플 이미지로 레이아웃 밀림을 실시간 CLS 점수와 함께 체감합니다.</p>
-                <span class="tool-card-badge" style="color:#ffb454;background:rgba(255,180,84,.12);border-color:rgba(255,180,84,.35);">레이아웃 이동</span>
+                <span class="badge" style="color:#ffb454;background:rgba(255,180,84,.12);border-color:rgba(255,180,84,.35);">레이아웃 이동</span>
               </a>
-              <a class="tool-card" href="self-check-passback.html" style="border-color:rgba(120,150,220,.3);">
-                <span class="tool-card-icon">🔁</span>
+              <a class="sc-card" href="self-check-passback.html" style="border-color:rgba(120,150,220,.3);">
+                <span class="ic">🔁</span>
                 <h3>무한 패스백 · 로딩 지연</h3>
                 <p>패스백 홉 로그와 최종 표시까지 걸린 시간(ms)을 실측으로 비교합니다.</p>
-                <span class="tool-card-badge" style="color:#9fb4e6;background:rgba(120,150,220,.12);border-color:rgba(120,150,220,.35);">로딩 지연</span>
+                <span class="badge" style="color:#9fb4e6;background:rgba(120,150,220,.12);border-color:rgba(120,150,220,.35);">로딩 지연</span>
               </a>
-              <a class="tool-card" href="self-check-lazyload.html" style="border-color:rgba(94,224,138,.3);">
-                <span class="tool-card-icon">🐢</span>
+              <a class="sc-card" href="self-check-lazyload.html" style="border-color:rgba(94,224,138,.3);">
+                <span class="ic">🐢</span>
                 <h3>지연 로딩 미적용</h3>
                 <p>초기 로드 광고 수와 로딩 시간을 lazy load 적용/미적용으로 비교합니다.</p>
-                <span class="tool-card-badge">지연 로딩</span>
+                <span class="badge">지연 로딩</span>
               </a>
             </div>
           </div>
