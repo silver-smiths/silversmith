@@ -53,8 +53,8 @@
     <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
     <script>window.googletag=window.googletag||{cmd:[]};</script>
     <style>
-      :root{--cls-adh:280px;}
-      @media(max-width:640px){:root{--cls-adh:250px;}}
+      :root{--cls-adh:520px;}
+      @media(max-width:640px){:root{--cls-adh:400px;}}
       #cls-adwrap.good #cls-slot{min-height:var(--cls-adh);}
       #cls-adwrap.bad #cls-slot{min-height:0;}
       #cls-slot{transition:none;}
@@ -279,7 +279,7 @@
         <div class="sc-wrap">
           <div class="feature-card" style="background:rgba(255,255,255,.03);border:1px solid rgba(148,163,210,.14);border-radius:14px;padding:1.4rem;">
             <h3 style="color:#eef2ff;margin-bottom:.6rem;">지금 무슨 일이 일어났나요?</h3>
-            <p style="color:#aeb8d4;line-height:1.85;"><b style="color:#ff8098;">나쁜 예시</b> — 광고 슬롯에 크기를 예약하지 않아, 약 1.6초 뒤 광고가 뜨는 순간 아래 콘텐츠가 광고 높이만큼 밀렸습니다. 상단의 CLS 점수가 크게 올라갑니다(대개 0.1 이상 = 나쁨). 사용자는 누르려던 링크 대신 광고를 누르기 쉽습니다.</p>
+            <p style="color:#aeb8d4;line-height:1.85;"><b style="color:#ff8098;">나쁜 예시</b> — 광고 슬롯에 크기를 예약하지 않아, 스크롤로 광고가 화면 상단쪽에 들어오는 순간, 아래 콘텐츠 전체가 광고 높이(약 520px)만큼 크게 밀렸습니다. 상단의 CLS 점수가 0.25를 훌쩍 넘겨 '나쁨' 구간으로 올라갑니다. 사용자는 누르려던 링크 대신 광고를 누르기 쉽습니다.</p>
             <p style="color:#aeb8d4;line-height:1.85;"><b style="color:#5ee08a;">좋은 예시</b> — 광고 슬롯에 크기(높이)를 미리 예약해, 광고가 떠도 레이아웃이 전혀 움직이지 않습니다. CLS ≈ 0.00. <b>권장:</b> 모든 광고 컨테이너에 <code>width·height</code> 또는 <code>aspect-ratio</code>를 지정하세요. PC와 모바일에서 광고 크기가 다르면 <b>브레이크포인트별로 각각</b> 예약해야 합니다.</p>
           </div>
         </div>
@@ -351,10 +351,10 @@
           ents.forEach(function(e){
             if(e.isIntersecting){ io.disconnect();
               if(ph) ph.textContent='광고 로딩 중…';
-              setTimeout(reveal, 600);
+              setTimeout(reveal, 350);
             }
           });
-        }, {rootMargin:'0px 0px -15% 0px', threshold:.2});
+        }, {rootMargin:'0px 0px -55% 0px', threshold:0});
         io.observe(slot);
       })();
       </script>
