@@ -35,6 +35,10 @@
        {"@type":"ListItem","position":4,"name":"지연 로딩 미적용"}]}}
     </script>
 
+
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"지연 로딩은 어떻게 적용하나요?","acceptedAnswer":{"@type":"Answer","text":"접힘(below-the-fold) 광고를 IntersectionObserver 등으로 뷰포트에 가까워질 때 요청하도록 구현합니다. 첫 화면 광고는 즉시 로드합니다."}},{"@type":"Question","name":"모든 광고를 지연 로딩해야 하나요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 첫 화면(above-the-fold) 광고는 즉시 로드하고, 접힘 아래 광고만 지연 로딩하는 것이 이상적입니다. 지나친 지연은 오히려 노출 손실이 될 수 있습니다."}}]}
+    </script>
     <!-- Google Tag Manager -->
     <script>(function (w, d, s, l, i) {
             w[l] = w[l] || []; w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
@@ -246,6 +250,29 @@
         </div>
       </section>
 
+
+        <section class="section" style="padding-top:0;">
+          <div class="sc-wrap">
+            <h3 style="color:#eef2ff;margin:.4rem 0 1rem;">자주 묻는 질문</h3>
+            <p style="color:#eef2ff;font-weight:700;margin:.8rem 0 .2rem;">Q. 지연 로딩은 어떻게 적용하나요?</p>
+            <p style="color:#aeb8d4;line-height:1.8;">접힘(below-the-fold) 광고를 IntersectionObserver 등으로 뷰포트에 가까워질 때 요청하도록 구현합니다. 첫 화면 광고는 즉시 로드합니다.</p>
+            <p style="color:#eef2ff;font-weight:700;margin:.8rem 0 .2rem;">Q. 모든 광고를 지연 로딩해야 하나요?</p>
+            <p style="color:#aeb8d4;line-height:1.8;">아닙니다. 첫 화면(above-the-fold) 광고는 즉시 로드하고, 접힘 아래 광고만 지연 로딩하는 것이 이상적입니다. 지나친 지연은 오히려 노출 손실이 될 수 있습니다.</p>
+          </div>
+        </section>
+
+        <section class="section" style="padding-top:0;">
+          <div class="sc-wrap">
+            <div class="feature-card" style="background:rgba(94,224,138,.06);border:1px solid rgba(94,224,138,.25);border-radius:14px;padding:1.3rem 1.5rem;">
+              <h3 style="color:#5ee08a;margin-bottom:.6rem;">✅ 지연 로딩 권장 설정 체크리스트</h3>
+              <ul style="color:#cfe8d8;line-height:1.9;margin:0;padding-left:1.2rem;">
+                <li>접힘 아래 광고는 지연 로딩 적용</li>
+                <li>첫 화면 광고는 즉시 로드</li>
+                <li>뷰포트 근접 시 요청되도록 rootMargin 튜닝</li>
+              </ul>
+            </div>
+          </div>
+        </section>
         <section class="section">
           <div class="sc-wrap">
             <a href="self-check.html" style="color:#8fb4ff;text-decoration:underline;">← 자가진단 홈으로</a>
