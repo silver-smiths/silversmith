@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ko" prefix="og: https://ogp.me/ns#">
+<head>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="광고를 붙이기 전에 놓치면 수익이 새는 기술적 함정 3가지 — 레이아웃 이동(CLS), 무한 패스백, 지연 로딩 미적용. 왜 손해인지·어떻게 진단하는지·무엇을 고쳐야 하는지 정리하고, 좋은/나쁜 예시 실시간 데모로 직접 확인합니다." /><meta name="keywords" content="광고 수익화 주의사항, CLS, 레이아웃 이동, 무한 패스백, passback, 지연 로딩, lazy load, 뷰어빌리티, 게재율, eCPM, Core Web Vitals, 광고 최적화, Silversmith" />
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" /><meta name="author" content="Silversmith" />
+<link rel="canonical" href="https://silver-smiths.com/post/2026/ad-monetization-cautions.html" /><link rel="alternate" hreflang="ko" href="https://silver-smiths.com/post/2026/ad-monetization-cautions.html" /><link rel="alternate" hreflang="x-default" href="https://silver-smiths.com/post/2026/ad-monetization-cautions.html" />
+<meta property="og:type" content="article" /><meta property="og:url" content="https://silver-smiths.com/post/2026/ad-monetization-cautions.html" />
+<meta property="og:title" content="광고 수익화할 때 주의해야 하는 것 — CLS·무한 패스백·지연 로딩 — Silversmith" /><meta property="og:description" content="광고를 붙이기 전에 놓치면 수익이 새는 기술적 함정 3가지 — 레이아웃 이동(CLS), 무한 패스백, 지연 로딩 미적용. 왜 손해인지·어떻게 진단하는지·무엇을 고쳐야 하는지 정리하고, 좋은/나쁜 예시 실시간 데모로 직접 확인합니다." />
+<meta property="og:image" content="https://silver-smiths.com/images/og-image.png" /><meta property="og:locale" content="ko_KR" /><meta property="og:site_name" content="Silversmith" />
+<meta property="article:published_time" content="2026-08-13T00:00:00+09:00" /><meta property="article:section" content="insight" />
+<meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content="광고 수익화할 때 주의해야 하는 것 — CLS·무한 패스백·지연 로딩 — Silversmith" /><meta name="twitter:description" content="광고를 붙이기 전에 놓치면 수익이 새는 기술적 함정 3가지 — 레이아웃 이동(CLS), 무한 패스백, 지연 로딩 미적용. 왜 손해인지·어떻게 진단하는지·무엇을 고쳐야 하는지 정리하고, 좋은/나쁜 예시 실시간 데모로 직접 확인합니다." /><meta name="twitter:image" content="https://silver-smiths.com/images/og-image.png" />
+<title>광고 수익화할 때 주의해야 하는 것 — CLS·무한 패스백·지연 로딩 — Silversmith</title>
+
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@graph":[
+      {"@type":"Article","@id":"https://silver-smiths.com/post/2026/ad-monetization-cautions.html#article","headline":"광고 수익화할 때 주의해야 하는 것 — CLS·무한 패스백·지연 로딩","description":"광고를 붙이기 전에 놓치면 수익이 새는 기술적 함정 3가지 — 레이아웃 이동(CLS), 무한 패스백, 지연 로딩 미적용. 왜 손해인지·어떻게 진단하는지·무엇을 고쳐야 하는지 정리하고, 좋은/나쁜 예시 실시간 데모로 직접 확인합니다.",
+       "author":{"@type":"Organization","name":"Silversmith","@id":"https://silver-smiths.com/#org"},
+       "publisher":{"@type":"Organization","@id":"https://silver-smiths.com/#org"},
+       "datePublished":"2026-08-13","dateModified":"2026-08-13","inLanguage":"ko","url":"https://silver-smiths.com/post/2026/ad-monetization-cautions.html",
+       "image":"https://silver-smiths.com/images/og-image.png","keywords":["광고 수익화 주의사항", "CLS", "무한 패스백", "지연 로딩", "뷰어빌리티", "Core Web Vitals", "광고 최적화"]},
+      {"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"광고 수익화에서 가장 먼저 점검할 것은 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"레이아웃 이동(CLS), 무한 패스백, 지연 로딩 미적용 세 가지 기술 위생입니다. 그중에서도 검색·UX에 직접 영향을 주는 CLS부터 점검하고, 그다음 단가·뷰어빌리티에 직결되는 패스백, 초기 속도에 영향을 주는 지연 로딩 순으로 넓혀가길 권장합니다."}},{"@type":"Question","name":"CLS가 얼마면 나쁜 건가요?","acceptedAnswer":{"@type":"Answer","text":"Google 기준으로 0.1 이하는 좋음, 0.1~0.25는 개선 필요, 0.25 초과는 나쁨(Poor)입니다. 광고 슬롯 크기를 미리 예약하지 않아 광고가 늦게 뜨며 콘텐츠가 밀리는 것이 주원인입니다."}},{"@type":"Question","name":"무한 패스백은 왜 문제인가요?","acceptedAnswer":{"@type":"Answer","text":"미채움 시 다른 네트워크로 요청을 넘기는 패스백이 과도하게 반복되면 광고 표시가 수 초 지연되어, 유효 노출 기준(면적 50%가 1초 이상)을 못 채우고 뷰어빌리티가 급락합니다. 동일 노출에 Google 광고를 2회 이상 호출하면 무효 활동(반복 호출)에 해당할 수 있습니다."}},{"@type":"Question","name":"지연 로딩은 모든 광고에 적용하나요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 첫 화면(above-the-fold) 광고는 즉시 로드하고, 접힘 아래 광고만 지연 로딩(lazy load)하는 것이 이상적입니다. 지나치게 공격적인 지연은 오히려 노출 손실이 될 수 있습니다."}},{"@type":"Question","name":"이 문제들은 어떤 도구로 진단하나요?","acceptedAnswer":{"@type":"Answer","text":"CLS는 PageSpeed Insights·Lighthouse·Search Console의 Core Web Vitals 보고서, 패스백·로딩 지연은 GAM 리포트와 브라우저 네트워크 탭·광고 속도(Ad Speed) 리포트, 사용자 행동은 Microsoft Clarity 같은 히트맵으로 확인합니다."}},{"@type":"Question","name":"반응형 사이트는 광고 크기를 어떻게 예약하나요?","acceptedAnswer":{"@type":"Answer","text":"PC와 모바일에서 광고 크기가 다르면 브레이크포인트별로 각각 자리를 예약해야 합니다. 사이즈 매핑에 맞춰 컨테이너의 min-height 또는 aspect-ratio를 미디어 쿼리로 지정하세요."}}]},
+      {"@type":"BreadcrumbList","itemListElement":[
+        {"@type":"ListItem","position":1,"name":"홈","item":"https://silver-smiths.com/"},
+        {"@type":"ListItem","position":2,"name":"스토리","item":"https://silver-smiths.com/story.html"},
+        {"@type":"ListItem","position":3,"name":"광고 수익화할 때 주의해야 하는 것 — CLS·무한 패스백·지연 로딩"}]}]}
+    </script>
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MQT4J6J');</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Noto+Serif+KR:wght@400;700&family=Inter:wght@400;500;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Noto+Serif+KR:wght@400;700&family=Inter:wght@400;500;700&display=swap" /></noscript>
+    <link rel="preload" href="../../css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="preload" href="../../css/pages.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="../../css/style.css" /><link rel="stylesheet" href="../../css/pages.css" /></noscript>
+    <style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html,body{background:#080d1a;color:#d4daf0;font-family:'Noto Sans KR','Inter',sans-serif;height:auto!important;overflow:auto!important;}
+    #main-nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:1rem clamp(1.25rem,4vw,2.5rem);backdrop-filter:blur(20px);background:rgba(8,13,26,.88);border-bottom:1px solid rgba(148,163,210,.12);}
+    .nav-logo{font-size:1.4rem;font-weight:800;letter-spacing:-.04em;background:linear-gradient(135deg,#c8cdd6,#e8ecf4,#a8b0c0,#d0d8e8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .note-box{background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.25);border-radius:12px;padding:1.1rem 1.4rem;margin:2rem 0;font-size:0.92rem;line-height:1.75;color:#b8c2e0;}.note-box strong{color:#8fb4ff;}
+    
+    .chk{background:rgba(94,224,138,.06);border:1px solid rgba(94,224,138,.25);border-radius:14px;padding:1.3rem 1.5rem;}.chk li{color:#cfe8d8;line-height:1.95;}</style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MQT4J6J" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <main style="padding-top:5rem;min-height:100vh;">
+      <div style="padding:4rem 0 3rem;position:relative;overflow:hidden;">
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at top left,rgba(255,180,84,0.1) 0%,transparent 60%);pointer-events:none;"></div>
+        <div class="container-narrow">
+          <nav class="breadcrumb" aria-label="브레드크럼" style="margin-bottom:1.5rem;">
+            <a href="../../">홈</a><span class="breadcrumb-sep" aria-hidden="true">›</span>
+            <a href="../../story.html">스토리</a><span class="breadcrumb-sep" aria-hidden="true">›</span>
+            <span aria-current="page">광고 수익화 주의사항</span>
+          </nav>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem;"><span style="display:inline-block;padding:.25rem .75rem;border:1px solid rgba(148,163,210,.25);border-radius:999px;font-size:.75rem;color:var(--clr-text-muted);">광고 수익화</span><span style="display:inline-block;padding:.25rem .75rem;border:1px solid rgba(148,163,210,.25);border-radius:999px;font-size:.75rem;color:var(--clr-text-muted);">CLS</span><span style="display:inline-block;padding:.25rem .75rem;border:1px solid rgba(148,163,210,.25);border-radius:999px;font-size:.75rem;color:var(--clr-text-muted);">무한 패스백</span><span style="display:inline-block;padding:.25rem .75rem;border:1px solid rgba(148,163,210,.25);border-radius:999px;font-size:.75rem;color:var(--clr-text-muted);">지연 로딩</span><span style="display:inline-block;padding:.25rem .75rem;border:1px solid rgba(148,163,210,.25);border-radius:999px;font-size:.75rem;color:var(--clr-text-muted);">자가진단</span></div>
+          <h1 style="font-size:clamp(1.75rem,4.5vw,2.8rem);font-weight:900;letter-spacing:-.04em;line-height:1.15;margin-bottom:1.25rem;">광고 수익화할 때 주의해야 하는 것 — CLS·무한 패스백·지연 로딩</h1>
+          <p style="color:var(--clr-text-muted);font-size:1.05rem;line-height:1.75;max-width:600px;margin-bottom:2rem;">광고를 붙이기 전에 놓치면 수익이 새는 기술적 함정 3가지 — 레이아웃 이동(CLS), 무한 패스백, 지연 로딩 미적용. 왜 손해인지·어떻게 진단하는지·무엇을 고쳐야 하는지 정리하고, 좋은/나쁜 예시 실시간 데모로 직접 확인합니다.</p>
+          <div style="display:flex;align-items:center;gap:1rem;font-size:.82rem;color:var(--clr-text-dim);"><span>Silversmith</span><span>·</span><time datetime="2026-08-13">2026년 8월 13일</time><span>·</span><span>읽는 시간 13분</span></div>
+        </div>
+      </div>
+      <hr class="post-divider" style="max-width:720px;margin:0 auto 2.5rem;" />
+      <article class="post-body container-narrow" style="padding-bottom:5rem;">
+
+        <p>광고를 사이트에 붙이는 일은 태그 몇 줄이면 끝납니다. 그런데 <strong>정작 수익이 새는 지점은 "광고를 어떻게 붙였는가"의 기술적 디테일</strong>에 있습니다. 멋진 지면 설계에 공을 들여도, 아래 세 가지가 무너져 있으면 뷰어빌리티·게재율·단가가 함께 떨어집니다. 심지어 검색 유입까지 잃습니다.</p>
+        <p>이 글은 광고 수익화에서 <strong>반드시 피해야 할 기술적 함정 3가지</strong>를 <em>왜 손해인지 → 어떻게 진단하는지 → 무엇을 고쳐야 하는지</em> 순서로 정리합니다. 그리고 각각을 <strong>좋은/나쁜 예시 실시간 데모</strong>로 직접 확인할 수 있게 안내합니다. 눈으로 차이를 보면 왜 지켜야 하는지 바로 이해됩니다.</p>
+        <div style="overflow-x:auto;">
+          <table style="width:100%;border-collapse:collapse;font-size:0.9rem;margin-top:.5rem;">
+            <thead><tr><th style="text-align:left;padding:.6rem .8rem;border-bottom:1px solid rgba(148,163,210,.3);color:#d4daf0;font-weight:700;">주의사항</th><th style="text-align:left;padding:.6rem .8rem;border-bottom:1px solid rgba(148,163,210,.3);color:#d4daf0;font-weight:700;">증상</th><th style="text-align:left;padding:.6rem .8rem;border-bottom:1px solid rgba(148,163,210,.3);color:#d4daf0;font-weight:700;">핵심 영향</th><th style="text-align:left;padding:.6rem .8rem;border-bottom:1px solid rgba(148,163,210,.3);color:#d4daf0;font-weight:700;">권장</th></tr></thead>
+            <tbody>
+              <tr><td style="padding:.6rem .8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;"><strong>① 레이아웃 이동(CLS)</strong></td><td style="padding:.6rem .8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">광고가 늦게 떠 콘텐츠가 밀림</td><td style="padding:.6rem .8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">오클릭·이탈·검색순위</td><td style="padding:.6rem .8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">광고 슬롯 크기 예약</td></tr>
+              <tr><td style="padding:.6rem .8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;"><strong>② 무한 패스백</strong></td><td style="padding:.6rem .8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">패스백 반복으로 표시 수 초 지연</td><td style="padding:.6rem .8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">뷰어빌리티·단가</td><td style="padding:.6rem .8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">패스백 2~3단계·타임아웃</td></tr>
+              <tr><td style="padding:.6rem .8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;"><strong>③ 지연 로딩 미적용</strong></td><td style="padding:.6rem .8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">화면 밖 광고까지 즉시 로드</td><td style="padding:.6rem .8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">초기 속도·자원 낭비</td><td style="padding:.6rem .8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">접힘 광고는 지연 로딩</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note-box"><strong>먼저 무엇부터?</strong> 검색·UX에 직접 영향을 주는 <strong>①CLS</strong>를 가장 먼저, 그다음 단가·뷰어빌리티에 직결되는 <strong>②패스백</strong>, 초기 로딩 속도의 <strong>③지연 로딩</strong> 순으로 점검하길 권장합니다. 세 가지 모두 <a href="../../consulting/self-check.html" style="color:#8fb4ff;text-decoration:underline;">광고 수익화 자가진단</a>에서 좋은/나쁜 예시로 직접 체감할 수 있습니다.</div>
+        <hr style="margin:2rem 0;border-color:rgba(148,163,210,.15);" />
+
+        <h2>① 레이아웃 이동(CLS) — 광고가 늦게 떠서 콘텐츠가 밀린다</h2>
+        <p>광고 슬롯에 <strong>크기를 미리 예약하지 않으면</strong>, 광고가 뒤늦게 로드되며 그 아래 콘텐츠를 밀어냅니다. 사용자가 링크를 누르려는 순간 광고가 끼어들어 위치가 바뀌는 것 — 이것이 <a href="https://web.dev/articles/cls" target="_blank" rel="noopener" style="color:#8fb4ff;text-decoration:underline;">Cumulative Layout Shift(CLS)</a>입니다.</p>
+        <h3 style="color:#eef2ff;font-size:1.08rem;font-weight:800;margin:1.4rem 0 .5rem;">왜 손해인가</h3>
+        <ul>
+          <li><strong>오클릭 → 무효 클릭 위험:</strong> 밀림으로 잘못 눌린 광고 클릭은 사용자 불만은 물론, 반복되면 무효 활동으로 계정 리스크가 됩니다.</li>
+          <li><strong>검색 순위 하락:</strong> CLS는 Core Web Vitals 지표라 값이 나쁘면 검색 평가에 불리해 트래픽까지 잃습니다.</li>
+          <li><strong>이탈 증가:</strong> 읽던 위치가 튀면 사용자는 짜증을 느끼고 떠납니다 → 세션·노출 기회 감소.</li>
+        </ul>
+        <div style="overflow-x:auto;">
+          <table style="width:100%;border-collapse:collapse;font-size:0.9rem;margin-top:.5rem;">
+            <thead><tr><th style="text-align:left;padding:.6rem .8rem;border-bottom:1px solid rgba(148,163,210,.3);color:#d4daf0;font-weight:700;">CLS 값</th><th style="text-align:left;padding:.6rem .8rem;border-bottom:1px solid rgba(148,163,210,.3);color:#d4daf0;font-weight:700;">판정</th></tr></thead>
+            <tbody>
+              <tr><td style="padding:.6rem .8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">0 ~ 0.10</td><td style="padding:.6rem .8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">🟢 좋음(Good)</td></tr>
+              <tr><td style="padding:.6rem .8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">0.10 ~ 0.25</td><td style="padding:.6rem .8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">🟡 개선 필요</td></tr>
+              <tr><td style="padding:.6rem .8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">0.25 초과</td><td style="padding:.6rem .8rem;border-bottom:1px solid rgba(148,163,210,.12);vertical-align:top;">🔴 나쁨(Poor)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3 style="color:#eef2ff;font-size:1.08rem;font-weight:800;margin:1.4rem 0 .5rem;">어떻게 진단하나</h3>
+        <p><a href="https://pagespeed.web.dev/" target="_blank" rel="noopener" style="color:#8fb4ff;text-decoration:underline;">PageSpeed Insights</a> / Lighthouse의 CLS 점수, Chrome DevTools의 Performance·Layout Shift 표시, 그리고 Google Search Console의 <strong>Core Web Vitals 보고서</strong>로 실제 사용자 환경(필드 데이터)의 CLS를 확인합니다. 광고가 뜨는 순간을 느리게 재생해 어느 요소가 미는지 짚는 것이 핵심입니다.</p>
+        <h3 style="color:#eef2ff;font-size:1.08rem;font-weight:800;margin:1.4rem 0 .5rem;">권장 · 구현</h3>
+        <p><strong>모든 광고 컨테이너에 크기를 예약</strong>하세요 — <code>width·height</code> 또는 <code>aspect-ratio</code>. PC와 모바일에서 광고 크기가 다르면 <strong>브레이크포인트별로 각각</strong> 예약해야 합니다(<a href="https://web.dev/articles/optimize-cls" target="_blank" rel="noopener" style="color:#8fb4ff;text-decoration:underline;">CLS 최적화 가이드</a>).</p>
+        <div class="note-box"><strong>흔한 실수</strong> — 로딩 스피너·플레이스홀더를 실제 광고보다 <strong>작게</strong> 두면 결국 광고가 뜰 때 또 밀립니다. 플레이스홀더도 <strong>광고와 동일한 높이</strong>로 예약해야 합니다. 상단 고정(sticky) 배너의 영역 처리도 함께 점검하세요.</p>
+        <a href="../../consulting/self-check-cls.html" style="display:inline-flex;align-items:center;gap:.4rem;color:#ffb454;font-weight:700;text-decoration:none;border:1px solid rgba(255,180,84,.4);border-radius:10px;padding:.6rem 1rem;margin:.6rem 0;">▶ CLS 데모 열기 — 좋은/나쁜 예시 직접 보기 (실시간 CLS 점수)</a>
+        <hr style="margin:2rem 0;border-color:rgba(148,163,210,.15);" />
+
+        <h2>② 무한 패스백 — 광고가 늦게 떠서 아무도 못 본다</h2>
+        <p><strong>패스백(passback)</strong>은 한 네트워크가 광고를 못 채웠을 때(no-fill) 다른 네트워크로 요청을 넘기는 방식입니다. 워터폴 구조에서 단가 높은 네트워크부터 순서대로 부르다 보니 생기는데, 이 체인이 <strong>과도하게 길어지면</strong> 광고가 뜨기까지 수 초가 걸립니다.</p>
+        <h3 style="color:#eef2ff;font-size:1.08rem;font-weight:800;margin:1.4rem 0 .5rem;">왜 손해인가</h3>
+        <ul>
+          <li><strong>뷰어빌리티 급락:</strong> <a href="https://support.google.com/admanager/answer/4524488" target="_blank" rel="noopener" style="color:#8fb4ff;text-decoration:underline;">Active View</a> 기준 유효 노출은 <strong>면적 50%가 1초 이상</strong> 보여야 인정됩니다. 광고가 몇 초 늦게 뜨면 사용자는 이미 스크롤로 지나가 유효 노출로 잡히지 않습니다.</li>
+          <li><strong>단가·게재율 착시:</strong> 늦게라도 채워지니 게재율 숫자는 나오지만, 실제로 보이지 않은 노출이라 eCPM은 떨어집니다.</li>
+          <li><strong>정책 리스크:</strong> 아래 경고 참고.</li>
+        </ul>
+        <div class="note-box"><strong>반복 호출은 무효 활동입니다.</strong> 동일한 노출 기회에 Google 광고를 2회 이상 호출하면 <a href="https://support.google.com/admanager/answer/9059370?hl=ko" target="_blank" rel="noopener" style="color:#8fb4ff;text-decoration:underline;">Ad Manager 파트너 가이드라인</a>상 <strong>'반복 호출'(무효 활동)</strong>로 간주될 수 있습니다. 패스백 체인 안에 Google을 중복으로 끼워 넣지 마세요 — 인벤토리·사이트 품질 저하로 이어질 수 있습니다.</div>
+        <h3 style="color:#eef2ff;font-size:1.08rem;font-weight:800;margin:1.4rem 0 .5rem;">어떻게 진단하나</h3>
+        <p>GAM 리포트에서 <strong>광고 요청 대비 응답 지연</strong>과 게재율을 보고, <a href="gam-ad-speed-guide.html" target="_blank" rel="noopener" style="color:#8fb4ff;text-decoration:underline;">광고 속도(Ad Speed) 리포트</a>로 느린 렌더링을 짚습니다. 브라우저 <strong>네트워크 탭</strong>에서 하나의 슬롯이 몇 번의 요청을 거쳐 채워지는지 직접 세어보는 것도 확실합니다.</p>
+        <h3 style="color:#eef2ff;font-size:1.08rem;font-weight:800;margin:1.4rem 0 .5rem;">권장 · 구현</h3>
+        <p>패스백 체인을 <strong>2~3단계 이하</strong>로 제한하고, 각 단계에 <strong>타임아웃(예: 1,000~1,500ms)</strong>을 설정하세요. 근본적으로는 순차 호출(워터폴)보다 <strong>동시 입찰(헤더 비딩/통합 경매)</strong>로 전환하면 지연과 반복 호출을 함께 줄일 수 있습니다.</p>
+        <a href="../../consulting/self-check-passback.html" style="display:inline-flex;align-items:center;gap:.4rem;color:#ffb454;font-weight:700;text-decoration:none;border:1px solid rgba(255,180,84,.4);border-radius:10px;padding:.6rem 1rem;margin:.6rem 0;">▶ 무한 패스백 데모 열기 — 최종 표시 시간(ms)·홉 로그 비교</a>
+        <hr style="margin:2rem 0;border-color:rgba(148,163,210,.15);" />
+
+        <h2>③ 지연 로딩 미적용 — 처음에 다 불러 첫 화면이 느려진다</h2>
+        <p>화면 밖(접힘 아래) 광고까지 페이지 로드 시 <strong>한꺼번에 요청</strong>하면 초기 네트워크가 몰려 첫 화면이 느려집니다. 정작 사용자가 보지도 않을 하단 광고에 자원을 낭비하는 셈이죠. 모바일·저사양 기기에서 특히 체감이 큽니다.</p>
+        <h3 style="color:#eef2ff;font-size:1.08rem;font-weight:800;margin:1.4rem 0 .5rem;">왜 손해인가</h3>
+        <ul>
+          <li><strong>초기 속도 저하:</strong> 광고 요청 폭주가 LCP·첫 화면 렌더를 늦춰 이탈을 키웁니다.</li>
+          <li><strong>보이지 않는 노출 낭비:</strong> 한 번도 화면에 안 들어온 하단 광고가 요청·노출되면 뷰어빌리티가 낮은 '빈 노출'만 쌓입니다.</li>
+          <li><strong>데이터·비용 낭비:</strong> 사용자·서버 모두 불필요한 트래픽을 씁니다.</li>
+        </ul>
+        <h3 style="color:#eef2ff;font-size:1.08rem;font-weight:800;margin:1.4rem 0 .5rem;">어떻게 진단하나</h3>
+        <p>브라우저 네트워크 워터폴에서 <strong>페이지 로드 직후 광고 요청이 몇 개나 몰리는지</strong> 확인하고, Lighthouse로 초기 로딩 부하를 봅니다. "첫 화면에 실제로 보이는 광고 수 vs 초기 요청 광고 수"를 비교하면 낭비가 드러납니다.</p>
+        <h3 style="color:#eef2ff;font-size:1.08rem;font-weight:800;margin:1.4rem 0 .5rem;">권장 · 구현</h3>
+        <p>첫 화면(above-the-fold) 광고는 즉시 로드하고, <strong>접힘 아래 광고는 지연 로딩(lazy load)</strong>으로 뷰포트에 가까워질 때 요청하세요(<a href="https://developers.google.com/publisher-tag/guides/ad-best-practices" target="_blank" rel="noopener" style="color:#8fb4ff;text-decoration:underline;">GPT 광고 모범 사례</a>). GPT의 지연 로딩 옵션이나 IntersectionObserver로 구현합니다.</p>
+        <div class="note-box"><strong>균형 주의</strong> — 지연을 너무 공격적으로(뷰포트에 완전히 들어와야만 요청) 잡으면 광고가 늦어 노출을 놓칩니다. 뷰포트 <strong>조금 못 미쳐(예: 200~400px 전)</strong> 요청되도록 여유(rootMargin)를 두는 것이 좋습니다.</p>
+        <a href="../../consulting/self-check-lazyload.html" style="display:inline-flex;align-items:center;gap:.4rem;color:#ffb454;font-weight:700;text-decoration:none;border:1px solid rgba(255,180,84,.4);border-radius:10px;padding:.6rem 1rem;margin:.6rem 0;">▶ 지연 로딩 데모 열기 — 초기 로드량·로드 시점 비교</a>
+        <hr style="margin:2rem 0;border-color:rgba(148,163,210,.15);" />
+
+        <h2>종합 체크리스트</h2>
+        <p>배포 전, 아래 9가지를 점검하세요. 하나라도 걸리면 개선 여지가 큽니다.</p>
+        <div class="chk">
+          <ul style="margin:0;padding-left:1.2rem;">
+            <li>모든 광고 슬롯에 width·height(또는 aspect-ratio) 예약</li>
+            <li>PC/모바일 크기가 다르면 브레이크포인트별로 각각 예약</li>
+            <li>플레이스홀더·스피너를 광고와 동일 높이로 예약 (CLS 0.1 이하 목표)</li>
+            <li>패스백 체인 2~3단계 이하로 제한</li>
+            <li>각 패스백 단계에 타임아웃 설정</li>
+            <li>동일 노출에 Google 중복 호출 금지 (반복 호출 = 무효 활동)</li>
+            <li>첫 화면 광고는 즉시 로드</li>
+            <li>접힘 아래 광고는 지연 로딩 적용</li>
+            <li>지연 로딩 여유(rootMargin)로 노출 손실 방지</li>
+          </ul>
+        </div>
+        <hr style="margin:2rem 0;border-color:rgba(148,163,210,.15);" />
+
+        <h2>직접 진단해 보세요</h2>
+        <p>세 가지를 <strong>좋은/나쁜 예시로 전환하며 한 곳에서</strong> 확인할 수 있습니다. 각 데모는 실시간 CLS 점수, 최종 표시 시간(ms), 초기 로드 광고 수를 눈앞에서 보여줍니다.</p>
+        <div class="note-box"><strong>👉 <a href="../../consulting/self-check.html" style="color:#8fb4ff;text-decoration:underline;">광고 수익화 자가진단 바로가기</a></strong> — CLS · 무한 패스백 · 지연 로딩 실시간 데모</div>
+        <hr style="margin:2rem 0;border-color:rgba(148,163,210,.15);" />
+
+        <h2>자주 묻는 질문 (FAQ)</h2>
+        <p><strong>Q. 광고 수익화에서 가장 먼저 점검할 것은 무엇인가요?</strong></p>
+        <p>레이아웃 이동(CLS), 무한 패스백, 지연 로딩 미적용 세 가지 기술 위생입니다. 그중에서도 검색·UX에 직접 영향을 주는 CLS부터 점검하고, 그다음 단가·뷰어빌리티에 직결되는 패스백, 초기 속도에 영향을 주는 지연 로딩 순으로 넓혀가길 권장합니다.</p>
+        <p><strong>Q. CLS가 얼마면 나쁜 건가요?</strong></p>
+        <p>Google 기준으로 0.1 이하는 좋음, 0.1~0.25는 개선 필요, 0.25 초과는 나쁨(Poor)입니다. 광고 슬롯 크기를 미리 예약하지 않아 광고가 늦게 뜨며 콘텐츠가 밀리는 것이 주원인입니다.</p>
+        <p><strong>Q. 무한 패스백은 왜 문제인가요?</strong></p>
+        <p>미채움 시 다른 네트워크로 요청을 넘기는 패스백이 과도하게 반복되면 광고 표시가 수 초 지연되어, 유효 노출 기준(면적 50%가 1초 이상)을 못 채우고 뷰어빌리티가 급락합니다. 동일 노출에 Google 광고를 2회 이상 호출하면 무효 활동(반복 호출)에 해당할 수 있습니다.</p>
+        <p><strong>Q. 지연 로딩은 모든 광고에 적용하나요?</strong></p>
+        <p>아닙니다. 첫 화면(above-the-fold) 광고는 즉시 로드하고, 접힘 아래 광고만 지연 로딩(lazy load)하는 것이 이상적입니다. 지나치게 공격적인 지연은 오히려 노출 손실이 될 수 있습니다.</p>
+        <p><strong>Q. 이 문제들은 어떤 도구로 진단하나요?</strong></p>
+        <p>CLS는 PageSpeed Insights·Lighthouse·Search Console의 Core Web Vitals 보고서, 패스백·로딩 지연은 GAM 리포트와 브라우저 네트워크 탭·광고 속도(Ad Speed) 리포트, 사용자 행동은 Microsoft Clarity 같은 히트맵으로 확인합니다.</p>
+        <p><strong>Q. 반응형 사이트는 광고 크기를 어떻게 예약하나요?</strong></p>
+        <p>PC와 모바일에서 광고 크기가 다르면 브레이크포인트별로 각각 자리를 예약해야 합니다. 사이즈 매핑에 맞춰 컨테이너의 min-height 또는 aspect-ratio를 미디어 쿼리로 지정하세요.</p>
+
+        <hr style="margin:2.5rem 0 2rem;border-color:rgba(148,163,210,.2);" />
+        <h2>함께 보면 좋은 글</h2>
+        <ul>
+          <li><a href="ad-monetization-knowhow-01.html" style="color:#8fb4ff;text-decoration:underline;">광고 수익화 노하우 ① — 광고 표준·인벤토리 형식·다중 호출·뷰어빌리티</a></li>
+          <li><a href="ad-monetization-knowhow-02.html" style="color:#8fb4ff;text-decoration:underline;">광고 수익화 노하우 ② — UI·사용자 패턴으로 단가 올리기</a></li>
+          <li><a href="gam-ad-speed-guide.html" style="color:#8fb4ff;text-decoration:underline;">GAM 광고속도 지표 완전 가이드</a></li>
+        </ul>
+        <hr style="margin:2.5rem 0;border-color:rgba(148,163,210,.15);" />
+        <div class="note-box"><strong>우리 사이트의 광고 수익화, 직접 진단받고 싶다면</strong><br>Silversmith는 게시자의 지면 구조와 기술 위생을 함께 점검해 단가 손실 지점을 찾아 개선합니다. <a href="../../consulting/ad-monetization.html" style="color:#8fb4ff;text-decoration:underline;">Ad Monetization 컨설팅</a> · <a href="../../contact.html" style="color:#8fb4ff;text-decoration:underline;">문의하기</a></div>
+        <p style="font-size:.82rem;color:var(--clr-text-dim);line-height:1.7;">※ CLS 임계값·정책 기준·유효 노출 기준 등은 링크된 원문(web.dev·Google·Coalition for Better Ads)에서 최신 내용을 확인하시기 바랍니다.</p>
+
+      </article>
+    </main>
+  <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="../../index.html" class="footer-logo" aria-label="Silversmith 홈">Silversmith</a>
+                    <p class="footer-tagline">전략 · 기술 · 제품으로 디지털 성장을 가속합니다</p>
+                </div>
+                <nav class="footer-nav" aria-label="푸터 내비게이션">
+                    <div class="footer-col">
+                        <h3>컨설팅</h3>
+                        <ul role="list">
+                            <li><a href="../../consulting/seo-aeo-geo.html">SEO / AEO / GEO</a></li>
+                            <li><a href="../../consulting/ax-rpa.html">AX / RPA</a></li>
+                            <li><a href="../../consulting/ad-monetization.html">Ad Monetization</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h3>서비스 & 프로젝트</h3>
+                        <ul role="list">
+                            <li><a href="../../agency/search-display-ads.html">SA/DA 광고</a></li>
+                            <li><a href="../../agency/sms-lms-mms-rcs.html">SKT 문자광고</a></li>
+                            <li><a href="../../project/ggeujag.html">그작그작</a></li>
+                            <li><a href="../../project/youtube-auto-translator.html">YouTube 자동번역기</a></li>
+                            <li><a href="../../project/jsbin.html">JSBin.kr</a></li>
+                            <li><a href="../../project/y-to-x.html">y-to-x</a></li>
+                            <li><span style="color:var(--clr-text-muted);cursor:default">MeRokDam (공사중)</span></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h3>회사</h3>
+                        <ul role="list">
+                            <li><a href="../../story.html">회사 스토리</a></li>
+                            <li><a href="../../contact.html">문의하기</a></li>
+                            <li><a href="../../privacy.html">개인정보처리방침</a></li>
+                            <li><a href="../../terms.html">이용약관</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copy">© 2026 실버스미스 주식회사 · 사업자등록번호 272-87-02545 · 대표이사 윤정희 · <a href="mailto:help@silver-smiths.com" style="color:inherit">help@silver-smiths.com</a><br>경기도 양평군 양서면 식곡길 109-46 · <a href="tel:050714084101" style="color:inherit">0507-1408-4101</a> · 통신판매업신고번호 제2024-경기양평-1546호</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../../js/main.js" defer></script>
+</body>
+</html>

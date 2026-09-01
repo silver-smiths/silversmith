@@ -9,6 +9,21 @@
 
   <!-- 포스팅 -->
   <url>
+    <loc>https://silver-smiths.com/post/2026/ad-monetization-cautions.html</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Silversmith</news:name>
+        <news:language>ko</news:language>
+      </news:publication>
+      <news:publication_date>2026-08-13</news:publication_date>
+      <news:title>광고 수익화할 때 주의해야 하는 것 — CLS·무한 패스백·지연 로딩</news:title>
+    </news:news>
+  </url>
+
+  <url>
     <loc>https://silver-smiths.com/post/2026/ad-monetization-knowhow-02.html</loc>
     <lastmod>2026-08-13</lastmod>
     <changefreq>monthly</changefreq>
