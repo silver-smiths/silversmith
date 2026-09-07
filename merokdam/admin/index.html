@@ -130,7 +130,7 @@ $("tabs").onclick = (ev) => { const t = ev.target.closest(".tab"); if (!t) retur
 async function loadDash() {
   try {
     const r = await api("report");
-    const d = r.diaries || r.diary_stats || {}; const p = r.profiles || {}; const rx = r.reactions_30d || r.reactions || {};
+    const d = r.diaries_30d || r.diaries || {}; const p = r.profiles || {}; const rx = r.reactions_30d || r.reactions || {};
     const rxSum = Object.values(rx).reduce((a, b) => a + (Number(b) || 0), 0);
     const tiers = p.tiers ? Object.entries(p.tiers).map(([k, v]) => `${k} ${v}`).join(" · ") : "";
     $("stats").innerHTML = [["회원", p.total ?? "-"], ["등급", tiers || "-"], ["일기 30일", d.total ?? "-"], ["공개", d.public ?? "-"], ["직접 쓰기", d.manual ?? "-"], ["편집됨", d.edited ?? "-"], ["반응 30일", rxSum], ["미처리 문의", (r.inquiries || []).filter((x) => x.status === "open").length]].map(([k, v]) => `<div><b>${esc(v)}</b><span>${k}</span></div>`).join("");
