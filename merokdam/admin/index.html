@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>미록담 어드민</title>
+<link rel="icon" href="/silver-smiths-favicon.ico">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<style>
+:root{--paper:#FFF9F3;--deep:#FBF1E4;--ink:#4B0082;--body:#5A4B6B;--soft:#77688C;--orange:#FF8C00;--gold:#FFCE44;--leaf:#7BA05B;--line:rgba(75,0,130,.12);--red:#B2402B}
+*{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--body);font:14px/1.6 Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif}
+header{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-bottom:1px solid var(--line);background:#fff;position:sticky;top:0;z-index:5}
+header b{color:var(--ink);font-size:18px} header small{color:var(--soft)}
+main{max-width:1080px;margin:0 auto;padding:18px 22px 60px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 16px} .tab{padding:8px 13px;border-radius:12px;border:1px solid var(--line);background:#fff;font-weight:700;cursor:pointer;color:var(--body)} .tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:14px} .card h3{margin:0 0 10px;color:var(--ink);font-size:16px}
+table{width:100%;border-collapse:collapse;font-size:13px} th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top} th{color:var(--ink);font-weight:700}
+code,.mono{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;background:var(--deep);padding:2px 6px;border-radius:6px;color:var(--ink);word-break:break-all}
+button{border:0;border-radius:10px;padding:8px 13px;font-weight:700;cursor:pointer;font-size:13px} .pri{background:var(--orange);color:#fff} .ghost{background:#fff;color:var(--ink);border:1px solid var(--line)} .danger{background:#fff;color:var(--red);border:1px solid rgba(178,64,43,.35)} button:disabled{opacity:.5;cursor:default}
+input,textarea,select{width:100%;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font:inherit;font-size:13px;background:var(--paper);color:var(--body)} textarea{min-height:70px;font-family:ui-monospace,Menlo,monospace}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap} .row>*{flex:1} .row>button{flex:none}
+.kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px} .kv div{background:var(--deep);border-radius:12px;padding:10px;text-align:center} .kv b{display:block;font-size:20px;color:var(--ink)} .kv span{font-size:12px;color:var(--soft)}
+.ok{color:var(--leaf);font-weight:700} .bad{color:var(--red);font-weight:700} .muted{color:var(--soft);font-size:12.5px}
+.tog{width:44px;height:26px;border-radius:13px;background:#CFC7DA;position:relative;cursor:pointer;flex:none;border:0} .tog::after{content:'';position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.15s} .tog.on{background:var(--leaf)} .tog.on::after{left:21px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-weight:700;display:none;z-index:9}
+#login{max-width:380px;margin:80px auto}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<header><div><b>🌱 미록담 어드민</b> <small id="who"></small></div><div><button class="ghost" id="logout" style="display:none">로그아웃</button></div></header>
+
+<main>
+<section id="login" class="card">
+  <h3>로그인</h3>
+  <p class="muted">앱에 가입한 대표 계정으로 로그인해요. 관리자 명단(admin_users)에 없는 계정은 들어올 수 없어요.</p>
+  <button class="pri" id="btnGoogle" style="width:100%;margin-bottom:10px">Google로 로그인</button>
+  <details><summary class="muted">이메일·비밀번호로 로그인</summary>
+    <div style="margin-top:8px"><input id="email" type="email" placeholder="이메일" autocomplete="username"><div style="height:8px"></div><input id="pw" type="password" placeholder="비밀번호" autocomplete="current-password"><div style="height:8px"></div><button class="ghost" id="btnPw" style="width:100%">로그인</button></div>
+  </details>
+  <p id="loginMsg" class="bad"></p>
+</section>
+
+<section id="app" class="hidden">
+  <div class="tabs" id="tabs">
+    <span class="tab on" data-t="dash">대시보드</span><span class="tab" data-t="policies">정책·모델·프롬프트</span><span class="tab" data-t="switch">스위치·요금</span><span class="tab" data-t="notice">공지·푸시</span><span class="tab" data-t="users">회원</span><span class="tab" data-t="inq">문의</span><span class="tab" data-t="story">사연 영상</span><span class="tab" data-t="audit">감사 로그</span>
+  </div>
+
+  <div id="t-dash">
+    <div class="card"><h3>지표 (최근 30일)</h3><div class="kv" id="stats"></div></div>
+    <div class="card"><h3>점검 (checks)</h3><table id="checks"></table><p class="muted">붉은 항목은 SQL 미실행 또는 함수 미배포. story_judge_ran_today는 일시정지 중이면 false가 정상.</p></div>
+    <div class="card"><h3>테스터 의견 (mood_feedback) · 이벤트</h3><div id="events" class="mono" style="white-space:pre-wrap;background:transparent"></div></div>
+  </div>
+
+  <div id="t-policies" class="hidden">
+    <div class="card"><h3>정책 표 (policies)</h3><p class="muted">값은 JSON. 문자열은 따옴표 포함("…"), 숫자·불리언·배열·객체 그대로. 앱은 콜드 스타트, 함수는 60초 내 반영.</p>
+      <table id="polTable"></table>
+      <h3 style="margin-top:14px">새 키 추가</h3><div class="row"><input id="newKey" placeholder="예: ad.android.banner"><input id="newVal" placeholder='예: "ca-app-pub-…"'><button class="pri" onclick="setPolicy(document.getElementById('newKey').value, document.getElementById('newVal').value)">추가</button></div>
+    </div>
+  </div>
+
+  <div id="t-switch" class="hidden">
+    <div class="card"><h3>기능 스위치</h3><table id="switches"></table></div>
+    <div class="card"><h3>체험·요금</h3><table id="fees"></table></div>
+  </div>
+
+  <div id="t-notice" class="hidden">
+    <div class="card"><h3>알림함 공지 (notice.current)</h3>
+      <div class="row"><input id="nId" placeholder="id (예: 2026-09-overhaul)"><input id="nUntil" type="date"></div><div style="height:8px"></div>
+      <input id="nTitle" placeholder="제목"><div style="height:8px"></div><textarea id="nBody" placeholder="본문" style="font-family:inherit"></textarea><div style="height:8px"></div>
+      <div class="row"><button class="pri" onclick="setNotice()">게시</button><button class="danger" onclick="clearNotice()">내리기</button></div><p class="muted" id="noticeNow"></p></div>
+    <div class="card"><h3>푸시 전송 (전원)</h3><input id="pTitle" placeholder="제목 (40자 이내)"><div style="height:8px"></div><textarea id="pBody" placeholder="본문 (100자 이내)" style="font-family:inherit"></textarea><div style="height:8px"></div>
+      <button class="pri" onclick="sendPush()">보내기</button> <span class="muted">전원에게 즉시 발송돼요. 확인 창이 두 번 떠요.</span></div>
+  </div>
+
+  <div id="t-users" class="hidden">
+    <div class="card"><h3>회원 검색</h3><div class="row"><input id="uq" placeholder="이메일 · 필명 · UID (비우면 최근 가입 30명)"><button class="pri" onclick="searchUsers()">검색</button></div>
+      <table id="userTable" style="margin-top:10px"></table></div>
+  </div>
+
+  <div id="t-inq" class="hidden"><div class="card"><h3>문의 (최근 50)</h3><table id="inqTable"></table></div></div>
+  <div id="t-story" class="hidden"><div class="card"><h3>사연 영상 후보 (최근 30)</h3><p class="muted">선정 크론은 SQL로 중지/재개(pending_20260906_story_pause.sql). 스위치 탭의 feature.story_video는 앱 참여 UI 노출용.</p><table id="storyTable"></table></div></div>
+  <div id="t-audit" class="hidden"><div class="card"><h3>감사 로그 (policy_audit, 최근 80)</h3><table id="auditTable"></table></div></div>
+</section>
+</main>
+<div id="toast"></div>
+
+<script>
+const SUPABASE_URL = "https://hepjyortuuruuveabqid.supabase.co";
+const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhlcGp5b3J0dXVydXV2ZWFicWlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5Njc3MDAsImV4cCI6MjA4ODU0MzcwMH0.AbQ_ComS9pJYgm3EK6RU-n5_MDfqR4iU-W24D75JEJQ";
+const FN = SUPABASE_URL + "/functions/v1/admin-console";
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let cache = { policies: [] };
+
+function toast(m, bad) { const t = $("toast"); t.textContent = m; t.style.background = bad ? "#B2402B" : "#4B0082"; t.style.display = "block"; setTimeout(() => t.style.display = "none", 2600); }
+async function api(action, payload = {}) {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) throw new Error("로그인이 필요해요");
+  const r = await fetch(FN, { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token }, body: JSON.stringify({ action, ...payload }) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error || ("HTTP " + r.status));
+  return j;
+}
+
+// ── 로그인
+$("btnGoogle").onclick = () => sb.auth.signInWithOAuth({ provider: "google", options: { redirectTo: location.origin + location.pathname } });
+$("btnPw").onclick = async () => { const { error } = await sb.auth.signInWithPassword({ email: $("email").value.trim(), password: $("pw").value }); if (error) $("loginMsg").textContent = error.message; };
+$("logout").onclick = async () => { await sb.auth.signOut(); location.reload(); };
+sb.auth.onAuthStateChange((_e, session) => { if (session) enter(); });
+sb.auth.getSession().then(({ data: { session } }) => { if (session) enter(); });
+
+async function enter() {
+  try {
+    const me = await api("whoami");
+    $("who").textContent = me.email; $("logout").style.display = ""; $("login").classList.add("hidden"); $("app").classList.remove("hidden");
+    loadDash(); loadPolicies();
+  } catch (e) {
+    $("loginMsg").textContent = e.message === "forbidden" ? "관리자 명단에 없는 계정이에요 (admin_users)" : e.message;
+    await sb.auth.signOut();
+  }
+}
+
+// ── 탭
+$("tabs").onclick = (ev) => { const t = ev.target.closest(".tab"); if (!t) return; document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("on", x === t)); ["dash","policies","switch","notice","users","inq","story","audit"].forEach((k) => $("t-" + k).classList.toggle("hidden", k !== t.dataset.t));
+  ({ users: searchUsers, inq: loadInq, story: loadStory, audit: loadAudit, dash: loadDash, switch: renderSwitches, notice: renderNotice }[t.dataset.t] || (() => {}))(); };
+
+// ── 대시보드
+async function loadDash() {
+  try {
+    const r = await api("report");
+    const d = r.diaries || r.diary_stats || {}; const p = r.profiles || {}; const rx = r.reactions_30d || r.reactions || {};
+    const rxSum = Object.values(rx).reduce((a, b) => a + (Number(b) || 0), 0);
+    const tiers = p.tiers ? Object.entries(p.tiers).map(([k, v]) => `${k} ${v}`).join(" · ") : "";
+    $("stats").innerHTML = [["회원", p.total ?? "-"], ["등급", tiers || "-"], ["일기 30일", d.total ?? "-"], ["공개", d.public ?? "-"], ["직접 쓰기", d.manual ?? "-"], ["편집됨", d.edited ?? "-"], ["반응 30일", rxSum], ["미처리 문의", (r.inquiries || []).filter((x) => x.status === "open").length]].map(([k, v]) => `<div><b>${esc(v)}</b><span>${k}</span></div>`).join("");
+    $("checks").innerHTML = Object.entries(r.checks || {}).map(([k, v]) => `<tr><td>${esc(k)}</td><td class="${v === true ? "ok" : "bad"}">${v === true ? "OK" : esc(v)}</td></tr>`).join("");
+    $("events").textContent = "mood_feedback: " + JSON.stringify(r.mood_feedback || {}) + "\n\nevents: " + JSON.stringify(r.events || {}, null, 1);
+  } catch (e) { toast("리포트 실패: " + e.message, true); }
+}
+
+// ── 정책
+async function loadPolicies() {
+  try { cache.policies = (await api("policies.list")).rows; renderPolicies(); renderSwitches(); renderNotice(); } catch (e) { toast(e.message, true); }
+}
+function renderPolicies() {
+  $("polTable").innerHTML = "<tr><th style='width:26%'>키</th><th>값 (JSON)</th><th style='width:18%'>수정</th><th style='width:110px'></th></tr>" + cache.policies.map((p, i) => `<tr><td><code>${esc(p.key)}</code></td><td><textarea id="pv${i}" rows="${Math.min(6, Math.ceil(JSON.stringify(p.value).length / 60) || 1)}">${esc(JSON.stringify(p.value, null, p.key.startsWith("prompt.") || p.key === "diary.length" ? 1 : 0))}</textarea></td><td class="muted">${esc((p.updated_at || "").slice(0, 16).replace("T", " "))}<br>${esc(p.updated_by || "")}</td><td><button class="ghost" onclick="setPolicy('${esc(p.key)}', document.getElementById('pv${i}').value)">저장</button></td></tr>`).join("");
+}
+async function setPolicy(key, raw) {
+  let value; try { value = JSON.parse(raw); } catch (_) { return toast("JSON 형식이 아니에요 (문자열은 따옴표 포함)", true); }
+  try { await api("policies.set", { key: key.trim(), value }); toast("저장됨: " + key); await loadPolicies(); } catch (e) { toast(e.message, true); }
+}
+const SWITCHES = [["feature.generate_charge", "AI 생성 과금 (체험 후 💧25)"], ["feature.summary_image", "요약 이미지 (퍼플·골드)"], ["feature.story_video", "사연 영상 참여 UI"], ["feature.garden", "정원 (폐기 예정, 앱은 무시)"]];
+const FEES = [["trial.days", "체험 일수"], ["trial.policy_start", "기존 회원 체험 기산일"], ["point.diary_generate", "생성 차감 {delta:-25}"], ["point.diary_generate_refund", "실패 환불"], ["point.story_selected", "사연 선정 보상"], ["point.admin_gift", "어드민 선물 (지급 버튼)"], ["point.autobio", "자서전 (블루)"], ["limit.manual_per_day", "직접 쓰기 하루 한도"], ["limit.moderation_per_day", "즉시 검수 하루 한도"]];
+function pol(key) { return cache.policies.find((p) => p.key === key); }
+function renderSwitches() {
+  $("switches").innerHTML = SWITCHES.map(([k, label]) => { const p = pol(k); const on = p && p.value === true; return `<tr><td><b>${label}</b><br><code>${k}</code></td><td style="width:60px"><button class="tog ${on ? "on" : ""}" onclick="setPolicy('${k}', '${on ? "false" : "true"}')" title="${on ? "켜짐" : "꺼짐"}"></button></td></tr>`; }).join("");
+  $("fees").innerHTML = FEES.map(([k, label]) => { const p = pol(k); return `<tr><td style="width:40%"><b>${label}</b><br><code>${k}</code></td><td><input id="fee_${k.replace(/\./g, "_")}" value='${esc(p ? JSON.stringify(p.value) : "")}' placeholder="(없음)"></td><td style="width:80px"><button class="ghost" onclick="setPolicy('${k}', document.getElementById('fee_${k.replace(/\./g, "_")}').value)">저장</button></td></tr>`; }).join("");
+}
+// ── 공지·푸시
+function renderNotice() { const n = pol("notice.current"); const v = n && n.value; $("noticeNow").textContent = v ? `현재 공지: [${v.id}] ${v.title} (until ${v.until || "-"})` : "현재 공지 없음"; if (v) { $("nId").value = v.id || ""; $("nTitle").value = v.title || ""; $("nBody").value = v.body || ""; $("nUntil").value = v.until || ""; } }
+async function setNotice() { const notice = { id: $("nId").value.trim() || ("notice-" + Date.now()), title: $("nTitle").value.trim(), body: $("nBody").value.trim(), until: $("nUntil").value || null }; if (!notice.title) return toast("제목이 비었어요", true); try { await api("notice.set", { notice }); toast("공지 게시"); loadPolicies(); } catch (e) { toast(e.message, true); } }
+async function clearNotice() { if (!confirm("공지를 내릴까요?")) return; try { await api("notice.set", { notice: null }); toast("공지 내림"); loadPolicies(); } catch (e) { toast(e.message, true); } }
+async function sendPush() { const title = $("pTitle").value.trim(), body = $("pBody").value.trim(); if (!title || !body) return toast("제목·본문이 비었어요", true); if (!confirm(`전원에게 푸시를 보낼까요?\n\n${title}\n${body}`)) return; if (!confirm("정말 보내요? (취소 불가)")) return; try { const r = await api("push.send", { title, body }); toast(r.ok ? "발송 요청 완료" : "발송 실패 " + r.status, !r.ok); } catch (e) { toast(e.message, true); } }
+
+// ── 회원
+async function searchUsers() {
+  try { const rows = (await api("users.search", { q: $("uq").value.trim() })).rows;
+    $("userTable").innerHTML = "<tr><th>이메일 · 필명</th><th>등급</th><th>💧</th><th>프로필</th><th>조치</th></tr>" + rows.map((u) => `<tr>
+      <td>${esc(u.email || "-")}<br><span class="muted">${esc(u.nickname || "")} · <span class="mono">${esc(u.id.slice(0, 8))}</span> · 가입 ${esc((u.created_at || "").slice(0, 10))}</span></td>
+      <td><select id="tier_${u.id}" style="width:auto"><option ${u.tier === "blue" ? "selected" : ""}>blue</option><option ${u.tier === "purple" ? "selected" : ""}>purple</option><option ${u.tier === "gold" ? "selected" : ""}>gold</option></select><br><input id="until_${u.id}" type="date" value="${esc(u.tier_until || "")}" style="width:auto;margin-top:4px"><br><button class="ghost" style="margin-top:4px" onclick="setTier('${u.id}')">등급 저장</button></td>
+      <td>${esc(u.balance)}<br><button class="ghost" style="margin-top:4px" onclick="grant('${u.id}')">💧 선물</button></td>
+      <td><input id="bd_${u.id}" type="date" value="${esc(u.birth_date || "")}" style="width:auto"><br><input id="mbti_${u.id}" value="${esc(u.mbti || "")}" placeholder="MBTI" maxlength="4" style="width:70px;margin-top:4px"> <select id="g_${u.id}" style="width:auto;margin-top:4px"><option value="">성별-</option>${["female","male","other","none"].map((g) => `<option ${u.gender === g ? "selected" : ""}>${g}</option>`).join("")}</select></td>
+      <td><button class="ghost" onclick="saveProfile('${u.id}')">프로필 저장</button></td></tr>`).join("");
+  } catch (e) { toast(e.message, true); }
+}
+async function setTier(id) { const tier = $("tier_" + id).value, until = $("until_" + id).value || null; if (!confirm(`등급을 ${tier}${until ? " (~" + until + ")" : ""}로 바꿀까요?`)) return; try { await api("users.set_tier", { user_id: id, tier, until }); toast("등급 변경"); searchUsers(); } catch (e) { toast(e.message, true); } }
+async function grant(id) { const p = pol("point.admin_gift"); const d = p && p.value && p.value.delta; if (!confirm(`💧${d ?? "?"} 지급할까요? (point.admin_gift)`)) return; try { const r = await api("users.grant_points", { user_id: id, reason: "admin_gift" }); toast("지급 완료 · 잔액 " + r.balance); searchUsers(); } catch (e) { toast(e.message, true); } }
+async function saveProfile(id) { try { await api("users.update_profile", { user_id: id, birth_date: $("bd_" + id).value || null, mbti: $("mbti_" + id).value.trim().toUpperCase() || null, gender: $("g_" + id).value || null }); toast("프로필 저장"); } catch (e) { toast(e.message, true); } }
+
+// ── 문의·사연·감사
+async function loadInq() { try { const rows = (await api("inquiries.list")).rows; $("inqTable").innerHTML = "<tr><th>일시</th><th>분류</th><th>내용</th><th>앱</th><th>상태</th></tr>" + rows.map((q) => `<tr><td class="muted">${esc((q.created_at || "").slice(0, 16).replace("T", " "))}</td><td>${esc(q.category)}</td><td>${esc(q.message)}</td><td class="muted">${esc(q.platform)} ${esc(q.app_version)}</td><td>${esc(q.status)}<br>${q.status === "open" ? `<button class="ghost" onclick="closeInq('${q.id}')">처리 완료</button>` : ""}</td></tr>`).join(""); } catch (e) { toast(e.message, true); } }
+async function closeInq(id) { try { await api("inquiries.set_status", { id, status: "closed" }); loadInq(); } catch (e) { toast(e.message, true); } }
+async function loadStory() { try { const rows = (await api("story.list")).rows; $("storyTable").innerHTML = "<tr><th>선정일</th><th>상태</th><th>id</th></tr>" + rows.map((s) => `<tr><td>${esc(s.picked_on)}</td><td>${esc(s.status)}</td><td class="mono">${esc(s.id)}</td></tr>`).join("") || "<tr><td class='muted'>없음</td></tr>"; } catch (e) { toast(e.message, true); } }
+async function loadAudit() { try { const rows = (await api("audit.list")).rows; $("auditTable").innerHTML = "<tr><th>일시</th><th>키</th><th>이전</th><th>이후</th><th>누가</th></tr>" + rows.map((a) => `<tr><td class="muted">${esc((a.changed_at || "").slice(0, 16).replace("T", " "))}</td><td><code>${esc(a.key)}</code></td><td class="mono">${esc(JSON.stringify(a.old_value))}</td><td class="mono">${esc(JSON.stringify(a.new_value))}</td><td class="muted">${esc(a.changed_by)}</td></tr>`).join(""); } catch (e) { toast(e.message, true); } }
+</script>
+</body>
+</html>
