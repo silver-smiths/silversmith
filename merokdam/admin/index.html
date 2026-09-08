@@ -219,7 +219,7 @@ function tierLine(t) { return `블루 ${t.blue ?? 0} · 퍼플 ${t.purple ?? 0} 
 function tiles(arr) { return arr.map(([k, v, sub]) => `<div><b>${typeof v === "number" ? num(v) : esc(v)}</b><span>${esc(k)}</span>${sub ? `<span class="sub">${esc(sub)}</span>` : ""}</div>`).join(""); }
 async function overview(force) {
   if (cache.overview && !force) return cache.overview;
-  try { cache.overview = await api("stats.overview"); return cache.overview; } catch (e) { toast("통계 실패: " + e.message, true); return null; }
+  try { cache.overview = await api("stats.overview", force ? { force: true } : {}); if (cache.overview.cached_at) toast("통계는 5분 캐시 (" + cache.overview.cached_at.slice(11, 16) + " UTC 기준)"); return cache.overview; } catch (e) { toast("통계 실패: " + e.message, true); return null; }
 }
 
 // ── 사용 통계
