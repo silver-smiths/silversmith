@@ -3,32 +3,41 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>미록담 어드민</title>
+<title>미록담 운영 콘솔</title>
 <link rel="icon" href="/silver-smiths-favicon.ico">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <style>
-:root{--paper:#FFF9F3;--deep:#FBF1E4;--ink:#4B0082;--body:#5A4B6B;--soft:#77688C;--orange:#FF8C00;--gold:#FFCE44;--leaf:#7BA05B;--line:rgba(75,0,130,.12);--red:#B2402B}
+:root{--paper:#FFF9F3;--deep:#FBF1E4;--ink:#4B0082;--body:#5A4B6B;--soft:#77688C;--orange:#FF8C00;--gold:#FFCE44;--leaf:#7BA05B;--line:rgba(75,0,130,.12);--red:#B2402B;--blue:#87CEEB}
 *{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--body);font:14px/1.6 Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif}
-header{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-bottom:1px solid var(--line);background:#fff;position:sticky;top:0;z-index:5}
+header{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:1px solid var(--line);background:#fff;position:sticky;top:0;z-index:5}
 header b{color:var(--ink);font-size:18px} header small{color:var(--soft)}
-main{max-width:1080px;margin:0 auto;padding:18px 22px 60px}
-.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 16px} .tab{padding:8px 13px;border-radius:12px;border:1px solid var(--line);background:#fff;font-weight:700;cursor:pointer;color:var(--body)} .tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
-.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:14px} .card h3{margin:0 0 10px;color:var(--ink);font-size:16px}
-table{width:100%;border-collapse:collapse;font-size:13px} th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top} th{color:var(--ink);font-weight:700}
+main{max-width:1140px;margin:0 auto;padding:16px 22px 60px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 16px} .tab{padding:8px 13px;border-radius:12px;border:1px solid var(--line);background:#fff;font-weight:700;cursor:pointer;color:var(--body)} .tab.on{background:var(--ink);color:#fff;border-color:var(--ink)} .tab .n{background:var(--red);color:#fff;border-radius:9px;padding:0 6px;font-size:11px;margin-left:5px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:14px} .card h3{margin:0 0 10px;color:var(--ink);font-size:16px;display:flex;align-items:center;gap:6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px} @media(max-width:800px){.grid2{grid-template-columns:1fr}}
+table{width:100%;border-collapse:collapse;font-size:13px} th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top} th{color:var(--ink);font-weight:700;white-space:nowrap}
 code,.mono{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;background:var(--deep);padding:2px 6px;border-radius:6px;color:var(--ink);word-break:break-all}
 button{border:0;border-radius:10px;padding:8px 13px;font-weight:700;cursor:pointer;font-size:13px} .pri{background:var(--orange);color:#fff} .ghost{background:#fff;color:var(--ink);border:1px solid var(--line)} .danger{background:#fff;color:var(--red);border:1px solid rgba(178,64,43,.35)} button:disabled{opacity:.5;cursor:default}
-input,textarea,select{width:100%;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font:inherit;font-size:13px;background:var(--paper);color:var(--body)} textarea{min-height:70px;font-family:ui-monospace,Menlo,monospace}
+input,textarea,select{width:100%;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font:inherit;font-size:13px;background:var(--paper);color:var(--body)} textarea{min-height:64px;font-family:ui-monospace,Menlo,monospace}
 .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap} .row>*{flex:1} .row>button{flex:none}
-.kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px} .kv div{background:var(--deep);border-radius:12px;padding:10px;text-align:center} .kv b{display:block;font-size:20px;color:var(--ink)} .kv span{font-size:12px;color:var(--soft)}
-.ok{color:var(--leaf);font-weight:700} .bad{color:var(--red);font-weight:700} .muted{color:var(--soft);font-size:12.5px}
-.tog{width:44px;height:26px;border-radius:13px;background:#CFC7DA;position:relative;cursor:pointer;flex:none;border:0} .tog::after{content:'';position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.15s} .tog.on{background:var(--leaf)} .tog.on::after{left:21px}
-#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-weight:700;display:none;z-index:9}
-#login{max-width:380px;margin:80px auto}
-.hidden{display:none}
+.kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px} .kv div{background:var(--deep);border-radius:12px;padding:10px;text-align:center;position:relative} .kv b{display:block;font-size:20px;color:var(--ink)} .kv span{font-size:12px;color:var(--soft)} .kv .sub{font-size:11px;color:var(--soft);display:block;margin-top:2px}
+.ok{color:var(--leaf);font-weight:700} .bad{color:var(--red);font-weight:700} .warn{color:#B07A00;font-weight:700} .muted{color:var(--soft);font-size:12.5px}
+.light{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle} .light.g{background:var(--leaf)} .light.r{background:var(--red)} .light.y{background:#E0A400} .light.x{background:#CFC7DA}
+.tog{width:44px;height:26px;border-radius:13px;background:#CFC7DA;position:relative;cursor:pointer;flex:none;border:0;padding:0} .tog::after{content:'';position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.15s} .tog.on{background:var(--leaf)} .tog.on::after{left:21px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-weight:700;display:none;z-index:9;max-width:90vw}
+#login{max-width:380px;margin:80px auto} .hidden{display:none}
+.help{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;background:var(--deep);color:var(--ink);font-size:11px;font-weight:800;cursor:help;position:relative;flex:none;border:1px solid var(--line);vertical-align:middle;margin-left:4px}
+.help:hover::after,.help.open::after{content:attr(data-h);position:absolute;left:50%;bottom:130%;transform:translateX(-50%);width:300px;background:#2E1A4A;color:#fff;padding:10px 12px;border-radius:10px;font-size:12.5px;font-weight:500;line-height:1.55;white-space:pre-line;z-index:20;text-align:left;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.bar{display:flex;align-items:flex-end;gap:3px;height:120px;padding-top:8px} .bar i{flex:1;background:var(--ink);opacity:.75;border-radius:3px 3px 0 0;min-height:1px;position:relative} .bar i.b{background:var(--leaf)} .bar i.c{background:var(--orange)} .bar i:hover::after{content:attr(data-v);position:absolute;bottom:100%;left:50%;transform:translateX(-50%);font-size:11px;background:#2E1A4A;color:#fff;padding:2px 6px;border-radius:6px;white-space:nowrap}
+.legend{font-size:12px;color:var(--soft);margin-top:4px} .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 4px 0 10px;vertical-align:middle}
+.hbar{display:flex;align-items:center;gap:8px;font-size:12.5px;margin:3px 0} .hbar span:first-child{width:90px;color:var(--body)} .hbar em{display:block;height:10px;background:var(--ink);border-radius:5px;opacity:.7} .hbar span:last-child{width:50px;text-align:right;color:var(--soft)}
+.pill{display:inline-block;padding:1px 8px;border-radius:99px;font-size:11.5px;font-weight:800} .t-blue{background:rgba(135,206,235,.25);color:#2F6F8F;border:1px solid rgba(135,206,235,.7)} .t-purple{background:#4B0082;color:#fff} .t-gold{background:linear-gradient(90deg,#D4A017,#F0C040);color:#3A1F5C}
+.danger-zone{border-color:rgba(178,64,43,.35);background:#fff7f5}
+details summary{cursor:pointer;color:var(--ink);font-weight:700}
 </style>
 </head>
 <body>
-<header><div><b>🌱 미록담 어드민</b> <small id="who"></small></div><div><button class="ghost" id="logout" style="display:none">로그아웃</button></div></header>
+<header><div><b>🌱 미록담 운영 콘솔</b> <small id="who"></small></div><div class="row" style="gap:6px"><button class="ghost" id="reload">새로고침</button><button class="ghost" id="logout" style="display:none">로그아웃</button></div></header>
 
 <main>
 <section id="login" class="card">
@@ -43,44 +52,92 @@ input,textarea,select{width:100%;border:1px solid var(--line);border-radius:10px
 
 <section id="app" class="hidden">
   <div class="tabs" id="tabs">
-    <span class="tab on" data-t="dash">대시보드</span><span class="tab" data-t="policies">정책·모델·프롬프트</span><span class="tab" data-t="switch">스위치·요금</span><span class="tab" data-t="notice">공지·푸시</span><span class="tab" data-t="users">회원</span><span class="tab" data-t="inq">문의</span><span class="tab" data-t="story">사연 영상</span><span class="tab" data-t="audit">감사 로그</span>
+    <span class="tab on" data-t="today">오늘</span><span class="tab" data-t="usage">사용 통계</span><span class="tab" data-t="money">수익·비용</span><span class="tab" data-t="users">회원</span><span class="tab" data-t="safety">콘텐츠·안전</span><span class="tab" data-t="ops">운영 설정</span><span class="tab" data-t="notice">공지·푸시</span><span class="tab" data-t="inq">문의<span class="n hidden" id="inqBadge"></span></span><span class="tab" data-t="story">사연 영상</span><span class="tab" data-t="audit">감사 로그</span>
   </div>
 
-  <div id="t-dash">
-    <div class="card"><h3>지표 (최근 30일)</h3><div class="kv" id="stats"></div></div>
-    <div class="card"><h3>점검 (checks)</h3><table id="checks"></table><p class="muted">붉은 항목은 SQL 미실행 또는 함수 미배포. story_judge_ran_today는 일시정지 중이면 false가 정상.</p></div>
-    <div class="card"><h3>테스터 의견 (mood_feedback) · 이벤트</h3><div id="events" class="mono" style="white-space:pre-wrap;background:transparent"></div></div>
+  <!-- 오늘 -->
+  <div id="t-today">
+    <div class="card"><h3>이 콘솔은 <span class="help" data-h="관리자가 매일 확인하는 순서: ① 오늘 탭 상태등이 모두 초록인지 ② 처리 대기(문의·신고·검수 실패)가 있는지 ③ 사용 통계로 추세를 보고 ④ 운영 설정에서 필요한 것만 바꿉니다. 모든 항목 옆 ?를 누르면 그 항목의 뜻과 언제 쓰는지가 나와요.">?</span></h3>
+      <p class="muted" style="margin:0">미록담 서비스를 <b>보고(상태·통계) · 찾고(회원·콘텐츠) · 바꾸는(설정·공지)</b> 한 곳. 값을 바꾸면 감사 로그에 남고, 위험한 조작은 확인을 두 번 받아요.</p></div>
+    <div class="grid2">
+      <div class="card"><h3>상태등 <span class="help" data-h="서버 크론·함수·마이그레이션이 제대로 돌고 있는지. 빨간 불이 하나라도 있으면 사용자에게 무언가 안 가고 있다는 뜻이라 가장 먼저 봅니다.&#10;• 크론: 마지막 실행 결과가 succeeded면 초록&#10;• 점검(checks): SQL 적용·함수 존재 여부&#10;• story_judge_ran_today는 사연 영상이 일시정지 상태면 false가 정상">?</span></h3><div id="health" class="muted">불러오는 중…</div></div>
+      <div class="card"><h3>처리 대기 <span class="help" data-h="사람이 손대야 하는 것들. 문의는 답변, 신고는 열람 후 비공개 조치, 검수 실패는 확인, 렌더 완료 영상은 게시 자격증명 등록 후 자동 게시됩니다.">?</span></h3><div id="pending" class="kv"></div></div>
+    </div>
+    <div class="card"><h3>오늘·최근 숫자 <span class="help" data-h="활성 사용자 = 오늘 앱을 열었거나(app_open 이벤트) 일기를 쓴 사람 수. 신규 = 가입일 기준. 일기 = 삭제되지 않은 생성 건수(AI+직접). 재방문율 = 지난주 활동자 중 이번 주에도 활동한 비율(주간 리텐션).">?</span></h3><div id="todayStats" class="kv"></div></div>
   </div>
 
-  <div id="t-policies" class="hidden">
-    <div class="card"><h3>정책 표 (policies)</h3><p class="muted">값은 JSON. 문자열은 따옴표 포함("…"), 숫자·불리언·배열·객체 그대로. 앱은 콜드 스타트, 함수는 60초 내 반영.</p>
-      <table id="polTable"></table>
-      <h3 style="margin-top:14px">새 키 추가</h3><div class="row"><input id="newKey" placeholder="예: ad.android.banner"><input id="newVal" placeholder='예: "ca-app-pub-…"'><button class="pri" onclick="setPolicy(document.getElementById('newKey').value, document.getElementById('newVal').value)">추가</button></div>
+  <!-- 사용 통계 -->
+  <div id="t-usage" class="hidden">
+    <div class="card"><h3>최근 30일 추세 <span class="help" data-h="막대는 하루 단위(KST). 위: 활성 사용자(진보라)와 신규 가입(초록). 아래: 일기 생성 — AI(진보라) vs 직접 쓰기(주황). 막대에 마우스를 올리면 값이 보입니다. 현재 모든 지표는 서버에서 즉석 집계라 회원이 수만 명이 되면 일 단위 집계 테이블로 바꿔야 합니다.">?</span></h3>
+      <div class="muted">활성 · 신규</div><div id="chartActive" class="bar"></div><div class="legend"><i style="background:var(--ink)"></i>활성 <i style="background:var(--leaf)"></i>신규</div>
+      <div class="muted" style="margin-top:10px">일기 (AI · 직접)</div><div id="chartDiary" class="bar"></div><div class="legend"><i style="background:var(--ink)"></i>AI 생성 <i style="background:var(--orange)"></i>직접 쓰기</div></div>
+    <div class="grid2">
+      <div class="card"><h3>기록 행태 (30일) <span class="help" data-h="공개율 = 공개로 저장된 일기 비율(피드 활력의 원천). 씨앗 사용률 = 씨앗 한 줄을 적은 비율(높을수록 생성 품질↑). 편집률 = 생성 후 손본 비율(높으면 AI 결과 불만 신호). 직접 쓰기 비율이 급증하면 AI 생성에 문제가 있거나 과금 저항입니다.">?</span></h3><div id="diaryStats" class="kv"></div></div>
+      <div class="card"><h3>사용자 구성 <span class="help" data-h="등급 분포, 성별·MBTI 입력률(개인화 재료), 사연 영상 참여 끔(옵트아웃) 수, 상세 감정 끔 수, 자동 일기 켠 수, 알림 '모아서' 선택 수, 서체 분포.">?</span></h3><div id="userStats" class="kv"></div></div>
+    </div>
+    <div class="grid2">
+      <div class="card"><h3>마음 분포 (30일) <span class="help" data-h="일기에 담긴 9가지 마음의 빈도. 콘텐츠·프롬프트 방향을 잡을 때 참고. 불안·지침이 늘면 위로 콘텐츠, 활기·설렘이 늘면 공유 유도 콘텐츠가 맞습니다.">?</span></h3><div id="moodStats"></div></div>
+      <div class="card"><h3>피드·관계 (30일) <span class="help" data-h="반응 3종 수와 이웃(팔로우) 관계 수, 자서전 생성 수. 반응이 일기 수보다 훨씬 적으면 피드 노출이나 공감 버튼 위치를 의심합니다.">?</span></h3><div id="socialStats" class="kv"></div><div class="muted" style="margin-top:8px">앱 이벤트 (30일)</div><div id="eventStats" class="mono" style="background:transparent;font-size:12px"></div></div>
     </div>
   </div>
 
-  <div id="t-switch" class="hidden">
-    <div class="card"><h3>기능 스위치</h3><table id="switches"></table></div>
-    <div class="card"><h3>체험·요금</h3><table id="fees"></table></div>
+  <!-- 수익·비용 -->
+  <div id="t-money" class="hidden">
+    <div class="card danger-zone"><h3>⚠️ 결제 기록이 서버에 없습니다 <span class="help" data-h="현재 구독 구매는 앱이 직접 등급(profiles.tier)을 바꾸는 구조라 서버에 영수증·결제 내역이 없습니다. 그래서 아래 '가정 매출'은 등급별 인원 × 가격일 뿐 실제 결제·해지·환불을 반영하지 못합니다. 유료 출시 전에 서버 검증(App Store Server API + Play Developer API) 또는 RevenueCat 도입이 필요합니다. 결정 사항.">?</span></h3>
+      <p class="muted" style="margin:0">아래 수치는 <b>추정</b>입니다. 등급별 인원 × 표시 가격으로 계산하며, 테스터 무료 골드도 포함되어 실제 매출과 다릅니다. 실제 매출은 스토어 콘솔(App Store Connect 매출, Play Console 수익)에서 확인하세요.</p></div>
+    <div class="grid2">
+      <div class="card"><h3>구독 (추정) <span class="help" data-h="등급별 현재 인원과 만료일(tier_until)이 있는 체험·테스터 계정 수. 가정 월매출 = 퍼플 인원×퍼플 월가격 + 골드 인원×골드 월가격 (가격은 운영 설정의 price.* 키). 결제 검증 도입 전까지는 참고용.">?</span></h3><div id="subStats" class="kv"></div></div>
+      <div class="card"><h3>물방울 경제 (30일) <span class="help" data-h="발행 = 광고 시청·추천·선물 등으로 지급된 💧, 소진 = 생성·자서전 등으로 차감된 💧. 총 잔액은 사용자들이 쥔 부채(언젠가 소진될 무료 재화)입니다. 발행이 소진보다 훨씬 크면 광고 보상이 과하고, 소진이 크면 과금 압박이 큽니다.">?</span></h3><div id="pointStats" class="kv"></div><div id="pointDetail" class="muted"></div></div>
+    </div>
+    <div class="card"><h3>AI 비용 (추정) <span class="help" data-h="30일 AI 일기 수 × 편당 단가 + 요약 이미지 수 × 장당 단가 + 자서전 수 × 권당 단가. 단가는 운영 설정의 cost.* 키(원)이며 기본값은 가정치라 Google Cloud 청구서와 대조해 조정해야 합니다.">?</span></h3><div id="costStats" class="kv"></div><p class="muted">실제 청구: https://console.cloud.google.com/billing (Gemini·Veo·Lyria), Supabase 사용량은 대시보드 Usage.</p></div>
   </div>
 
-  <div id="t-notice" class="hidden">
-    <div class="card"><h3>알림함 공지 (notice.current)</h3>
-      <div class="row"><input id="nId" placeholder="id (예: 2026-09-overhaul)"><input id="nUntil" type="date"></div><div style="height:8px"></div>
-      <input id="nTitle" placeholder="제목"><div style="height:8px"></div><textarea id="nBody" placeholder="본문" style="font-family:inherit"></textarea><div style="height:8px"></div>
-      <div class="row"><button class="pri" onclick="setNotice()">게시</button><button class="danger" onclick="clearNotice()">내리기</button></div><p class="muted" id="noticeNow"></p></div>
-    <div class="card"><h3>푸시 전송 (전원)</h3><input id="pTitle" placeholder="제목 (40자 이내)"><div style="height:8px"></div><textarea id="pBody" placeholder="본문 (100자 이내)" style="font-family:inherit"></textarea><div style="height:8px"></div>
-      <button class="pri" onclick="sendPush()">보내기</button> <span class="muted">전원에게 즉시 발송돼요. 확인 창이 두 번 떠요.</span></div>
-  </div>
-
+  <!-- 회원 -->
   <div id="t-users" class="hidden">
-    <div class="card"><h3>회원 검색</h3><div class="row"><input id="uq" placeholder="이메일 · 필명 · UID (비우면 최근 가입 30명)"><button class="pri" onclick="searchUsers()">검색</button></div>
+    <div class="card"><h3>회원 검색 <span class="help" data-h="이메일(중계 주소 포함)·필명·UID로 검색. 비우면 최근 가입 30명. 행을 누르면 상세(활동·물방울 원장·문의·안전·메모). 애플 '이메일 가리기' 사용자는 xxx@privaterelay.appleid.com 으로 보이며 '중계'로 표시됩니다 — 그런 사용자는 운영 메모에 누구인지 적어 두세요.">?</span></h3><div class="row"><input id="uq" placeholder="이메일 · 필명 · UID (비우면 최근 가입 30명)"><button class="pri" onclick="searchUsers()">검색</button></div>
       <table id="userTable" style="margin-top:10px"></table></div>
+    <div id="userDetail" class="card hidden"></div>
   </div>
 
-  <div id="t-inq" class="hidden"><div class="card"><h3>문의 (최근 50)</h3><table id="inqTable"></table></div></div>
-  <div id="t-story" class="hidden"><div class="card"><h3>사연 영상 후보 (최근 30)</h3><p class="muted">선정 크론은 SQL로 중지/재개(pending_20260906_story_pause.sql). 스위치 탭의 feature.story_video는 앱 참여 UI 노출용.</p><table id="storyTable"></table></div></div>
-  <div id="t-audit" class="hidden"><div class="card"><h3>감사 로그 (policy_audit, 최근 80)</h3><table id="auditTable"></table></div></div>
+  <!-- 콘텐츠·안전 -->
+  <div id="t-safety" class="hidden">
+    <div class="card"><h3>신고된 일기 <span class="help" data-h="사용자가 '!'로 신고한 공개 일기. 신고 3회 누적 시 자동 재검수가 돌고, 여기서는 사람이 열람해 부적절하면 '비공개로' 조치합니다. 열람은 감사 로그에 남습니다(개인 일기 열람은 신고 처리 목적에 한정).">?</span></h3><table id="reportedTable"></table></div>
+    <div class="card"><h3>검수 실패 (최근 50) <span class="help" data-h="공개 전 자동 검수(moderate-diary)에서 fail 판정을 받은 건. pre_publish = 공개 시도 시, report_threshold = 신고 누적 시. fail이면 이미 비공개 처리되어 있습니다. 오탐이 많으면 검수 프롬프트를 조정합니다.">?</span></h3><table id="modTable"></table></div>
+    <div id="diaryView" class="card hidden"></div>
+  </div>
+
+  <!-- 운영 설정 -->
+  <div id="t-ops" class="hidden">
+    <div class="card"><h3>기능 스위치 <span class="help" data-h="앱·서버 기능을 켜고 끕니다. 앱은 다음 콜드 스타트(완전히 종료 후 실행)에, 서버 함수는 60초 안에 반영됩니다. 끄기는 언제든 안전하고, 켜기는 비용·정책 영향이 있으니 설명을 읽고 켜세요.">?</span></h3><table id="switches"></table></div>
+    <div class="card"><h3>체험·요금·한도 <span class="help" data-h="숫자 정책. JSON 형식으로 저장됩니다(숫자는 그대로, 문자열은 따옴표). 바꾸면 즉시 새 요청부터 적용.">?</span></h3><table id="fees"></table></div>
+    <div class="card"><h3>AI 모델·프롬프트 <span class="help" data-h="일기·자서전 생성에 쓰는 Gemini 모델 체인(앞에서부터 시도, 실패 시 다음)과 편집자·작가 프롬프트에 덧붙이는 규칙. 모델을 바꾸면 비용·품질이 같이 바뀌니 테스트 생성 후 적용하세요. 프롬프트 추가분은 '금지 규칙' 위주로 짧게.">?</span></h3><table id="models"></table></div>
+    <div class="card"><h3>광고·타로·기타 <span class="help" data-h="광고 유닛 ID(ad.*)는 AdMob 콘솔 값. 타로 덱 버전·이미지 경로. 위 표에 없는 모든 키는 여기 '전체 키'에 나옵니다.">?</span></h3><table id="misc"></table>
+      <details style="margin-top:10px"><summary>전체 키 보기 / 새 키 추가</summary><table id="polTable" style="margin-top:8px"></table><div class="row" style="margin-top:8px"><input id="newKey" placeholder="예: ad.android.banner"><input id="newVal" placeholder='값(JSON) 예: "ca-app-pub-…"'><button class="pri" onclick="setPolicy(document.getElementById('newKey').value, document.getElementById('newVal').value)">추가</button></div></details></div>
+  </div>
+
+  <!-- 공지·푸시 -->
+  <div id="t-notice" class="hidden">
+    <div class="grid2">
+      <div class="card"><h3>알림함 공지 <span class="help" data-h="모든 사용자의 알림함 맨 위에 초록 카드로 뜨는 공지 1건. 사용자는 카드를 닫을 수 있고(기기별), 대표가 '내리기'를 누르면 전원에게서 사라집니다. 앱은 다음 콜드 스타트에 반영. 푸시는 나가지 않으니 급한 건 아래 푸시와 함께.">?</span></h3>
+        <div class="row"><input id="nId" placeholder="id (예: 2026-09-overhaul)"><input id="nUntil" type="date" title="종료일(선택)"></div><div style="height:8px"></div>
+        <input id="nTitle" placeholder="제목"><div style="height:8px"></div><textarea id="nBody" placeholder="본문" style="font-family:inherit"></textarea><div style="height:8px"></div>
+        <div class="row"><button class="pri" onclick="setNotice()">게시</button><button class="danger" onclick="clearNotice()">내리기</button></div><p class="muted" id="noticeNow"></p></div>
+      <div class="card danger-zone"><h3>전원 푸시 <span class="help" data-h="푸시 토큰이 있는 모든 사용자에게 즉시 알림. 취소 불가. 알림함에는 남지 않습니다(남기려면 공지도 함께). 하루 1건 이하, 밤 10시~아침 8시 발송 금지 권장. 제목 40자·본문 100자 안에서.">?</span></h3><input id="pTitle" placeholder="제목 (40자 이내)" maxlength="40"><div style="height:8px"></div><textarea id="pBody" placeholder="본문 (100자 이내)" maxlength="100" style="font-family:inherit"></textarea><div style="height:8px"></div>
+        <button class="pri" onclick="sendPush()">보내기</button> <span class="muted">확인 창이 두 번 떠요.</span></div>
+    </div>
+    <div class="card"><h3>발송 이력 (푸시 로그 최근 60) <span class="help" data-h="서버가 실제로 보낸 푸시의 키. notif:=개별 알림, digest:=저녁 요약, nbdiary:=이웃 새 일기, broadcast:=전원 푸시, autobio:=자서전 초대.">?</span></h3><table id="pushTable"></table></div>
+  </div>
+
+  <!-- 문의 -->
+  <div id="t-inq" class="hidden"><div class="card"><h3>문의 <span class="help" data-h="앱 설정 > 문의하기로 접수된 것. 접수 시 텔레그램+메일(help@)로도 옵니다. 답변을 쓰면 상태 answered, 사용자 알림함(+푸시)과 회신 이메일로 전달. 처리 완료는 답변 없이 닫을 때.">?</span></h3><table id="inqTable"></table></div></div>
+
+  <!-- 사연 영상 -->
+  <div id="t-story" class="hidden">
+    <div class="card"><h3>사연 영상 파이프라인 <span class="help" data-h="공개 일기 → 심사(story-judge, 매일 09:00) → 작성자 24시간 거절 창 → 승인 → 렌더(GitHub Actions 10:00) → 게시(YouTube·Instagram). 현재 심사 크론은 일시정지(SQL로 재개). 상태: candidate 심사 통과, notified 작성자 알림, declined 거절, approved 렌더 대기, rendered 게시 대기, posted 게시됨, removed 내림.">?</span></h3><table id="storyTable"></table></div>
+    <div class="card"><h3>게시 기록</h3><table id="postsTable"></table></div>
+  </div>
+
+  <div id="t-audit" class="hidden"><div class="card"><h3>감사 로그 (최근 80) <span class="help" data-h="누가 언제 어떤 설정을 바꿨는지, 전원 푸시·일기 열람·비공개 조치 같은 운영 행위 기록. 문제가 생기면 여기서 시점을 찍습니다.">?</span></h3><table id="auditTable"></table></div></div>
 </section>
 </main>
 <div id="toast"></div>
@@ -92,9 +149,12 @@ const FN = SUPABASE_URL + "/functions/v1/admin-console";
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-let cache = { policies: [] };
+const fmtT = (s) => (s || "").toString().slice(0, 16).replace("T", " ");
+const num = (n) => (n ?? 0).toLocaleString("ko-KR");
+let cache = { policies: [], overview: null };
+document.addEventListener("click", (e) => { const h = e.target.closest(".help"); document.querySelectorAll(".help.open").forEach((x) => { if (x !== h) x.classList.remove("open"); }); if (h) h.classList.toggle("open"); });
 
-function toast(m, bad) { const t = $("toast"); t.textContent = m; t.style.background = bad ? "#B2402B" : "#4B0082"; t.style.display = "block"; setTimeout(() => t.style.display = "none", 2600); }
+function toast(m, bad) { const t = $("toast"); t.textContent = m; t.style.background = bad ? "#B2402B" : "#4B0082"; t.style.display = "block"; setTimeout(() => t.style.display = "none", 3000); }
 async function api(action, payload = {}) {
   const { data: { session } } = await sb.auth.getSession();
   if (!session) throw new Error("로그인이 필요해요");
@@ -108,86 +168,224 @@ async function api(action, payload = {}) {
 $("btnGoogle").onclick = () => sb.auth.signInWithOAuth({ provider: "google", options: { redirectTo: location.origin + location.pathname } });
 $("btnPw").onclick = async () => { const { error } = await sb.auth.signInWithPassword({ email: $("email").value.trim(), password: $("pw").value }); if (error) $("loginMsg").textContent = error.message; };
 $("logout").onclick = async () => { await sb.auth.signOut(); location.reload(); };
+$("reload").onclick = () => { const t = document.querySelector(".tab.on"); if (t) openTab(t.dataset.t, true); };
 sb.auth.onAuthStateChange((_e, session) => { if (session) enter(); });
 sb.auth.getSession().then(({ data: { session } }) => { if (session) enter(); });
-
+let entered = false;
 async function enter() {
+  if (entered) return; entered = true;
   try {
     const me = await api("whoami");
     $("who").textContent = me.email; $("logout").style.display = ""; $("login").classList.add("hidden"); $("app").classList.remove("hidden");
-    loadDash(); loadPolicies();
+    loadPolicies(); openTab("today", true);
   } catch (e) {
-    $("loginMsg").textContent = e.message === "forbidden" ? "관리자 명단에 없는 계정이에요 (admin_users)" : e.message;
+    entered = false;
+    $("loginMsg").textContent = e.message === "forbidden" ? "관리자 명단에 없는 계정이에요 (admin_users에 추가 필요)" : e.message;
     await sb.auth.signOut();
   }
 }
 
 // ── 탭
-$("tabs").onclick = (ev) => { const t = ev.target.closest(".tab"); if (!t) return; document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("on", x === t)); ["dash","policies","switch","notice","users","inq","story","audit"].forEach((k) => $("t-" + k).classList.toggle("hidden", k !== t.dataset.t));
-  ({ users: searchUsers, inq: loadInq, story: loadStory, audit: loadAudit, dash: loadDash, switch: renderSwitches, notice: renderNotice }[t.dataset.t] || (() => {}))(); };
+const TABS = ["today","usage","money","users","safety","ops","notice","inq","story","audit"];
+$("tabs").onclick = (ev) => { const t = ev.target.closest(".tab"); if (t) openTab(t.dataset.t); };
+function openTab(name, force) {
+  document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("on", x.dataset.t === name));
+  TABS.forEach((k) => $("t-" + k).classList.toggle("hidden", k !== name));
+  ({ today: loadToday, usage: loadUsage, money: loadMoney, users: searchUsers, safety: loadSafety, ops: renderOps, notice: loadNotice, inq: loadInq, story: loadStory, audit: loadAudit }[name] || (() => {}))(force);
+}
 
-// ── 대시보드
-async function loadDash() {
+// ── 오늘
+async function loadToday() {
   try {
-    const r = await api("report");
-    const d = r.diaries_30d || r.diaries || {}; const p = r.profiles || {}; const rx = r.reactions_30d || r.reactions || {};
-    const rxSum = Object.values(rx).reduce((a, b) => a + (Number(b) || 0), 0);
-    const tiers = p.tiers ? Object.entries(p.tiers).map(([k, v]) => `${k} ${v}`).join(" · ") : "";
-    $("stats").innerHTML = [["회원", p.total ?? "-"], ["등급", tiers || "-"], ["일기 30일", d.total ?? "-"], ["공개", d.public ?? "-"], ["직접 쓰기", d.manual ?? "-"], ["편집됨", d.edited ?? "-"], ["반응 30일", rxSum], ["미처리 문의", (r.inquiries || []).filter((x) => x.status === "open").length]].map(([k, v]) => `<div><b>${esc(v)}</b><span>${k}</span></div>`).join("");
-    $("checks").innerHTML = Object.entries(r.checks || {}).map(([k, v]) => `<tr><td>${esc(k)}</td><td class="${v === true ? "ok" : "bad"}">${v === true ? "OK" : esc(v)}</td></tr>`).join("");
-    $("events").textContent = "mood_feedback: " + JSON.stringify(r.mood_feedback || {}) + "\n\nevents: " + JSON.stringify(r.events || {}, null, 1);
-  } catch (e) { toast("리포트 실패: " + e.message, true); }
+    const h = await api("health");
+    const crons = Array.isArray(h.cron) ? h.cron : [];
+    const cronHtml = crons.length ? crons.map((c) => `<div><span class="light ${c.last_status === "succeeded" ? "g" : c.last_status ? "r" : "x"}"></span><b>${esc(c.jobname)}</b> <span class="muted">${esc(c.schedule)} UTC · 마지막 ${c.last_run ? fmtT(c.last_run) : "기록 없음"} ${esc(c.last_status || "")}${c.active === false ? " · 비활성" : ""}</span></div>`).join("")
+      : `<div class="warn">크론 상태를 읽지 못했어요 — SQL pending_20260909e_admin_v2.sql 실행 필요 ${h.cron && h.cron.error ? "(" + esc(h.cron.error) + ")" : ""}</div>`;
+    const checks = Object.entries(h.checks || {}).map(([k, v]) => `<div><span class="light ${v === true ? "g" : (k === "story_judge_ran_today" ? "y" : "r")}"></span>${esc(k)} <span class="muted">${v === true ? "OK" : esc(v)}</span></div>`).join("");
+    $("health").innerHTML = `<div class="muted" style="margin-bottom:4px">크론</div>${cronHtml}<div class="muted" style="margin:10px 0 4px">점검</div>${checks}<div class="muted" style="margin-top:8px">최근 24시간 푸시 ${num(h.pushes_24h)}건</div>`;
+    $("pending").innerHTML = [["미답변 문의", h.inquiries_open, "inq"], ["게시 대기 영상", h.story_rendered_waiting, "story"]].map(([k, v, tab]) => `<div style="cursor:pointer" onclick="openTab('${tab}')"><b class="${v > 0 ? "bad" : ""}">${num(v)}</b><span>${k}</span></div>`).join("");
+    if (h.inquiries_open > 0) { $("inqBadge").textContent = h.inquiries_open; $("inqBadge").classList.remove("hidden"); } else $("inqBadge").classList.add("hidden");
+  } catch (e) { $("health").innerHTML = `<span class="bad">${esc(e.message)}</span>`; }
+  const o = await overview();
+  if (!o) return;
+  $("pending").innerHTML += [["신고된 일기", o.safety.reported_diaries, "safety"], ["검수 실패 30일", o.safety.moderation_fail_30d, "safety"]].map(([k, v, tab]) => `<div style="cursor:pointer" onclick="openTab('${tab}')"><b class="${v > 0 ? "warn" : ""}">${num(v)}</b><span>${k}</span></div>`).join("");
+  $("todayStats").innerHTML = tiles([
+    ["오늘 활성", o.active.d1, "앱 열기·일기"], ["7일 활성", o.active.d7], ["30일 활성", o.active.d30], ["회원", o.users.total, tierLine(o.users.tiers)],
+    ["신규 오늘", o.users.new_1d], ["신규 7일", o.users.new_7d], ["일기 오늘", o.diaries.d1], ["일기 7일", o.diaries.d7],
+    ["주간 재방문율", o.active.retention_w1 == null ? "-" : o.active.retention_w1 + "%", `지난주 활동 ${o.active.retention_base}명 기준`], ["반응 30일", Object.values(o.reactions).reduce((a, b) => a + b, 0)], ["푸시 7일", o.pushes_7d], ["자서전 30일", o.autobiographies_30d],
+  ]);
+}
+function tierLine(t) { return `블루 ${t.blue ?? 0} · 퍼플 ${t.purple ?? 0} · 골드 ${t.gold ?? 0}`; }
+function tiles(arr) { return arr.map(([k, v, sub]) => `<div><b>${typeof v === "number" ? num(v) : esc(v)}</b><span>${esc(k)}</span>${sub ? `<span class="sub">${esc(sub)}</span>` : ""}</div>`).join(""); }
+async function overview(force) {
+  if (cache.overview && !force) return cache.overview;
+  try { cache.overview = await api("stats.overview"); return cache.overview; } catch (e) { toast("통계 실패: " + e.message, true); return null; }
+}
+
+// ── 사용 통계
+function bars(el, series, keys, classes) {
+  const max = Math.max(1, ...series.flatMap((s) => keys.map((k) => s[k] || 0)));
+  el.innerHTML = series.map((s) => `<span style="flex:1;display:flex;gap:1px;align-items:flex-end;height:100%">${keys.map((k, i) => `<i class="${classes[i]}" style="height:${Math.round((s[k] || 0) * 100 / max)}%" data-v="${s.day.slice(5)} ${k}: ${s[k] || 0}"></i>`).join("")}</span>`).join("");
+}
+async function loadUsage(force) {
+  const o = await overview(force); if (!o) return;
+  bars($("chartActive"), o.series, ["active", "new_users"], ["", "b"]);
+  bars($("chartDiary"), o.series, ["diaries_ai", "diaries_manual"], ["", "c"]);
+  const d = o.diaries; const pct = (a, b) => b ? Math.round(a * 100 / b) + "%" : "-";
+  $("diaryStats").innerHTML = tiles([["일기 30일", d.d30], ["쓴 사람", d.writers_30d, `1인당 ${d.per_writer}편`], ["공개율", pct(d.public, d.d30)], ["씨앗 사용률", pct(d.with_seed, d.d30)], ["편집률", pct(d.edited, d.d30)], ["직접 쓰기", d.manual, pct(d.manual, d.d30)], ["자동 일기", d.auto], ["요약 이미지", d.with_image]]);
+  const u = o.users;
+  $("userStats").innerHTML = tiles([["블루", u.tiers.blue ?? 0], ["퍼플", u.tiers.purple ?? 0], ["골드", u.tiers.gold ?? 0], ["성별 입력", u.with_gender, pct(u.with_gender, u.total)], ["MBTI 입력", u.with_mbti, pct(u.with_mbti, u.total)], ["사연 옵트아웃", u.story_optout], ["상세 감정 끔", u.detail_off], ["자동 일기 켬", u.auto_diary_on], ["반응 '모아서'", u.reaction_digest], ["서체", Object.entries(u.fonts).map(([k, v]) => `${k} ${v}`).join(" · ") || "-"]]);
+  const MOOD = { vital: "🔥 활기찬", flutter: "💗 설렘", annoyed: "😤 짜증", proud: "🌟 뿌듯함", calmish: "🍵 담담함", anxious: "🌫️ 불안함", serene: "🌿 평온함", shy: "🍑 부끄러움", tired: "🌙 지침" };
+  const mmax = Math.max(1, ...Object.values(o.moods));
+  $("moodStats").innerHTML = Object.entries(o.moods).sort((a, b) => b[1] - a[1]).map(([k, v]) => `<div class="hbar"><span>${MOOD[k] || k}</span><em style="width:${Math.round(v * 100 / mmax)}%;flex:1;max-width:${Math.round(v * 100 / mmax)}%"></em><span>${v}</span></div>`).join("") || "<span class='muted'>데이터 없음</span>";
+  const RX = { amazing: "감동해요", feel_you: "공감해요", there_there: "위로해요" };
+  $("socialStats").innerHTML = tiles([...Object.entries(o.reactions).map(([k, v]) => [RX[k] || k, v]), ["이웃 관계", o.follows], ["자서전 30일", o.autobiographies_30d], ["차단", o.safety.blocks]]);
+  $("eventStats").textContent = Object.entries(o.events_30d).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${v}`).join(" · ") || "이벤트 없음";
+}
+
+// ── 수익·비용
+async function loadMoney(force) {
+  const o = await overview(force); if (!o) return;
+  const p = (k, d) => { const x = cache.policies.find((q) => q.key === k); return x ? Number(x.value) : d; };
+  const purple = o.users.tiers.purple ?? 0, gold = o.users.tiers.gold ?? 0;
+  const rev = purple * p("price.purple_month_krw", 9900) + gold * p("price.gold_month_krw", 19800);
+  $("subStats").innerHTML = tiles([["퍼플", purple], ["골드", gold], ["가정 월매출", "₩" + num(rev), "인원 × 월가격 · 테스터 무료 골드 포함"], ["체험·만료 예정", "-", "tier_until 있는 계정은 회원 탭에서"]]);
+  const pt = o.points; const sum = (obj) => Object.values(obj).reduce((a, b) => a + b, 0);
+  $("pointStats").innerHTML = tiles([["발행 30일", sum(pt.issued)], ["소진 30일", sum(pt.consumed)], ["총 잔액", pt.total_balance], ["총 부채", pt.total_debt], ["광고 보상 30일", pt.rewarded_ad_points_30d, "daily_usage 기준"], ["사진 분석 30일", pt.photos_analyzed_30d]]);
+  $("pointDetail").innerHTML = `발행: ${Object.entries(pt.issued).map(([k, v]) => `${k} ${v}`).join(" · ") || "-"}<br>소진: ${Object.entries(pt.consumed).map(([k, v]) => `${k} ${v}`).join(" · ") || "-"}`;
+  const ai = o.diaries.d30 - o.diaries.manual, img = o.diaries.with_image, ab = o.autobiographies_30d;
+  const c1 = p("cost.per_diary_krw", 30), c2 = p("cost.per_image_krw", 80), c3 = p("cost.per_autobio_krw", 200);
+  $("costStats").innerHTML = tiles([["AI 일기 30일", ai, `× ₩${c1} = ₩${num(ai * c1)}`], ["요약 이미지", img, `× ₩${c2} = ₩${num(img * c2)}`], ["자서전", ab, `× ₩${c3} = ₩${num(ab * c3)}`], ["추정 합계 30일", "₩" + num(ai * c1 + img * c2 + ab * c3), "단가는 운영 설정 cost.*"]]);
 }
 
 // ── 정책
-async function loadPolicies() {
-  try { cache.policies = (await api("policies.list")).rows; renderPolicies(); renderSwitches(); renderNotice(); } catch (e) { toast(e.message, true); }
-}
-function renderPolicies() {
-  $("polTable").innerHTML = "<tr><th style='width:26%'>키</th><th>값 (JSON)</th><th style='width:18%'>수정</th><th style='width:110px'></th></tr>" + cache.policies.map((p, i) => `<tr><td><code>${esc(p.key)}</code></td><td><textarea id="pv${i}" rows="${Math.min(6, Math.ceil(JSON.stringify(p.value).length / 60) || 1)}">${esc(JSON.stringify(p.value, null, p.key.startsWith("prompt.") || p.key === "diary.length" ? 1 : 0))}</textarea></td><td class="muted">${esc((p.updated_at || "").slice(0, 16).replace("T", " "))}<br>${esc(p.updated_by || "")}</td><td><button class="ghost" onclick="setPolicy('${esc(p.key)}', document.getElementById('pv${i}').value)">저장</button></td></tr>`).join("");
-}
+async function loadPolicies() { try { cache.policies = (await api("policies.list")).rows; } catch (e) { toast(e.message, true); } }
+function pol(key) { return cache.policies.find((p) => p.key === key); }
 async function setPolicy(key, raw) {
   let value; try { value = JSON.parse(raw); } catch (_) { return toast("JSON 형식이 아니에요 (문자열은 따옴표 포함)", true); }
-  try { await api("policies.set", { key: key.trim(), value }); toast("저장됨: " + key); await loadPolicies(); } catch (e) { toast(e.message, true); }
+  try { await api("policies.set", { key: key.trim(), value }); toast("저장됨: " + key); await loadPolicies(); renderOps(); } catch (e) { toast(e.message, true); }
 }
-const SWITCHES = [["feature.generate_charge", "AI 생성 과금 (체험 후 💧25)"], ["feature.summary_image", "요약 이미지 (퍼플·골드)"], ["feature.story_video", "사연 영상 참여 UI"], ["feature.garden", "정원 (폐기 예정, 앱은 무시)"]];
-const FEES = [["trial.days", "체험 일수"], ["trial.policy_start", "기존 회원 체험 기산일"], ["point.diary_generate", "생성 차감 {delta:-25}"], ["point.diary_generate_refund", "실패 환불"], ["point.story_selected", "사연 선정 보상"], ["point.admin_gift", "어드민 선물 (지급 버튼)"], ["point.autobio", "자서전 (블루)"], ["limit.manual_per_day", "직접 쓰기 하루 한도"], ["limit.moderation_per_day", "즉시 검수 하루 한도"]];
-function pol(key) { return cache.policies.find((p) => p.key === key); }
-function renderSwitches() {
-  $("switches").innerHTML = SWITCHES.map(([k, label]) => { const p = pol(k); const on = p && p.value === true; return `<tr><td><b>${label}</b><br><code>${k}</code></td><td style="width:60px"><button class="tog ${on ? "on" : ""}" onclick="setPolicy('${k}', '${on ? "false" : "true"}')" title="${on ? "켜짐" : "꺼짐"}"></button></td></tr>`; }).join("");
-  $("fees").innerHTML = FEES.map(([k, label]) => { const p = pol(k); return `<tr><td style="width:40%"><b>${label}</b><br><code>${k}</code></td><td><input id="fee_${k.replace(/\./g, "_")}" value='${esc(p ? JSON.stringify(p.value) : "")}' placeholder="(없음)"></td><td style="width:80px"><button class="ghost" onclick="setPolicy('${k}', document.getElementById('fee_${k.replace(/\./g, "_")}').value)">저장</button></td></tr>`; }).join("");
+// 도움말 사전 — 뜻 / 언제 / 영향 / 반영 / 기본
+const H = {
+  "feature.generate_charge": ["AI 생성 과금", "켜면 가입 14일(trial.days) 지난 사용자는 AI 일기 1편에 💧25(point.diary_generate)를 냅니다. 잔액 부족이면 생성 대신 안내가 뜨고 광고·직접 쓰기로 유도됩니다.", "테스터 기간엔 끔. 유료 모델 시작 시 켬. 끄면 전원 무료 생성.", "서버 60초 · 앱 콜드 스타트", "false"],
+  "feature.summary_image": ["요약 이미지", "퍼플·골드 회원의 일기가 생성되면 록이·담이 캐릭터로 그날 핵심 장면 이미지를 1장 만들어 피드·상세에 붙입니다. 장당 비용 발생(cost.per_image_krw 추정).", "유료 혜택을 보여주고 싶을 때 켬. 비용 급증 시 끔.", "서버 60초", "false"],
+  "feature.story_video": ["사연 영상 참여 UI", "앱 설정에 '사연 영상 참여' 스위치와 일기의 '사연 영상에서 제외'를 노출합니다. 심사 크론 자체는 SQL로 켜고 끕니다.", "마케팅(사연 영상)을 시작할 때 켬.", "앱 콜드 스타트", "false"],
+  "feature.garden": ["정원 (폐기)", "정원 기능 스위치. v34부터 정원이 삭제되어 앱은 이 값을 읽지 않습니다.", "의미 없음 — 삭제 예정.", "-", "true"],
+  "trial.days": ["체험 일수", "가입 후 AI 생성이 무료인 기간(일). 기존 회원은 trial.policy_start부터 계산.", "유료 전환 속도를 조절할 때. 짧으면 전환↑ 이탈↑.", "서버 즉시", "14"],
+  "trial.policy_start": ["기존 회원 체험 기산일", "정책 시행 전 가입자의 체험 시작일(YYYY-MM-DD 문자열).", "과금을 처음 켤 때 한 번 정합니다.", "서버 즉시", "\"2026-09-06\""],
+  "point.diary_generate": ["생성 차감", "{\"delta\": -25} 형식. AI 일기 1편당 차감 💧.", "가격 조정.", "서버 즉시", "{\"delta\":-25}"],
+  "point.diary_generate_refund": ["실패 환불", "생성 실패 시 돌려주는 💧. 차감과 절댓값이 같아야 합니다.", "diary_generate를 바꾸면 함께.", "서버 즉시", "{\"delta\":25}"],
+  "point.story_selected": ["사연 선정 보상", "사연 영상 후보로 선정된 작성자에게 주는 💧.", "마케팅 보상 조정.", "서버 즉시", "{\"delta\":50}"],
+  "point.admin_gift": ["어드민 선물", "회원 탭 '💧 선물' 버튼 1회 지급량.", "CS 보상·이벤트.", "즉시", "{\"delta\":25}"],
+  "point.autobio": ["자서전 (블루)", "블루 회원이 월간 자서전을 지을 때 내는 💧.", "가격 조정.", "서버 즉시", "{\"delta\":-500}"],
+  "limit.manual_per_day": ["직접 쓰기 하루 한도", "한 사람이 하루에 저장할 수 있는 직접 쓰기 편수(스팸 방지).", "남용 발견 시 낮춤.", "서버 즉시", "20"],
+  "limit.manual_per_minute": ["직접 쓰기 분당 한도", "분당 저장 한도.", "봇 방지.", "서버 즉시", "3"],
+  "limit.moderation_per_day": ["즉시 검수 하루 한도", "공개 저장 시 즉시 검수 호출 한도. 초과분은 비공개 저장 후 다음날 심사.", "검수 비용 조절.", "서버 즉시", "10"],
+  "diary.length": ["일기 길이 기준", "short/normal/long의 글자 수 범위와 재료 부족(sparse) 상한. 편집자·작가 프롬프트에 그대로 들어갑니다.", "\"억지로 길다\" 불만 시 낮춤.", "서버 60초", "-"],
+  "model.diary.flash_chain": ["일기 모델 체인", "AI 일기 생성에 쓰는 Gemini 모델 목록. 앞 모델이 실패/한도면 다음으로.", "새 모델 출시·장애 시. 이름을 틀리면 전부 실패하니 주의.", "서버 60초", "-"],
+  "model.autobio.pro_chain": ["자서전 모델 체인", "자서전 생성용(Pro급) 모델 목록.", "품질/비용 조정.", "서버 60초", "-"],
+  "prompt.diary.editor_extra": ["편집자 프롬프트 추가", "사실 정리(편집자) 단계에 덧붙일 규칙 문자열. 예: \"시간과 사건을 억지로 묶지 말 것\".", "특정 불만이 반복될 때 규칙 추가. 길게 쓰면 품질이 흔들립니다.", "서버 60초", "\"\""],
+  "prompt.diary.writer_extra": ["작가 프롬프트 추가", "문장 쓰기(작가) 단계에 덧붙일 규칙.", "문체 조정.", "서버 60초", "\"\""],
+  "notice.current": ["현재 공지", "알림함 공지 JSON. 공지·푸시 탭에서 편집하세요.", "-", "앱 콜드 스타트", "null"],
+  "cost.per_diary_krw": ["AI 일기 편당 단가(원)", "수익·비용 탭 추정에 쓰는 가정치.", "청구서와 대조 후 조정.", "콘솔 즉시", "30"],
+  "cost.per_image_krw": ["요약 이미지 장당 단가(원)", "추정치.", "청구서 대조 후.", "콘솔 즉시", "80"],
+  "cost.per_autobio_krw": ["자서전 권당 단가(원)", "추정치.", "청구서 대조 후.", "콘솔 즉시", "200"],
+  "price.purple_month_krw": ["퍼플 월 가격(원)", "가정 매출 계산용. 실제 가격은 스토어 콘솔.", "가격 변경 시 함께.", "콘솔 즉시", "9900"],
+  "price.gold_month_krw": ["골드 월 가격(원)", "가정 매출 계산용.", "가격 변경 시.", "콘솔 즉시", "19800"],
+  "tarot.deck_version": ["타로 덱 버전", "앱이 쓰는 카드 이미지 세트 버전.", "덱 교체 시.", "앱 콜드 스타트", "-"],
+  "tarot.image_base": ["타로 이미지 경로", "Storage 경로 접두.", "덱 교체 시.", "앱 콜드 스타트", "-"],
+};
+const helpOf = (k) => { const h = H[k]; if (!h) { const pre = k.split(".")[0]; return { title: k, text: ({ ad: "광고 유닛 ID. AdMob 콘솔 값과 정확히 같아야 하며 틀리면 광고가 비어 보입니다. 앱 콜드 스타트에 반영.", font: "서체 관련 설정.", story: "사연 영상 관련 설정." }[pre] || "설명이 등록되지 않은 키입니다. 값을 바꾸기 전에 개발자에게 확인하세요.") }; } return { title: h[0], text: `${h[1]}\n\n언제: ${h[2]}\n반영: ${h[3]}\n기본값: ${h[4]}` }; };
+const helpSpan = (k) => { const h = helpOf(k); return `<span class="help" data-h="${esc(h.text)}">?</span>`; };
+const SWITCHES = ["feature.generate_charge", "feature.summary_image", "feature.story_video", "feature.garden"];
+const FEES = ["trial.days", "trial.policy_start", "point.diary_generate", "point.diary_generate_refund", "point.story_selected", "point.admin_gift", "point.autobio", "limit.manual_per_day", "limit.manual_per_minute", "limit.moderation_per_day", "diary.length", "price.purple_month_krw", "price.gold_month_krw", "cost.per_diary_krw", "cost.per_image_krw", "cost.per_autobio_krw"];
+const MODELS = ["model.diary.flash_chain", "model.autobio.pro_chain", "prompt.diary.editor_extra", "prompt.diary.writer_extra"];
+function valInput(k, i) { const p = pol(k); const v = p ? JSON.stringify(p.value, null, (k.startsWith("prompt.") || k.startsWith("model.") || k === "diary.length") ? 1 : 0) : ""; const id = "v_" + i; return `<textarea id="${id}" rows="${Math.min(6, (v.match(/\n/g) || []).length + 1)}">${esc(v)}</textarea>`; }
+function renderOps() {
+  if (!cache.policies.length) return;
+  $("switches").innerHTML = SWITCHES.map((k) => { const p = pol(k); const on = p && p.value === true; const h = helpOf(k); return `<tr><td><b>${esc(h.title)}</b>${helpSpan(k)}<br><code>${k}</code>${k === "feature.generate_charge" && on ? " <span class='warn'>과금 중</span>" : ""}</td><td class="muted" style="width:45%">${esc(H[k] ? H[k][1] : "")}</td><td style="width:60px"><button class="tog ${on ? "on" : ""}" onclick="toggleSwitch('${k}', ${on})" title="${on ? "켜짐" : "꺼짐"}"></button></td></tr>`; }).join("");
+  const rowFor = (k, i) => { const h = helpOf(k); const p = pol(k); return `<tr><td style="width:34%"><b>${esc(h.title)}</b>${helpSpan(k)}<br><code>${k}</code>${p ? `<br><span class="muted">수정 ${fmtT(p.updated_at)} ${esc(p.updated_by || "")}</span>` : "<br><span class='warn'>미설정</span>"}</td><td>${valInput(k, i)}</td><td style="width:70px"><button class="ghost" onclick="setPolicy('${k}', document.getElementById('v_${i}').value)">저장</button></td></tr>`; };
+  $("fees").innerHTML = FEES.map((k, i) => rowFor(k, "f" + i)).join("");
+  $("models").innerHTML = MODELS.map((k, i) => rowFor(k, "m" + i)).join("");
+  const known = new Set([...SWITCHES, ...FEES, ...MODELS, "notice.current"]);
+  const misc = cache.policies.filter((p) => !known.has(p.key));
+  $("misc").innerHTML = misc.map((p, i) => rowFor(p.key, "x" + i)).join("") || "<tr><td class='muted'>없음</td></tr>";
+  $("polTable").innerHTML = "<tr><th>키</th><th>값</th><th>수정</th><th></th></tr>" + cache.policies.map((p, i) => `<tr><td><code>${esc(p.key)}</code></td><td class="mono">${esc(JSON.stringify(p.value))}</td><td class="muted">${fmtT(p.updated_at)}<br>${esc(p.updated_by || "")}</td><td><button class="danger" onclick="delPolicy('${esc(p.key)}')">삭제</button></td></tr>`).join("");
 }
+async function toggleSwitch(k, on) {
+  if (!on && k === "feature.generate_charge" && !confirm("AI 생성 과금을 켤까요? 체험 기간이 지난 사용자는 즉시 💧를 내게 됩니다.")) return;
+  setPolicy(k, on ? "false" : "true");
+}
+async function delPolicy(k) { if (!confirm(`정책 ${k}를 삭제할까요? 함수는 기본값으로 동작합니다.`)) return; try { await api("policies.delete", { key: k }); toast("삭제됨"); await loadPolicies(); renderOps(); } catch (e) { toast(e.message, true); } }
+
 // ── 공지·푸시
-function renderNotice() { const n = pol("notice.current"); const v = n && n.value; $("noticeNow").textContent = v ? `현재 공지: [${v.id}] ${v.title} (until ${v.until || "-"})` : "현재 공지 없음"; if (v) { $("nId").value = v.id || ""; $("nTitle").value = v.title || ""; $("nBody").value = v.body || ""; $("nUntil").value = v.until || ""; } }
-async function setNotice() { const notice = { id: $("nId").value.trim() || ("notice-" + Date.now()), title: $("nTitle").value.trim(), body: $("nBody").value.trim(), until: $("nUntil").value || null }; if (!notice.title) return toast("제목이 비었어요", true); try { await api("notice.set", { notice }); toast("공지 게시"); loadPolicies(); } catch (e) { toast(e.message, true); } }
-async function clearNotice() { if (!confirm("공지를 내릴까요?")) return; try { await api("notice.set", { notice: null }); toast("공지 내림"); loadPolicies(); } catch (e) { toast(e.message, true); } }
-async function sendPush() { const title = $("pTitle").value.trim(), body = $("pBody").value.trim(); if (!title || !body) return toast("제목·본문이 비었어요", true); if (!confirm(`전원에게 푸시를 보낼까요?\n\n${title}\n${body}`)) return; if (!confirm("정말 보내요? (취소 불가)")) return; try { const r = await api("push.send", { title, body }); toast(r.ok ? "발송 요청 완료" : "발송 실패 " + r.status, !r.ok); } catch (e) { toast(e.message, true); } }
+async function loadNotice() {
+  const n = pol("notice.current"); const v = n && n.value;
+  $("noticeNow").textContent = v ? `현재 공지: [${v.id}] ${v.title} (종료 ${v.until || "없음"})` : "현재 공지 없음";
+  if (v) { $("nId").value = v.id || ""; $("nTitle").value = v.title || ""; $("nBody").value = v.body || ""; $("nUntil").value = v.until || ""; }
+  try { const rows = (await api("push.history")).rows; $("pushTable").innerHTML = "<tr><th>시각</th><th>키</th></tr>" + rows.map((r) => `<tr><td class="muted">${fmtT(r.sent_at)}</td><td class="mono">${esc(r.key)}</td></tr>`).join(""); } catch (e) { toast(e.message, true); }
+}
+async function setNotice() { const notice = { id: $("nId").value.trim() || ("notice-" + Date.now()), title: $("nTitle").value.trim(), body: $("nBody").value.trim(), until: $("nUntil").value || null }; if (!notice.title) return toast("제목이 비었어요", true); try { await api("notice.set", { notice }); toast("공지 게시"); await loadPolicies(); loadNotice(); } catch (e) { toast(e.message, true); } }
+async function clearNotice() { if (!confirm("공지를 내릴까요? 전원에게서 사라집니다.")) return; try { await api("notice.set", { notice: null }); toast("공지 내림"); await loadPolicies(); loadNotice(); } catch (e) { toast(e.message, true); } }
+async function sendPush() { const title = $("pTitle").value.trim(), body = $("pBody").value.trim(); if (!title || !body) return toast("제목·본문이 비었어요", true); const hr = new Date().getHours(); if ((hr >= 22 || hr < 8) && !confirm("지금은 밤 시간대입니다. 그래도 보낼까요?")) return; if (!confirm(`전원에게 푸시를 보낼까요?\n\n${title}\n${body}`)) return; if (!confirm("정말 보내요? (취소 불가)")) return; try { const r = await api("push.send", { title, body }); toast(r.ok ? "발송 요청 완료" : "발송 실패 " + r.status, !r.ok); } catch (e) { toast(e.message, true); } }
 
 // ── 회원
+const tierPill = (t) => `<span class="pill t-${t || "blue"}">${({ blue: "블루", purple: "퍼플", gold: "골드" })[t] || t}</span>`;
 async function searchUsers() {
   try { const rows = (await api("users.search", { q: $("uq").value.trim() })).rows;
-    $("userTable").innerHTML = "<tr><th>이메일 · 필명</th><th>등급</th><th>💧</th><th>프로필</th><th>조치</th></tr>" + rows.map((u) => `<tr>
-      <td>${esc(u.email || "-")}<br><span class="muted">${esc(u.nickname || "")} · <span class="mono">${esc(u.id.slice(0, 8))}</span> · 가입 ${esc((u.created_at || "").slice(0, 10))}</span></td>
-      <td><select id="tier_${u.id}" style="width:auto"><option ${u.tier === "blue" ? "selected" : ""}>blue</option><option ${u.tier === "purple" ? "selected" : ""}>purple</option><option ${u.tier === "gold" ? "selected" : ""}>gold</option></select><br><input id="until_${u.id}" type="date" value="${esc(u.tier_until || "")}" style="width:auto;margin-top:4px"><br><button class="ghost" style="margin-top:4px" onclick="setTier('${u.id}')">등급 저장</button></td>
-      <td>${esc(u.balance)}<br><button class="ghost" style="margin-top:4px" onclick="grant('${u.id}')">💧 선물</button></td>
-      <td><input id="bd_${u.id}" type="date" value="${esc(u.birth_date || "")}" style="width:auto"><br><input id="mbti_${u.id}" value="${esc(u.mbti || "")}" placeholder="MBTI" maxlength="4" style="width:70px;margin-top:4px"> <select id="g_${u.id}" style="width:auto;margin-top:4px"><option value="">성별-</option>${["female","male","other","none"].map((g) => `<option ${u.gender === g ? "selected" : ""}>${g}</option>`).join("")}</select></td>
-      <td><button class="ghost" onclick="saveProfile('${u.id}')">프로필 저장</button></td></tr>`).join("");
+    $("userTable").innerHTML = "<tr><th>이메일 · 필명</th><th>등급</th><th>일기</th><th>💧</th><th>가입 · 마지막 로그인</th><th>메모</th></tr>" + rows.map((u) => `<tr style="cursor:pointer" onclick="userDetail('${u.id}')">
+      <td>${esc(u.email || "-")} ${u.email_relay ? "<span class='pill' style='background:var(--deep);color:var(--soft)'>중계</span>" : ""} <span class="muted">${esc(u.provider || "")}</span><br><span class="muted">${esc(u.nickname || "(필명 없음)")} · <span class="mono">${esc(u.id.slice(0, 8))}</span></span></td>
+      <td>${tierPill(u.tier)}${u.tier_until ? `<br><span class="muted">~${esc(u.tier_until)}</span>` : ""}</td><td>${num(u.diaries)}</td><td>${num(u.balance)}</td>
+      <td class="muted">${esc((u.created_at || "").slice(0, 10))}<br>${u.last_sign_in_at ? fmtT(u.last_sign_in_at) : "-"}</td><td class="muted">${esc(u.admin_memo || "")}</td></tr>`).join("") || "<tr><td class='muted'>결과 없음</td></tr>";
   } catch (e) { toast(e.message, true); }
 }
-async function setTier(id) { const tier = $("tier_" + id).value, until = $("until_" + id).value || null; if (!confirm(`등급을 ${tier}${until ? " (~" + until + ")" : ""}로 바꿀까요?`)) return; try { await api("users.set_tier", { user_id: id, tier, until }); toast("등급 변경"); searchUsers(); } catch (e) { toast(e.message, true); } }
-async function grant(id) { const p = pol("point.admin_gift"); const d = p && p.value && p.value.delta; if (!confirm(`💧${d ?? "?"} 지급할까요? (point.admin_gift)`)) return; try { const r = await api("users.grant_points", { user_id: id, reason: "admin_gift" }); toast("지급 완료 · 잔액 " + r.balance); searchUsers(); } catch (e) { toast(e.message, true); } }
+async function userDetail(id) {
+  const el = $("userDetail"); el.classList.remove("hidden"); el.innerHTML = "불러오는 중…"; el.scrollIntoView({ behavior: "smooth" });
+  try { const d = await api("users.detail", { user_id: id }); const p = d.profile || {}, a = d.auth || {};
+    el.innerHTML = `<h3>${esc(p.nickname || "(필명 없음)")} ${tierPill(p.tier)} <span class="muted mono">${esc(id)}</span></h3>
+      <div class="grid2">
+        <div><b>계정</b> <span class="help" data-h="로그인 제공자와 이메일. 애플 '이메일 가리기'면 중계 주소라 실명·실주소를 알 수 없습니다. 이름은 애플이 첫 로그인 때 준 값(v35부터 저장). 없으면 운영 메모에 적어 두세요.">?</span><br>
+          이메일 ${esc(a.email || "-")} ${a.email_relay ? "<span class='pill' style='background:var(--deep)'>중계</span>" : ""}<br>제공자 ${esc(a.provider || "-")} · 이름 ${esc(a.name || p.signup_name || "-")}<br>가입 ${fmtT(a.created_at)} · 마지막 로그인 ${fmtT(a.last_sign_in_at)}<br>
+          성별 ${esc(p.gender || "-")} · MBTI ${esc(p.mbti || "-")} · 생년월일 ${esc(p.birth_date || "-")} · 언어 ${esc(p.locale || "-")}<br>
+          <div class="row" style="margin-top:8px"><input id="memo_${id}" value="${esc(p.admin_memo || "")}" placeholder="운영 메모 — 누구인지, 특이사항 (앱에 노출되지 않음)"><button class="ghost" onclick="saveMemo('${id}')">메모 저장</button></div></div>
+        <div><b>활동</b><br>일기 ${num(d.diaries.total)} (공개 ${num(d.diaries.public)}) · 자서전 ${d.autobiographies.length}권 · 타로 ${num(d.tarot_picks)}장<br>받은 반응 ${num(d.reactions_received)} · 이웃 ${num(d.followers)}명이 나를 · 내가 ${num(d.following)}명<br>차단함 ${d.safety.blocks_by} · 차단됨 ${d.safety.blocked_by_others} · 신고함 ${d.safety.reports_made}<br>
+          💧 잔액 ${num(d.points.balance)} · 부채 ${num(d.points.debt)}<br>
+          <div class="row" style="margin-top:8px"><select id="tier_${id}" style="width:auto"><option ${p.tier === "blue" ? "selected" : ""}>blue</option><option ${p.tier === "purple" ? "selected" : ""}>purple</option><option ${p.tier === "gold" ? "selected" : ""}>gold</option></select><input id="until_${id}" type="date" value="${esc(p.tier_until || "")}" style="width:auto" title="만료일(비우면 무기한)"><button class="ghost" onclick="setTier('${id}')">등급 저장</button><button class="ghost" onclick="grant('${id}')">💧 선물</button></div>
+          <div class="row" style="margin-top:6px"><input id="bd_${id}" type="date" value="${esc(p.birth_date || "")}" style="width:auto"><input id="mbti_${id}" value="${esc(p.mbti || "")}" placeholder="MBTI" maxlength="4" style="width:70px"><select id="g_${id}" style="width:auto"><option value="">성별-</option>${["female","male","other","none"].map((g) => `<option ${p.gender === g ? "selected" : ""}>${g}</option>`).join("")}</select><button class="ghost" onclick="saveProfile('${id}')">프로필 저장</button></div></div>
+      </div>
+      <details style="margin-top:10px"><summary>최근 일기 10 (제목만)</summary><table>${d.diaries.recent.map((x) => `<tr><td class="muted">${esc(x.diary_date)}</td><td>${esc(x.title || "(제목 없음)")}</td><td class="muted">${esc(x.kind || "ai")} · ${esc(x.visibility)} · ${(x.moods || []).join(",")}</td></tr>`).join("")}</table></details>
+      <details style="margin-top:6px"><summary>물방울 원장 20</summary><table>${d.points.ledger.map((x) => `<tr><td class="muted">${fmtT(x.created_at)}</td><td>${esc(x.reason)}</td><td class="${x.delta > 0 ? "ok" : "bad"}">${x.delta > 0 ? "+" : ""}${x.delta}</td></tr>`).join("") || "<tr><td class='muted'>없음</td></tr>"}</table></details>
+      <details style="margin-top:6px"><summary>문의 ${d.inquiries.length}</summary><table>${d.inquiries.map((q) => `<tr><td class="muted">${fmtT(q.created_at)}</td><td>${esc(q.category)}</td><td>${esc(q.message)}${q.reply ? `<br><b>답변:</b> ${esc(q.reply)}` : ""}</td><td>${esc(q.status)}</td></tr>`).join("") || "<tr><td class='muted'>없음</td></tr>"}</table></details>`;
+  } catch (e) { el.innerHTML = `<span class="bad">${esc(e.message)}</span>`; }
+}
+async function saveMemo(id) { try { await api("users.set_memo", { user_id: id, memo: $("memo_" + id).value }); toast("메모 저장"); searchUsers(); } catch (e) { toast(e.message, true); } }
+async function setTier(id) { const tier = $("tier_" + id).value, until = $("until_" + id).value || null; if (!confirm(`등급을 ${tier}${until ? " (~" + until + ")" : " (무기한)"}로 바꿀까요?`)) return; try { await api("users.set_tier", { user_id: id, tier, until }); toast("등급 변경"); userDetail(id); searchUsers(); } catch (e) { toast(e.message, true); } }
+async function grant(id) { const p = pol("point.admin_gift"); const d = p && p.value && p.value.delta; if (!confirm(`💧${d ?? "?"} 지급할까요? (point.admin_gift)`)) return; try { const r = await api("users.grant_points", { user_id: id, reason: "admin_gift" }); toast("지급 완료 · 잔액 " + r.balance); userDetail(id); } catch (e) { toast(e.message, true); } }
 async function saveProfile(id) { try { await api("users.update_profile", { user_id: id, birth_date: $("bd_" + id).value || null, mbti: $("mbti_" + id).value.trim().toUpperCase() || null, gender: $("g_" + id).value || null }); toast("프로필 저장"); } catch (e) { toast(e.message, true); } }
 
+// ── 콘텐츠·안전
+async function loadSafety() {
+  try { const rows = (await api("content.reported")).rows;
+    $("reportedTable").innerHTML = "<tr><th>신고</th><th>제목</th><th>상태</th><th>마지막 신고</th><th>조치</th></tr>" + rows.map((d) => `<tr><td><b class="${d.reports >= 3 ? "bad" : "warn"}">${d.reports}</b></td><td>${esc(d.title || "(제목 없음)")} <span class="muted mono">${esc(String(d.id).slice(0, 8))}</span></td><td>${esc(d.visibility)}${d.deleted_at ? " · 삭제됨" : ""} · 검수 ${d.moderations ?? 0}회</td><td class="muted">${fmtT(d.last_report)}</td><td><button class="ghost" onclick="viewDiary('${d.id}')">열람</button> ${d.visibility === "public" ? `<button class="danger" onclick="hideDiary('${d.id}')">비공개로</button>` : ""}</td></tr>`).join("") || "<tr><td class='muted'>신고 없음</td></tr>";
+    const m = (await api("content.moderation_fails")).rows;
+    $("modTable").innerHTML = "<tr><th>시각</th><th>계기</th><th>회차</th><th>일기</th><th></th></tr>" + m.map((x) => `<tr><td class="muted">${fmtT(x.reviewed_at)}</td><td>${esc(x.trigger)}</td><td>${x.round}</td><td>${esc(x.diary?.title || "(제목 없음)")} <span class="muted">${esc(x.diary?.visibility || "")}</span></td><td><button class="ghost" onclick="viewDiary('${x.diary_id}')">열람</button></td></tr>`).join("") || "<tr><td class='muted'>없음</td></tr>";
+  } catch (e) { toast(e.message, true); }
+}
+async function viewDiary(id) { if (!confirm("신고·검수 처리 목적으로 일기 본문을 열람합니다. 감사 로그에 남습니다. 계속할까요?")) return; try { const d = (await api("content.diary", { diary_id: id })).diary; const el = $("diaryView"); el.classList.remove("hidden"); el.innerHTML = `<h3>${esc(d.title || "(제목 없음)")} <span class="muted">${esc(d.diary_date)} · ${esc(d.visibility)} · ${esc(d.kind || "ai")}</span></h3><div style="white-space:pre-wrap;line-height:1.8">${esc(d.body)}</div><div class="row" style="margin-top:10px">${d.visibility === "public" ? `<button class="danger" onclick="hideDiary('${d.id}')">비공개로 전환</button>` : `<button class="ghost" onclick="showDiary('${d.id}')">공개로 복원</button>`}<button class="ghost" onclick="userDetail('${d.user_id}');openTab('users')">작성자 보기</button></div>`; el.scrollIntoView({ behavior: "smooth" }); } catch (e) { toast(e.message, true); } }
+async function hideDiary(id) { if (!confirm("이 일기를 비공개로 전환할까요? 작성자에게는 알림이 가지 않습니다.")) return; try { await api("content.set_visibility", { diary_id: id, visibility: "private" }); toast("비공개 처리"); loadSafety(); $("diaryView").classList.add("hidden"); } catch (e) { toast(e.message, true); } }
+async function showDiary(id) { try { await api("content.set_visibility", { diary_id: id, visibility: "public" }); toast("공개 복원"); loadSafety(); } catch (e) { toast(e.message, true); } }
+
 // ── 문의·사연·감사
-async function loadInq() { try { const rows = (await api("inquiries.list")).rows; $("inqTable").innerHTML = "<tr><th style='width:110px'>일시 · 앱</th><th style='width:80px'>분류</th><th>내용 · 답변</th><th style='width:150px'>상태</th></tr>" + rows.map((q) => `<tr>
-  <td class="muted">${esc((q.created_at || "").slice(0, 16).replace("T", " "))}<br>${esc(q.platform || "")} ${esc(q.app_version || "")}<br>${q.reply_email ? `<span class="mono">${esc(q.reply_email)}</span>` : "<span class='bad'>이메일 없음</span>"}</td>
+async function loadInq() { try { const rows = (await api("inquiries.list")).rows; $("inqTable").innerHTML = "<tr><th style='width:120px'>일시 · 앱</th><th style='width:80px'>분류</th><th>내용 · 답변</th><th style='width:130px'>상태</th></tr>" + rows.map((q) => `<tr>
+  <td class="muted">${fmtT(q.created_at)}<br>${esc(q.platform || "")} ${esc(q.app_version || "")}<br>${q.reply_email ? `<span class="mono">${esc(q.reply_email)}</span>` : "<span class='bad'>이메일 없음</span>"}${q.user_id ? `<br><a href="#" onclick="openTab('users');userDetail('${q.user_id}');return false">작성자</a>` : ""}</td>
   <td>${esc(q.category)}</td>
-  <td><div style="white-space:pre-wrap">${esc(q.message)}</div>${q.reply ? `<div style="margin-top:8px;padding:8px 10px;background:var(--deep);border-radius:10px"><b>📮 답변</b> <span class="muted">${esc((q.replied_at || "").slice(0, 16).replace("T", " "))}</span><div style="white-space:pre-wrap">${esc(q.reply)}</div></div>` : `<textarea id="rep_${q.id}" rows="3" placeholder="답변 — 앱 알림함으로 전달되고, 회신 이메일이 있으면 메일도 함께 가요" style="margin-top:8px;font-family:inherit"></textarea><button class="pri" style="margin-top:6px" onclick="replyInq('${q.id}')">답변 보내기</button>`}</td>
+  <td><div style="white-space:pre-wrap">${esc(q.message)}</div>${q.reply ? `<div style="margin-top:8px;padding:8px 10px;background:var(--deep);border-radius:10px"><b>📮 답변</b> <span class="muted">${fmtT(q.replied_at)}</span><div style="white-space:pre-wrap">${esc(q.reply)}</div></div>` : `<textarea id="rep_${q.id}" rows="3" placeholder="답변 — 앱 알림함으로 전달되고, 회신 이메일이 있으면 메일도 함께" style="margin-top:8px;font-family:inherit"></textarea><button class="pri" style="margin-top:6px" onclick="replyInq('${q.id}')">답변 보내기</button>`}</td>
   <td>${esc(q.status)}<br>${q.status !== "closed" ? `<button class="ghost" style="margin-top:6px" onclick="closeInq('${q.id}')">처리 완료</button>` : ""}</td></tr>`).join("") || "<tr><td class='muted'>문의 없음</td></tr>"; } catch (e) { toast(e.message, true); } }
-async function replyInq(id) { const reply = ($("rep_" + id).value || "").trim(); if (!reply) return toast("답변이 비었어요", true); if (!confirm("이 답변을 보낼까요? (앱 알림함 + 회신 이메일)")) return; try { const r = await api("inquiries.reply", { id, reply }); toast(r.mail_error ? "앱 알림 전송 · 메일 실패: " + r.mail_error : "답변 전송 완료", !!r.mail_error); loadInq(); } catch (e) { toast(e.message, true); } }
-async function closeInq(id) { try { await api("inquiries.set_status", { id, status: "closed" }); loadInq(); } catch (e) { toast(e.message, true); } }
-async function loadStory() { try { const rows = (await api("story.list")).rows; $("storyTable").innerHTML = "<tr><th>선정일</th><th>상태</th><th>id</th></tr>" + rows.map((s) => `<tr><td>${esc(s.picked_on)}</td><td>${esc(s.status)}</td><td class="mono">${esc(s.id)}</td></tr>`).join("") || "<tr><td class='muted'>없음</td></tr>"; } catch (e) { toast(e.message, true); } }
-async function loadAudit() { try { const rows = (await api("audit.list")).rows; $("auditTable").innerHTML = "<tr><th>일시</th><th>키</th><th>이전</th><th>이후</th><th>누가</th></tr>" + rows.map((a) => `<tr><td class="muted">${esc((a.changed_at || "").slice(0, 16).replace("T", " "))}</td><td><code>${esc(a.key)}</code></td><td class="mono">${esc(JSON.stringify(a.old_value))}</td><td class="mono">${esc(JSON.stringify(a.new_value))}</td><td class="muted">${esc(a.changed_by)}</td></tr>`).join(""); } catch (e) { toast(e.message, true); } }
+async function replyInq(id) { const reply = ($("rep_" + id).value || "").trim(); if (!reply) return toast("답변이 비었어요", true); if (!confirm("이 답변을 보낼까요? (앱 알림함 + 회신 이메일)")) return; try { const r = await api("inquiries.reply", { id, reply }); toast(r.mail_error ? "앱 알림 전송 · 메일 실패: " + r.mail_error : "답변 전송 완료", !!r.mail_error); loadInq(); loadToday(); } catch (e) { toast(e.message, true); } }
+async function closeInq(id) { try { await api("inquiries.set_status", { id, status: "closed" }); loadInq(); loadToday(); } catch (e) { toast(e.message, true); } }
+async function loadStory() { try { const rows = (await api("story.list")).rows; $("storyTable").innerHTML = "<tr><th>선정일</th><th>상태</th><th>후보 id</th><th>작성자</th></tr>" + rows.map((s) => `<tr><td>${esc(s.picked_on)}</td><td>${esc(s.status)}</td><td class="mono">${esc(s.id)}</td><td><a href="#" onclick="openTab('users');userDetail('${s.user_id}');return false">보기</a></td></tr>`).join("") || "<tr><td class='muted'>후보 없음 (심사 크론 일시정지 중)</td></tr>";
+  const p = (await api("story.posts")).rows; $("postsTable").innerHTML = "<tr><th>게시</th><th>플랫폼</th><th>링크</th><th>후보</th></tr>" + p.map((x) => `<tr><td class="muted">${fmtT(x.posted_at)}${x.removed_at ? " · 내림" : ""}</td><td>${esc(x.platform)}</td><td>${x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.url)}</a>` : "-"}</td><td class="mono">${esc(String(x.candidate_id).slice(0, 8))}</td></tr>`).join("") || "<tr><td class='muted'>게시 없음</td></tr>"; } catch (e) { toast(e.message, true); } }
+async function loadAudit() { try { const rows = (await api("audit.list")).rows; $("auditTable").innerHTML = "<tr><th>일시</th><th>키</th><th>이전</th><th>이후</th><th>누가</th></tr>" + rows.map((a) => `<tr><td class="muted">${fmtT(a.changed_at)}</td><td><code>${esc(a.key)}</code></td><td class="mono">${esc(JSON.stringify(a.old_value))}</td><td class="mono">${esc(JSON.stringify(a.new_value))}</td><td class="muted">${esc(a.changed_by)}</td></tr>`).join(""); } catch (e) { toast(e.message, true); } }
 </script>
 </body>
 </html>
