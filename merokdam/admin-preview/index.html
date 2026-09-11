@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>미록담 운영 콘솔</title>
+<title>[미리보기] 미록담 운영 콘솔</title>
 <link rel="icon" href="/silver-smiths-favicon.ico">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <style>
@@ -37,6 +37,7 @@ details summary{cursor:pointer;color:var(--ink);font-weight:700}
 </style>
 </head>
 <body>
+<div style="background:#4B0082;color:#fff;font-size:12.5px;padding:6px 12px;text-align:center">미리보기 환경 — 운영 어드민(/merokdam/admin/)과 같은 서버 함수(admin-console)를 사용합니다. 운영 모델 설정은 여기서 바꾸지 마세요.</div>
 <header><div><b>🌱 미록담 운영 콘솔</b> <small id="who"></small></div><div class="row" style="gap:6px"><button class="ghost" id="reload">새로고침</button><button class="ghost" id="logout" style="display:none">로그아웃</button></div></header>
 
 <main>
@@ -89,7 +90,7 @@ details summary{cursor:pointer;color:var(--ink);font-weight:700}
       <div class="card"><h3>구독 (추정) <span class="help" data-h="등급별 현재 인원과 만료일(tier_until)이 있는 체험·테스터 계정 수. 가정 월매출 = 퍼플 인원×퍼플 월가격 + 골드 인원×골드 월가격 (가격은 운영 설정의 price.* 키). 결제 검증 도입 전까지는 참고용.">?</span></h3><div id="subStats" class="kv"></div></div>
       <div class="card"><h3>물방울 경제 (30일) <span class="help" data-h="발행 = 광고 시청·추천·선물 등으로 지급된 💧, 소진 = 생성·자서전 등으로 차감된 💧. 총 잔액은 사용자들이 쥔 부채(언젠가 소진될 무료 재화)입니다. 발행이 소진보다 훨씬 크면 광고 보상이 과하고, 소진이 크면 과금 압박이 큽니다.">?</span></h3><div id="pointStats" class="kv"></div><div id="pointDetail" class="muted"></div></div>
     </div>
-    <div class="card"><h3>AI 비용 (추정) <span class="help" data-h="30일 AI 일기 수 × 편당 단가 + 요약 이미지 수 × 장당 단가 + 자서전 수 × 권당 단가. 단가는 운영 설정의 cost.* 키(원)이며 기본값은 가정치라 Google Cloud 청구서와 대조해 조정해야 합니다.">?</span></h3><div id="costStats" class="kv"></div><p class="muted">실제 청구: https://console.cloud.google.com/billing (Gemini·Veo·Lyria), Supabase 사용량은 대시보드 Usage.</p></div>
+    <div class="card"><h3>AI 비용 (추정) <span class="help" data-h="30일 AI 일기 수 × 편당 단가 + 요약 이미지 수 × 장당 단가 + 자서전 수 × 권당 단가. 단가는 운영 설정의 cost.* 키(원)이며 기본값은 가정치라 Google Cloud 청구서와 대조해 조정해야 합니다.">?</span></h3><div id="costStats" class="kv"></div><div id="costActual" class="muted" style="margin-top:8px">사용량 기반 비용 불러오는 중…</div><p class="muted">실제 청구: https://console.cloud.google.com/billing (Gemini·Veo·Lyria), Supabase 사용량은 대시보드 Usage.</p></div>
   </div>
 
   <!-- 회원 -->
@@ -110,7 +111,25 @@ details summary{cursor:pointer;color:var(--ink);font-weight:700}
   <div id="t-ops" class="hidden">
     <div class="card"><h3>기능 스위치 <span class="help" data-h="앱·서버 기능을 켜고 끕니다. 앱은 다음 콜드 스타트(완전히 종료 후 실행)에, 서버 함수는 60초 안에 반영됩니다. 끄기는 언제든 안전하고, 켜기는 비용·정책 영향이 있으니 설명을 읽고 켜세요.">?</span></h3><table id="switches"></table></div>
     <div class="card"><h3>체험·요금·한도 <span class="help" data-h="숫자 정책. JSON 형식으로 저장됩니다(숫자는 그대로, 문자열은 따옴표). 바꾸면 즉시 새 요청부터 적용.">?</span></h3><table id="fees"></table></div>
-    <div class="card"><h3>AI 모델·프롬프트 <span class="help" data-h="일기·자서전 생성에 쓰는 Gemini 모델 체인(앞에서부터 시도, 실패 시 다음)과 편집자·작가 프롬프트에 덧붙이는 규칙. 모델을 바꾸면 비용·품질이 같이 바뀌니 테스트 생성 후 적용하세요. 프롬프트 추가분은 '금지 규칙' 위주로 짧게.">?</span></h3><table id="models"></table></div>
+    <div class="card"><h3>AI 모델 — 단계별 <span class="help" data-h="일기 생성은 관찰 → 편집 → 작가 → 검수 → (수정 → 재검수) 단계로, 월간 자서전은 편집 → 작가 → 검수 → 필요한 부분 수정·재검수, 연간은 기존 경로로 움직입니다. 단계마다 공급자·주 모델·대체 후보를 정합니다. 왼쪽 '평가' 열은 평가 함수(generate-diary-v3)와 대표 내부 빌드만 쓰고, 오른쪽 '운영' 열이 실제 사용자 일기에 쓰입니다. 흐름: 구성 선택 → 연결 확인 → 평가에 적용 → 평가 결과·사람 확인 → 운영에 적용. '연결 성공'은 호출이 된다는 뜻이고 '품질 검증'은 사람 확인을 거쳐 검증 목록에 올린 모델에만 붙습니다. 대체 후보는 검증 목록에 있는 모델만 고를 수 있고, 후보가 없거나 모두 실패하면 생성은 명확히 실패합니다(임의로 낮은 모델로 바꾸지 않음). 사실 검수·형식 검사·결제·저장 안전장치는 어떤 모델을 골라도 동일하게 적용되며 여기서 끌 수 없습니다.">?</span></h3>
+      <div id="keyStatus" class="muted" style="margin-bottom:8px">키 상태 불러오는 중…</div>
+      <table id="stageTable"></table>
+      <div class="row" style="margin-top:10px;flex-wrap:wrap;gap:8px">
+        <button class="ghost" onclick="probeModels()">연결 확인(선택한 모델)</button>
+        <button class="ghost" onclick="applyStages('eval')">평가에 적용</button>
+        <button class="pri" onclick="applyStages('prod')">운영에 적용</button>
+        <button class="ghost" onclick="loadActual()">실제 사용 모델(7일)</button>
+      </div>
+      <div id="probeOut" class="muted" style="margin-top:8px"></div>
+      <div id="fnCaps" class="muted" style="margin-top:6px"></div>
+      <div id="snapshots" class="muted" style="margin-top:8px"></div>
+      <div id="actualOut" class="muted" style="margin-top:8px"></div>
+      <details style="margin-top:8px"><summary>검증 목록(model.verified) · 설정 버전</summary>
+        <p class="muted" style="margin:6px 0">사람 확인을 거친 모델만 여기에 둡니다. 대체 후보는 이 목록에서만 고를 수 있습니다. 운영 설정 버전 <b id="cfgVerProd">-</b> · 평가 설정 버전 <b id="cfgVerEval">-</b> (생성 기록의 config_version과 대조).</p>
+        <table id="verifiedTable"></table>
+      </details>
+    </div>
+    <div class="card"><h3>프롬프트 추가 규칙·구 모델 키 <span class="help" data-h="편집자·작가 프롬프트에 덧붙이는 규칙(금지 규칙 위주로 짧게)과 체인 원본 키. 단계별 표와 같은 정책을 다른 모양으로 보는 것이라 한쪽에서 바꾸면 다른 쪽도 바뀝니다.">?</span></h3><table id="models"></table></div>
     <div class="card"><h3>광고·타로·기타 <span class="help" data-h="광고 유닛 ID(ad.*)는 AdMob 콘솔 값. 타로 덱 버전·이미지 경로. 위 표에 없는 모든 키는 여기 '전체 키'에 나옵니다.">?</span></h3><table id="misc"></table>
       <details style="margin-top:10px"><summary>전체 키 보기 / 새 키 추가</summary><table id="polTable" style="margin-top:8px"></table><div class="row" style="margin-top:8px"><input id="newKey" placeholder="예: ad.android.banner"><input id="newVal" placeholder='값(JSON) 예: "ca-app-pub-…"'><button class="pri" onclick="setPolicy(document.getElementById('newKey').value, document.getElementById('newVal').value)">추가</button></div></details></div>
   </div>
@@ -271,6 +290,7 @@ async function loadMoney(force) {
   $("pointDetail").innerHTML = `발행: ${Object.entries(pt.issued).map(([k, v]) => `${k} ${v}`).join(" · ") || "-"}<br>소진: ${Object.entries(pt.consumed).map(([k, v]) => `${k} ${v}`).join(" · ") || "-"}`;
   const ai = o.diaries.d30 - o.diaries.manual, img = o.diaries.with_image, ab = o.autobiographies_30d;
   const c1 = p("cost.per_diary_krw", 30), c2 = p("cost.per_image_krw", 80), c3 = p("cost.per_autobio_krw", 200);
+  loadActualCost();
   $("costStats").innerHTML = tiles([["AI 일기 30일", ai, `× ₩${c1} = ₩${num(ai * c1)}`], ["요약 이미지", img, `× ₩${c2} = ₩${num(img * c2)}`], ["자서전", ab, `× ₩${c3} = ₩${num(ab * c3)}`], ["추정 합계 30일", "₩" + num(ai * c1 + img * c2 + ab * c3), "단가는 운영 설정 cost.*"]]);
 }
 
@@ -299,7 +319,14 @@ const H = {
   "limit.moderation_per_day": ["즉시 검수 하루 한도", "공개 저장 시 즉시 검수 호출 한도. 초과분은 비공개 저장 후 다음날 심사.", "검수 비용 조절.", "서버 즉시", "10"],
   "diary.length": ["일기 길이 기준", "short/normal/long의 글자 수 범위와 재료 부족(sparse) 상한. 편집자·작가 프롬프트에 그대로 들어갑니다.", "\"억지로 길다\" 불만 시 낮춤.", "서버 60초", "-"],
   "model.diary.flash_chain": ["일기 모델 체인", "AI 일기 생성에 쓰는 Gemini 모델 목록. 앞 모델이 실패/한도면 다음으로.", "새 모델 출시·장애 시. 이름을 틀리면 전부 실패하니 주의.", "서버 60초", "-"],
-  "model.autobio.pro_chain": ["자서전 모델 체인", "자서전 생성용(Pro급) 모델 목록.", "품질/비용 조정.", "서버 60초", "-"],
+  "model.autobio.pro_chain": ["자서전 작가 모델 체인", "자서전 월간 본문·장면 교체에 쓰는 모델 목록(앞이 주 모델, 뒤는 검증된 대체 후보). flash로 자동 전환하지 않음.", "품질/비용 조정.", "서버 60초", "[\"gemini-3.1-pro-preview\"]"],
+  "model.autobio.review_chain": ["월간 자서전 검수 모델", "신규·다시 엮기·장면 교체의 사실/문장 검수. 미설정 시 자서전 편집 체인 사용.", "검수 품질 조정.", "지원 함수 배포 후 60초", "-"],
+  "model.autobio.flash_chain": ["자서전 편집·연간 체인", "자서전 편집·인용 보강·연간(레거시) 경로 모델 목록.", "비용 조정.", "서버 60초", "-"],
+  "model.diary.review_chain": ["일기 검수 체인", "검수·재검수 모델 목록(사진 입력 필요 → Gemini). 비우면 flash_chain과 같음.", "검수 모델만 바꿀 때.", "서버 60초", "-"],
+  "model.diary.writer_provider": ["일기 작가 공급자", "\"gemini\" 또는 \"claude\". claude면 claude_chain으로 Claude API를 호출합니다(수정도 기본 동일).", "작가 모델 비교 후 결정.", "서버 60초", "\"gemini\""],
+  "model.diary.claude_chain": ["일기 작가 Claude 체인", "writer_provider=claude일 때 쓰는 Claude 모델 목록.", "-", "서버 60초", "[\"claude-sonnet-5\"]"],
+  "model.verified": ["검증된 모델 목록", "사람 확인을 거친 모델. 대체 후보는 이 목록에서만 고를 수 있고, 목록에 없는 대체 후보는 서버가 제외합니다.", "사람 확인 후 갱신.", "서버 60초", "[]"],
+  "model.config.version": ["운영 모델 설정 버전", "model.* 키가 바뀔 때마다 1 증가(자동). 생성 기록의 config_version과 대조.", "자동.", "-", "0"],
   "prompt.diary.editor_extra": ["편집자 프롬프트 추가", "사실 정리(편집자) 단계에 덧붙일 규칙 문자열. 예: \"시간과 사건을 억지로 묶지 말 것\".", "특정 불만이 반복될 때 규칙 추가. 길게 쓰면 품질이 흔들립니다.", "서버 60초", "\"\""],
   "prompt.diary.writer_extra": ["작가 프롬프트 추가", "문장 쓰기(작가) 단계에 덧붙일 규칙.", "문체 조정.", "서버 60초", "\"\""],
   "notice.current": ["현재 공지", "알림함 공지 JSON. 공지·푸시 탭에서 편집하세요.", "-", "앱 콜드 스타트", "null"],
@@ -333,7 +360,7 @@ async function loadAds() {
 }
 const SWITCHES = ["feature.generate_charge", "feature.summary_image", "feature.story_video", "feature.garden"];
 const FEES = ["trial.days", "trial.policy_start", "point.diary_generate", "point.diary_generate_refund", "point.story_selected", "point.admin_gift", "point.autobio", "limit.manual_per_day", "limit.manual_per_minute", "limit.moderation_per_day", "diary.length", "price.purple_month_krw", "price.gold_month_krw", "cost.per_diary_krw", "cost.per_image_krw", "cost.per_autobio_krw"];
-const MODELS = ["model.diary.flash_chain", "model.autobio.pro_chain", "prompt.diary.editor_extra", "prompt.diary.writer_extra"];
+const MODELS = ["model.diary.flash_chain", "model.diary.review_chain", "model.diary.writer_provider", "model.diary.claude_chain", "model.autobio.pro_chain", "model.autobio.flash_chain", "model.autobio.review_chain", "model.verified", "prompt.diary.editor_extra", "prompt.diary.writer_extra"];
 function valInput(k, i) { const p = pol(k); const v = p ? JSON.stringify(p.value, null, (k.startsWith("prompt.") || k.startsWith("model.") || k === "diary.length") ? 1 : 0) : ""; const id = "v_" + i; return `<textarea id="${id}" rows="${Math.min(6, (v.match(/\n/g) || []).length + 1)}">${esc(v)}</textarea>`; }
 function renderOps() {
   if (!cache.policies.length) return;
@@ -344,6 +371,8 @@ function renderOps() {
   const known = new Set([...SWITCHES, ...FEES, ...MODELS, "notice.current", ...AD_UNITS.map((a) => a[0]), ...AD_RULES]);
   const misc = cache.policies.filter((p) => !known.has(p.key));
   $("misc").innerHTML = misc.map((p, i) => rowFor(p.key, "x" + i)).join("") || "<tr><td class='muted'>없음</td></tr>";
+  try { renderStages(); } catch (e) { console.warn("stage render", e); }
+  if (!renderOps._keys) { renderOps._keys = true; loadKeyStatus(); loadSnapshots("eval"); ensureCaps().then((c) => { const g = c && c["generate-diary"], v = c && c["generate-diary-v3"]; $("fnCaps").innerHTML = `배포된 함수: 운영 generate-diary ${g && g.stage_config ? `✅ 단계별 설정 지원(${esc(g.pipeline_version || "")})` : "<span class='warn'>구 버전 — 단계별 키 미지원(운영 적용 제한)</span>"} · 평가 generate-diary-v3 ${v && v.stage_config ? `✅ (${esc(v.pipeline_version || "")})` : "<span class='warn'>미확인</span>"}`; }); }
   $("polTable").innerHTML = "<tr><th>키</th><th>값</th><th>수정</th><th></th></tr>" + cache.policies.map((p, i) => `<tr><td><code>${esc(p.key)}</code></td><td class="mono">${esc(JSON.stringify(p.value))}</td><td class="muted">${fmtT(p.updated_at)}<br>${esc(p.updated_by || "")}</td><td><button class="danger" onclick="delPolicy('${esc(p.key)}')">삭제</button></td></tr>`).join("");
 }
 async function toggleSwitch(k, on) {
@@ -351,6 +380,175 @@ async function toggleSwitch(k, on) {
   setPolicy(k, on ? "false" : "true");
 }
 async function delPolicy(k) { if (!confirm(`정책 ${k}를 삭제할까요? 함수는 기본값으로 동작합니다.`)) return; try { await api("policies.delete", { key: k }); toast("삭제됨"); await loadPolicies(); renderOps(); } catch (e) { toast(e.message, true); } }
+
+
+
+// 사용량 기반 일기 생성 비용 — 생성 기록(diary_generations)의 단계별 토큰 × 실제 사용 모델 단가. 편당 단가 가정치(위 타일)와 별도 표시 (2026-09-11)
+async function loadActualCost() {
+  const el = $("costActual"); if (!el) return;
+  try { const r = await api("stats.ai_cost", { days: 30 });
+    if (r.error) return el.innerHTML = `<span class="warn">사용량 기반 비용을 계산할 수 없어요 — 생성 기록 테이블 미적용(${esc(r.error)})</span>`;
+    const bm = Object.entries(r.by_model || {}).map(([m, b]) => `<code>${esc(m)}</code> $${b.usd.toFixed(3)} (${b.calls}회)`).join(" · ");
+    el.innerHTML = `<b>사용량 기반(30일, 일기 생성 모델 비용만)</b>: 합계 <b>$${r.usd}</b> · 요청당 $${r.per_request ?? "-"} · 전달당 $${r.per_delivered ?? "-"} · 사용량 확보 ${r.requests_priced}건 · <b>미확인 ${r.requests_unknown}건</b>(사용량 미기록 — 0원으로 치지 않음)${r.unpriced_models?.length ? ` · 단가 없는 모델: ${esc(r.unpriced_models.join(", "))}` : ""}<br>${bm}<br><small>${esc(r.note)}</small>`;
+  } catch (e) { el.textContent = "사용량 기반 비용 조회 실패: " + e.message; }
+}
+
+// ── 단계별 모델 관리 (2026-09-11)
+// 카탈로그: 공급자·입력 능력. image=false인 모델은 사진 단계(관찰·검수)에 고를 수 없다(현재 구현의 Claude 경로는 텍스트만 전송).
+const MODEL_CATALOG = [
+  { id: "gemini-3.6-flash", provider: "gemini", image: true }, { id: "gemini-3.5-flash", provider: "gemini", image: true }, { id: "gemini-3.7-flash", provider: "gemini", image: true },
+  { id: "gemini-2.5-flash", provider: "gemini", image: true }, { id: "gemini-3.1-pro-preview", provider: "gemini", image: true }, { id: "gemini-3-pro-preview", provider: "gemini", image: true },
+  { id: "claude-sonnet-5", provider: "claude", image: false }, { id: "claude-haiku-4-5", provider: "claude", image: false },
+];
+// 단계 → 정책 키. same: 기본값이 다른 단계와 같음(빈 값이면 그 단계를 따른다). image: 사진 입력 필요. providerKey: 공급자 정책 키(작가·수정만)
+const STAGES = [
+  { id: "observe", name: "사진·영상 관찰", key: "model.diary.observe_chain", fallbackKey: "model.diary.flash_chain", image: true, scope: "일기" },
+  { id: "editor", name: "편집(장면 노트)", key: "model.diary.editor_chain", fallbackKey: "model.diary.flash_chain", image: true, scope: "일기 — 사실층 정리, 사진은 관찰 결과만 받음" },
+  { id: "writer", name: "작가", key: "model.diary.writer_chain", claudeKey: "model.diary.claude_chain", providerKey: "model.diary.writer_provider", fallbackKey: "model.diary.flash_chain", scope: "일기" },
+  { id: "fix", name: "수정", key: "model.diary.fix_chain", providerKey: "model.diary.fix_provider", same: "writer", scope: "일기 — 기본 '작가와 동일'" },
+  { id: "review", name: "검수·재검수", key: "model.diary.review_chain", fallbackKey: "model.diary.flash_chain", image: true, scope: "일기 — 재검수는 같은 설정" },
+  { id: "autobio_pro", name: "자서전 작가(월간·장면 교체)", key: "model.autobio.pro_chain", scope: "자서전 월간 본문·장면 교체" },
+  { id: "autobio_review", name: "월간 자서전 검수·재검수", key: "model.autobio.review_chain", fallbackKey: "model.autobio.flash_chain", scope: "신규·다시 엮기·장면 교체 — 수정은 자서전 작가와 동일" },
+  { id: "autobio_flash", name: "자서전 편집·인용·연간(레거시)", key: "model.autobio.flash_chain", scope: "자서전 편집·인용 보강·연간 레거시 경로" },
+];
+const draft = {}; // `${scope}_${stage}` → { provider, m1, m2, inherit } (저장 전 편집 상태)
+function setDraft(scope, id, field, value) { const k = scope + "_" + id; draft[k] = { ...(draft[k] || {}), [field]: value }; if (field === "provider") { draft[k].m1 = ""; draft[k].m2 = ""; } renderStages(); }
+const pv = (k, scope) => { const p = pol(scope === "eval" ? "eval." + k : k); return p ? p.value : (scope === "eval" ? pol(k)?.value : undefined); };
+const verifiedList = () => Array.isArray(pol("model.verified")?.value) ? pol("model.verified").value : [];
+function stageState(st, scope) {
+  // 표시용 해석 — 서버(_shared/model_config.ts)와 같은 규칙: 전용 키 → 없으면 fallbackKey → 없으면 기본
+  const prov = st.providerKey ? (pv(st.providerKey, scope) === "claude" ? "claude" : (pv(st.providerKey, scope) === "gemini" ? "gemini" : null)) : null;
+  let chain = null, source = st.key;
+  if (prov === "claude" && st.claudeKey) { chain = pv(st.claudeKey, scope); source = st.claudeKey; }
+  if (!Array.isArray(chain) || !chain.length) { chain = pv(st.key, scope); source = st.key; }
+  if ((!Array.isArray(chain) || !chain.length) && st.same) return { inherit: true, provider: prov, chain: [], source: "same_as:" + st.same };
+  if ((!Array.isArray(chain) || !chain.length) && st.fallbackKey) { chain = pv(st.fallbackKey, scope); source = st.fallbackKey; }
+  if (!Array.isArray(chain) || !chain.length) { chain = st.id.startsWith("autobio_pro") ? ["gemini-3.1-pro-preview"] : (st.id === "autobio_flash" || st.id === "autobio_review") ? ["gemini-3.7-flash", "gemini-3.6-flash"] : ["gemini-3.6-flash", "gemini-3.5-flash"]; source = "기본값"; }
+  const provider = prov || (String(chain[0]).startsWith("claude") ? "claude" : "gemini");
+  return { inherit: false, provider, chain, source };
+}
+const providerSel = (id, cur, disabledClaude, reason, onchange) => `<select id="${id}"${disabledClaude ? ` title="${esc(reason)}"` : ""} onchange="${onchange}"><option value="gemini"${cur === "gemini" ? " selected" : ""}>Gemini</option><option value="claude"${cur === "claude" ? " selected" : ""}${disabledClaude ? " disabled" : ""}>Claude${disabledClaude ? " (사진 입력 미지원)" : ""}</option></select>`;
+const modelSel = (id, cur, provider, image, onlyVerified, onchange) => { const v = verifiedList(); const opts = MODEL_CATALOG.filter((m) => m.provider === provider && (!image || m.image) && (!onlyVerified || v.includes(m.id))); return `<select id="${id}" onchange="${onchange || ""}"><option value="">(없음)</option>${opts.map((m) => `<option value="${m.id}"${m.id === cur ? " selected" : ""}>${m.id}${v.includes(m.id) ? " ✓검증" : ""}</option>`).join("")}</select>`; };
+function renderStages() {
+  const rows = STAGES.map((st) => {
+    const cell = (scope) => {
+      const s = stageState(st, scope); const d = draft[scope + "_" + st.id] || {}; const dis = !!st.image;
+      const p = d.provider || s.provider || "gemini"; const inherit = d.inherit !== undefined ? d.inherit : s.inherit;
+      const m1 = d.m1 !== undefined ? d.m1 : (p === (s.provider || "gemini") ? s.chain[0] : ""); const m2 = d.m2 !== undefined ? d.m2 : (p === (s.provider || "gemini") ? s.chain[1] : "");
+      const inheritBox = st.same ? `<label style="display:block;margin-bottom:4px"><input type="checkbox" id="inh_${scope}_${st.id}"${inherit ? " checked" : ""} onchange="setDraft('${scope}','${st.id}','inherit',this.checked)"> ${st.same === "writer" ? "작가와 동일" : st.same}</label>` : "";
+      if (st.same && inherit) return `<td>${inheritBox}<span class="muted">→ ${st.same} 설정을 따름</span></td>`;
+      const oc = (f) => `setDraft('${scope}','${st.id}','${f}',this.value)`;
+      return `<td>${inheritBox}<div class="row" style="gap:6px;flex-wrap:wrap">${providerSel(`prov_${scope}_${st.id}`, p, dis, "관찰·검수는 사진을 보내야 해 Claude 경로로 실행할 수 없습니다", oc("provider"))}${modelSel(`m1_${scope}_${st.id}`, m1, p, dis, false, oc("m1"))}<span class="muted">대체 →</span>${modelSel(`m2_${scope}_${st.id}`, m2, p, dis, true, oc("m2"))}</div><small class="muted">저장된 값: ${esc((s.chain || []).join(" → ") || "-")} · 출처 <code>${esc(s.source)}</code>${Object.keys(d).length ? " · <span class='warn'>저장 전</span>" : ""}</small></td>`;
+    };
+    return `<tr><td style="width:19%"><b>${esc(st.name)}</b><br><small class="muted">${esc(st.scope)}</small></td>${cell("eval")}${cell("prod")}</tr>`;
+  }).join("");
+  $("stageTable").innerHTML = `<tr><th>단계</th><th>평가 (일기 v3 / 자서전 평가 구성)</th><th>운영 (실제 사용자)</th></tr>${rows}`;
+  $("cfgVerProd").textContent = pol("model.config.version")?.value ?? "0"; $("cfgVerEval").textContent = pol("eval.model.config.version")?.value ?? "0";
+  const v = verifiedList();
+  $("verifiedTable").innerHTML = MODEL_CATALOG.map((m) => `<tr><td><code>${m.id}</code> <span class="muted">${m.provider}${m.image ? " · 사진 입력" : " · 텍스트만"}</span></td><td style="width:140px"><label><input type="checkbox" ${v.includes(m.id) ? "checked" : ""} onchange="toggleVerified('${m.id}', this.checked)"> 품질 검증됨</label></td></tr>`).join("");
+}
+// 선택값 → 정책 키 쓰기. 공급자 선택은 해당 공급자 경로로 연결되는 키에 저장(Claude면 claude_chain, Gemini면 *_chain)
+function collectStage(st, scope) {
+  if (st.same && $(`inh_${scope}_${st.id}`)?.checked) return { clear: [st.key, st.providerKey].filter(Boolean) };
+  const prov = $(`prov_${scope}_${st.id}`).value; const m1 = $(`m1_${scope}_${st.id}`).value; const m2 = $(`m2_${scope}_${st.id}`).value;
+  if (!m1) throw new Error(`${st.name}: 주 모델을 고르세요`);
+  if (st.image && prov === "claude") throw new Error(`${st.name}: 사진 입력 단계는 Claude로 실행할 수 없습니다`);
+  const cat = MODEL_CATALOG.find((m) => m.id === m1); if (!cat || cat.provider !== prov) throw new Error(`${st.name}: 모델 ${m1}은(는) ${prov} 공급자가 아닙니다`);
+  if (m2 && !verifiedList().includes(m2)) throw new Error(`${st.name}: 대체 후보 ${m2}는 검증 목록에 없습니다`);
+  const chain = m2 ? [m1, m2] : [m1]; const sets = {}; const clear = [];
+  if (st.providerKey) sets[st.providerKey] = prov;
+  if (prov === "claude" && st.claudeKey) { sets[st.claudeKey] = chain; clear.push(st.key); return { sets, clear }; }
+  // 상위 키(flash_chain)와 같은 값이면 전용 키를 쓰지 않는다 — 불필요한 단계별 키를 만들지 않아 구 버전 운영 함수에도 기존 키만 반영된다
+  const base = st.fallbackKey ? pv(st.fallbackKey, scope) : null;
+  if (Array.isArray(base) && JSON.stringify(base) === JSON.stringify(chain)) { clear.push(st.key); return { sets, clear }; }
+  // 전용 키가 없고 기본값과 같으면(자서전 체인 등) 기본값을 굳이 키로 만들지 않는다
+  if (!st.fallbackKey && !pv(st.key, scope) && JSON.stringify(stageState(st, scope).chain) === JSON.stringify(chain)) return { sets, clear };
+  sets[st.key] = chain;
+  return { sets, clear };
+}
+// 구 버전 운영 함수(generate-diary v43 이전)는 이 키들을 읽지 않는다 — 운영 적용 전 함수 능력(functions.capabilities)을 확인해 막는다
+const STAGE_ONLY_KEYS = ["model.diary.observe_chain", "model.diary.editor_chain", "model.diary.writer_chain", "model.diary.fix_provider", "model.diary.fix_chain", "model.verified"];
+let fnCaps = null;
+async function ensureCaps() { if (!fnCaps) { try { fnCaps = await api("functions.capabilities"); } catch (e) { fnCaps = { error: e.message }; } } return fnCaps; }
+async function applyStages(scope) {
+  const label = scope === "prod" ? "운영" : "평가";
+  let plan; try { plan = STAGES.map((st) => ({ st, ...collectStage(st, scope) })); } catch (e) { return toast(e.message, true); }
+  const sets = {}, clear = [];
+  for (const p of plan) { for (const k of (p.clear || [])) { const fk = scope === "eval" ? "eval." + k : k; if (pol(fk)) clear.push(fk); } for (const [k, v] of Object.entries(p.sets || {})) sets[scope === "eval" ? "eval." + k : k] = v; }
+  // 값이 저장된 것과 같으면 보내지 않는다(변경분만 한 트랜잭션으로)
+  for (const k of Object.keys(sets)) if (pol(k) && JSON.stringify(pol(k).value) === JSON.stringify(sets[k])) delete sets[k];
+  if (!Object.keys(sets).length && !clear.length) return toast("바뀐 설정이 없어요", true);
+  if (scope === "prod") {
+    const caps = await ensureCaps(); const fn = caps && caps["generate-diary"];
+    if ([...Object.keys(sets), ...clear].includes("model.autobio.review_chain") && !caps?.["generate-autobiography"]?.monthly_review) return toast("월간 검수를 지원하는 자서전 함수 배포 후 적용할 수 있어요.", true);
+    const usesStageOnly = [...Object.keys(sets), ...clear].some((k) => STAGE_ONLY_KEYS.includes(k));
+    if (!fn || !fn.stage_config) {
+      if (usesStageOnly) return toast("운영 함수(generate-diary)가 단계별 설정을 지원하지 않는 버전입니다 — 관찰·편집·수정·검증 목록 키는 운영 적용 불가. 운영 함수 업데이트가 먼저 필요합니다.", true);
+      if (!confirm("운영 함수(generate-diary)는 아직 구 버전입니다. 작가 공급자·체인·검수 체인 같은 기존 키만 반영되고, 설정 버전·대체 사유 기록은 남지 않습니다. 그래도 저장할까요?")) return;
+    }
+  }
+  const summary = Object.entries(sets).map(([k, v]) => `${k} = ${JSON.stringify(v)}`).concat(clear.map((k) => `${k} 삭제(상위 설정 따름)`)).join("\n");
+  if (!confirm(`${label} 설정을 한 번에 저장할까요? (${scope === "prod" ? "저장 즉시 운영 함수는 60초 안에 새 요청부터 읽습니다. 평가에서 결과·사람 확인을 마친 구성인지 확인하세요." : "평가 함수와 내부 빌드에만 반영됩니다."})\n\n${summary}`)) return;
+  try {
+    const r = await api("models.apply", { scope, sets, clear });
+    toast(`${label} 설정 저장됨 — 설정 버전 ${r.version}. ${scope === "prod" ? "운영 함수 반영은 60초 후 새 요청부터(저장 ≠ 반영)." : ""}`);
+    Object.keys(draft).filter((k) => k.startsWith(scope + "_")).forEach((k) => delete draft[k]);
+    await loadPolicies(); renderOps(); loadSnapshots(scope);
+  } catch (e) { toast(`${label} 설정 저장 실패(전부 롤백됨): ` + e.message, true); }
+}
+async function loadSnapshots(scope) {
+  const el = $("snapshots"); if (!el) return;
+  try { const r = await api("models.snapshots", { scope });
+    el.innerHTML = `<b>${scope === "prod" ? "운영" : "평가"} 구성 이력</b> ` + ((r.rows || []).map((x) => `<div class="row" style="gap:8px;margin:4px 0"><span class="muted">${fmtT(x.changed_at)}</span> 버전 ${esc(String(x.new_value?.version))} <span class="muted">${esc(x.changed_by || "")}</span> <button class="ghost" onclick="restoreSnapshot(${x.id}, '${scope}')">이 구성으로 복원</button></div>`).join("") || "<span class='muted'>이력 없음(원자 적용 RPC 적용 후 생성)</span>");
+  } catch (e) { el.textContent = "구성 이력 조회 실패: " + e.message; }
+}
+async function restoreSnapshot(id, scope) {
+  if (!confirm(`${scope === "prod" ? "운영" : "평가"} 구성을 스냅샷 #${id} 상태로 전부 되돌릴까요? (스냅샷에 없는 현재 키는 삭제, 한 트랜잭션)`)) return;
+  try { const r = await api("models.restore_snapshot", { snapshot_id: id }); toast(`복원됨 — 설정 버전 ${r.version}`); await loadPolicies(); renderOps(); loadSnapshots(scope); } catch (e) { toast("복원 실패(전부 롤백됨): " + e.message, true); }
+}
+async function toggleVerified(id, on) {
+  const v = new Set(verifiedList()); if (on) v.add(id); else v.delete(id);
+  try { await api("policies.set", { key: "model.verified", value: [...v] }); toast(`검증 목록 저장: ${[...v].join(", ") || "(비움)"}`); await loadPolicies(); renderOps(); } catch (e) { toast(e.message, true); }
+}
+async function probeModels() {
+  const ids = new Set(); STAGES.forEach((st) => ["eval", "prod"].forEach((sc) => ["m1", "m2"].forEach((k) => { const el = $(`${k}_${sc}_${st.id}`); if (el && el.value) ids.add(el.value); })));
+  if (!ids.size) return toast("연결 확인할 모델이 없어요", true);
+  $("probeOut").textContent = "연결 확인 중… (각 모델에 아주 짧은 요청 1회, 평가 키 사용)";
+  try { const r = await api("models.probe", { models: [...ids] }); const v = verifiedList();
+    $("probeOut").innerHTML = `<b>사용 키:</b> ${r.key_scope === "eval" ? "평가용 시크릿(GEMINI_EVAL_API_KEY) — 별도 프로젝트 여부는 위 키 상태 ③으로" : "<span class='warn'>운영 키(GEMINI_API_KEY) 공유</span>"}<br>` + (r.results || []).map((x) => `<code>${esc(x.model)}</code> ${x.status === "ok" ? "✅ 연결 성공" : `❌ ${esc(x.status)}`}${v.includes(x.model) ? " · 품질 검증됨" : " · <span class='muted'>품질 미검증</span>"}${x.detail ? ` <span class='muted'>${esc(x.detail)}</span>` : ""}`).join("<br>");
+  } catch (e) { $("probeOut").textContent = "연결 확인 실패: " + e.message; }
+}
+async function loadMonthlyActual() {
+  try { const r=await api("models.monthly_actual",{days:30});
+    $("actualOut").insertAdjacentHTML("beforeend", `<hr><b>월간 자서전 최근 30일</b><br>${r.error?esc("집계 미확인: "+r.error):`생성 시도 ${num(r.summary.attempts)}건 · 완료 시도 ${num(r.summary.completed)}건 · 사용량 미확인 ${num(r.summary.unknown_calls)}건${r.summary.capped?" · 최근 2,000건 표본":""}<br>` + Object.entries(r.summary.by_model||{}).map(([model,u])=>`${esc(model)}: ${num(u.calls)}회 · 입력 ${num(u.input)} / 출력 ${num(u.output)} / 추론 ${num(u.thoughts)} 토큰`).join("<br>")}<br><small>실제 단계별 사용량. 실패·재시도 포함. 단가 미검증으로 금액 환산하지 않습니다. 일기 비용과 별도입니다.</small>`);
+  } catch(e) { $("actualOut").insertAdjacentHTML("beforeend", `<br>월간 집계 미확인: ${esc(e.message)}`); }
+}
+async function loadActual() {
+  $("actualOut").textContent = "생성 기록 집계 중…";
+  try { const r = await api("models.actual", { days: 7 });
+    if (r.error) return $("actualOut").innerHTML = `<span class="warn">생성 기록 테이블을 읽을 수 없어요(${esc(r.error)}) — pending_20260911_diary_generations.sql 적용 여부 확인</span>`;
+    $("actualOut").innerHTML = `<b>최근 ${r.days}일 실제 사용 모델</b> (기록 ${r.rows}건 · 대체 호출이 있었던 요청 ${r.substituted_requests}건 · 설정 버전 분포 ${esc(JSON.stringify(r.config_versions))})<br>` + Object.entries(r.by_stage).map(([st, m]) => `${esc(st)}: ${Object.entries(m).map(([k, n]) => `<code>${esc(k)}</code>×${n}`).join(" ")}`).join("<br>") + `<br><small class="muted">설정된 모델(위 표)과 실제 사용 모델이 다르면 대체 호출이 있었다는 뜻입니다. 사유는 생성 기록 usage.fallbacks에 있습니다.</small>`;
+  } catch (e) { $("actualOut").textContent = "집계 실패: " + e.message; }
+  await loadMonthlyActual();
+}
+async function loadKeyStatus() {
+  try { const k = await api("keys.status"); const caps = await ensureCaps(); const v3 = caps && caps["generate-diary-v3"]; const conf = k.separate_project_confirmed;
+    const stepReg = k.gemini_eval ? "✅ 등록" : "❌ 미등록";
+    const stepConn = v3 && v3.key_scope === "eval" ? (v3.eval_key_distinct_from_prod === false ? "<span class='warn'>⚠ 운영 키와 같은 값</span>" : "✅ 평가용 시크릿 사용 확인") : "— 미확인(연결 확인 필요)";
+    const stepProj = conf ? `✅ 별도 프로젝트 확인 (${esc(conf.by || "")} ${fmtT(conf.at)})` : "<span class='warn'>❌ 미확인</span>";
+    const done = k.gemini_eval && v3 && v3.key_scope === "eval" && v3.eval_key_distinct_from_prod !== false && !!conf;
+    $("keyStatus").innerHTML = `키(값 비노출): Gemini 운영 ${k.gemini ? "✅" : "❌"} · Anthropic ${k.anthropic ? "✅" : "❌"}<br>평가 키 — ① 등록 ${stepReg} · ② 평가용 시크릿 사용 ${stepConn} · ③ 별도 Google 프로젝트 ${stepProj} → <b>${done ? "할당량 분리 완료" : "할당량 분리 <span class='warn'>미완료</span>"}</b> <button class="ghost" style="padding:3px 8px" onclick="confirmSeparate(${conf ? "false" : "true"})">${conf ? "확인 취소" : "별도 프로젝트에서 발급했음(대표 확인)"}</button><br><small class="muted">②는 함수가 GEMINI_EVAL_API_KEY를 쓴다는 확인일 뿐 별도 프로젝트 여부가 아닙니다. ③은 서버가 검증할 수 없어 대표가 Google AI Studio에서 프로젝트를 확인한 뒤 기록합니다.</small>`;
+  } catch (e) { $("keyStatus").textContent = "키 상태를 읽지 못했어요: " + e.message; }
+}
+async function confirmSeparate(on) {
+  const note = on ? (prompt("평가 키를 발급한 Google 프로젝트 이름(메모용, 키 값 아님):") || "") : "";
+  if (on && !confirm("별도 Google 프로젝트에서 발급한 키를 GEMINI_EVAL_API_KEY로 등록했음을 확인 기록합니다. 같은 프로젝트에 키만 추가한 경우가 아닌지 확인했나요?")) return;
+  try { await api("keys.confirm_separate_project", { confirmed: on, project_note: note }); toast(on ? "별도 프로젝트 확인 기록됨" : "확인 기록 취소"); loadKeyStatus(); } catch (e) { toast(e.message, true); }
+}
+async function restorePolicy(id, key) {
+  if (!confirm(`${key}를 이 변경 이전 값으로 되돌릴까요?`)) return;
+  try { await api("policies.restore", { audit_id: id }); toast("복원됨: " + key); await loadPolicies(); renderOps(); loadAudit(); } catch (e) { toast(e.message, true); }
+}
 
 // ── 공지·푸시
 async function loadNotice() {
@@ -419,7 +617,7 @@ async function replyInq(id) { const reply = ($("rep_" + id).value || "").trim();
 async function closeInq(id) { try { await api("inquiries.set_status", { id, status: "closed" }); loadInq(); loadToday(); } catch (e) { toast(e.message, true); } }
 async function loadStory() { try { const rows = (await api("story.list")).rows; $("storyTable").innerHTML = "<tr><th>선정일</th><th>상태</th><th>후보 id</th><th>작성자</th></tr>" + rows.map((s) => `<tr><td>${esc(s.picked_on)}</td><td>${esc(s.status)}</td><td class="mono">${esc(s.id)}</td><td><a href="#" onclick="openTab('users');userDetail('${s.user_id}');return false">보기</a></td></tr>`).join("") || "<tr><td class='muted'>후보 없음 (심사 크론 일시정지 중)</td></tr>";
   const p = (await api("story.posts")).rows; $("postsTable").innerHTML = "<tr><th>게시</th><th>플랫폼</th><th>링크</th><th>후보</th></tr>" + p.map((x) => `<tr><td class="muted">${fmtT(x.posted_at)}${x.removed_at ? " · 내림" : ""}</td><td>${esc(x.platform)}</td><td>${x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.url)}</a>` : "-"}</td><td class="mono">${esc(String(x.candidate_id).slice(0, 8))}</td></tr>`).join("") || "<tr><td class='muted'>게시 없음</td></tr>"; } catch (e) { toast(e.message, true); } }
-async function loadAudit() { try { const rows = (await api("audit.list")).rows; $("auditTable").innerHTML = "<tr><th>일시</th><th>키</th><th>이전</th><th>이후</th><th>누가</th></tr>" + rows.map((a) => `<tr><td class="muted">${fmtT(a.changed_at)}</td><td><code>${esc(a.key)}</code></td><td class="mono">${esc(JSON.stringify(a.old_value))}</td><td class="mono">${esc(JSON.stringify(a.new_value))}</td><td class="muted">${esc(a.changed_by)}</td></tr>`).join(""); } catch (e) { toast(e.message, true); } }
+async function loadAudit() { try { const rows = (await api("audit.list")).rows; $("auditTable").innerHTML = "<tr><th>일시</th><th>키</th><th>이전</th><th>이후</th><th>누가</th><th></th></tr>" + rows.map((a) => `<tr><td class="muted">${fmtT(a.changed_at)}</td><td><code>${esc(a.key)}</code></td><td class="mono">${esc(JSON.stringify(a.old_value))}</td><td class="mono">${esc(JSON.stringify(a.new_value))}</td><td class="muted">${esc(a.changed_by)}</td>${a.key && /^(model|eval\.model|prompt|feature|trial|point|limit|diary)\./.test(a.key) && a.id ? `<td><button class="ghost" onclick="restorePolicy(${a.id}, '${esc(a.key)}')">이전 값으로</button></td>` : "<td></td>"}</tr>`).join(""); } catch (e) { toast(e.message, true); } }
 </script>
 </body>
 </html>
