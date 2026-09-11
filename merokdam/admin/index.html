@@ -120,6 +120,8 @@ details summary{cursor:pointer;color:var(--ink);font-weight:700}
         <button class="ghost" onclick="loadActual()">실제 사용 모델(7일)</button>
       </div>
       <div id="probeOut" class="muted" style="margin-top:8px"></div>
+      <div id="fnCaps" class="muted" style="margin-top:6px"></div>
+      <div id="snapshots" class="muted" style="margin-top:8px"></div>
       <div id="actualOut" class="muted" style="margin-top:8px"></div>
       <details style="margin-top:8px"><summary>검증 목록(model.verified) · 설정 버전</summary>
         <p class="muted" style="margin:6px 0">사람 확인을 거친 모델만 여기에 둡니다. 대체 후보는 이 목록에서만 고를 수 있습니다. 운영 설정 버전 <b id="cfgVerProd">-</b> · 평가 설정 버전 <b id="cfgVerEval">-</b> (생성 기록의 config_version과 대조).</p>
@@ -368,7 +370,7 @@ function renderOps() {
   const misc = cache.policies.filter((p) => !known.has(p.key));
   $("misc").innerHTML = misc.map((p, i) => rowFor(p.key, "x" + i)).join("") || "<tr><td class='muted'>없음</td></tr>";
   try { renderStages(); } catch (e) { console.warn("stage render", e); }
-  if (!renderOps._keys) { renderOps._keys = true; loadKeyStatus(); }
+  if (!renderOps._keys) { renderOps._keys = true; loadKeyStatus(); loadSnapshots("eval"); ensureCaps().then((c) => { const g = c && c["generate-diary"], v = c && c["generate-diary-v3"]; $("fnCaps").innerHTML = `배포된 함수: 운영 generate-diary ${g && g.stage_config ? `✅ 단계별 설정 지원(${esc(g.pipeline_version || "")})` : "<span class='warn'>구 버전 — 단계별 키 미지원(운영 적용 제한)</span>"} · 평가 generate-diary-v3 ${v && v.stage_config ? `✅ (${esc(v.pipeline_version || "")})` : "<span class='warn'>미확인</span>"}`; }); }
   $("polTable").innerHTML = "<tr><th>키</th><th>값</th><th>수정</th><th></th></tr>" + cache.policies.map((p, i) => `<tr><td><code>${esc(p.key)}</code></td><td class="mono">${esc(JSON.stringify(p.value))}</td><td class="muted">${fmtT(p.updated_at)}<br>${esc(p.updated_by || "")}</td><td><button class="danger" onclick="delPolicy('${esc(p.key)}')">삭제</button></td></tr>`).join("");
 }
 async function toggleSwitch(k, on) {
@@ -406,6 +408,8 @@ const STAGES = [
   { id: "autobio_pro", name: "자서전 작가(월간·장면 교체)", key: "model.autobio.pro_chain", scope: "자서전 월간 본문·장면 교체" },
   { id: "autobio_flash", name: "자서전 편집·인용·연간(레거시)", key: "model.autobio.flash_chain", scope: "자서전 편집·인용 보강·연간 레거시 경로" },
 ];
+const draft = {}; // `${scope}_${stage}` → { provider, m1, m2, inherit } (저장 전 편집 상태)
+function setDraft(scope, id, field, value) { const k = scope + "_" + id; draft[k] = { ...(draft[k] || {}), [field]: value }; if (field === "provider") { draft[k].m1 = ""; draft[k].m2 = ""; } renderStages(); }
 const pv = (k, scope) => { const p = pol(scope === "eval" ? "eval." + k : k); return p ? p.value : undefined; };
 const verifiedList = () => Array.isArray(pol("model.verified")?.value) ? pol("model.verified").value : [];
 function stageState(st, scope) {
@@ -420,15 +424,18 @@ function stageState(st, scope) {
   const provider = prov || (String(chain[0]).startsWith("claude") ? "claude" : "gemini");
   return { inherit: false, provider, chain, source };
 }
-const providerSel = (id, cur, disabledClaude, reason) => `<select id="${id}"${disabledClaude ? ` title="${esc(reason)}"` : ""}><option value="gemini"${cur === "gemini" ? " selected" : ""}>Gemini</option><option value="claude"${cur === "claude" ? " selected" : ""}${disabledClaude ? " disabled" : ""}>Claude${disabledClaude ? " (사진 입력 미지원)" : ""}</option></select>`;
-const modelSel = (id, cur, provider, image, onlyVerified) => { const v = verifiedList(); const opts = MODEL_CATALOG.filter((m) => m.provider === provider && (!image || m.image) && (!onlyVerified || v.includes(m.id))); return `<select id="${id}"><option value="">(없음)</option>${opts.map((m) => `<option value="${m.id}"${m.id === cur ? " selected" : ""}>${m.id}${v.includes(m.id) ? " ✓검증" : ""}</option>`).join("")}</select>`; };
+const providerSel = (id, cur, disabledClaude, reason, onchange) => `<select id="${id}"${disabledClaude ? ` title="${esc(reason)}"` : ""} onchange="${onchange}"><option value="gemini"${cur === "gemini" ? " selected" : ""}>Gemini</option><option value="claude"${cur === "claude" ? " selected" : ""}${disabledClaude ? " disabled" : ""}>Claude${disabledClaude ? " (사진 입력 미지원)" : ""}</option></select>`;
+const modelSel = (id, cur, provider, image, onlyVerified, onchange) => { const v = verifiedList(); const opts = MODEL_CATALOG.filter((m) => m.provider === provider && (!image || m.image) && (!onlyVerified || v.includes(m.id))); return `<select id="${id}" onchange="${onchange || ""}"><option value="">(없음)</option>${opts.map((m) => `<option value="${m.id}"${m.id === cur ? " selected" : ""}>${m.id}${v.includes(m.id) ? " ✓검증" : ""}</option>`).join("")}</select>`; };
 function renderStages() {
   const rows = STAGES.map((st) => {
     const cell = (scope) => {
-      const s = stageState(st, scope); const dis = !!st.image; const p = s.provider || "gemini";
-      const inheritBox = st.same ? `<label style="display:block;margin-bottom:4px"><input type="checkbox" id="inh_${scope}_${st.id}"${s.inherit ? " checked" : ""} onchange="renderStages()"> ${st.same === "writer" ? "작가와 동일" : st.same}</label>` : "";
-      if (st.same && s.inherit) return `<td>${inheritBox}<span class="muted">→ ${st.same} 설정을 따름</span></td>`;
-      return `<td>${inheritBox}<div class="row" style="gap:6px;flex-wrap:wrap">${providerSel(`prov_${scope}_${st.id}`, p, dis, "관찰·검수는 사진을 보내야 해 Claude 경로로 실행할 수 없습니다")}${modelSel(`m1_${scope}_${st.id}`, s.chain[0], p, dis, false)}<span class="muted">대체 →</span>${modelSel(`m2_${scope}_${st.id}`, s.chain[1], p, dis, true)}</div><small class="muted">현재: ${esc((s.chain || []).join(" → ") || "-")} · 출처 <code>${esc(s.source)}</code></small></td>`;
+      const s = stageState(st, scope); const d = draft[scope + "_" + st.id] || {}; const dis = !!st.image;
+      const p = d.provider || s.provider || "gemini"; const inherit = d.inherit !== undefined ? d.inherit : s.inherit;
+      const m1 = d.m1 !== undefined ? d.m1 : (p === (s.provider || "gemini") ? s.chain[0] : ""); const m2 = d.m2 !== undefined ? d.m2 : (p === (s.provider || "gemini") ? s.chain[1] : "");
+      const inheritBox = st.same ? `<label style="display:block;margin-bottom:4px"><input type="checkbox" id="inh_${scope}_${st.id}"${inherit ? " checked" : ""} onchange="setDraft('${scope}','${st.id}','inherit',this.checked)"> ${st.same === "writer" ? "작가와 동일" : st.same}</label>` : "";
+      if (st.same && inherit) return `<td>${inheritBox}<span class="muted">→ ${st.same} 설정을 따름</span></td>`;
+      const oc = (f) => `setDraft('${scope}','${st.id}','${f}',this.value)`;
+      return `<td>${inheritBox}<div class="row" style="gap:6px;flex-wrap:wrap">${providerSel(`prov_${scope}_${st.id}`, p, dis, "관찰·검수는 사진을 보내야 해 Claude 경로로 실행할 수 없습니다", oc("provider"))}${modelSel(`m1_${scope}_${st.id}`, m1, p, dis, false, oc("m1"))}<span class="muted">대체 →</span>${modelSel(`m2_${scope}_${st.id}`, m2, p, dis, true, oc("m2"))}</div><small class="muted">저장된 값: ${esc((s.chain || []).join(" → ") || "-")} · 출처 <code>${esc(s.source)}</code>${Object.keys(d).length ? " · <span class='warn'>저장 전</span>" : ""}</small></td>`;
     };
     return `<tr><td style="width:19%"><b>${esc(st.name)}</b><br><small class="muted">${esc(st.scope)}</small></td>${cell("eval")}${cell("prod")}</tr>`;
   }).join("");
@@ -447,21 +454,53 @@ function collectStage(st, scope) {
   if (m2 && !verifiedList().includes(m2)) throw new Error(`${st.name}: 대체 후보 ${m2}는 검증 목록에 없습니다`);
   const chain = m2 ? [m1, m2] : [m1]; const sets = {}; const clear = [];
   if (st.providerKey) sets[st.providerKey] = prov;
-  if (prov === "claude" && st.claudeKey) { sets[st.claudeKey] = chain; clear.push(st.key); } else sets[st.key] = chain;
+  if (prov === "claude" && st.claudeKey) { sets[st.claudeKey] = chain; clear.push(st.key); return { sets, clear }; }
+  // 상위 키(flash_chain)와 같은 값이면 전용 키를 쓰지 않는다 — 불필요한 단계별 키를 만들지 않아 구 버전 운영 함수에도 기존 키만 반영된다
+  const base = st.fallbackKey ? pv(st.fallbackKey, scope) : null;
+  if (Array.isArray(base) && JSON.stringify(base) === JSON.stringify(chain)) { clear.push(st.key); return { sets, clear }; }
+  // 전용 키가 없고 기본값과 같으면(자서전 체인 등) 기본값을 굳이 키로 만들지 않는다
+  if (!st.fallbackKey && !pv(st.key, scope) && JSON.stringify(stageState(st, scope).chain) === JSON.stringify(chain)) return { sets, clear };
+  sets[st.key] = chain;
   return { sets, clear };
 }
+// 구 버전 운영 함수(generate-diary v43 이전)는 이 키들을 읽지 않는다 — 운영 적용 전 함수 능력(functions.capabilities)을 확인해 막는다
+const STAGE_ONLY_KEYS = ["model.diary.observe_chain", "model.diary.editor_chain", "model.diary.writer_chain", "model.diary.fix_provider", "model.diary.fix_chain", "model.verified"];
+let fnCaps = null;
+async function ensureCaps() { if (!fnCaps) { try { fnCaps = await api("functions.capabilities"); } catch (e) { fnCaps = { error: e.message }; } } return fnCaps; }
 async function applyStages(scope) {
   const label = scope === "prod" ? "운영" : "평가";
   let plan; try { plan = STAGES.map((st) => ({ st, ...collectStage(st, scope) })); } catch (e) { return toast(e.message, true); }
-  const summary = plan.map((p) => `${p.st.name}: ${p.sets ? Object.entries(p.sets).map(([k, v]) => `${k}=${JSON.stringify(v)}`).join(", ") : "상위 단계 따름"}`).join("\n");
-  if (!confirm(`${label} 설정에 적용할까요? (${scope === "prod" ? "실제 사용자 일기·자서전에 바로 반영됩니다. 평가에서 결과·사람 확인을 마친 구성인지 확인하세요." : "평가 함수와 내부 빌드에만 반영됩니다."})\n\n${summary}`)) return;
-  try {
-    for (const p of plan) {
-      for (const k of (p.clear || [])) if (pol(scope === "eval" ? "eval." + k : k)) await api("policies.delete", { key: scope === "eval" ? "eval." + k : k });
-      for (const [k, v] of Object.entries(p.sets || {})) await api("policies.set", { key: scope === "eval" ? "eval." + k : k, value: v });
+  const sets = {}, clear = [];
+  for (const p of plan) { for (const k of (p.clear || [])) { const fk = scope === "eval" ? "eval." + k : k; if (pol(fk)) clear.push(fk); } for (const [k, v] of Object.entries(p.sets || {})) sets[scope === "eval" ? "eval." + k : k] = v; }
+  // 값이 저장된 것과 같으면 보내지 않는다(변경분만 한 트랜잭션으로)
+  for (const k of Object.keys(sets)) if (pol(k) && JSON.stringify(pol(k).value) === JSON.stringify(sets[k])) delete sets[k];
+  if (!Object.keys(sets).length && !clear.length) return toast("바뀐 설정이 없어요", true);
+  if (scope === "prod") {
+    const caps = await ensureCaps(); const fn = caps && caps["generate-diary"];
+    const usesStageOnly = [...Object.keys(sets), ...clear].some((k) => STAGE_ONLY_KEYS.includes(k));
+    if (!fn || !fn.stage_config) {
+      if (usesStageOnly) return toast("운영 함수(generate-diary)가 단계별 설정을 지원하지 않는 버전입니다 — 관찰·편집·수정·검증 목록 키는 운영 적용 불가. 운영 함수 업데이트가 먼저 필요합니다.", true);
+      if (!confirm("운영 함수(generate-diary)는 아직 구 버전입니다. 작가 공급자·체인·검수 체인 같은 기존 키만 반영되고, 설정 버전·대체 사유 기록은 남지 않습니다. 그래도 저장할까요?")) return;
     }
-    toast(`${label} 설정 적용됨 (설정 버전 증가)`); await loadPolicies(); renderOps();
-  } catch (e) { toast(e.message, true); }
+  }
+  const summary = Object.entries(sets).map(([k, v]) => `${k} = ${JSON.stringify(v)}`).concat(clear.map((k) => `${k} 삭제(상위 설정 따름)`)).join("\n");
+  if (!confirm(`${label} 설정을 한 번에 저장할까요? (${scope === "prod" ? "저장 즉시 운영 함수는 60초 안에 새 요청부터 읽습니다. 평가에서 결과·사람 확인을 마친 구성인지 확인하세요." : "평가 함수와 내부 빌드에만 반영됩니다."})\n\n${summary}`)) return;
+  try {
+    const r = await api("models.apply", { scope, sets, clear });
+    toast(`${label} 설정 저장됨 — 설정 버전 ${r.version}. ${scope === "prod" ? "운영 함수 반영은 60초 후 새 요청부터(저장 ≠ 반영)." : ""}`);
+    Object.keys(draft).filter((k) => k.startsWith(scope + "_")).forEach((k) => delete draft[k]);
+    await loadPolicies(); renderOps(); loadSnapshots(scope);
+  } catch (e) { toast(`${label} 설정 저장 실패(전부 롤백됨): ` + e.message, true); }
+}
+async function loadSnapshots(scope) {
+  const el = $("snapshots"); if (!el) return;
+  try { const r = await api("models.snapshots", { scope });
+    el.innerHTML = `<b>${scope === "prod" ? "운영" : "평가"} 구성 이력</b> ` + ((r.rows || []).map((x) => `<div class="row" style="gap:8px;margin:4px 0"><span class="muted">${fmtT(x.changed_at)}</span> 버전 ${esc(String(x.new_value?.version))} <span class="muted">${esc(x.changed_by || "")}</span> <button class="ghost" onclick="restoreSnapshot(${x.id}, '${scope}')">이 구성으로 복원</button></div>`).join("") || "<span class='muted'>이력 없음(원자 적용 RPC 적용 후 생성)</span>");
+  } catch (e) { el.textContent = "구성 이력 조회 실패: " + e.message; }
+}
+async function restoreSnapshot(id, scope) {
+  if (!confirm(`${scope === "prod" ? "운영" : "평가"} 구성을 스냅샷 #${id} 상태로 전부 되돌릴까요? (스냅샷에 없는 현재 키는 삭제, 한 트랜잭션)`)) return;
+  try { const r = await api("models.restore_snapshot", { snapshot_id: id }); toast(`복원됨 — 설정 버전 ${r.version}`); await loadPolicies(); renderOps(); loadSnapshots(scope); } catch (e) { toast("복원 실패(전부 롤백됨): " + e.message, true); }
 }
 async function toggleVerified(id, on) {
   const v = new Set(verifiedList()); if (on) v.add(id); else v.delete(id);
@@ -472,7 +511,7 @@ async function probeModels() {
   if (!ids.size) return toast("연결 확인할 모델이 없어요", true);
   $("probeOut").textContent = "연결 확인 중… (각 모델에 아주 짧은 요청 1회, 평가 키 사용)";
   try { const r = await api("models.probe", { models: [...ids] }); const v = verifiedList();
-    $("probeOut").innerHTML = `<b>키 범위:</b> ${r.key_scope === "eval" ? "평가 전용 키(할당량 분리됨)" : "<span class='warn'>운영 키 공유(할당량 미분리)</span>"}<br>` + (r.results || []).map((x) => `<code>${esc(x.model)}</code> ${x.status === "ok" ? "✅ 연결 성공" : `❌ ${esc(x.status)}`}${v.includes(x.model) ? " · 품질 검증됨" : " · <span class='muted'>품질 미검증</span>"}${x.detail ? ` <span class='muted'>${esc(x.detail)}</span>` : ""}`).join("<br>");
+    $("probeOut").innerHTML = `<b>사용 키:</b> ${r.key_scope === "eval" ? "평가용 시크릿(GEMINI_EVAL_API_KEY) — 별도 프로젝트 여부는 위 키 상태 ③으로" : "<span class='warn'>운영 키(GEMINI_API_KEY) 공유</span>"}<br>` + (r.results || []).map((x) => `<code>${esc(x.model)}</code> ${x.status === "ok" ? "✅ 연결 성공" : `❌ ${esc(x.status)}`}${v.includes(x.model) ? " · 품질 검증됨" : " · <span class='muted'>품질 미검증</span>"}${x.detail ? ` <span class='muted'>${esc(x.detail)}</span>` : ""}`).join("<br>");
   } catch (e) { $("probeOut").textContent = "연결 확인 실패: " + e.message; }
 }
 async function loadActual() {
@@ -483,9 +522,18 @@ async function loadActual() {
   } catch (e) { $("actualOut").textContent = "집계 실패: " + e.message; }
 }
 async function loadKeyStatus() {
-  try { const k = await api("keys.status");
-    $("keyStatus").innerHTML = `키 등록 상태(값은 표시하지 않음): Gemini 운영 ${k.gemini ? "✅" : "❌"} · Gemini 평가 전용 ${k.gemini_eval ? "✅" : "<span class='warn'>❌ 미등록 — 평가가 운영 할당량을 씀</span>"} · Anthropic ${k.anthropic ? "✅" : "❌"} <span class="muted">· 할당량 분리 완료 표시는 '연결 확인'에서 key_scope=eval일 때만</span>`;
+  try { const k = await api("keys.status"); const caps = await ensureCaps(); const v3 = caps && caps["generate-diary-v3"]; const conf = k.separate_project_confirmed;
+    const stepReg = k.gemini_eval ? "✅ 등록" : "❌ 미등록";
+    const stepConn = v3 && v3.key_scope === "eval" ? (v3.eval_key_distinct_from_prod === false ? "<span class='warn'>⚠ 운영 키와 같은 값</span>" : "✅ 평가용 시크릿 사용 확인") : "— 미확인(연결 확인 필요)";
+    const stepProj = conf ? `✅ 별도 프로젝트 확인 (${esc(conf.by || "")} ${fmtT(conf.at)})` : "<span class='warn'>❌ 미확인</span>";
+    const done = k.gemini_eval && v3 && v3.key_scope === "eval" && v3.eval_key_distinct_from_prod !== false && !!conf;
+    $("keyStatus").innerHTML = `키(값 비노출): Gemini 운영 ${k.gemini ? "✅" : "❌"} · Anthropic ${k.anthropic ? "✅" : "❌"}<br>평가 키 — ① 등록 ${stepReg} · ② 평가용 시크릿 사용 ${stepConn} · ③ 별도 Google 프로젝트 ${stepProj} → <b>${done ? "할당량 분리 완료" : "할당량 분리 <span class='warn'>미완료</span>"}</b> <button class="ghost" style="padding:3px 8px" onclick="confirmSeparate(${conf ? "false" : "true"})">${conf ? "확인 취소" : "별도 프로젝트에서 발급했음(대표 확인)"}</button><br><small class="muted">②는 함수가 GEMINI_EVAL_API_KEY를 쓴다는 확인일 뿐 별도 프로젝트 여부가 아닙니다. ③은 서버가 검증할 수 없어 대표가 Google AI Studio에서 프로젝트를 확인한 뒤 기록합니다.</small>`;
   } catch (e) { $("keyStatus").textContent = "키 상태를 읽지 못했어요: " + e.message; }
+}
+async function confirmSeparate(on) {
+  const note = on ? (prompt("평가 키를 발급한 Google 프로젝트 이름(메모용, 키 값 아님):") || "") : "";
+  if (on && !confirm("별도 Google 프로젝트에서 발급한 키를 GEMINI_EVAL_API_KEY로 등록했음을 확인 기록합니다. 같은 프로젝트에 키만 추가한 경우가 아닌지 확인했나요?")) return;
+  try { await api("keys.confirm_separate_project", { confirmed: on, project_note: note }); toast(on ? "별도 프로젝트 확인 기록됨" : "확인 기록 취소"); loadKeyStatus(); } catch (e) { toast(e.message, true); }
 }
 async function restorePolicy(id, key) {
   if (!confirm(`${key}를 이 변경 이전 값으로 되돌릴까요?`)) return;
