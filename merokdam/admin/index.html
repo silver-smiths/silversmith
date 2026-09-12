@@ -52,8 +52,18 @@ details summary{cursor:pointer;color:var(--ink);font-weight:700}
 
 <section id="app" class="hidden">
   <div class="tabs" id="tabs">
-    <span class="tab on" data-t="today">오늘</span><span class="tab" data-t="usage">사용 통계</span><span class="tab" data-t="money">수익·비용</span><span class="tab" data-t="users">회원</span><span class="tab" data-t="safety">콘텐츠·안전</span><span class="tab" data-t="ops">운영 설정</span><span class="tab" data-t="ads">광고</span><span class="tab" data-t="notice">공지·푸시</span><span class="tab" data-t="inq">문의<span class="n hidden" id="inqBadge"></span></span><span class="tab" data-t="story">사연 영상</span><span class="tab" data-t="audit">감사 로그</span>
+    <span class="tab on" data-t="today">오늘</span><span class="tab" data-t="usage">사용 통계</span><span class="tab" data-t="money">수익·비용</span><span class="tab" data-t="users">회원</span><span class="tab" data-t="safety">콘텐츠·안전</span><span class="tab" data-t="ops">운영 설정</span><span class="tab" data-t="diaryprompts">일기 생성</span><span class="tab" data-t="ads">광고</span><span class="tab" data-t="notice">공지·푸시</span><span class="tab" data-t="inq">문의<span class="n hidden" id="inqBadge"></span></span><span class="tab" data-t="story">사연 영상</span><span class="tab" data-t="audit">감사 로그</span>
   </div>
+
+<div id="t-diaryprompts" class="hidden">
+  <div class="card"><h3>일기 생성 규칙</h3><p>초안 수정 → 같은 재료로 비교 → 초안 저장 → 운영 적용 순서로 관리합니다. 분석 담당은 재료를 정리하고, 작성 담당은 사용자 설정에 맞춰 글을 씁니다.</p><p id="diaryPromptStatus" class="muted"></p><p id="diaryPromptEditState" class="muted"></p><div id="diaryPromptEditor"></div></div>
+  <div class="card"><h3>같은 텍스트 재료로 비교</h3><p class="muted">입력한 재료를 선택한 AI 서비스로 보내 시험합니다. 사진 파일 분석은 이 화면에 포함되지 않습니다. 사용자 일기·포인트에 저장하거나 반영하지 않습니다.</p>
+  <label>일기 날짜<input type="date" id="dpDate"></label><label>오늘의 생각<textarea id="dpSeed" rows="2" maxlength="8000"></textarea></label><label>재료와 시간대별 기분<textarea id="dpMaterials" rows="6" maxlength="8000" placeholder="예: 오전 9시 산책 사진. 오후 2시 회의 예정. 저녁 기분은 차분함. 하루 5,000보. 모르는 정보는 넣지 마세요."></textarea></label>
+  <div class="row"><label>분량<select id="dpLen"><option value="normal">재료에 맞게</option><option value="short">간결하게</option><option value="long">자세하게</option></select></label><label>말투<select id="dpWarmth"><option value="plain">담백하게</option><option value="warm">다정하게</option></select></label><label>중심<select id="dpFocus"><option value="balance">균형</option><option value="fact">기록 위주</option><option value="feeling">감정 위주</option></select></label><label>인칭<select id="dpPov"><option value="first">나</option><option value="second">너</option><option value="third">그 사람</option></select></label></div>
+  <button class="ghost" onclick="testDiaryPrompts()" style="margin-top:12px">운영 버전과 현재 초안 비교 생성</button></div>
+  <div class="grid2"><div class="card"><h3>운영 버전 결과</h3><div id="dpActiveResult">비교할 재료를 입력해 주세요.</div></div><div class="card"><h3>초안 결과</h3><div id="dpDraftResult">초안은 운영에 적용되지 않습니다.</div></div></div>
+  <div class="card"><h3>운영 적용 이력</h3><div id="diaryPromptHistory"></div></div>
+</div>
 
   <!-- 오늘 -->
   <div id="t-today">
@@ -202,12 +212,12 @@ async function enter() {
 }
 
 // ── 탭
-const TABS = ["today","usage","money","users","safety","ops","ads","notice","inq","story","audit"];
+const TABS = ["today","usage","money","users","safety","ops","diaryprompts","ads","notice","inq","story","audit"];
 $("tabs").onclick = (ev) => { const t = ev.target.closest(".tab"); if (t) openTab(t.dataset.t); };
 function openTab(name, force) {
   document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("on", x.dataset.t === name));
   TABS.forEach((k) => $("t-" + k).classList.toggle("hidden", k !== name));
-  ({ today: loadToday, usage: loadUsage, money: loadMoney, users: searchUsers, safety: loadSafety, ops: renderOps, ads: loadAds, notice: loadNotice, inq: loadInq, story: loadStory, audit: loadAudit }[name] || (() => {}))(force);
+  ({ today: loadToday, usage: loadUsage, money: loadMoney, users: searchUsers, safety: loadSafety, ops: renderOps, diaryprompts: loadDiaryPrompts, ads: loadAds, notice: loadNotice, inq: loadInq, story: loadStory, audit: loadAudit }[name] || (() => {}))(force);
 }
 
 // ── 오늘
@@ -342,9 +352,9 @@ function renderOps() {
   $("fees").innerHTML = FEES.map((k, i) => rowFor(k, "f" + i)).join("");
   $("models").innerHTML = MODELS.map((k, i) => rowFor(k, "m" + i)).join("");
   const known = new Set([...SWITCHES, ...FEES, ...MODELS, "notice.current", ...AD_UNITS.map((a) => a[0]), ...AD_RULES]);
-  const misc = cache.policies.filter((p) => !known.has(p.key));
+  const misc = cache.policies.filter((p) => !known.has(p.key) && !["prompt.diary.active","prompt.diary.draft"].includes(p.key));
   $("misc").innerHTML = misc.map((p, i) => rowFor(p.key, "x" + i)).join("") || "<tr><td class='muted'>없음</td></tr>";
-  $("polTable").innerHTML = "<tr><th>키</th><th>값</th><th>수정</th><th></th></tr>" + cache.policies.map((p, i) => `<tr><td><code>${esc(p.key)}</code></td><td class="mono">${esc(JSON.stringify(p.value))}</td><td class="muted">${fmtT(p.updated_at)}<br>${esc(p.updated_by || "")}</td><td><button class="danger" onclick="delPolicy('${esc(p.key)}')">삭제</button></td></tr>`).join("");
+  $("polTable").innerHTML = "<tr><th>키</th><th>값</th><th>수정</th><th></th></tr>" + cache.policies.filter(p => !["prompt.diary.active","prompt.diary.draft"].includes(p.key)).map((p, i) => `<tr><td><code>${esc(p.key)}</code></td><td class="mono">${esc(JSON.stringify(p.value))}</td><td class="muted">${fmtT(p.updated_at)}<br>${esc(p.updated_by || "")}</td><td><button class="danger" onclick="delPolicy('${esc(p.key)}')">삭제</button></td></tr>`).join("");
 }
 async function toggleSwitch(k, on) {
   if (!on && k === "feature.generate_charge" && !confirm("AI 생성 과금을 켤까요? 체험 기간이 지난 사용자는 즉시 💧를 내게 됩니다.")) return;
@@ -421,5 +431,6 @@ async function loadStory() { try { const rows = (await api("story.list")).rows; 
   const p = (await api("story.posts")).rows; $("postsTable").innerHTML = "<tr><th>게시</th><th>플랫폼</th><th>링크</th><th>후보</th></tr>" + p.map((x) => `<tr><td class="muted">${fmtT(x.posted_at)}${x.removed_at ? " · 내림" : ""}</td><td>${esc(x.platform)}</td><td>${x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.url)}</a>` : "-"}</td><td class="mono">${esc(String(x.candidate_id).slice(0, 8))}</td></tr>`).join("") || "<tr><td class='muted'>게시 없음</td></tr>"; } catch (e) { toast(e.message, true); } }
 async function loadAudit() { try { const rows = (await api("audit.list")).rows; $("auditTable").innerHTML = "<tr><th>일시</th><th>키</th><th>이전</th><th>이후</th><th>누가</th></tr>" + rows.map((a) => `<tr><td class="muted">${fmtT(a.changed_at)}</td><td><code>${esc(a.key)}</code></td><td class="mono">${esc(JSON.stringify(a.old_value))}</td><td class="mono">${esc(JSON.stringify(a.new_value))}</td><td class="muted">${esc(a.changed_by)}</td></tr>`).join(""); } catch (e) { toast(e.message, true); } }
 </script>
+<script src="diary-prompts.js"></script>
 </body>
 </html>
