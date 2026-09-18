@@ -177,11 +177,15 @@ const FN = SUPABASE_URL + "/functions/v1/admin-console";
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const fmtT = (s) => (s || "").toString().slice(0, 16).replace("T", " ");
-// 한국 시간(KST) 표기 — fmtT 는 ISO 문자열을 자르기만 해서 UTC 로 보인다
+// 콘솔의 모든 시각은 한국 시간(KST). 예전 fmtT 는 ISO 문자열을 자르기만 해 UTC 로 보였다
+// (2026-09-18 대표 지시로 통일). 날짜만 있는 값(YYYY-MM-DD)은 시간대 변환 없이 그대로 둔다.
+const _KST = (opt) => new Intl.DateTimeFormat("ko-KR", { timeZone: "Asia/Seoul", hour12: false, ...opt });
+const fmtT = (s) => { if (!s) return ""; const v = s.toString();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(v)) return v;           // 날짜만 — 그대로
+  const d = new Date(v); if (isNaN(d)) return v.slice(0, 16).replace("T", " ");
+  return _KST({ year: "2-digit", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" }).format(d); };
 const fmtKST = (s) => { if (!s) return "-"; const d = new Date(s); if (isNaN(d)) return "-";
-  return new Intl.DateTimeFormat("ko-KR", { timeZone: "Asia/Seoul", month: "2-digit", day: "2-digit",
-    hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }).format(d); };
+  return _KST({ month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" }).format(d); };
 const num = (n) => (n ?? 0).toLocaleString("ko-KR");
 let cache = { policies: [], overview: null };
 document.addEventListener("click", (e) => { const h = e.target.closest(".help"); document.querySelectorAll(".help.open").forEach((x) => { if (x !== h) x.classList.remove("open"); }); if (h) h.classList.toggle("open"); });
