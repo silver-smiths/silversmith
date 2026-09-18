@@ -139,6 +139,7 @@ details summary{cursor:pointer;color:var(--ink);font-weight:700}
       <div class="card"><h3>노출·보상 규칙 <span class="help" data-h="피드 간격: 카드 N개마다 광고 1개(최소 3). 보상형 1회 보상 💧와 1일 시청 한도는 서버 RPC가 읽습니다(SQL pending_20260909f_ads.sql 실행 후). 한도를 올리면 물방울 발행이 늘어 생성 과금 수익이 줄 수 있습니다.">?</span></h3><table id="adRules"></table></div>
     </div>
     <div class="card"><h3>보상형 통계 (30일) <span class="help" data-h="시청 = 보상형 광고를 끝까지 보고 💧를 받은 횟수(daily_usage). 사진 해금 = 광고로 사진 분석을 연 횟수. 지급 💧 = 원장 기준. 노출 수·eCPM·수익은 여기 없고 GAM 보고서에서 봅니다. 네이티브 광고 노출 수도 GAM에서만.">?</span></h3><div id="adStats" class="kv"></div><div class="muted" style="margin-top:8px">일별 시청</div><div id="chartAds" class="bar"></div></div>
+    <div class="card"><h3>광고 성과 계측 <span class="help" data-h="광고 한 건마다 요청→응답→렌더→노출→닫힘 구간과 클릭·보상·수익을 기록합니다(ad_events, 48시간 보관). 수집은 운영 설정의 ad.telemetry 로 끕니다.&#10;• 노필률: 채울 광고가 없어 실패한 비율&#10;• 백필률: 실단위가 비어 구글 샘플(테스트 광고)로 채운 비율 — 높으면 그 단위에 수요가 안 붙은 것&#10;• 클릭률: 노출 대비 클릭&#10;• 수익: onPaidEvent 실측(추정치 포함)">?</span> <select id="adTelHours" onchange="loadAdTelemetry()"><option value="24">최근 24시간</option><option value="48">최근 48시간</option></select></h3><div id="adTelSummary" class="muted">불러오는 중…</div><h4>자리별</h4><table id="adTelPlace"></table><h4>광고 단위별 (백필률이 높은 순)</h4><table id="adTelUnit"></table></div>
   </div>
 
   <!-- 공지·푸시 -->
@@ -324,6 +325,9 @@ const H = {
   "ad.rewarded_photo": ["보상형 · 사진 해금", "블루 사진 분석 1일 1회 해금용 보상형 단위.", "단위 교체 시.", "앱 콜드 스타트", "/23140388603/merokdam/reward02"],
   "ad.native_generating": ["네이티브 · 생성 대기", "일기 생성 중 화면(블루, 누적 일기 4개 이상)에 나오는 네이티브 단위.", "단위 교체 시.", "앱 콜드 스타트", "/23140388603/merokdam/native00"],
   "ad.native_feed": ["네이티브 · 피드 5개", "피드 카드 사이 광고 단위 5개 배열(JSON 배열). n번째 광고가 n번째 단위, 6번째부터 마지막 재사용.", "단위 교체 시. 정확히 5개여야 적용.", "앱 콜드 스타트", "[native01…native05]"],
+  "ad.reward_format": ["보상 광고 형식", "물방울 받기·사진 추가 해금에 쓰는 광고의 형식입니다. <b>interstitial</b>(전면) = 닫으면 보상, 소재가 짧습니다. <b>rewarded</b>(보상형) = 끝까지 봐야 보상, 소재가 15~30초로 깁니다. 광고 단위(reward01·reward02)는 형식과 무관하게 그대로 쓰므로 GAM에서 바꿀 것이 없습니다. 값은 따옴표를 포함해 \"interstitial\" 또는 \"rewarded\" 로 넣습니다.", "시청 이탈이 많으면 전면으로, 단가가 떨어지면 보상형으로.", "앱 콜드 스타트", "\"interstitial\""],
+  "ad.telemetry": ["광고 성과 계측", "광고 한 건마다 요청→응답→렌더→노출→닫힘 구간과 클릭·보상·수익을 ad_events 에 기록합니다. <b>이메일은 담지 않습니다</b> — 식별은 user_id(UUID)만. 보관은 ad.telemetry_hours 시간(기본 48)이고 매시 10분에 자동 파기합니다. 광고 원본 응답은 Google SDK 가 앱에 주지 않아 담을 수 없고, 대신 누가 채웠는지(어댑터·워터폴)를 담습니다.", "형식·단위·간격을 바꿔가며 성과를 비교할 때 켬. 행이 빠르게 쌓이니 테스트가 끝나면 끔.", "앱 콜드 스타트", "true"],
+  "ad.telemetry_hours": ["계측 보관 시간", "ad_events 를 몇 시간 보관할지(시간 단위). 파기 크론이 이 값을 읽습니다.", "오래 비교해야 하면 늘리고, 용량이 부담되면 줄입니다.", "서버 즉시(다음 정시 파기)", "48"],
   "ad.feed_interval": ["피드 광고 간격", "피드 카드 몇 개마다 광고 1개를 넣을지(최소 3).", "광고가 잦다는 불만 → 올림, 수익 필요 → 내림.", "앱 콜드 스타트", "6"],
   "ad.rewarded_daily_max": ["보상형 1일 한도", "한 사람이 하루에 보상을 받을 수 있는 광고 시청 횟수. 서버 RPC가 판정.", "물방울 인플레이션 조절.", "서버 즉시(SQL f 실행 후)", "5"],
   "point.rewarded_ad": ["보상형 1회 보상", "광고 1회 시청에 지급하는 💧 {\"delta\": 5}.", "보상 크기 조절.", "서버 즉시", "{\"delta\":5}"],
@@ -333,7 +337,7 @@ const H = {
 const helpOf = (k) => { const h = H[k]; if (!h) { const pre = k.split(".")[0]; return { title: k, text: ({ ad: "광고 유닛 ID. AdMob 콘솔 값과 정확히 같아야 하며 틀리면 광고가 비어 보입니다. 앱 콜드 스타트에 반영.", font: "서체 관련 설정.", story: "사연 영상 관련 설정." }[pre] || "설명이 등록되지 않은 키입니다. 값을 바꾸기 전에 개발자에게 확인하세요.") }; } return { title: h[0], text: `${h[1]}\n\n언제: ${h[2]}\n반영: ${h[3]}\n기본값: ${h[4]}` }; };
 const helpSpan = (k) => { const h = helpOf(k); return `<span class="help" data-h="${esc(h.text)}">?</span>`; };
 const AD_UNITS = [["ad.rewarded_drops", "/23140388603/merokdam/reward01"], ["ad.rewarded_photo", "/23140388603/merokdam/reward02"], ["ad.native_generating", "/23140388603/merokdam/native00"], ["ad.native_feed", '["/23140388603/merokdam/native01","/23140388603/merokdam/native02","/23140388603/merokdam/native03","/23140388603/merokdam/native04","/23140388603/merokdam/native05"]']];
-const AD_RULES = ["ad.feed_interval", "ad.rewarded_daily_max", "point.rewarded_ad"];
+const AD_RULES = ["ad.reward_format", "ad.feed_interval", "ad.telemetry", "ad.telemetry_hours", "ad.rewarded_daily_max", "point.rewarded_ad"];
 async function loadAds() {
   if (!cache.policies.length) await loadPolicies();
   $("adUnits").innerHTML = AD_UNITS.map(([k, def], i) => { const p = pol(k); const h = helpOf(k); const cur = p ? JSON.stringify(p.value) : ""; return `<tr><td style="width:38%"><b>${esc(h.title)}</b>${helpSpan(k)}<br><code>${k}</code><br><span class="muted">${p ? "덮어쓰기 중" : "기본 사용"}: <span class="mono">${esc(p ? cur : def)}</span></span></td><td><textarea id="ad_${i}" rows="${k === "ad.native_feed" ? 4 : 1}" placeholder='${esc(k === "ad.native_feed" ? def : JSON.stringify(def))}'>${esc(cur)}</textarea></td><td style="width:120px"><button class="ghost" onclick="setPolicy('${k}', document.getElementById('ad_${i}').value)">저장</button>${p ? ` <button class="danger" onclick="delPolicy('${k}')">기본으로</button>` : ""}</td></tr>`; }).join("");
@@ -342,6 +346,32 @@ async function loadAds() {
     $("adStats").innerHTML = tiles([["보상형 시청 30일", a.rewarded_views_30d], ["사진 해금 30일", a.photo_unlocks_30d], ["지급 💧 30일", a.points_issued_30d], ["광고 대상(블루)", a.blue_users, "퍼플·골드는 광고 없음"]]);
     bars($("chartAds"), a.series, ["views", "unlocks"], ["", "c"]);
   } catch (e) { toast("광고 통계 실패: " + e.message, true); }
+  await loadAdTelemetry();
+}
+
+async function loadAdTelemetry() {
+  const hours = Number(($("adTelHours") || {}).value || 24);
+  const head = "<tr><th>구분</th><th>요청</th><th>노필</th><th>백필</th><th>노출</th><th>클릭률</th><th>평균 응답</th><th>평균 조회</th><th>수익</th></tr>";
+  const row = (r) => `<tr><td>${esc(r.key)}</td><td>${r.req}</td><td>${r.nofill_pct}%</td>`
+    + `<td>${r.backfill_pct > 0 ? `<b>${r.backfill_pct}%</b>` : "0%"}</td><td>${r.impressed}</td>`
+    + `<td>${r.ctr === null ? "-" : r.ctr + "%"}</td><td>${r.avg_latency_ms === null ? "-" : r.avg_latency_ms + "ms"}</td>`
+    + `<td>${r.avg_view_ms === null ? "-" : (r.avg_view_ms / 1000).toFixed(1) + "초"}</td>`
+    + `<td>${r.revenue ? r.revenue.toLocaleString() + " " + (r.currency || "") : "-"}</td></tr>`;
+  try {
+    const a = await api("stats.ad_events", { hours });
+    if (!a.ready) {
+      $("adTelSummary").innerHTML = "<span class='muted'>아직 계측 테이블이 없습니다 — <code>pending_20260917b_ad_events.sql</code> 을 SQL Editor 에서 실행해 주세요.</span>";
+      $("adTelPlace").innerHTML = ""; $("adTelUnit").innerHTML = ""; return;
+    }
+    if (!a.total) {
+      $("adTelSummary").innerHTML = "<span class='muted'>최근 " + a.hours + "시간 동안 기록이 없습니다. (수집이 꺼져 있거나 빌드가 아직 안 퍼졌을 수 있습니다 — 운영 설정의 ad.telemetry 확인)</span>";
+      $("adTelPlace").innerHTML = ""; $("adTelUnit").innerHTML = ""; return;
+    }
+    $("adTelSummary").innerHTML = "최근 " + a.hours + "시간 · 광고 요청 <b>" + a.total.toLocaleString() + "</b>건"
+      + (a.truncated ? " <span class='muted'>(5만 건에서 잘림 — 시간 범위를 줄여 보세요)</span>" : "");
+    $("adTelPlace").innerHTML = head + a.by_placement.map(row).join("");
+    $("adTelUnit").innerHTML = head + a.by_unit.slice().sort((x, y) => y.backfill_pct - x.backfill_pct).map(row).join("");
+  } catch (e) { toast("광고 계측 실패: " + e.message, true); }
 }
 const SWITCHES = ["feature.generate_charge", "feature.trial_purple", "feature.summary_image", "feature.story_video", "feature.tarot_reading", "feature.garden"];
 const FEES = ["trial.days", "trial.policy_start", "point.diary_generate", "point.diary_generate_refund", "point.story_selected", "point.admin_gift", "point.autobio", "limit.manual_per_day", "limit.manual_per_minute", "limit.moderation_per_day", "diary.length", "price.purple_month_krw", "price.gold_month_krw", "cost.per_diary_krw", "cost.per_image_krw", "cost.per_autobio_krw"];
