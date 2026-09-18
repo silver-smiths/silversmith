@@ -139,7 +139,7 @@ details summary{cursor:pointer;color:var(--ink);font-weight:700}
       <div class="card"><h3>노출·보상 규칙 <span class="help" data-h="피드 간격: 카드 N개마다 광고 1개(최소 3). 보상형 1회 보상 💧와 1일 시청 한도는 서버 RPC가 읽습니다(SQL pending_20260909f_ads.sql 실행 후). 한도를 올리면 물방울 발행이 늘어 생성 과금 수익이 줄 수 있습니다.">?</span></h3><table id="adRules"></table></div>
     </div>
     <div class="card"><h3>보상형 통계 (30일) <span class="help" data-h="시청 = 보상형 광고를 끝까지 보고 💧를 받은 횟수(daily_usage). 사진 해금 = 광고로 사진 분석을 연 횟수. 지급 💧 = 원장 기준. 노출 수·eCPM·수익은 여기 없고 GAM 보고서에서 봅니다. 네이티브 광고 노출 수도 GAM에서만.">?</span></h3><div id="adStats" class="kv"></div><div class="muted" style="margin-top:8px">일별 시청</div><div id="chartAds" class="bar"></div></div>
-    <div class="card"><h3>광고 성과 계측 <span class="help" data-h="광고 한 건마다 요청→응답→렌더→노출→닫힘 구간과 클릭·보상·수익을 기록합니다(ad_events, 48시간 보관). 수집은 운영 설정의 ad.telemetry 로 끕니다.&#10;• 노필률: 채울 광고가 없어 실패한 비율&#10;• 백필률: 실단위가 비어 구글 샘플(테스트 광고)로 채운 비율 — 높으면 그 단위에 수요가 안 붙은 것&#10;• 클릭률: 노출 대비 클릭&#10;• 수익: onPaidEvent 실측(추정치 포함)">?</span> <select id="adTelHours" onchange="loadAdTelemetry()"><option value="24">최근 24시간</option><option value="48">최근 48시간</option></select></h3><div id="adTelSummary" class="muted">불러오는 중…</div><h4>자리별</h4><table id="adTelPlace"></table><h4>광고 단위별 (백필률이 높은 순)</h4><table id="adTelUnit"></table></div>
+    <div class="card"><h3>광고 리포트 <span class="help" data-h="한 번의 광고 요청(묶음)을 한 줄로 접어 보여줍니다. 선형 이벤트에서 계산합니다.&#10;· 응답 = 요청→응답&#10;· 랜더 = 응답→화면에 그려짐&#10;· 조회 = 노출→닫힘&#10;· 닫힘 기록이 없으면 중도 이탈(강제 종료 등) — 조회가 비어 있습니다&#10;· 평균은 값이 있는 건만 나눕니다(측정 못 한 구간은 0으로 채우지 않습니다)&#10;· 합계의 ms 는 참고용 총합입니다&#10;· 수익은 onPaidEvent 실측이며 통화는 GAM 계정 통화입니다(USD 가 아니면 옆에 표기)&#10;· 줄을 누르면 그 묶음의 사건 전체가 JSON 으로 펼쳐집니다&#10;48시간이 지난 기록은 자동 삭제됩니다.">?</span> <select id="adTelHours" onchange="loadAdTelemetry()"><option value="24">최근 24시간</option><option value="48">최근 48시간</option></select></h3><div id="adTelSummary" class="muted">불러오는 중…</div><div style="overflow-x:auto"><table id="adReport"></table></div></div>
     <div class="card"><h3>광고 로그 (건별) <span class="help" data-h="집계가 아니라 기록된 행 그대로입니다. 한 줄 = 광고 요청 한 건.&#10;• 사용자: user_id 앞 8자리 (이메일은 수집하지 않습니다). 전체 값은 마우스를 올리면 보입니다&#10;• 응답/렌더/조회: 요청→응답, 응답→화면에 그려짐, 노출→닫힘 (ms)&#10;• 백필: 실단위가 비어 구글 샘플(테스트 광고)로 채운 건&#10;• 행을 누르면 워터폴(어댑터별 시도)과 원본 값이 펼쳐집니다&#10;48시간이 지난 행은 자동 삭제됩니다.">?</span> <select id="adLogHours" onchange="loadAdLog()"><option value="24">최근 24시간</option><option value="48">최근 48시간</option></select> <select id="adLogFilter" onchange="loadAdLog()"><option value="">전체</option><option value="backfill">백필만</option><option value="clicked">클릭만</option><option value="nofill">노필만</option></select> <select id="adLogLimit" onchange="loadAdLog()"><option value="300">300줄</option><option value="2000">2000줄</option></select> <button onclick="downloadAdLog()">CSV 내려받기</button></h3><div id="adLogSummary" class="muted">불러오는 중…</div><div style="overflow-x:auto"><table id="adLogTable"></table></div></div>
   </div>
 
@@ -353,28 +353,68 @@ async function loadAds() {
 
 async function loadAdTelemetry() {
   const hours = Number(($("adTelHours") || {}).value || 24);
-  const head = "<tr><th>구분</th><th>요청</th><th>노필</th><th>백필</th><th>노출</th><th>중도이탈</th><th>클릭률</th><th>평균 응답</th><th>평균 조회</th><th>수익</th></tr>";
-  const row = (r) => `<tr><td>${esc(r.key)}</td><td>${r.req}</td><td>${r.nofill_pct}%</td>`
-    + `<td>${r.backfill_pct > 0 ? `<b>${r.backfill_pct}%</b>` : "0%"}</td><td>${r.impressed}</td>`
-    + `<td title="노출됐지만 닫힘 기록이 없는 건 — 앱 강제 종료 등">${r.abandon_pct === null ? "-" : r.abandon_pct + "% (" + r.abandoned + ")"}</td>`
-    + `<td>${r.ctr === null ? "-" : r.ctr + "%"}</td><td>${r.avg_latency_ms === null ? "-" : r.avg_latency_ms + "ms"}</td>`
-    + `<td>${r.avg_view_ms === null ? "-" : (r.avg_view_ms / 1000).toFixed(1) + "초"}</td>`
-    + `<td>${r.revenue ? r.revenue.toLocaleString() + " " + (r.currency || "") : "-"}</td></tr>`;
+  const ms = (v) => (v === null || v === undefined) ? "-" : Math.round(v).toLocaleString() + "ms";
+  const money = (micros, cur) => !micros ? "-"
+    : (micros / 1000000).toFixed(4) + (cur && cur !== "USD" ? " " + cur : "");
+  const num = (v, d) => (v === null || v === undefined) ? "-" : (d ? v.toFixed(d) : v.toLocaleString());
+  const head = "<tr><th>사용자</th><th>자리</th><th>형식</th><th>요청</th><th>응답</th>"
+    + "<th>랜더</th><th>조회</th><th>클릭</th><th>수익(USD)</th></tr>";
+  // 요약 행 — 사용자 열은 비운다 (대표 지시)
+  const sumRow = (label, g, cls) =>
+    `<tr class="${cls}"><td colspan="3"><b>${esc(label)}</b></td>`
+    + `<td>${g.requests.toLocaleString()}건</td>`
+    + `<td>${ms(g.sum.latency_ms)}</td><td>${ms(g.sum.render_ms)}</td><td>${ms(g.sum.view_ms)}</td>`
+    + `<td>${g.sum.clicks.toLocaleString()}</td><td>${money(g.sum.revenue_micros, g.currency)}</td></tr>`;
+  const avgRow = (label, g, cls) =>
+    `<tr class="${cls}"><td colspan="3"><b>${esc(label)}</b></td>`
+    + `<td>${g.requests.toLocaleString()}건</td>`
+    + `<td>${ms(g.avg.latency_ms)}</td><td>${ms(g.avg.render_ms)}</td><td>${ms(g.avg.view_ms)}</td>`
+    + `<td>${num(g.avg.clicks, 3)}</td><td>${money(g.avg.revenue_micros, g.currency)}</td></tr>`;
   try {
     const a = await api("stats.ad_events", { hours });
     if (!a.ready) {
-      $("adTelSummary").innerHTML = "<span class='muted'>아직 계측 테이블이 없습니다 — <code>pending_20260917b_ad_events.sql</code> 을 SQL Editor 에서 실행해 주세요.</span>";
-      $("adTelPlace").innerHTML = ""; $("adTelUnit").innerHTML = ""; return;
+      $("adTelSummary").innerHTML = "<span class='muted'>아직 계측 테이블이 없습니다 — <code>pending_20260918_ad_events_linear.sql</code> 을 실행해 주세요.</span>";
+      $("adReport").innerHTML = ""; return;
     }
-    if (!a.total) {
+    if (!a.overall.requests) {
       $("adTelSummary").innerHTML = "<span class='muted'>최근 " + a.hours + "시간 동안 기록이 없습니다. (수집이 꺼져 있거나 빌드가 아직 안 퍼졌을 수 있습니다 — 운영 설정의 ad.telemetry 확인)</span>";
-      $("adTelPlace").innerHTML = ""; $("adTelUnit").innerHTML = ""; return;
+      $("adReport").innerHTML = ""; return;
     }
-    $("adTelSummary").innerHTML = "최근 " + a.hours + "시간 · 광고 요청 <b>" + a.total.toLocaleString() + "</b>건 · 사건 " + (a.events || 0).toLocaleString() + "줄"
-      + (a.truncated ? " <span class='muted'>(5만 건에서 잘림 — 시간 범위를 줄여 보세요)</span>" : "");
-    $("adTelPlace").innerHTML = head + a.by_placement.map(row).join("");
-    $("adTelUnit").innerHTML = head + a.by_unit.slice().sort((x, y) => y.backfill_pct - x.backfill_pct).map(row).join("");
-  } catch (e) { toast("광고 계측 실패: " + e.message, true); }
+    adReportSessions = a.sessions || [];
+    $("adTelSummary").innerHTML = "최근 " + a.hours + "시간 · 요청 <b>" + a.overall.requests.toLocaleString() + "</b>건 · 사건 "
+      + a.events.toLocaleString() + "줄 · 중도이탈 " + a.overall.abandoned.toLocaleString()
+      + " · 노필 " + a.overall.nofill.toLocaleString() + " · 백필 " + a.overall.backfill.toLocaleString()
+      + (a.truncated ? " <span class='muted'>(10만 줄에서 잘림)</span>" : "");
+    let html = head;
+    html += `<tr><td colspan="9" class="muted">전체</td></tr>`;
+    html += avgRow("평균", a.overall, "");
+    html += sumRow("합계", a.overall, "");
+    html += `<tr><td colspan="9" class="muted">인벤토리 형식별</td></tr>`;
+    for (const f of a.by_format) {
+      html += avgRow(f.format + " · 평균", f, "");
+      html += sumRow(f.format + " · 합계", f, "");
+    }
+    html += `<tr><td colspan="9" class="muted">요청 단위 (최근 ${adReportSessions.length.toLocaleString()}건${a.session_total > adReportSessions.length ? " / 전체 " + a.session_total.toLocaleString() : ""})</td></tr>`;
+    html += adReportSessions.map((v, i) => {
+      const unit = (v.ad_unit_id || "").split("/").pop() || "-";
+      return `<tr style="cursor:pointer" onclick="adReportDetail(${i})">`
+        + `<td class="mono" title="${esc(v.user_id || "")}">${esc((v.user_id || "").slice(0, 8))}</td>`
+        + `<td>${esc(v.placement)}</td>`
+        + `<td>${esc(v.format)}${v.backfill ? " <b>백필</b>" : ""}</td>`
+        + `<td class="mono" title="단위 ${esc(unit)} · 마지막 사건 ${esc(v.last_event || "")}">${esc(fmtT(v.requested_at))}</td>`
+        + `<td>${ms(v.latency_ms)}</td><td>${ms(v.render_ms)}</td>`
+        + `<td>${v.view_ms === null ? (v.abandoned ? "<b>이탈</b>" : "-") : ms(v.view_ms)}</td>`
+        + `<td>${v.clicks || "-"}</td><td>${money(v.revenue_micros, v.currency)}</td></tr>`
+        + `<tr><td colspan="9" id="adrep_d_${i}"></td></tr>`;
+    }).join("");
+    $("adReport").innerHTML = html;
+  } catch (e) { toast("광고 리포트 실패: " + e.message, true); }
+}
+let adReportSessions = [];
+function adReportDetail(i) {
+  const v = adReportSessions[i]; if (!v) return;
+  const el = $("adrep_d_" + i); if (!el) return;
+  el.innerHTML = el.innerHTML ? "" : `<pre class="mono" style="white-space:pre-wrap;margin:6px 0">${esc(JSON.stringify(v, null, 2))}</pre>`;
 }
 
 let adLogRows = [];
@@ -395,7 +435,7 @@ function adLogDetail(i) {
 }
 async function loadAdLog() {
   const head = "<tr><th>시각</th><th>묶음</th><th>#</th><th>사건</th><th>경과</th><th>사용자</th>"
-    + "<th>자리</th><th>형식</th><th>단위</th><th>채운 곳</th><th>수익</th></tr>";
+    + "<th>자리</th><th>형식</th><th>단위</th><th>수익</th></tr>";
   const EV = { requested: "요청", responded: "응답", nofill: "노필", backfill: "백필 전환",
     rendered: "렌더", impression: "노출", click: "클릭", paid: "수익", dismissed: "닫힘", show_failed: "표시 실패" };
   try {
@@ -422,9 +462,8 @@ async function loadAdLog() {
         + `<td class="mono" title="${esc(r.user_id || "")}">${esc((r.user_id || "").slice(0, 8))}</td>`
         + `<td>${esc(r.placement)}</td><td>${esc(r.format)}</td>`
         + `<td class="mono" title="${esc(r.ad_unit_id || "")}">${esc(unit)}${r.backfill ? " <b>백필</b>" : ""}</td>`
-        + `<td class="mono">${esc(r.ad_source || r.adapter || "-")}</td>`
         + `<td>${r.revenue_micros ? (r.revenue_micros / 1000000).toFixed(4) + " " + (r.currency || "") : "-"}</td></tr>`
-        + `<tr><td colspan="11" id="adlog_d_${i}"></td></tr>`;
+        + `<tr><td colspan="10" id="adlog_d_${i}"></td></tr>`;
     }).join("");
   } catch (e) { toast("광고 로그 실패: " + e.message, true); }
 }
