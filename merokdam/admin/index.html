@@ -140,7 +140,7 @@ details summary{cursor:pointer;color:var(--ink);font-weight:700}
     </div>
     <div class="card"><h3>보상형 통계 (30일) <span class="help" data-h="시청 = 보상형 광고를 끝까지 보고 💧를 받은 횟수(daily_usage). 사진 해금 = 광고로 사진 분석을 연 횟수. 지급 💧 = 원장 기준. 노출 수·eCPM·수익은 여기 없고 GAM 보고서에서 봅니다. 네이티브 광고 노출 수도 GAM에서만.">?</span></h3><div id="adStats" class="kv"></div><div class="muted" style="margin-top:8px">일별 시청</div><div id="chartAds" class="bar"></div></div>
     <div class="card"><h3>광고 성과 계측 <span class="help" data-h="광고 한 건마다 요청→응답→렌더→노출→닫힘 구간과 클릭·보상·수익을 기록합니다(ad_events, 48시간 보관). 수집은 운영 설정의 ad.telemetry 로 끕니다.&#10;• 노필률: 채울 광고가 없어 실패한 비율&#10;• 백필률: 실단위가 비어 구글 샘플(테스트 광고)로 채운 비율 — 높으면 그 단위에 수요가 안 붙은 것&#10;• 클릭률: 노출 대비 클릭&#10;• 수익: onPaidEvent 실측(추정치 포함)">?</span> <select id="adTelHours" onchange="loadAdTelemetry()"><option value="24">최근 24시간</option><option value="48">최근 48시간</option></select></h3><div id="adTelSummary" class="muted">불러오는 중…</div><h4>자리별</h4><table id="adTelPlace"></table><h4>광고 단위별 (백필률이 높은 순)</h4><table id="adTelUnit"></table></div>
-    <div class="card"><h3>광고 로그 (건별) <span class="help" data-h="집계가 아니라 기록된 행 그대로입니다. 한 줄 = 광고 요청 한 건.&#10;• 사용자: user_id 앞 8자리 (이메일은 수집하지 않습니다). 전체 값은 마우스를 올리면 보입니다&#10;• 응답/렌더/조회: 요청→응답, 응답→화면에 그려짐, 노출→닫힘 (ms)&#10;• 백필: 실단위가 비어 구글 샘플(테스트 광고)로 채운 건&#10;• 행을 누르면 워터폴(어댑터별 시도)과 원본 값이 펼쳐집니다&#10;48시간이 지난 행은 자동 삭제됩니다.">?</span> <select id="adLogHours" onchange="loadAdLog()"><option value="24">최근 24시간</option><option value="48">최근 48시간</option></select> <select id="adLogFilter" onchange="loadAdLog()"><option value="">전체</option><option value="backfill">백필만</option><option value="clicked">클릭만</option><option value="nofill">노필만</option></select> <select id="adLogLimit" onchange="loadAdLog()"><option value="200">200줄</option><option value="1000">1000줄</option></select> <button onclick="downloadAdLog()">CSV 내려받기</button></h3><div id="adLogSummary" class="muted">불러오는 중…</div><div style="overflow-x:auto"><table id="adLogTable"></table></div></div>
+    <div class="card"><h3>광고 로그 (건별) <span class="help" data-h="집계가 아니라 기록된 행 그대로입니다. 한 줄 = 광고 요청 한 건.&#10;• 사용자: user_id 앞 8자리 (이메일은 수집하지 않습니다). 전체 값은 마우스를 올리면 보입니다&#10;• 응답/렌더/조회: 요청→응답, 응답→화면에 그려짐, 노출→닫힘 (ms)&#10;• 백필: 실단위가 비어 구글 샘플(테스트 광고)로 채운 건&#10;• 행을 누르면 워터폴(어댑터별 시도)과 원본 값이 펼쳐집니다&#10;48시간이 지난 행은 자동 삭제됩니다.">?</span> <select id="adLogHours" onchange="loadAdLog()"><option value="24">최근 24시간</option><option value="48">최근 48시간</option></select> <select id="adLogFilter" onchange="loadAdLog()"><option value="">전체</option><option value="backfill">백필만</option><option value="clicked">클릭만</option><option value="nofill">노필만</option></select> <select id="adLogLimit" onchange="loadAdLog()"><option value="300">300줄</option><option value="2000">2000줄</option></select> <button onclick="downloadAdLog()">CSV 내려받기</button></h3><div id="adLogSummary" class="muted">불러오는 중…</div><div style="overflow-x:auto"><table id="adLogTable"></table></div></div>
   </div>
 
   <!-- 공지·푸시 -->
@@ -353,9 +353,10 @@ async function loadAds() {
 
 async function loadAdTelemetry() {
   const hours = Number(($("adTelHours") || {}).value || 24);
-  const head = "<tr><th>구분</th><th>요청</th><th>노필</th><th>백필</th><th>노출</th><th>클릭률</th><th>평균 응답</th><th>평균 조회</th><th>수익</th></tr>";
+  const head = "<tr><th>구분</th><th>요청</th><th>노필</th><th>백필</th><th>노출</th><th>중도이탈</th><th>클릭률</th><th>평균 응답</th><th>평균 조회</th><th>수익</th></tr>";
   const row = (r) => `<tr><td>${esc(r.key)}</td><td>${r.req}</td><td>${r.nofill_pct}%</td>`
     + `<td>${r.backfill_pct > 0 ? `<b>${r.backfill_pct}%</b>` : "0%"}</td><td>${r.impressed}</td>`
+    + `<td title="노출됐지만 닫힘 기록이 없는 건 — 앱 강제 종료 등">${r.abandon_pct === null ? "-" : r.abandon_pct + "% (" + r.abandoned + ")"}</td>`
     + `<td>${r.ctr === null ? "-" : r.ctr + "%"}</td><td>${r.avg_latency_ms === null ? "-" : r.avg_latency_ms + "ms"}</td>`
     + `<td>${r.avg_view_ms === null ? "-" : (r.avg_view_ms / 1000).toFixed(1) + "초"}</td>`
     + `<td>${r.revenue ? r.revenue.toLocaleString() + " " + (r.currency || "") : "-"}</td></tr>`;
@@ -369,7 +370,7 @@ async function loadAdTelemetry() {
       $("adTelSummary").innerHTML = "<span class='muted'>최근 " + a.hours + "시간 동안 기록이 없습니다. (수집이 꺼져 있거나 빌드가 아직 안 퍼졌을 수 있습니다 — 운영 설정의 ad.telemetry 확인)</span>";
       $("adTelPlace").innerHTML = ""; $("adTelUnit").innerHTML = ""; return;
     }
-    $("adTelSummary").innerHTML = "최근 " + a.hours + "시간 · 광고 요청 <b>" + a.total.toLocaleString() + "</b>건"
+    $("adTelSummary").innerHTML = "최근 " + a.hours + "시간 · 광고 요청 <b>" + a.total.toLocaleString() + "</b>건 · 사건 " + (a.events || 0).toLocaleString() + "줄"
       + (a.truncated ? " <span class='muted'>(5만 건에서 잘림 — 시간 범위를 줄여 보세요)</span>" : "");
     $("adTelPlace").innerHTML = head + a.by_placement.map(row).join("");
     $("adTelUnit").innerHTML = head + a.by_unit.slice().sort((x, y) => y.backfill_pct - x.backfill_pct).map(row).join("");
@@ -381,10 +382,9 @@ function adLogParams() {
   const f = ($("adLogFilter") || {}).value || "";
   return {
     hours: Number(($("adLogHours") || {}).value || 24),
-    limit: Number(($("adLogLimit") || {}).value || 200),
+    limit: Number(($("adLogLimit") || {}).value || 300),
     only_backfill: f === "backfill" || undefined,
-    only_clicked: f === "clicked" || undefined,
-    outcome: f === "nofill" ? "nofill" : undefined,
+    event: (f && f !== "backfill") ? f : undefined,
   };
 }
 function adLogDetail(i) {
@@ -394,12 +394,14 @@ function adLogDetail(i) {
   el.innerHTML = el.innerHTML ? "" : `<pre class="mono" style="white-space:pre-wrap;margin:6px 0">${esc(JSON.stringify(r, null, 2))}</pre>`;
 }
 async function loadAdLog() {
-  const head = "<tr><th>시각</th><th>사용자</th><th>자리</th><th>형식</th><th>단위</th><th>결과</th>"
-    + "<th>응답</th><th>렌더</th><th>조회</th><th>노출</th><th>클릭</th><th>보상</th><th>수익</th><th>채운 곳</th></tr>";
+  const head = "<tr><th>시각</th><th>묶음</th><th>#</th><th>사건</th><th>경과</th><th>사용자</th>"
+    + "<th>자리</th><th>형식</th><th>단위</th><th>채운 곳</th><th>수익</th></tr>";
+  const EV = { requested: "요청", responded: "응답", nofill: "노필", backfill: "백필 전환",
+    rendered: "렌더", impression: "노출", click: "클릭", paid: "수익", dismissed: "닫힘", show_failed: "표시 실패" };
   try {
     const a = await api("stats.ad_log", adLogParams());
     if (!a.ready) {
-      $("adLogSummary").innerHTML = "<span class='muted'>아직 계측 테이블이 없습니다 — <code>pending_20260917b_ad_events.sql</code> 을 실행해 주세요.</span>";
+      $("adLogSummary").innerHTML = "<span class='muted'>아직 계측 테이블이 없습니다 — <code>pending_20260918_ad_events_linear.sql</code> 을 실행해 주세요.</span>";
       $("adLogTable").innerHTML = ""; return;
     }
     adLogRows = a.rows || [];
@@ -407,30 +409,28 @@ async function loadAdLog() {
       $("adLogSummary").innerHTML = "<span class='muted'>최근 " + a.hours + "시간 동안 기록이 없습니다.</span>";
       $("adLogTable").innerHTML = ""; return;
     }
-    $("adLogSummary").innerHTML = adLogRows.length.toLocaleString() + "건"
-      + (adLogRows.length >= a.limit ? " <span class='muted'>(" + a.limit + "줄에서 잘림)</span>" : "");
-    const ms = (v) => v === null || v === undefined ? "-" : v + "ms";
-    const yn = (v) => v ? "O" : "";
+    $("adLogSummary").innerHTML = adLogRows.length.toLocaleString() + "줄"
+      + (adLogRows.length >= a.limit ? " <span class='muted'>(" + a.limit + "줄에서 잘림)</span>" : "")
+      + " <span class='muted'>· 같은 묶음끼리 한 번의 광고입니다. 줄을 누르면 원본이 펼쳐집니다.</span>";
     $("adLogTable").innerHTML = head + adLogRows.map((r, i) => {
-      const uid = (r.user_id || "").slice(0, 8);
       const unit = (r.ad_unit_id || "").split("/").pop() || "-";
       return `<tr style="cursor:pointer" onclick="adLogDetail(${i})">`
         + `<td class="mono">${esc(fmtT(r.created_at))}</td>`
-        + `<td class="mono" title="${esc(r.user_id || "")}">${esc(uid)}</td>`
+        + `<td class="mono" title="${esc(r.session_id || "")}">${esc((r.session_id || "").slice(0, 8))}</td>`
+        + `<td>${r.seq}</td><td><b>${esc(EV[r.event] || r.event)}</b>${r.event === "dismissed" && r.earned ? " (보상)" : ""}</td>`
+        + `<td class="mono">${r.elapsed_ms}ms</td>`
+        + `<td class="mono" title="${esc(r.user_id || "")}">${esc((r.user_id || "").slice(0, 8))}</td>`
         + `<td>${esc(r.placement)}</td><td>${esc(r.format)}</td>`
         + `<td class="mono" title="${esc(r.ad_unit_id || "")}">${esc(unit)}${r.backfill ? " <b>백필</b>" : ""}</td>`
-        + `<td>${esc(r.outcome)}</td><td>${ms(r.latency_ms)}</td><td>${ms(r.render_ms)}</td>`
-        + `<td>${r.view_ms === null || r.view_ms === undefined ? "-" : (r.view_ms / 1000).toFixed(1) + "초"}</td>`
-        + `<td>${yn(r.impressed)}</td><td>${yn(r.clicked)}</td><td>${yn(r.earned)}</td>`
-        + `<td>${r.revenue_micros ? (r.revenue_micros / 1000000).toFixed(4) + " " + (r.currency || "") : "-"}</td>`
-        + `<td class="mono">${esc(r.ad_source || r.adapter || "-")}</td></tr>`
-        + `<tr><td colspan="14" id="adlog_d_${i}"></td></tr>`;
+        + `<td class="mono">${esc(r.ad_source || r.adapter || "-")}</td>`
+        + `<td>${r.revenue_micros ? (r.revenue_micros / 1000000).toFixed(4) + " " + (r.currency || "") : "-"}</td></tr>`
+        + `<tr><td colspan="11" id="adlog_d_${i}"></td></tr>`;
     }).join("");
   } catch (e) { toast("광고 로그 실패: " + e.message, true); }
 }
 function downloadAdLog() {
   if (!adLogRows.length) { toast("내려받을 로그가 없습니다", true); return; }
-  const cols = ["created_at","user_id","placement","format","ad_unit_id","backfill","outcome","latency_ms","render_ms","view_ms","impressed","clicked","earned","revenue_micros","currency","precision","response_id","adapter","ad_source"];
+  const cols = ["created_at","session_id","seq","event","elapsed_ms","user_id","placement","format","ad_unit_id","backfill","response_id","adapter","ad_source","revenue_micros","currency","precision","earned"];
   const cell = (v) => v === null || v === undefined ? "" : `"${String(v).replace(/"/g, '""')}"`;
   const csv = "\uFEFF" + [cols.join(","), ...adLogRows.map((r) => cols.map((c) => cell(r[c])).join(","))].join("\n");
   const a = document.createElement("a");
