@@ -35,6 +35,7 @@ input,textarea,select{width:100%;border:1px solid var(--line);border-radius:10px
 .danger-zone{border-color:rgba(178,64,43,.35);background:#fff7f5}
 details summary{cursor:pointer;color:var(--ink);font-weight:700}
 </style>
+<link rel="stylesheet" href="admin-ui.css">
 </head>
 <body>
 <header><div><b>🌱 미록담 운영 콘솔</b> <small id="who"></small></div><div class="row" style="gap:6px"><button class="ghost" id="reload">새로고침</button><button class="ghost" id="logout" style="display:none">로그아웃</button></div></header>
@@ -51,9 +52,7 @@ details summary{cursor:pointer;color:var(--ink);font-weight:700}
 </section>
 
 <section id="app" class="hidden">
-  <div class="tabs" id="tabs">
-    <span class="tab on" data-t="today">오늘</span><span class="tab" data-t="usage">사용 통계</span><span class="tab" data-t="money">수익·비용</span><span class="tab" data-t="users">회원</span><span class="tab" data-t="safety">콘텐츠·안전</span><span class="tab" data-t="ops">운영 설정</span><span class="tab" data-t="diaryprompts">일기 생성</span><span class="tab" data-t="ads">광고</span><span class="tab" data-t="notice">공지·푸시</span><span class="tab" data-t="inq">문의<span class="n hidden" id="inqBadge"></span></span><span class="tab" data-t="story">사연 영상</span><span class="tab" data-t="audit">감사 로그</span>
-  </div>
+<nav class="tabs" id="tabs" aria-label="운영 메뉴"><div class="nav-brand">미록담<span>운영 콘솔</span></div><div class="nav-group">현황</div><button type="button" class="tab on" data-t="today">종합 현황</button><button type="button" class="tab" data-t="usage">사용 통계</button><div class="nav-group">운영</div><button type="button" class="tab" data-t="users">회원</button><button type="button" class="tab" data-t="inq">문의<span class="n hidden" id="inqBadge"></span></button><button type="button" class="tab" data-t="safety">콘텐츠·안전</button><button type="button" class="tab" data-t="story">사연 영상</button><div class="nav-group">서비스 관리</div><button type="button" class="tab" data-t="diaryprompts">일기 생성</button><button type="button" class="tab" data-t="money">수익·비용</button><button type="button" class="tab" data-t="ads">광고</button><button type="button" class="tab" data-t="notice">공지·푸시</button><div class="nav-group">시스템</div><button type="button" class="tab" data-t="ops">운영 설정</button><button type="button" class="tab" data-t="audit">운영 변경 이력</button><div class="nav-footer">MeRokDam<br>서비스 운영 공간</div></nav><div class="page-heading"><div><p>미록담 운영 콘솔</p><h1 id="pageTitle">종합 현황</h1></div><span class="workspace-label">운영 관리</span></div>
 
 <div id="t-diaryprompts" class="hidden">
   <div class="card"><h3>일기 생성 규칙</h3><p>초안 수정 → 같은 재료로 비교 → 초안 저장 → 운영 적용 순서로 관리합니다. 분석 담당은 재료를 정리하고, 작성 담당은 사용자 설정에 맞춰 글을 씁니다.</p><p id="diaryPromptStatus" class="muted"></p><p id="diaryPromptEditState" class="muted"></p><div id="diaryPromptEditor"></div></div>
@@ -67,8 +66,8 @@ details summary{cursor:pointer;color:var(--ink);font-weight:700}
 
   <!-- 오늘 -->
   <div id="t-today">
-    <div class="card"><h3>이 콘솔은 <span class="help" data-h="관리자가 매일 확인하는 순서: ① 오늘 탭 상태등이 모두 초록인지 ② 처리 대기(문의·신고·검수 실패)가 있는지 ③ 사용 통계로 추세를 보고 ④ 운영 설정에서 필요한 것만 바꿉니다. 모든 항목 옆 ?를 누르면 그 항목의 뜻과 언제 쓰는지가 나와요.">?</span></h3>
-      <p class="muted" style="margin:0">미록담 서비스를 <b>보고(상태·통계) · 찾고(회원·콘텐츠) · 바꾸는(설정·공지)</b> 한 곳. 값을 바꾸면 감사 로그에 남고, 위험한 조작은 확인을 두 번 받아요.</p></div>
+    <div class="overview-intro">서비스의 상태와 주요 지표를 한곳에서 확인하세요.</div>
+    <div id="overviewSummary" class="summary-grid" aria-live="polite"></div>
     <div class="grid2">
       <div class="card"><h3>상태등 <span class="help" data-h="서버 크론·함수·마이그레이션이 제대로 돌고 있는지. 빨간 불이 하나라도 있으면 사용자에게 무언가 안 가고 있다는 뜻이라 가장 먼저 봅니다.&#10;• 크론: 마지막 실행 결과가 succeeded면 초록&#10;• 점검(checks): SQL 적용·함수 존재 여부&#10;• story_judge_ran_today는 사연 영상이 일시정지 상태면 false가 정상">?</span></h3><div id="health" class="muted">불러오는 중…</div></div>
       <div class="card"><h3>처리 대기 <span class="help" data-h="사람이 손대야 하는 것들. 문의는 답변, 신고는 열람 후 비공개 조치, 검수 실패는 확인, 렌더 완료 영상은 게시 자격증명 등록 후 자동 게시됩니다.">?</span></h3><div id="pending" class="kv"></div></div>
@@ -584,5 +583,6 @@ async function loadStory() { try { const rows = (await api("story.list")).rows; 
 async function loadAudit() { try { const rows = (await api("audit.list")).rows; $("auditTable").innerHTML = "<tr><th>일시</th><th>키</th><th>이전</th><th>이후</th><th>누가</th></tr>" + rows.map((a) => `<tr><td class="muted">${fmtT(a.changed_at)}</td><td><code>${esc(a.key)}</code></td><td class="mono">${esc(JSON.stringify(a.old_value))}</td><td class="mono">${esc(JSON.stringify(a.new_value))}</td><td class="muted">${esc(a.changed_by)}</td></tr>`).join(""); } catch (e) { toast(e.message, true); } }
 </script>
 <script src="diary-prompts.js"></script>
+<script src="admin-ui.js"></script>
 </body>
 </html>
