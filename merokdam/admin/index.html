@@ -135,6 +135,7 @@ details summary{cursor:pointer;color:var(--ink);font-weight:700}
       </table></div>
     <div class="grid2">
       <div class="card"><h3>광고 단위 (슬롯별) <span class="help" data-h="비어 있으면 앱에 내장된 기본 단위를 씁니다(표시된 '기본'). 값을 넣으면 그 단위로 바뀝니다. 네이티브 피드는 5개 배열이며 n번째 광고가 n번째 단위를 쓰고 6번째부터는 마지막 단위를 재사용합니다. 반영: 앱 콜드 스타트.">?</span></h3><table id="adUnits"></table></div>
+      <div class="card"><h3>쿠팡 대체 광고</h3><p class="muted">Google 광고가 채워지지 않았을 때 표시합니다. 쿠팡 파트너스에서 발급한 배너 코드를 그대로 붙여넣으세요. 저장 후 앱을 완전히 종료하고 다시 실행하면 반영됩니다.</p><table id="coupangSettings"></table></div>
       <div class="card"><h3>노출·보상 규칙 <span class="help" data-h="피드 간격: 카드 N개마다 광고 1개(최소 3). 보상형 1회 보상 💧와 1일 시청 한도는 서버 RPC가 읽습니다(SQL pending_20260909f_ads.sql 실행 후). 한도를 올리면 물방울 발행이 늘어 생성 과금 수익이 줄 수 있습니다.">?</span></h3><table id="adRules"></table></div>
     </div>
     <div class="card"><h3>보상형 통계 (30일) <span class="help" data-h="시청 = 보상형 광고를 끝까지 보고 💧를 받은 횟수(daily_usage). 사진 해금 = 광고로 사진 분석을 연 횟수. 지급 💧 = 원장 기준. 노출 수·eCPM·수익은 여기 없고 GAM 보고서에서 봅니다. 네이티브 광고 노출 수도 GAM에서만.">?</span></h3><div id="adStats" class="kv"></div><div class="muted" style="margin-top:8px">일별 시청</div><div id="chartAds" class="bar"></div></div>
@@ -346,8 +347,32 @@ const helpOf = (k) => { const h = H[k]; if (!h) { const pre = k.split(".")[0]; r
 const helpSpan = (k) => { const h = helpOf(k); return `<span class="help" data-h="${esc(h.text)}">?</span>`; };
 const AD_UNITS = [["ad.rewarded_drops", "/23140388603/merokdam/reward01"], ["ad.rewarded_photo", "/23140388603/merokdam/reward02"], ["ad.native_generating", "/23140388603/merokdam/native00"], ["ad.native_feed", '["/23140388603/merokdam/native01","/23140388603/merokdam/native02","/23140388603/merokdam/native03","/23140388603/merokdam/native04","/23140388603/merokdam/native05"]']];
 const AD_RULES = ["ad.reward_format", "ad.feed_interval", "ad.telemetry", "ad.telemetry_hours", "ad.rewarded_daily_max", "point.rewarded_ad"];
+const COUPANG_FIELDS = [
+  ['ad.coupang_script', '피드·생성 대기 배너 코드', 'script'],
+  ['ad.coupang_reward_script', '보상 광고 배너 코드 (비우면 기본 배너 사용)', 'script'],
+  ['ad.coupang_base_url', '파트너스에 등록한 매체 주소', 'text'],
+  ['ad.coupang_dwell_ms', '보상 최소 체류 시간 (밀리초, 최소 1000)', 'number'],
+  ['ad.coupang_enabled', '쿠팡 대체 광고 사용', 'boolean'],
+];
+function renderCoupangSettings() {
+  $('coupangSettings').innerHTML = COUPANG_FIELDS.map(([key, label, type], i) => {
+    const value = pol(key)?.value ?? (type === 'boolean' ? false : type === 'number' ? 1000 : '');
+    const id = 'coupang_' + i;
+    const field = type === 'boolean' ? `<input id="${id}" type="checkbox" ${value === true ? 'checked' : ''}>` : type === 'script' ? `<textarea id="${id}" rows="5" placeholder="배너 코드를 그대로 붙여넣기">${esc(value)}</textarea>` : `<input id="${id}" type="${type === 'number' ? 'number' : 'text'}" ${type === 'number' ? 'min="1000"' : ''} value="${esc(value)}">`;
+    return `<tr><td><label for="${id}">${esc(label)}</label></td><td>${field}</td><td><button class="ghost" onclick="saveCoupangSetting(${i})">저장</button></td></tr>`;
+  }).join('');
+}
+async function saveCoupangSetting(i) {
+  const [key, , type] = COUPANG_FIELDS[i];
+  const field = $('coupang_' + i);
+  const value = type === 'boolean' ? field.checked : type === 'number' ? Number(field.value) : field.value.trim();
+  if (type === 'number' && (!Number.isInteger(value) || value < 1000)) return toast('체류 시간은 1000 이상의 정수로 입력하세요.', true);
+  if (key === 'ad.coupang_enabled' && value && !(pol('ad.coupang_script')?.value || '').trim()) return toast('피드·생성 대기 배너 코드를 먼저 저장하세요.', true);
+  await setPolicy(key, JSON.stringify(value));
+}
 async function loadAds() {
   if (!cache.policies.length) await loadPolicies();
+  renderCoupangSettings();
   $("adUnits").innerHTML = AD_UNITS.map(([k, def], i) => { const p = pol(k); const h = helpOf(k); const cur = p ? JSON.stringify(p.value) : ""; return `<tr><td style="width:38%"><b>${esc(h.title)}</b>${helpSpan(k)}<br><code>${k}</code><br><span class="muted">${p ? "덮어쓰기 중" : "기본 사용"}: <span class="mono">${esc(p ? cur : def)}</span></span></td><td><textarea id="ad_${i}" rows="${k === "ad.native_feed" ? 4 : 1}" placeholder='${esc(k === "ad.native_feed" ? def : JSON.stringify(def))}'>${esc(cur)}</textarea></td><td style="width:120px"><button class="ghost" onclick="setPolicy('${k}', document.getElementById('ad_${i}').value)">저장</button>${p ? ` <button class="danger" onclick="delPolicy('${k}')">기본으로</button>` : ""}</td></tr>`; }).join("");
   $("adRules").innerHTML = AD_RULES.map((k, i) => { const p = pol(k); const h = helpOf(k); return `<tr><td style="width:45%"><b>${esc(h.title)}</b>${helpSpan(k)}<br><code>${k}</code>${p ? "" : "<br><span class='warn'>미설정 — SQL pending_20260909f_ads.sql 실행 필요</span>"}</td><td><input id="adr_${i}" value='${esc(p ? JSON.stringify(p.value) : "")}' placeholder="${esc(H[k] ? H[k][4] : "")}"></td><td style="width:70px"><button class="ghost" onclick="setPolicy('${k}', document.getElementById('adr_${i}').value)">저장</button></td></tr>`; }).join("");
   try { const a = await api("stats.ads");
