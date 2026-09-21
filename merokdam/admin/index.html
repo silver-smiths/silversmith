@@ -135,7 +135,7 @@ details summary{cursor:pointer;color:var(--ink);font-weight:700}
       </table></div>
     <div class="grid2">
       <div class="card"><h3>광고 단위 (슬롯별) <span class="help" data-h="비어 있으면 앱에 내장된 기본 단위를 씁니다(표시된 '기본'). 값을 넣으면 그 단위로 바뀝니다. 네이티브 피드는 5개 배열이며 n번째 광고가 n번째 단위를 쓰고 6번째부터는 마지막 단위를 재사용합니다. 반영: 앱 콜드 스타트.">?</span></h3><table id="adUnits"></table></div>
-      <div class="card"><h3>쿠팡 대체 광고</h3><p class="muted">Google 광고가 채워지지 않았을 때 표시합니다. 쿠팡 파트너스에서 발급한 배너 코드를 그대로 붙여넣으세요. 저장 후 앱을 완전히 종료하고 다시 실행하면 반영됩니다.</p><table id="coupangSettings"></table></div>
+      <div class="card"><h3>쿠팡 대체 광고</h3><p class="muted"><b>물방울 받는 자리에서만</b> 씁니다 — 정원의 '물방울 받기'와 일기 생성 대기 화면입니다. Google 광고가 채워지지 않았을 때만 나갑니다(피드에는 넣지 않습니다). 쿠팡 파트너스에서 발급한 배너 코드를 그대로 붙여넣으세요. 저장 후 앱을 완전히 종료하고 다시 실행하면 반영됩니다.<br>리포트에서는 형식이 <code>coupang</code> 으로 잡히며, <b>조회</b> 칸은 광고를 눌러 밖에서 머문 시간, <b>지급</b> 칸은 물방울이 실제로 들어갔는지입니다.</p><table id="coupangSettings"></table></div>
       <div class="card"><h3>노출·보상 규칙 <span class="help" data-h="피드 간격: 카드 N개마다 광고 1개(최소 3). 보상형 1회 보상 💧와 1일 시청 한도는 서버 RPC가 읽습니다(SQL pending_20260909f_ads.sql 실행 후). 한도를 올리면 물방울 발행이 늘어 생성 과금 수익이 줄 수 있습니다.">?</span></h3><table id="adRules"></table></div>
     </div>
     <div class="card"><h3>보상형 통계 (30일) <span class="help" data-h="시청 = 보상형 광고를 끝까지 보고 💧를 받은 횟수(daily_usage). 사진 해금 = 광고로 사진 분석을 연 횟수. 지급 💧 = 원장 기준. 노출 수·eCPM·수익은 여기 없고 GAM 보고서에서 봅니다. 네이티브 광고 노출 수도 GAM에서만.">?</span></h3><div id="adStats" class="kv"></div><div class="muted" style="margin-top:8px">일별 시청</div><div id="chartAds" class="bar"></div></div>
@@ -348,8 +348,7 @@ const helpSpan = (k) => { const h = helpOf(k); return `<span class="help" data-h
 const AD_UNITS = [["ad.rewarded_drops", "/23140388603/merokdam/reward01"], ["ad.rewarded_photo", "/23140388603/merokdam/reward02"], ["ad.native_generating", "/23140388603/merokdam/native00"], ["ad.native_feed", '["/23140388603/merokdam/native01","/23140388603/merokdam/native02","/23140388603/merokdam/native03","/23140388603/merokdam/native04","/23140388603/merokdam/native05"]']];
 const AD_RULES = ["ad.reward_format", "ad.feed_interval", "ad.telemetry", "ad.telemetry_hours", "ad.rewarded_daily_max", "point.rewarded_ad"];
 const COUPANG_FIELDS = [
-  ['ad.coupang_script', '피드·생성 대기 배너 코드', 'script'],
-  ['ad.coupang_reward_script', '보상 광고 배너 코드 (비우면 기본 배너 사용)', 'script'],
+  ['ad.coupang_script', '물방울 광고 배너 코드', 'script'],
   ['ad.coupang_base_url', '파트너스에 등록한 매체 주소', 'text'],
   ['ad.coupang_dwell_ms', '보상 최소 체류 시간 (밀리초, 최소 1000)', 'number'],
   ['ad.coupang_enabled', '쿠팡 대체 광고 사용', 'boolean'],
@@ -367,7 +366,7 @@ async function saveCoupangSetting(i) {
   const field = $('coupang_' + i);
   const value = type === 'boolean' ? field.checked : type === 'number' ? Number(field.value) : field.value.trim();
   if (type === 'number' && (!Number.isInteger(value) || value < 1000)) return toast('체류 시간은 1000 이상의 정수로 입력하세요.', true);
-  if (key === 'ad.coupang_enabled' && value && !(pol('ad.coupang_script')?.value || '').trim()) return toast('피드·생성 대기 배너 코드를 먼저 저장하세요.', true);
+  if (key === 'ad.coupang_enabled' && value && !(pol('ad.coupang_script')?.value || '').trim()) return toast('물방울 광고 배너 코드를 먼저 저장하세요.', true);
   await setPolicy(key, JSON.stringify(value));
 }
 async function loadAds() {
