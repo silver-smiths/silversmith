@@ -283,7 +283,7 @@ async function loadUsage(force) {
   const MOOD = { vital: "🔥 활기찬", flutter: "💗 설렘", annoyed: "😤 짜증", proud: "🌟 뿌듯함", calmish: "🍵 담담함", anxious: "🌫️ 불안함", serene: "🌿 평온함", shy: "🍑 부끄러움", tired: "🌙 지침" };
   const mmax = Math.max(1, ...Object.values(o.moods));
   $("moodStats").innerHTML = Object.entries(o.moods).sort((a, b) => b[1] - a[1]).map(([k, v]) => `<div class="hbar"><span>${MOOD[k] || k}</span><em style="width:${Math.round(v * 100 / mmax)}%;flex:1;max-width:${Math.round(v * 100 / mmax)}%"></em><span>${v}</span></div>`).join("") || "<span class='muted'>데이터 없음</span>";
-  const RX = { amazing: "감동해요", feel_you: "공감해요", there_there: "위로해요" };
+  const RX = { amazing: "응원해요", feel_you: "공감해요", there_there: "위로해요" };
   $("socialStats").innerHTML = tiles([...Object.entries(o.reactions).map(([k, v]) => [RX[k] || k, v]), ["이웃 관계", o.follows], ["자서전 30일", o.autobiographies_30d], ["차단", o.safety.blocks]]);
   $("eventStats").textContent = Object.entries(o.events_30d).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${v}`).join(" · ") || "이벤트 없음";
   loadGenFeedback();
