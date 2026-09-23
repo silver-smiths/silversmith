@@ -88,6 +88,15 @@ details summary{cursor:pointer;color:var(--ink);font-weight:700}
       <div class="card"><h3>마음 분포 (30일) <span class="help" data-h="일기에 담긴 9가지 마음의 빈도. 콘텐츠·프롬프트 방향을 잡을 때 참고. 불안·지침이 늘면 위로 콘텐츠, 활기·설렘이 늘면 공유 유도 콘텐츠가 맞습니다.">?</span></h3><div id="moodStats"></div></div>
       <div class="card"><h3>피드·관계 (30일) <span class="help" data-h="반응 3종 수와 이웃(팔로우) 관계 수, 자서전 생성 수. 반응이 일기 수보다 훨씬 적으면 피드 노출이나 공감 버튼 위치를 의심합니다.">?</span></h3><div id="socialStats" class="kv"></div><div class="muted" style="margin-top:8px">앱 이벤트 (30일)</div><div id="eventStats" class="mono" style="background:transparent;font-size:12px"></div></div>
     </div>
+    <div class="card"><h3>생성 품질 (평점, 30일) <span class="help" data-h="일기·자서전 생성 직후 사용자가 남긴 👍/👎 평가 (design/mockup/29-quality-rating.html, 2026-09-24). kind×prompt_version별 평균 평점(-1~1)과 건수 — 프롬프트를 바꾸면 버전을 올려 서로 비교합니다. 지금은 사람이 보고 판단하는 1단계이며, 자동 조정은 아직 없습니다(quality.auto_tune.enabled). 아래 표는 개별 평가 — '아쉬웠어요' 위주로 사유·기타 메모를 읽고 프롬프트를 손봅니다.">?</span></h3>
+      <div id="genQualityStats" class="kv"></div>
+      <div id="genQualityTags" class="muted" style="margin-top:8px"></div>
+      <div class="row" style="margin-top:12px">
+        <select id="genFbKind" onchange="loadGenFeedbackLog()"><option value="">전체 종류</option><option value="diary_image">일기</option><option value="autobiography">자서전</option></select>
+        <select id="genFbRating" onchange="loadGenFeedbackLog()"><option value="">전체 평가</option><option value="-1">아쉬웠어요만</option><option value="1">좋았어요만</option></select>
+      </div>
+      <div style="overflow-x:auto"><table id="genFbTable" style="margin-top:8px"></table></div>
+    </div>
   </div>
 
   <!-- 수익·비용 -->
@@ -277,6 +286,33 @@ async function loadUsage(force) {
   const RX = { amazing: "감동해요", feel_you: "공감해요", there_there: "위로해요" };
   $("socialStats").innerHTML = tiles([...Object.entries(o.reactions).map(([k, v]) => [RX[k] || k, v]), ["이웃 관계", o.follows], ["자서전 30일", o.autobiographies_30d], ["차단", o.safety.blocks]]);
   $("eventStats").textContent = Object.entries(o.events_30d).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${v}`).join(" · ") || "이벤트 없음";
+  loadGenFeedback();
+  loadGenFeedbackLog();
+}
+const GEN_KIND = { diary_image: "일기", autobiography: "자서전" };
+async function loadGenFeedback() {
+  try {
+    const s = await api("stats.generation_feedback");
+    $("genQualityStats").innerHTML = tiles((s.by_version || []).map((v) =>
+      [`${GEN_KIND[v.kind] || v.kind} · ${v.prompt_version}`, v.avg_rating, `👍${v.up} 👎${v.down} · ${v.n}건`]
+    )) || "<div class='muted'>데이터 없음</div>";
+    const tagLines = Object.entries(s.tags || {}).map(([k, tagmap]) =>
+      `${GEN_KIND[k] || k}: ` + (Object.entries(tagmap).sort((a, b) => b[1] - a[1]).map(([t, n]) => `${t} ${n}`).join(" · ") || "없음")
+    ).join("<br>");
+    $("genQualityTags").innerHTML = `최근 30일 사유 빈도<br>${tagLines || "데이터 없음"}`;
+  } catch (e) { toast("생성 품질 통계 실패: " + e.message, true); }
+}
+async function loadGenFeedbackLog() {
+  try {
+    const kind = $("genFbKind").value, rating = $("genFbRating").value;
+    const payload = { days: 14, limit: 200 };
+    if (kind) payload.kind = kind;
+    if (rating) payload.rating = Number(rating);
+    const r = await api("stats.generation_feedback_log", payload);
+    $("genFbTable").innerHTML = "<tr><th>일시</th><th>종류</th><th>버전</th><th>평가</th><th>사유</th><th>메모</th></tr>" +
+      ((r.rows || []).map((f) => `<tr><td class="muted">${fmtT(f.created_at)}</td><td>${esc(GEN_KIND[f.kind] || f.kind)}</td><td class="mono">${esc(f.prompt_version)}</td><td>${f.rating === 1 ? "👍" : "👎"}</td><td>${(f.tags || []).map(esc).join(", ")}</td><td>${esc(f.note || "")}</td></tr>`).join("")
+        || "<tr><td class='muted' colspan='6'>데이터 없음</td></tr>");
+  } catch (e) { toast("평가 로그 실패: " + e.message, true); }
 }
 
 // ── 수익·비용
