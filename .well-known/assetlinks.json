@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.silversmiths.merokdam",
+      "sha256_cert_fingerprints": [
+        "8F:CC:39:BF:85:65:2B:49:24:5F:6E:CF:E7:AB:19:76:23:0F:BC:AA:99:2E:7C:76:F5:33:AB:8E:C3:88:BD:4C"
+      ]
+    }
+  }
+]
