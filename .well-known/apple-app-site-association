@@ -1,1 +1,1 @@
-{"applinks":{"details":[{"appIDs":["HWPV7G32S6.com.silversmiths.merokdam"],"components":[{"/":"/merokdam/share/","?":{"diary":"*"},"comment":"Open a shared diary; app validates UUID and access rights"}]}]}}
+{"applinks":{"details":[{"appIDs":["HWPV7G32S6.com.silversmiths.merokdam"],"components":[{"/":"/merokdam/share/","?":{"diary":"*"},"comment":"Open a shared diary; app validates UUID and access rights"},{"/":"/s/","?":{"d":"*"},"comment":"Compact shared diary link"}]}]}}
