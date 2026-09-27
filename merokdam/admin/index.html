@@ -92,7 +92,7 @@ details summary{cursor:pointer;color:var(--ink);font-weight:700}
       <div id="genQualityStats" class="kv"></div>
       <div id="genQualityTags" class="muted" style="margin-top:8px"></div>
       <div class="row" style="margin-top:12px">
-        <select id="genFbKind" onchange="loadGenFeedbackLog()"><option value="">전체 종류</option><option value="diary_image">일기</option><option value="autobiography">자서전</option></select>
+        <select id="genFbKind" onchange="loadGenFeedbackLog()"><option value="">전체 종류</option><option value="diary_text">일기 내용</option><option value="diary_art">그림</option><option value="diary_image">기존 통합 평가</option><option value="autobiography">자서전</option></select>
         <select id="genFbRating" onchange="loadGenFeedbackLog()"><option value="">전체 평가</option><option value="-1">아쉬웠어요만</option><option value="1">좋았어요만</option></select>
       </div>
       <div style="overflow-x:auto"><table id="genFbTable" style="margin-top:8px"></table></div>
@@ -289,7 +289,7 @@ async function loadUsage(force) {
   loadGenFeedback();
   loadGenFeedbackLog();
 }
-const GEN_KIND = { diary_image: "일기", autobiography: "자서전" };
+const GEN_KIND = { diary_text: "일기 내용", diary_art: "그림", diary_image: "기존 통합 평가", autobiography: "자서전" };
 async function loadGenFeedback() {
   try {
     const s = await api("stats.generation_feedback");
