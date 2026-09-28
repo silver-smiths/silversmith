@@ -52,7 +52,7 @@ details summary{cursor:pointer;color:var(--ink);font-weight:700}
 </section>
 
 <section id="app" class="hidden">
-<nav class="tabs" id="tabs" aria-label="운영 메뉴"><div class="nav-brand">미록담<span>운영 콘솔</span></div><div class="nav-group">현황</div><button type="button" class="tab on" data-t="today">종합 현황</button><button type="button" class="tab" data-t="usage">사용 통계</button><div class="nav-group">운영</div><button type="button" class="tab" data-t="users">회원</button><button type="button" class="tab" data-t="inq">문의<span class="n hidden" id="inqBadge"></span></button><button type="button" class="tab" data-t="safety">콘텐츠·안전</button><button type="button" class="tab" data-t="story">사연 영상</button><div class="nav-group">서비스 관리</div><button type="button" class="tab" data-t="diaryprompts">일기 생성</button><button type="button" class="tab" data-t="money">수익·비용</button><button type="button" class="tab" data-t="ads">광고</button><button type="button" class="tab" data-t="notice">공지·푸시</button><div class="nav-group">시스템</div><button type="button" class="tab" data-t="ops">운영 설정</button><button type="button" class="tab" data-t="audit">운영 변경 이력</button><div class="nav-footer">MeRokDam<br>서비스 운영 공간</div></nav><div class="page-heading"><div><p>미록담 운영 콘솔</p><h1 id="pageTitle">종합 현황</h1></div><span class="workspace-label">운영 관리</span></div>
+<nav class="tabs" id="tabs" aria-label="운영 메뉴"><div class="nav-brand">미록담<span>운영 콘솔</span></div><div class="nav-group">현황</div><button type="button" class="tab on" data-t="today">종합 현황</button><button type="button" class="tab" data-t="usage">사용 통계</button><div class="nav-group">운영</div><button type="button" class="tab" data-t="users">회원</button><button type="button" class="tab" data-t="inq">문의<span class="n hidden" id="inqBadge"></span></button><button type="button" class="tab" data-t="safety">콘텐츠·안전</button><button type="button" class="tab" data-t="story">사연 영상</button><div class="nav-group">서비스 관리</div><button type="button" class="tab" data-t="diaryprompts">일기 생성</button><button type="button" class="tab" data-t="jev">추가 질문</button><button type="button" class="tab" data-t="money">수익·비용</button><button type="button" class="tab" data-t="ads">광고</button><button type="button" class="tab" data-t="notice">공지·푸시</button><div class="nav-group">시스템</div><button type="button" class="tab" data-t="ops">운영 설정</button><button type="button" class="tab" data-t="audit">운영 변경 이력</button><div class="nav-footer">MeRokDam<br>서비스 운영 공간</div></nav><div class="page-heading"><div><p>미록담 운영 콘솔</p><h1 id="pageTitle">종합 현황</h1></div><span class="workspace-label">운영 관리</span></div>
 
 <div id="t-diaryprompts" class="hidden">
   <div class="card"><h3>일기 생성 규칙</h3><p>초안 수정 → 같은 재료로 비교 → 초안 저장 → 운영 적용 순서로 관리합니다. 분석 담당은 재료를 정리하고, 작성 담당은 사용자 설정에 맞춰 글을 씁니다.</p><p id="diaryPromptStatus" class="muted"></p><p id="diaryPromptEditState" class="muted"></p><div id="diaryPromptEditor"></div></div>
@@ -134,7 +134,7 @@ details summary{cursor:pointer;color:var(--ink);font-weight:700}
   </div>
 
   <!-- 광고 -->
-  <div id="t-ads" class="hidden">
+  <div id="t-ads" class="hidden"><div class="card"><h3>광고 원본 로그 보관 기간</h3><p>광고 성과 조회에 쓰는 원본 로그의 보관 시간입니다. 이미 삭제된 기록은 복구되지 않습니다. 보관 기간을 늘리면 저장 공간과 조회량도 늘어납니다.</p><div class="row"><label>보관 시간 <input id="adRetentionHours" type="number" min="1" max="8760" value="48"> 시간</label><button onclick="saveAdRetention()">보관 기간 저장</button></div><p id="adRetentionState" role="status">매시간 10분에 설정 기간보다 오래된 원본 로그를 삭제합니다.</p></div>
     <div class="card"><h3>광고는 이렇게 움직여요 <span class="help" data-h="미록담 광고는 Google Ad Manager(GAM)를 씁니다(AdMob 아님). 광고 '슬롯'은 앱 코드에 정해져 있고, 각 슬롯에 어떤 GAM 광고 단위 ID를 꽂을지는 여기서 바꿉니다. 노출 수·수익은 GAM 보고서에서, 보상형 시청 수와 물방울 지급은 아래 통계에서 봅니다.">?</span></h3>
       <table>
         <tr><th style="width:170px">어디서</th><td>광고 단위 만들기·수익 보기: <a href="https://admanager.google.com/23140388603#inventory/ad_unit/list" target="_blank" rel="noopener">Google Ad Manager → 인벤토리 → 광고 단위</a> (네트워크 코드 23140388603) · 수익: GAM → 보고서 → 새 보고서(측정기준 광고 단위, 측정항목 노출수·클릭·수익)</td></tr>
@@ -148,8 +148,8 @@ details summary{cursor:pointer;color:var(--ink);font-weight:700}
       <div class="card"><h3>노출·보상 규칙 <span class="help" data-h="피드 간격: 카드 N개마다 광고 1개(최소 3). 보상형 1회 보상 💧와 1일 시청 한도는 서버 RPC가 읽습니다(SQL pending_20260909f_ads.sql 실행 후). 한도를 올리면 물방울 발행이 늘어 생성 과금 수익이 줄 수 있습니다.">?</span></h3><table id="adRules"></table></div>
     </div>
     <div class="card"><h3>보상형 통계 (30일) <span class="help" data-h="시청 = 보상형 광고를 끝까지 보고 💧를 받은 횟수(daily_usage). 사진 해금 = 광고로 사진 분석을 연 횟수. 지급 💧 = 원장 기준. 노출 수·eCPM·수익은 여기 없고 GAM 보고서에서 봅니다. 네이티브 광고 노출 수도 GAM에서만.">?</span></h3><div id="adStats" class="kv"></div><div class="muted" style="margin-top:8px">일별 시청</div><div id="chartAds" class="bar"></div></div>
-    <div class="card"><h3>광고 리포트 <span class="help" data-h="한 번의 광고 요청(묶음)을 한 줄로 접어 보여줍니다. 선형 이벤트에서 계산합니다.&#10;· 응답 = 요청→응답&#10;· 랜더 = 응답→화면에 그려짐&#10;· 조회 = 전면·보상형은 노출→닫힘, <b>네이티브는 카드가 화면에 절반 이상 보인 시간의 합</b>(피드는 화면 밖 카드도 잠시 살려두므로, 살아 있던 시간으로 재면 실제보다 몇 배 길게 잡힙니다)&#10;· 닫힘 기록이 없으면 중도 이탈(강제 종료 등) — <b>지급 칸에 '이탈'</b>로 적고, 조회는 잴 수 없으므로 비웁니다&#10;· 평균은 값이 있는 건만 나눕니다(측정 못 한 구간은 0으로 채우지 않습니다)&#10;· 합계의 ms 는 참고용 총합입니다&#10;· 수익은 onPaidEvent 실측이며 통화는 GAM 계정 통화입니다(USD 가 아니면 옆에 표기)&#10;· 지급 = 보상이 실제로 들어간 건 (광고를 닫아야 성립). 요약 행에서는 평균=지급률, 합계=건수&#10;· 요약 행의 사용자 = 그 범위에서 광고를 한 번이라도 요청한 순 사용자 수&#10;· 시각은 한국 시간(KST) 입니다&#10;· 줄을 누르면 그 묶음의 사건 전체가 JSON 으로 펼쳐집니다&#10;48시간이 지난 기록은 자동 삭제됩니다.">?</span> <select id="adTelHours" onchange="loadAdTelemetry()"><option value="24">최근 24시간</option><option value="48">최근 48시간</option></select></h3><div id="adTelSummary" class="muted">불러오는 중…</div><div style="overflow-x:auto"><table id="adReport"></table></div></div>
-    <div class="card"><h3>광고 로그 (건별) <span class="help" data-h="집계가 아니라 기록된 행 그대로입니다. 한 줄 = 광고 요청 한 건.&#10;• 사용자: user_id 앞 8자리 (이메일은 수집하지 않습니다). 전체 값은 마우스를 올리면 보입니다&#10;• 응답/렌더/조회: 요청→응답, 응답→화면에 그려짐, 노출→닫힘 (ms)&#10;• 백필: 실단위가 비어 구글 샘플(테스트 광고)로 채운 건&#10;• 행을 누르면 워터폴(어댑터별 시도)과 원본 값이 펼쳐집니다&#10;48시간이 지난 행은 자동 삭제됩니다.">?</span> <select id="adLogHours" onchange="loadAdLog()"><option value="24">최근 24시간</option><option value="48">최근 48시간</option></select> <select id="adLogFilter" onchange="loadAdLog()"><option value="">전체</option><option value="backfill">백필만</option><option value="clicked">클릭만</option><option value="nofill">노필만</option></select> <select id="adLogLimit" onchange="loadAdLog()"><option value="300">300줄</option><option value="2000">2000줄</option></select> <button onclick="downloadAdLog()">CSV 내려받기</button></h3><div id="adLogSummary" class="muted">불러오는 중…</div><div style="overflow-x:auto"><table id="adLogTable"></table></div></div>
+    <div class="card"><h3>광고 리포트 <span class="help" data-h="한 번의 광고 요청(묶음)을 한 줄로 접어 보여줍니다. 선형 이벤트에서 계산합니다.&#10;· 응답 = 요청→응답&#10;· 랜더 = 응답→화면에 그려짐&#10;· 조회 = 전면·보상형은 노출→닫힘, <b>네이티브는 카드가 화면에 절반 이상 보인 시간의 합</b>(피드는 화면 밖 카드도 잠시 살려두므로, 살아 있던 시간으로 재면 실제보다 몇 배 길게 잡힙니다)&#10;· 닫힘 기록이 없으면 중도 이탈(강제 종료 등) — <b>지급 칸에 '이탈'</b>로 적고, 조회는 잴 수 없으므로 비웁니다&#10;· 평균은 값이 있는 건만 나눕니다(측정 못 한 구간은 0으로 채우지 않습니다)&#10;· 합계의 ms 는 참고용 총합입니다&#10;· 수익은 onPaidEvent 실측이며 통화는 GAM 계정 통화입니다(USD 가 아니면 옆에 표기)&#10;· 지급 = 보상이 실제로 들어간 건 (광고를 닫아야 성립). 요약 행에서는 평균=지급률, 합계=건수&#10;· 요약 행의 사용자 = 그 범위에서 광고를 한 번이라도 요청한 순 사용자 수&#10;· 시각은 한국 시간(KST) 입니다&#10;· 줄을 누르면 그 묶음의 사건 전체가 JSON 으로 펼쳐집니다&#10;설정한 보관 기간이 지난 원본 기록은 자동 삭제됩니다.">?</span> <select id="adTelHours" onchange="loadAdTelemetry()"><option value="24">최근 24시간</option><option value="48">최근 48시간</option><option value="168">최근 7일</option></select></h3><div id="adTelSummary" class="muted">불러오는 중…</div><div style="overflow-x:auto"><table id="adReport"></table></div></div>
+    <div class="card"><h3>광고 로그 (건별) <span class="help" data-h="집계가 아니라 기록된 행 그대로입니다. 한 줄 = 광고 요청 한 건.&#10;• 사용자: user_id 앞 8자리 (이메일은 수집하지 않습니다). 전체 값은 마우스를 올리면 보입니다&#10;• 응답/렌더/조회: 요청→응답, 응답→화면에 그려짐, 노출→닫힘 (ms)&#10;• 백필: 실단위가 비어 구글 샘플(테스트 광고)로 채운 건&#10;• 행을 누르면 워터폴(어댑터별 시도)과 원본 값이 펼쳐집니다&#10;설정한 보관 기간이 지난 원본 기록은 자동 삭제됩니다.">?</span> <select id="adLogHours" onchange="loadAdLog()"><option value="24">최근 24시간</option><option value="48">최근 48시간</option><option value="168">최근 7일</option></select> <select id="adLogFilter" onchange="loadAdLog()"><option value="">전체</option><option value="backfill">백필만</option><option value="clicked">클릭만</option><option value="nofill">노필만</option></select> <select id="adLogLimit" onchange="loadAdLog()"><option value="300">300줄</option><option value="2000">2000줄</option></select> <button onclick="downloadAdLog()">CSV 내려받기</button></h3><div id="adLogSummary" class="muted">불러오는 중…</div><div style="overflow-x:auto"><table id="adLogTable"></table></div></div>
   </div>
 
   <!-- 공지·푸시 -->
@@ -231,12 +231,12 @@ async function enter() {
 }
 
 // ── 탭
-const TABS = ["today","usage","money","users","safety","ops","diaryprompts","ads","notice","inq","story","audit"];
+const TABS = ["today","usage","money","users","safety","ops","diaryprompts","jev","ads","notice","inq","story","audit"];
 $("tabs").onclick = (ev) => { const t = ev.target.closest(".tab"); if (t) openTab(t.dataset.t); };
 function openTab(name, force) {
   document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("on", x.dataset.t === name));
   TABS.forEach((k) => $("t-" + k).classList.toggle("hidden", k !== name));
-  ({ today: loadToday, usage: loadUsage, money: loadMoney, users: searchUsers, safety: loadSafety, ops: renderOps, diaryprompts: loadDiaryPrompts, ads: loadAds, notice: loadNotice, inq: loadInq, story: loadStory, audit: loadAudit }[name] || (() => {}))(force);
+  ({ today: loadToday, usage: loadUsage, money: loadMoney, users: searchUsers, safety: loadSafety, ops: renderOps, diaryprompts: loadDiaryPrompts, jev: loadJev, ads: loadAds, notice: loadNotice, inq: loadInq, story: loadStory, audit: loadAudit }[name] || (() => {}))(force);
 }
 
 // ── 오늘
@@ -372,7 +372,7 @@ const H = {
   "ad.native_feed": ["네이티브 · 피드 단위 목록", "피드 카드 사이에 쓸 광고 단위 목록(JSON 배열). <b>개수 제한이 없습니다</b> — 몇 개를 넣든 n번째 광고가 (n-1)번째 단위를 쓰고, 끝에 닿으면 처음으로 돌아갑니다. 비우면 앱 기본값 native01~native50(50개)을 씁니다. 아래 '목록 만들기'로 범위를 채울 수 있습니다.", "단위를 늘리거나 줄일 때.", "앱 콜드 스타트", "[\"…/native01\", \"…/native02\", …]"],
   "ad.reward_format": ["보상 광고 형식", "물방울 받기·사진 추가 해금에 쓰는 광고의 형식입니다. <b>interstitial</b>(전면) = 닫으면 보상, 소재가 짧습니다. <b>rewarded</b>(보상형) = 끝까지 봐야 보상, 소재가 15~30초로 깁니다. 광고 단위(reward01·reward02)는 형식과 무관하게 그대로 쓰므로 GAM에서 바꿀 것이 없습니다. 값은 따옴표를 포함해 \"interstitial\" 또는 \"rewarded\" 로 넣습니다.", "시청 이탈이 많으면 전면으로, 단가가 떨어지면 보상형으로.", "앱 콜드 스타트", "\"interstitial\""],
   "ad.telemetry": ["광고 성과 계측", "광고 한 건마다 요청→응답→렌더→노출→닫힘 구간과 클릭·보상·수익을 ad_events 에 기록합니다. <b>이메일은 담지 않습니다</b> — 식별은 user_id(UUID)만. 보관은 ad.telemetry_hours 시간(기본 48)이고 매시 10분에 자동 파기합니다. 광고 원본 응답은 Google SDK 가 앱에 주지 않아 담을 수 없고, 대신 누가 채웠는지(어댑터·워터폴)를 담습니다.", "형식·단위·간격을 바꿔가며 성과를 비교할 때 켬. 행이 빠르게 쌓이니 테스트가 끝나면 끔.", "앱 콜드 스타트", "true"],
-  "ad.telemetry_hours": ["계측 보관 시간", "ad_events 를 몇 시간 보관할지(시간 단위). 파기 크론이 이 값을 읽습니다.", "오래 비교해야 하면 늘리고, 용량이 부담되면 줄입니다.", "서버 즉시(다음 정시 파기)", "48"],
+  "ad.telemetry_hours": ["계측 보관 시간", "ad_events 를 몇 시간 보관할지(시간 단위). 파기 크론이 이 값을 읽습니다.", "오래 비교해야 하면 늘리고, 용량이 부담되면 줄입니다.", "다음 매시간 10분 삭제 작업", "48"],
   "ad.feed_interval": ["피드 광고 간격", "피드 카드 몇 개마다 광고 1개를 넣을지. 비우면 3. <b>여기 넣은 값을 앱이 그대로 씁니다</b> — 1·2 도 됩니다(0 이하만 1로 올립니다). 목록 피드와 몰입형 피드가 같은 값을 씁니다.", "광고가 잦다는 불만 → 올림, 수익 필요 → 내림.", "앱 콜드 스타트", "3"],
   "ad.rewarded_daily_max": ["보상 광고 1일 한도", "한 사람이 하루에 보상을 받을 수 있는 광고 시청 횟수입니다. <b>서버(mrd_apply_points)가 강제</b>하므로 앱을 고쳐도 뚫을 수 없습니다. 앱은 같은 값을 미리 읽어, 한도를 다 쓴 사람에게는 <b>광고를 띄우지 않고</b> 안내합니다(빌드 55 이상). 0 으로 두면 보상 광고를 아예 막습니다.", "물방울 인플레이션 조절. 수익을 늘리려면 올리고, 지급이 과하면 내립니다.", "서버 즉시 · 앱 안내는 콜드 스타트", "5"],
   "point.rewarded_ad": ["보상형 1회 보상", "광고 1회 시청에 지급하는 💧 {\"delta\": 5}.", "보상 크기 조절.", "서버 즉시", "{\"delta\":5}"],
@@ -414,7 +414,7 @@ function buildNativeFeedList(textareaId) {
   $(textareaId).value = JSON.stringify(nativeFeedRange(from, to, base.trim()));
   toast(`${to - from + 1}개를 채웠습니다 — 오른쪽 '저장'을 눌러 주세요.`);
 }
-const AD_RULES = ["ad.reward_format", "ad.feed_interval", "ad.telemetry", "ad.telemetry_hours", "ad.rewarded_daily_max", "point.rewarded_ad"];
+const AD_RULES = ["ad.reward_format", "ad.feed_interval", "ad.telemetry", "ad.rewarded_daily_max", "point.rewarded_ad"];
 const COUPANG_FIELDS = [
   ['ad.coupang_script', '물방울 광고 배너 코드', 'script'],
   ['ad.coupang_base_url', '파트너스에 등록한 매체 주소', 'text'],
@@ -440,6 +440,7 @@ async function saveCoupangSetting(i) {
 async function loadAds() {
   if (!cache.policies.length) await loadPolicies();
   renderCoupangSettings();
+  $("adRetentionHours").value=Number(pol("ad.telemetry_hours")?.value??48);
   $("adUnits").innerHTML = AD_UNITS.map(([k, def], i) => {
     const p = pol(k); const h = helpOf(k);
     const cur = p ? JSON.stringify(p.value) : "";
@@ -691,6 +692,7 @@ async function loadStory() { try { const rows = (await api("story.list")).rows; 
 async function loadAudit() { try { const rows = (await api("audit.list")).rows; $("auditTable").innerHTML = "<tr><th>일시</th><th>키</th><th>이전</th><th>이후</th><th>누가</th></tr>" + rows.map((a) => `<tr><td class="muted">${fmtT(a.changed_at)}</td><td><code>${esc(a.key)}</code></td><td class="mono">${esc(JSON.stringify(a.old_value))}</td><td class="mono">${esc(JSON.stringify(a.new_value))}</td><td class="muted">${esc(a.changed_by)}</td></tr>`).join(""); } catch (e) { toast(e.message, true); } }
 </script>
 <script src="diary-prompts.js"></script>
+<script src="jev-prompts.js?v=20260928"></script>
 <script src="admin-ui.js"></script>
 </body>
 </html>
