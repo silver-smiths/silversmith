@@ -119,7 +119,8 @@ details summary{cursor:pointer;color:var(--ink);font-weight:700}
 
   <!-- 콘텐츠·안전 -->
   <div id="t-safety" class="hidden">
-    <div class="card"><h3>신고된 일기 <span class="help" data-h="사용자가 '!'로 신고한 공개 일기. 신고 3회 누적 시 자동 재검수가 돌고, 여기서는 사람이 열람해 부적절하면 '비공개로' 조치합니다. 열람은 감사 로그에 남습니다(개인 일기 열람은 신고 처리 목적에 한정).">?</span></h3><table id="reportedTable"></table></div>
+    <div class="card"><h3>신고된 일기 <span class="help" data-h="사용자가 '!'로 신고한 공개 일기. 자동 재검수는 없습니다 — 여기서 사람이 열람해 부적절하면 '비공개로' 조치합니다. 열람은 감사 로그에 남습니다(개인 일기 열람은 신고 처리 목적에 한정).">?</span></h3><table id="reportedTable"></table></div>
+    <div class="card"><h3>신고된 댓글 <span class="help" data-h="서로 이웃 댓글 신고(2026-09-29). 신고한 사람에게는 바로 숨고, 서로 다른 사람의 신고가 comment.report_hide_count(기본 3)만큼 모이면 글쓴이 말고 모두에게 숨습니다. 여기서 열람해 부적절하면 삭제합니다. 열람·삭제는 감사 로그에 남습니다.">?</span></h3><table id="reportedComments"></table><div id="commentView" class="hidden" style="margin-top:10px"></div></div>
     <div class="card"><h3>검수 실패 (최근 50) <span class="help" data-h="공개 전 자동 검수(moderate-diary)에서 fail 판정을 받은 건. pre_publish = 공개 시도 시, report_threshold = 신고 누적 시. fail이면 이미 비공개 처리되어 있습니다. 오탐이 많으면 검수 프롬프트를 조정합니다.">?</span></h3><table id="modTable"></table></div>
     <div id="diaryView" class="card hidden"></div>
   </div>
@@ -129,6 +130,7 @@ details summary{cursor:pointer;color:var(--ink);font-weight:700}
     <div class="card"><h3>기능 스위치 <span class="help" data-h="앱·서버 기능을 켜고 끕니다. 앱은 다음 콜드 스타트(완전히 종료 후 실행)에, 서버 함수는 60초 안에 반영됩니다. 끄기는 언제든 안전하고, 켜기는 비용·정책 영향이 있으니 설명을 읽고 켜세요.">?</span></h3><table id="switches"></table></div>
     <div class="card"><h3>체험·요금·한도 <span class="help" data-h="숫자 정책. JSON 형식으로 저장됩니다(숫자는 그대로, 문자열은 따옴표). 바꾸면 즉시 새 요청부터 적용.">?</span></h3><table id="fees"></table></div>
     <div class="card"><h3>AI 모델·프롬프트 <span class="help" data-h="일기·자서전 생성에 쓰는 Gemini 모델 체인(앞에서부터 시도, 실패 시 다음)과 편집자·작가 프롬프트에 덧붙이는 규칙. 모델을 바꾸면 비용·품질이 같이 바뀌니 테스트 생성 후 적용하세요. 프롬프트 추가분은 '금지 규칙' 위주로 짧게.">?</span></h3><table id="models"></table></div>
+    <div class="card"><h3>검수·댓글 <span class="help" data-h="공개 일기·서로 이웃 댓글 검수와 댓글 제한. 값은 JSON(문자열은 따옴표). 서버 함수가 다음 요청부터 읽습니다. 근거: docs/reviews/2026-09-29-moderation-engine-eval.md">?</span></h3><table id="safetyPolicies"></table></div>
     <div class="card"><h3>광고·타로·기타 <span class="help" data-h="광고 유닛 ID(ad.*)는 AdMob 콘솔 값. 타로 덱 버전·이미지 경로. 위 표에 없는 모든 키는 여기 '전체 키'에 나옵니다.">?</span></h3><table id="misc"></table>
       <details style="margin-top:10px"><summary>전체 키 보기 / 새 키 추가</summary><table id="polTable" style="margin-top:8px"></table><div class="row" style="margin-top:8px"><input id="newKey" placeholder="예: ad.android.banner"><input id="newVal" placeholder='값(JSON) 예: "ca-app-pub-…"'><button class="pri" onclick="setPolicy(document.getElementById('newKey').value, document.getElementById('newVal').value)">추가</button></div></details></div>
   </div>
@@ -339,6 +341,13 @@ async function setPolicy(key, raw) {
 }
 // 도움말 사전 — 뜻 / 언제 / 영향 / 반영 / 기본
 const H = {
+  "moderation.engine": ["검수 엔진", "공개 일기·서로 이웃 댓글 검수 방식. \"hybrid\" = TypeSafe 기본(확실한 통과·차단은 TypeSafe, 목록 단어·자해 신호·애매한 점수는 Gemini). 값이 없거나 \"gemini\" = 예전처럼 Gemini 단독.", "문제가 생기면 이 줄을 지우거나 \"gemini\"로 저장 → 즉시 되돌아감(재배포 불필요).", "서버 즉시", "\"gemini\" (미설정)"],
+  "moderation.ts_pass_min": ["TypeSafe 통과 기준", "TypeSafe 가 '통과'를 이 확률 이상으로 확신하고 목록 단어·자해 신호가 없을 때만 TypeSafe 만으로 통과. 낮추면 Gemini 호출·비용이 줄고 놓침이 늘어납니다.", "0.95 권장(2026-09-29 시험).", "서버 즉시", "0.95"],
+  "moderation.ts_block_max": ["TypeSafe 차단 기준", "TypeSafe 가 위반 분류를 골랐고 통과 확률이 이 값 미만이면 TypeSafe 만으로 차단(분류별 고정 안내). 그 사이는 Gemini 가 정합니다.", "0.5 권장.", "서버 즉시", "0.5"],
+  "moderation.risk_words": ["검수 위험 단어", "이 목록의 단어(띄어쓰기·초성 변형 포함)가 들어 있으면 TypeSafe 점수와 상관없이 Gemini 가 판단. TypeSafe 가 모르는 한국어 은어·자해 수단을 여기서 메웁니다. JSON 배열.", "새 은어·수단이 보이면 추가. 비워 두면 기본 목록(번개탄·유서·급식충·틀딱 등 28개).", "서버 즉시", "기본 목록"],
+  "comment.min_interval_sec": ["댓글 간격(초)", "같은 사람이 댓글을 연달아 쓸 때 최소 간격. 도배 방지.", "도배가 보이면 늘림.", "서버 즉시", "10"],
+  "comment.daily_max": ["댓글 하루 한도", "한 사람이 하루(한국 시간)에 쓸 수 있는 댓글 수.", "과도한 사용이 보이면 줄임.", "서버 즉시", "100"],
+  "comment.report_hide_count": ["댓글 숨김 신고 수", "서로 다른 사람의 신고가 이만큼 모이면 그 댓글은 글쓴이 말고 모두에게 숨습니다. 신고한 사람에게는 1건만으로 바로 숨습니다.", "서로 이웃은 소수라 너무 크게 잡으면 숨지 않습니다.", "서버 즉시", "3"],
   "feature.generate_charge": ["AI 생성 과금", "켜면 가입 14일(trial.days) 지난 사용자는 AI 일기 1편에 💧25(point.diary_generate)를 냅니다. 잔액 부족이면 생성 대신 안내가 뜨고 광고·직접 쓰기로 유도됩니다.", "테스터 기간엔 끔. 유료 모델 시작 시 켬. 끄면 전원 무료 생성.", "서버 60초 · 앱 콜드 스타트", "false"],
   "feature.summary_image": ["요약 이미지", "퍼플·골드 회원의 일기가 생성되면 록이·담이 캐릭터로 그날 핵심 장면 이미지를 1장 만들어 피드·상세에 붙입니다. 장당 비용 발생(cost.per_image_krw 추정).", "유료 혜택을 보여주고 싶을 때 켬. 비용 급증 시 끔.", "서버 60초", "false"],
   "feature.story_video": ["사연 영상 참여 UI", "앱 설정에 '사연 영상 참여' 스위치와 일기의 '사연 영상에서 제외'를 노출합니다. 심사 크론 자체는 SQL로 켜고 끕니다.", "마케팅(사연 영상)을 시작할 때 켬.", "앱 콜드 스타트", "false"],
@@ -608,6 +617,7 @@ function downloadAdLog() {
 }
 const SWITCHES = ["feature.generate_charge", "feature.trial_purple", "feature.summary_image", "feature.story_video", "feature.tarot_reading", "feature.garden"];
 const FEES = ["trial.days", "trial.policy_start", "point.diary_generate", "point.diary_generate_refund", "point.story_selected", "point.admin_gift", "point.autobio", "limit.manual_per_day", "limit.manual_per_minute", "limit.moderation_per_day", "diary.length", "price.purple_month_krw", "price.gold_month_krw", "cost.per_diary_krw", "cost.per_image_krw", "cost.per_autobio_krw"];
+const SAFETY_POL = ["moderation.engine", "moderation.ts_pass_min", "moderation.ts_block_max", "moderation.risk_words", "comment.min_interval_sec", "comment.daily_max", "comment.report_hide_count"];
 const MODELS = ["model.diary.flash_chain", "model.autobio.pro_chain", "prompt.diary.editor_extra", "prompt.diary.writer_extra"];
 function valInput(k, i) { const p = pol(k); const v = p ? JSON.stringify(p.value, null, (k.startsWith("prompt.") || k.startsWith("model.") || k === "diary.length") ? 1 : 0) : ""; const id = "v_" + i; return `<textarea id="${id}" rows="${Math.min(6, (v.match(/\n/g) || []).length + 1)}">${esc(v)}</textarea>`; }
 function renderOps() {
@@ -616,7 +626,8 @@ function renderOps() {
   const rowFor = (k, i) => { const h = helpOf(k); const p = pol(k); return `<tr><td style="width:34%"><b>${esc(h.title)}</b>${helpSpan(k)}<br><code>${k}</code>${p ? `<br><span class="muted">수정 ${fmtT(p.updated_at)} ${esc(p.updated_by || "")}</span>` : "<br><span class='warn'>미설정</span>"}</td><td>${valInput(k, i)}</td><td style="width:70px"><button class="ghost" onclick="setPolicy('${k}', document.getElementById('v_${i}').value)">저장</button></td></tr>`; };
   $("fees").innerHTML = FEES.map((k, i) => rowFor(k, "f" + i)).join("");
   $("models").innerHTML = MODELS.map((k, i) => rowFor(k, "m" + i)).join("");
-  const known = new Set([...SWITCHES, ...FEES, ...MODELS, "notice.current", ...AD_UNITS.map((a) => a[0]), ...AD_RULES]);
+  $("safetyPolicies").innerHTML = SAFETY_POL.map((k, i) => rowFor(k, "s" + i)).join("");
+  const known = new Set([...SWITCHES, ...FEES, ...MODELS, ...SAFETY_POL, "notice.current", ...AD_UNITS.map((a) => a[0]), ...AD_RULES]);
   const misc = cache.policies.filter((p) => !known.has(p.key) && !["prompt.diary.active","prompt.diary.draft"].includes(p.key));
   $("misc").innerHTML = misc.map((p, i) => rowFor(p.key, "x" + i)).join("") || "<tr><td class='muted'>없음</td></tr>";
   $("polTable").innerHTML = "<tr><th>키</th><th>값</th><th>수정</th><th></th></tr>" + cache.policies.filter(p => !["prompt.diary.active","prompt.diary.draft"].includes(p.key)).map((p, i) => `<tr><td><code>${esc(p.key)}</code></td><td class="mono">${esc(JSON.stringify(p.value))}</td><td class="muted">${fmtT(p.updated_at)}<br>${esc(p.updated_by || "")}</td><td><button class="danger" onclick="delPolicy('${esc(p.key)}')">삭제</button></td></tr>`).join("");
@@ -678,10 +689,14 @@ async function loadSafety() {
   try { const rows = (await api("content.reported")).rows;
     $("reportedTable").innerHTML = "<tr><th>신고</th><th>제목</th><th>상태</th><th>마지막 신고</th><th>조치</th></tr>" + rows.map((d) => `<tr><td><b class="${d.reports >= 3 ? "bad" : "warn"}">${d.reports}</b></td><td>${esc(d.title || "(제목 없음)")} <span class="muted mono">${esc(String(d.id).slice(0, 8))}</span></td><td>${esc(d.visibility)}${d.deleted_at ? " · 삭제됨" : ""} · 검수 ${d.moderations ?? 0}회</td><td class="muted">${fmtT(d.last_report)}</td><td><button class="ghost" onclick="viewDiary('${d.id}')">열람</button> ${d.visibility === "public" ? `<button class="danger" onclick="hideDiary('${d.id}')">비공개로</button>` : ""}</td></tr>`).join("") || "<tr><td class='muted'>신고 없음</td></tr>";
     const m = (await api("content.moderation_fails")).rows;
+    const cr = await api("content.comment_reports");
+    $("reportedComments").innerHTML = cr.error === "not_migrated" ? "<tr><td class='warn'>SQL 20260929190000_comment_reports.sql 실행 필요</td></tr>" : "<tr><th>신고</th><th>쓴 사람 → 일기 주인</th><th>상태</th><th>마지막 신고</th><th>조치</th></tr>" + cr.rows.map((n) => `<tr><td><b class="${n.hidden ? "bad" : "warn"}">${n.reports}</b></td><td>${esc(n.author || "(알 수 없음)")} → ${esc(n.owner || "(알 수 없음)")} <span class="muted mono">${esc(String(n.id).slice(0, 8))}</span></td><td>${n.hidden ? "모두에게 숨김" : "신고자에게만 숨김"}</td><td class="muted">${fmtT(n.last_report)}</td><td><button class="ghost" onclick="viewComment('${n.id}')">열람</button> <button class="danger" onclick="delComment('${n.id}')">삭제</button></td></tr>`).join("") || "<tr><td class='muted'>신고 없음</td></tr>";
     $("modTable").innerHTML = "<tr><th>시각</th><th>계기</th><th>회차</th><th>일기</th><th></th></tr>" + m.map((x) => `<tr><td class="muted">${fmtT(x.reviewed_at)}</td><td>${esc(x.trigger)}</td><td>${x.round}</td><td>${esc(x.diary?.title || "(제목 없음)")} <span class="muted">${esc(x.diary?.visibility || "")}</span></td><td><button class="ghost" onclick="viewDiary('${x.diary_id}')">열람</button></td></tr>`).join("") || "<tr><td class='muted'>없음</td></tr>";
   } catch (e) { toast(e.message, true); }
 }
 async function viewDiary(id) { if (!confirm("신고·검수 처리 목적으로 일기 본문을 열람합니다. 감사 로그에 남습니다. 계속할까요?")) return; try { const d = (await api("content.diary", { diary_id: id })).diary; const el = $("diaryView"); el.classList.remove("hidden"); el.innerHTML = `<h3>${esc(d.title || "(제목 없음)")} <span class="muted">${esc(d.diary_date)} · ${esc(d.visibility)} · ${esc(d.kind || "ai")}</span></h3><div style="white-space:pre-wrap;line-height:1.8">${esc(d.body)}</div><div class="row" style="margin-top:10px">${d.visibility === "public" ? `<button class="danger" onclick="hideDiary('${d.id}')">비공개로 전환</button>` : `<button class="ghost" onclick="showDiary('${d.id}')">공개로 복원</button>`}<button class="ghost" onclick="userDetail('${d.user_id}');openTab('users')">작성자 보기</button></div>`; el.scrollIntoView({ behavior: "smooth" }); } catch (e) { toast(e.message, true); } }
+async function viewComment(id) { if (!confirm("신고 처리 목적으로 댓글 본문을 열람합니다. 감사 로그에 남습니다. 계속할까요?")) return; try { const n = (await api("content.comment", { note_id: id })).comment; const el = $("commentView"); el.classList.remove("hidden"); el.innerHTML = n ? `<div style="white-space:pre-wrap;line-height:1.8">${esc(n.body)}</div><div class="row" style="margin-top:8px"><button class="danger" onclick="delComment('${n.id}')">삭제</button><button class="ghost" onclick="userDetail('${n.author_id}');openTab('users')">쓴 사람 보기</button></div>` : "<span class='muted'>이미 지워진 댓글입니다</span>"; } catch (e) { toast(e.message, true); } }
+async function delComment(id) { if (!confirm("이 댓글을 삭제할까요? 되돌릴 수 없고, 쓴 사람에게 알림은 가지 않습니다.")) return; try { await api("content.comment_delete", { note_id: id }); toast("삭제됨"); $("commentView").classList.add("hidden"); loadSafety(); } catch (e) { toast(e.message, true); } }
 async function hideDiary(id) { if (!confirm("이 일기를 비공개로 전환할까요? 작성자에게는 알림이 가지 않습니다.")) return; try { await api("content.set_visibility", { diary_id: id, visibility: "private" }); toast("비공개 처리"); loadSafety(); $("diaryView").classList.add("hidden"); } catch (e) { toast(e.message, true); } }
 async function showDiary(id) { try { await api("content.set_visibility", { diary_id: id, visibility: "public" }); toast("공개 복원"); loadSafety(); } catch (e) { toast(e.message, true); } }
 
