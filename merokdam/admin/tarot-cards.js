@@ -108,8 +108,8 @@ async function tcSetMinor(on){
    <label>카드 이름(영어)<input id="tc_name_en" maxlength="60"></label>
    <label>키워드(한국어) ${tcHelp('카드 아래 한 줄. 가운뎃점(·)으로 구분. 일기 생성 프롬프트에도 전달됩니다. 120자 이내.')}<input id="tc_keywords_ko" maxlength="120"></label>
    <label>키워드(영어)<input id="tc_keywords_en" maxlength="120"></label>
-   <label>미록담의 시선(한국어) ${tcHelp('카드별 자체 해석 한 줄. 모델이 카드를 임의로 해석하지 않도록 이 문장을 기준으로 씁니다. 200자 이내.')}<textarea id="tc_insight_ko" rows="2" maxlength="200"></textarea></label>
-   <label>미록담의 시선(영어)<textarea id="tc_insight_en" rows="2" maxlength="200"></textarea></label>
+   <label>미록담의 시선(한국어) — 한 줄에 한 문장 ${tcHelp('카드별 자체 해석. 모델이 카드를 임의로 해석하지 않도록 이 문장을 기준으로 씁니다. 여러 줄(최대 8줄, 줄마다 200자 이내)을 넣으면 앱이 날짜별로 한 문장을 골라 써서 매번 같은 문장이 나오지 않습니다. 같은 날·같은 카드는 화면과 일기 생성이 같은 문장을 씁니다.')}<textarea id="tc_insight_ko" rows="4" maxlength="1800" placeholder="첫 문장&#10;둘째 문장&#10;…(한 줄에 한 문장, 최대 8줄)"></textarea></label>
+   <label>미록담의 시선(영어) — 한 줄에 한 문장<textarea id="tc_insight_en" rows="4" maxlength="1800" placeholder="One sentence per line (up to 8)"></textarea></label>
    <label class="tc-check"><input id="tcGuarded" type="checkbox"> 보호 카드 ${tcHelp('죽음·악마·탑처럼 어두운 도상. 켜면 모델이 카드 의미를 스스로 풀지 못하고 “미록담의 시선”만 기준으로 씁니다.')}</label>
   </div></div>
   <p id="tcStatus" role="status" class="muted"></p>
