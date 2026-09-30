@@ -418,7 +418,7 @@
 
             <div class="privacy-section">
                 <h2>3. 모바일 앱 서비스 관련 (미록담 / MeRokDam)</h2>
-                <p>회사가 운영하는 'AI 감성 일기' 앱 <strong>'미록담(MeRokDam)'</strong>은 아래와 같이 개인정보를 수집·이용합니다. 본 조항은 Apple App Store 및 Google Play의 개인정보 처리 라벨과 동일한 기준으로 작성되었습니다. <strong>미록담은 이용자를 앱·웹 전반에 걸쳐 추적(App Tracking Transparency 상의 추적)하지 않으며, 광고는 비개인화(문맥) 방식으로만 게재합니다.</strong></p>
+                <p>회사가 운영하는 'AI 감성 일기' 앱 <strong>'미록담(MeRokDam)'</strong>은 아래와 같이 개인정보를 수집·이용합니다. 본 조항은 Apple App Store 및 Google Play의 개인정보 처리 라벨과 동일한 기준으로 작성되었습니다. <strong>미록담은 광고 파트너를 통해 이용자의 관심사에 맞춘 맞춤형 광고를 게재할 수 있습니다. iOS에서는 이용자가 '추적 허용'에 동의한 경우에만 광고 식별자(IDFA)를 이용하고, 동의하지 않으면 맞춤형이 아닌(문맥) 광고가 표시됩니다. 일기 내용과 건강 정보는 광고에 사용하지 않습니다(3-5 참고).</strong></p>
 
                 <h3>3-1. 수집하는 개인정보 항목</h3>
                 <table class="privacy-table">
@@ -494,7 +494,7 @@
                         <tr>
                             <td>식별자</td>
                             <td>기기 ID / 앱 인스턴스 ID</td>
-                            <td>광고 표시(비개인화), 분석 — <strong>추적 아님</strong></td>
+                            <td>광고 표시(맞춤형 광고 포함), 분석 — iOS는 추적 허용 시에만 광고 식별자 이용</td>
                             <td>국내외 네트워크 광고 / Firebase</td>
                         </tr>
                         <tr>
@@ -506,7 +506,7 @@
                         <tr>
                             <td>사용 현황 데이터</td>
                             <td>광고 데이터</td>
-                            <td>광고 노출·클릭 (비개인화·문맥 광고)</td>
+                            <td>광고 노출·클릭 (맞춤형·문맥 광고)</td>
                             <td>국내외 네트워크 광고</td>
                         </tr>
                         <tr>
@@ -566,8 +566,8 @@
                             <td>Firebase Crashlytics 진단 정보로 오류 수집·개선</td>
                         </tr>
                         <tr>
-                            <td>광고(비개인화)</td>
-                            <td>국내외 네트워크 광고를 통한 <strong>비개인화(문맥) 광고</strong> 게재 — 3-5 참고</td>
+                            <td>광고</td>
+                            <td>국내외 광고 네트워크를 통한 광고 게재(<strong>맞춤형 광고 포함</strong>), 노출 빈도 제어, 광고 성과 측정, 부정 클릭 방지 — 3-5 참고</td>
                         </tr>
                         <tr>
                             <td>사연 영상(서비스 홍보) — <strong>2026-09-01 시행</strong></td>
@@ -579,10 +579,23 @@
                 <h3>3-4. 진단 데이터에 관한 안내</h3>
                 <p>충돌 데이터(Crash Data)와 기타 진단 데이터는 Firebase Crashlytics를 통해 수집되며, 스택 트레이스·충돌 시점 앱 상태·기기 및 OS 정보 등을 포함합니다. 실적 데이터(Performance Data)는 회사 SDK가 별도로 수집하지 않으나, 진단 목적의 데이터가 함께 처리될 수 있어 라벨상 '진단'으로 표시합니다.</p>
 
-                <h3>3-5. 광고 — 비개인화(문맥) 광고 및 추적</h3>
+                <h3>3-5. 광고 — 맞춤형 광고와 행태정보</h3>
                 <ul>
-                    <li>미록담은 <strong>국내외 네트워크 광고</strong>를 통해 광고를 게재하며, <strong>이용자 프로필 기반의 개인 맞춤(personalized) 광고가 아닌 비개인화(문맥) 광고</strong>로 운영합니다. 이용 중인 구체적인 국내외 광고 네트워크 목록은 본 방침 하단에 별도로 표기합니다.</li>
-                    <li>기기 ID·광고 식별자는 광고 표시, 노출 빈도 제어, 부정 클릭 방지 목적으로 처리되며, <strong>이용자를 앱·웹 전반에 걸쳐 추적하지 않습니다(App Tracking Transparency 상 '추적' 아님).</strong></li>
+                    <li>미록담은 <strong>국내외 광고 네트워크</strong>를 통해 광고를 게재하며, 광고 네트워크는 광고 식별자와 광고 이용 기록을 바탕으로 <strong>이용자의 관심사에 맞춘 맞춤형 광고</strong>를 보여줄 수 있습니다. 이용 중인 광고 네트워크 목록은 본 방침 3-8에 표기합니다.</li>
+                    <li><strong>iOS:</strong> 앱이 처음 광고를 보여줄 때 '추적 허용' 여부를 묻습니다. 허용한 경우에만 광고 식별자(IDFA)가 광고 네트워크에 전달되고, 허용하지 않으면 맞춤형이 아닌 광고가 표시됩니다. <strong>Android:</strong> 기기의 광고 ID(ADID)가 광고 네트워크에 전달됩니다. 두 경우 모두 아래 '맞춤형 광고 거부' 방법으로 언제든 끌 수 있습니다.</li>
+                    <li><strong>일기 본문·사진·건강 정보·기분 기록은 광고에 사용하지 않으며 광고 네트워크에 전달하지 않습니다.</strong></li>
+                    <li>행태정보 처리 내용
+                        <table class="privacy-table" style="margin-top:0.5rem;">
+                            <thead><tr><th>항목</th><th>내용</th></tr></thead>
+                            <tbody>
+                                <tr><td>수집하는 행태정보</td><td>광고 식별자(ADID, IDFA — iOS는 추적 허용 시), 앱 안 광고 노출·클릭 기록, 대략적 위치(IP 기반)</td></tr>
+                                <tr><td>수집 방법</td><td>앱에 포함된 광고 SDK(Google Mobile Ads 등)가 광고를 요청할 때 자동으로 광고 네트워크에 전송</td></tr>
+                                <tr><td>이용 목적</td><td>관심사에 맞춘 광고 제공, 노출 빈도 제어, 광고 성과 측정, 부정 클릭 방지</td></tr>
+                                <tr><td>보유·이용 기간</td><td>회사 서버는 광고 식별자를 저장하지 않습니다. 광고 노출·클릭 기록(식별자 제외)은 광고 품질 점검을 위해 48시간 보관 후 자동 삭제합니다. 광고 네트워크가 보관하는 정보는 각 사업자 방침을 따릅니다</td></tr>
+                                <tr><td>이용자 통제 방법</td><td>아래 '모바일 기기 앱 광고 식별자(ADID/IDFA) 수집 거부' 참고 — 기기 설정에서 광고 ID 삭제·맞춤 광고 해제, iOS 추적 허용 해제</td></tr>
+                            </tbody>
+                        </table>
+                    </li>
                     <li><strong>일기 내용과 건강·피트니스 데이터는 광고에 사용하지 않습니다.</strong> 다만 <strong>대략적 위치(동네 수준)는 지역 기반(문맥) 광고에 활용될 수 있습니다.</strong></li>
                 </ul>
 
@@ -603,8 +616,8 @@
                         </tr>
                         <tr>
                             <td>국내외 네트워크 광고 <a href="#ad-networks" style="color:var(--clr-accent2);text-decoration:underline;">(하단 별도 표기)</a></td>
-                            <td>기기 ID/광고 식별자, 대략적 위치, 광고 노출·클릭</td>
-                            <td>비개인화(문맥) 광고 게재</td>
+                            <td>기기 ID/광고 식별자(ADID·IDFA — iOS는 추적 허용 시), 대략적 위치, 광고 노출·클릭</td>
+                            <td>광고 게재(맞춤형 광고 포함), 노출 빈도 제어, 성과 측정, 부정 클릭 방지</td>
                         </tr>
                         <tr>
                             <td>Google Gemini API / Anthropic Claude API (설정된 생성 단계에 따라 사용)</td>
@@ -670,6 +683,13 @@
                             <td>생성·검수 요청 시마다 암호화된 네트워크로 전송</td>
                             <td>요청 처리에 필요한 기간 (각 수탁사 방침에 따름)</td>
                         </tr>
+                        <tr>
+                            <td>Google LLC (미국) — 광고</td>
+                            <td>광고 식별자(ADID·IDFA — iOS는 추적 허용 시), 대략적 위치, 광고 노출·클릭</td>
+                            <td>광고 게재(맞춤형 포함)·성과 측정·부정 클릭 방지</td>
+                            <td>광고를 요청할 때마다 앱의 광고 SDK가 암호화된 네트워크로 전송</td>
+                            <td>Google 방침에 따름</td>
+                        </tr>
                     </tbody>
                 </table>
                 <p style="font-size:0.85rem;color:var(--clr-text-muted);margin-top:0.5rem;">국외 이전을 원하지 않으시면 일기를 '나만 보기'로 두고 댓글을 쓰지 않으시면 됩니다 — 이 경우 검수 목적의 전송은 일어나지 않습니다. 다만 AI 일기 생성은 서비스의 핵심 기능이라 이전 없이 이용할 수 없습니다.</p>
@@ -719,7 +739,7 @@
                 <p style="margin-top:0.5rem;">앱 내 <strong>'설정 → 계정 탈퇴'</strong> 메뉴를 통해 언제든지 데이터 삭제를 요청할 수 있습니다.</p>
 
                 <h3>3-7. App Store 개인정보 라벨 요약</h3>
-                <p>Apple App Store에 표시되는 개인정보 처리 라벨 요약입니다. 모든 항목은 <strong>'추적(Tracking)'에 사용되지 않습니다.</strong></p>
+                <p>Apple App Store에 표시되는 개인정보 처리 라벨 요약입니다. <strong>'식별자(기기 ID)'와 '사용 현황 데이터(광고 데이터)'는 맞춤형 광고를 위한 '추적(Tracking)'에 사용될 수 있으며(iOS 추적 허용 시), 그 밖의 항목은 추적에 사용되지 않습니다.</strong></p>
                 <table class="privacy-table">
                     <thead>
                         <tr>
@@ -740,12 +760,13 @@
                         <tr><td>구매</td><td>구매 내역</td><td>예</td><td>앱 기능</td></tr>
                     </tbody>
                 </table>
-                <p style="font-size:0.85rem;color:var(--clr-text-muted);margin-top:0.5rem;">※ 민감한 정보·연락처(주소록)·금융 정보·검색 기록·정확한 위치·오디오 데이터는 수집하지 않습니다. 본 앱 조항 최종 개정: 2026-09-29 (게시 전 콘텐츠 검수에 TypeSafe 추가, AI 처리 국외 이전 안내). 이전 개정: 2026-09-20 (AI 처리 범위, 생활 유형 및 탈퇴 재시도 안내).</p>
+                <p style="font-size:0.85rem;color:var(--clr-text-muted);margin-top:0.5rem;">※ 민감한 정보·연락처(주소록)·금융 정보·검색 기록·정확한 위치·오디오 데이터는 수집하지 않습니다. 본 앱 조항 최종 개정: 2026-09-30 (맞춤형 광고·행태정보 안내, 광고 네트워크 목록). 이전 개정: 2026-09-29 (게시 전 콘텐츠 검수에 TypeSafe 추가, AI 처리 국외 이전 안내), 2026-09-20 (AI 처리 범위, 생활 유형 및 탈퇴 재시도 안내).</p>
 
                 <h3 id="ad-networks">3-8. 국내외 광고 네트워크 목록 (별도 표기)</h3>
-                <p>미록담이 비개인화(문맥) 광고 게재를 위해 이용하는 국내외 광고 네트워크는 다음과 같습니다. 네트워크 구성은 운영 상황에 따라 변경될 수 있으며, 각 사업자의 데이터 처리 방침은 해당 사업자 정책을 따릅니다.</p>
+                <p>미록담이 광고 게재를 위해 이용하는 광고 네트워크는 다음과 같습니다. 네트워크 구성은 운영 상황에 따라 변경될 수 있으며, 변경 시 이 목록을 갱신합니다. 각 사업자의 데이터 처리는 해당 사업자 방침을 따릅니다.</p>
                 <ul>
-                    <li>[광고 네트워크 목록을 여기에 표기 — 예: Google AdMob, 국내 미디에이션 SDK 등]</li>
+                    <li><strong>Google LLC (미국)</strong> — Google Ad Manager · Google Mobile Ads SDK: 피드·보상형 광고 게재, 맞춤형 광고(광고 식별자 이용). <a href="https://policies.google.com/technologies/ads?hl=ko" style="color:var(--clr-accent2);text-decoration:underline;">Google 광고 정책</a></li>
+                    <li><strong>쿠팡 주식회사 (대한민국)</strong> — 쿠팡 파트너스: 물방울 받기 화면의 제휴 상품 광고. 광고를 누르면 쿠팡 페이지로 이동하며, 이후 처리는 쿠팡 방침을 따릅니다. 미록담은 광고 식별자를 쿠팡에 전달하지 않습니다</li>
                 </ul>
             </div>
 
