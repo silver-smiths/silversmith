@@ -3,7 +3,7 @@
 // 편집은 격자 위 **팝업**에서 — 카드를 누르면 그 자리에서 열리고, 팝업 안 이전/다음(←/→)으로 옮겨 다닌다 (2026-09-30 대표: 위아래 스크롤 반복 지적).
 // 이미지는 파일 선택 외에 **드래그앤드롭**(격자의 카드 위 / 편집창 미리보기 위)과 붙여넣기(Ctrl/⌘+V)로도 올린다.
 let tcRows=[], tcEditing=null, tcImage=null, tcMinor=true, tcDirty=false, tcOpenedAt=0;
-const TC_MAX_SIDE=1200; // 앱 카드 표시 168×252(2:3, 3x=504×756) — 긴 쪽이 이보다 크면 줄여서 보낸다(1024×1536 → 800×1200)
+const TC_MAX_SIDE=900; // 앱 카드 표시 168×252(2:3, 3x=504×756) — 긴 쪽 900(600×900)으로 줄여 보낸다. 용량 절반, 3x 에서도 선명 (2026-09-30 대표)
 const TC_FIELDS=['name_ko','name_en','keywords_ko','keywords_en','insight_ko','insight_en'];
 function tcUrl(p){return sb.storage.from('tarot-cards').getPublicUrl(p).data.publicUrl;}
 function tcLabel(r){return `${r.number}. ${r.name_ko.replace(/^[0IVX]+\.\s*/,'')}`;}
@@ -59,7 +59,7 @@ async function tcUpload(file){
   const bitmap=await createImageBitmap(file);
   const long=Math.max(bitmap.width,bitmap.height),ratio=bitmap.height/bitmap.width;
   if(ratio<1.42||ratio>1.58)toast(`카드 비율이 ${ratio.toFixed(2)} 입니다. 앱은 1.5(2:3, 168×252) 비율로 가운데를 잘라 보여 줍니다.`);
-  if(long>TC_MAX_SIDE||file.size>1.4*1024*1024||file.type==='image/jpeg'&&file.size>700*1024){
+  if(long>TC_MAX_SIDE||file.size>400*1024||file.type!=='image/webp'){ // 900 이하라도 WebP 가 아니거나 400KB 를 넘으면 다시 인코딩
    const s=Math.min(1,TC_MAX_SIDE/long),c=document.createElement('canvas');c.width=Math.round(bitmap.width*s);c.height=Math.round(bitmap.height*s);
    c.getContext('2d').drawImage(bitmap,0,0,c.width,c.height);
    blob=await new Promise(res=>c.toBlob(res,'image/webp',0.86));
@@ -101,7 +101,7 @@ async function tcSetMinor(on){
   <div class="tc-dhead"><div><h3 id="tcTitle">카드</h3><p id="tcSub" class="muted"></p></div>
    <div class="tc-nav"><button id="tcPrev" class="ghost" title="이전 카드 (←)">← 이전</button><button id="tcNext" class="ghost" title="다음 카드 (→)">다음 →</button><button id="tcClose" class="ghost" title="닫기 (Esc)">✕</button></div></div>
   <div class="tc-edit"><div class="tc-imgcol"><div id="tcPreview" class="tc-preview"></div>
-   <label>이미지 파일 ${tcHelp('JPG·PNG·WebP. 파일 선택 외에 미리보기나 격자의 카드 위에 끌어다 놓거나, 편집창에서 Ctrl/⌘+V 붙여넣기로도 올릴 수 있습니다. 세로 카드 2:3(예: 1024×1536, 앱 표시 168×252). 줄이지 말고 그대로 올리면 긴 쪽 1200px 로 저장합니다. 올린 뒤 저장을 눌러야 적용됩니다. 그림은 카드별 새 버전으로 저장돼 다른 카드·이전 캐시에 영향이 없습니다.')}<input id="tcFile" type="file" accept="image/jpeg,image/png,image/webp"></label>
+   <label>이미지 파일 ${tcHelp('JPG·PNG·WebP. 파일 선택 외에 미리보기나 격자의 카드 위에 끌어다 놓거나, 편집창에서 Ctrl/⌘+V 붙여넣기로도 올릴 수 있습니다. 세로 카드 2:3(예: 1024×1536, 앱 표시 168×252). 줄이지 말고 그대로 올리면 긴 쪽 900px(600×900) WebP 로 줄여 저장합니다(약 100KB). 올린 뒤 저장을 눌러야 적용됩니다. 그림은 카드별 새 버전으로 저장돼 다른 카드·이전 캐시에 영향이 없습니다.')}<input id="tcFile" type="file" accept="image/jpeg,image/png,image/webp"></label>
    <button id="tcResetImage" class="ghost">앱 기본 그림으로</button></div>
   <div class="tc-fields">
    <label>카드 이름(한국어) ${tcHelp('카드 뒤집힘·일기 상단 “오늘의 카드 — …”에 표시. 예: “XVIII. 달 (The Moon)”. 60자 이내.')}<input id="tc_name_ko" maxlength="60"></label>
