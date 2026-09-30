@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>미록담 광고성 정보 수신 거부</title>
+<style>
+  :root{--paper:#FFF9F3;--ink:#2B2536;--body:#4A4252;--soft:#8B8193}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,'Apple SD Gothic Neo','Pretendard',sans-serif}
+  main{max-width:440px;margin:0 auto;padding:64px 20px;text-align:center}
+  h1{font-size:21px;margin:0 0 14px}
+  p{font-size:15.5px;line-height:1.75;color:var(--body);margin:0 0 10px}
+  small{font-size:13px;color:var(--soft)}
+</style>
+</head>
+<body>
+<main>
+  <h1 id="t">처리 중이에요</h1>
+  <p id="m"></p>
+  <small>문의: help@silver-smiths.com</small>
+</main>
+<script>
+  var q = new URLSearchParams(location.search), r = q.get('r'), d = q.get('d') || '';
+  var t = document.getElementById('t'), m = document.getElementById('m');
+  var dateKo = /^\d{4}-\d{2}-\d{2}$/.test(d) ? d.slice(0,4) + '년 ' + (+d.slice(5,7)) + '월 ' + (+d.slice(8,10)) + '일' : '';
+  if (r === 'ok') {
+    t.textContent = '수신 거부가 완료됐어요';
+    m.textContent = '미록담의 광고성 정보(앱 푸시·이메일) 수신 거부가 ' + (dateKo ? dateKo + '에 ' : '') + '처리됐어요. 서비스 이용에 필요한 알림은 계속 받을 수 있어요.';
+  } else if (r === 'err') {
+    t.textContent = '잠시 후 다시 시도해 주세요';
+    m.textContent = '처리하지 못했어요. 앱의 설정 › 알림 › 마케팅·이벤트 소식에서도 끌 수 있어요.';
+  } else {
+    t.textContent = '링크를 확인할 수 없어요';
+    m.textContent = '수신 거부 링크가 올바르지 않아요. 앱의 설정 › 알림 › 마케팅·이벤트 소식에서 끌 수 있어요.';
+  }
+</script>
+</body>
+</html>
