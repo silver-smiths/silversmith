@@ -496,7 +496,7 @@ async function loadAdTelemetry() {
   const money = (micros, cur) => !micros ? "-"
     : (micros / 1000000).toFixed(4) + (cur && cur !== "USD" ? " " + cur : "");
   const num = (v, d) => (v === null || v === undefined) ? "-" : (d ? v.toFixed(d) : v.toLocaleString());
-  const head = "<tr><th>시각 / 요청</th><th>사용자</th><th>자리</th><th>형식</th><th>응답</th>"
+  const head = "<tr><th>시각 / 요청</th><th>사용자</th><th title=\"맞춤형 광고 동의 (앱 설정 › 광고). Y 동의 · N 거부(일반 광고) · - 아직 선택 안 함\">동의</th><th title=\"기기 OS. 옛 기록은 푸시 토큰의 기기로 추정 (both = 두 OS 모두)\">OS</th><th>자리</th><th>형식</th><th>응답</th>"
     + "<th>랜더</th><th>조회</th><th>지급</th><th>클릭</th><th>수익(USD)</th></tr>";
   // 요약 행 — 사용자 칸에는 순 사용자 수 (대표 지시).
   // 라벨(평균/합계)은 '자리' 칸, 형식명은 '형식' 칸에 둔다. 전체 행은 두 칸을 합친다.
@@ -506,12 +506,12 @@ async function loadAdTelemetry() {
     + `<td>${fmt(g[k].granted)}</td><td>${fmt(g[k].clicks)}</td>`
     + `<td>${money(g[k].revenue_micros, g.currency)}</td></tr>`;
   const sumRow = (label, g, fmt) =>
-    `<tr><td>${g.requests.toLocaleString()}건</td><td>${users(g)}</td>`
+    `<tr><td>${g.requests.toLocaleString()}건</td><td>${users(g)}</td><td></td><td></td>`
     + (fmt === null ? `<td colspan="2"><b>${esc(label)}</b></td>`
                     : `<td><b>${esc(label)}</b></td><td>${esc(fmt)}</td>`)
     + tail(g, "sum", (v) => (v || 0).toLocaleString());
   const avgRow = (label, g, fmt) =>
-    `<tr><td>${g.requests.toLocaleString()}건</td><td>${users(g)}</td>`
+    `<tr><td>${g.requests.toLocaleString()}건</td><td>${users(g)}</td><td></td><td></td>`
     + (fmt === null ? `<td colspan="2"><b>${esc(label)}</b></td>`
                     : `<td><b>${esc(label)}</b></td><td>${esc(fmt)}</td>`)
     + tail(g, "avg", (v) => num(v, 3));
@@ -531,27 +531,28 @@ async function loadAdTelemetry() {
       + " · 노필 " + a.overall.nofill.toLocaleString() + " · 백필 " + a.overall.backfill.toLocaleString()
       + (a.truncated ? " <span class='muted'>(10만 줄에서 잘림)</span>" : "");
     let html = head;
-    html += `<tr><td colspan="10" class="muted">전체</td></tr>`;
+    html += `<tr><td colspan="12" class="muted">전체</td></tr>`;
     html += avgRow("평균", a.overall, null);
     html += sumRow("합계", a.overall, null);
-    html += `<tr><td colspan="10" class="muted">인벤토리 형식별</td></tr>`;
+    html += `<tr><td colspan="12" class="muted">인벤토리 형식별</td></tr>`;
     for (const f of a.by_format) {
       html += avgRow("평균", f, f.format);
       html += sumRow("합계", f, f.format);
     }
-    html += `<tr><td colspan="10" class="muted">요청 단위 (최근 ${adReportSessions.length.toLocaleString()}건${a.session_total > adReportSessions.length ? " / 전체 " + a.session_total.toLocaleString() : ""})</td></tr>`;
+    html += `<tr><td colspan="12" class="muted">요청 단위 (최근 ${adReportSessions.length.toLocaleString()}건${a.session_total > adReportSessions.length ? " / 전체 " + a.session_total.toLocaleString() : ""})</td></tr>`;
     html += adReportSessions.map((v, i) => {
       const unit = (v.ad_unit_id || "").split("/").pop() || "-";
       return `<tr style="cursor:pointer" onclick="adReportDetail(${i})">`
         + `<td class="mono" title="단위 ${esc(unit)} · 마지막 사건 ${esc(v.last_event || "")}">${esc(fmtKST(v.requested_at))}</td>`
         + `<td class="mono" title="${esc(v.user_id || "")}">${esc((v.user_id || "").slice(0, 8))}</td>`
+        + `<td>${yn(v.ad_personalized)}</td><td>${osLabel(v.os)}</td>`
         + `<td>${esc(v.placement)}</td>`
         + `<td>${esc(v.format)}${v.backfill ? " <b>백필</b>" : ""}</td>`
         + `<td>${ms(v.latency_ms)}</td><td>${ms(v.render_ms)}</td>`
         + `<td>${ms(v.view_ms)}</td>`
         + `<td>${v.earned ? "<b>O</b>" : (v.abandoned ? "<b>이탈</b>" : "-")}</td>`
         + `<td>${v.clicks || "-"}</td><td>${money(v.revenue_micros, v.currency)}</td></tr>`
-        + `<tr><td colspan="10" id="adrep_d_${i}"></td></tr>`;
+        + `<tr><td colspan="12" id="adrep_d_${i}"></td></tr>`;
     }).join("");
     $("adReport").innerHTML = html;
   } catch (e) { toast("광고 리포트 실패: " + e.message, true); }
@@ -579,8 +580,11 @@ function adLogDetail(i) {
   if (!el) return;
   el.innerHTML = el.innerHTML ? "" : `<pre class="mono" style="white-space:pre-wrap;margin:6px 0">${esc(JSON.stringify(r, null, 2))}</pre>`;
 }
+// 광고 리포트 공용 표기 — 동의 Y/N(미선택 -), OS aos/ios (2026-10-01 대표)
+function yn(v) { return v === true ? "Y" : v === false ? "N" : "-"; }
+function osLabel(v) { return v === "ios" ? "ios" : v === "android" ? "aos" : v === "both" ? "aos+ios" : "-"; }
 async function loadAdLog() {
-  const head = "<tr><th>시각</th><th>묶음</th><th>#</th><th>사건</th><th>경과</th><th>사용자</th>"
+  const head = "<tr><th>시각</th><th>묶음</th><th>#</th><th>사건</th><th>경과</th><th>사용자</th><th>동의</th><th>OS</th>"
     + "<th>자리</th><th>형식</th><th>단위</th><th>수익</th></tr>";
   const EV = { requested: "요청", responded: "응답", nofill: "노필", backfill: "백필 전환",
     rendered: "렌더", impression: "노출", click: "클릭", paid: "수익", dismissed: "닫힘", show_failed: "표시 실패" };
@@ -606,16 +610,17 @@ async function loadAdLog() {
         + `<td>${r.seq}</td><td><b>${esc(EV[r.event] || r.event)}</b>${r.event === "dismissed" && r.earned ? " (보상)" : ""}</td>`
         + `<td class="mono">${r.elapsed_ms}ms</td>`
         + `<td class="mono" title="${esc(r.user_id || "")}">${esc((r.user_id || "").slice(0, 8))}</td>`
+        + `<td>${yn(r.ad_personalized)}</td><td>${osLabel(r.os)}</td>`
         + `<td>${esc(r.placement)}</td><td>${esc(r.format)}</td>`
         + `<td class="mono" title="${esc(r.ad_unit_id || "")}">${esc(unit)}${r.backfill ? " <b>백필</b>" : ""}</td>`
         + `<td>${r.revenue_micros ? (r.revenue_micros / 1000000).toFixed(4) + " " + (r.currency || "") : "-"}</td></tr>`
-        + `<tr><td colspan="10" id="adlog_d_${i}"></td></tr>`;
+        + `<tr><td colspan="12" id="adlog_d_${i}"></td></tr>`;
     }).join("");
   } catch (e) { toast("광고 로그 실패: " + e.message, true); }
 }
 function downloadAdLog() {
   if (!adLogRows.length) { toast("내려받을 로그가 없습니다", true); return; }
-  const cols = ["created_at","session_id","seq","event","elapsed_ms","user_id","placement","format","ad_unit_id","backfill","response_id","adapter","ad_source","revenue_micros","currency","precision","earned"];
+  const cols = ["created_at","session_id","seq","event","elapsed_ms","user_id","ad_personalized","os","placement","format","ad_unit_id","backfill","response_id","adapter","ad_source","revenue_micros","currency","precision","earned"];
   const cell = (v) => v === null || v === undefined ? "" : `"${String(v).replace(/"/g, '""')}"`;
   const csv = "\uFEFF" + [cols.join(","), ...adLogRows.map((r) => cols.map((c) => cell(r[c])).join(","))].join("\n");
   const a = document.createElement("a");
