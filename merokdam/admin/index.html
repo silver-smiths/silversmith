@@ -719,7 +719,7 @@ async function loadStory() { try { const rows = (await api("story.list")).rows; 
 async function loadAudit() { try { const rows = (await api("audit.list")).rows; $("auditTable").innerHTML = "<tr><th>일시</th><th>키</th><th>이전</th><th>이후</th><th>누가</th></tr>" + rows.map((a) => `<tr><td class="muted">${fmtT(a.changed_at)}</td><td><code>${esc(a.key)}</code></td><td class="mono">${esc(JSON.stringify(a.old_value))}</td><td class="mono">${esc(JSON.stringify(a.new_value))}</td><td class="muted">${esc(a.changed_by)}</td></tr>`).join(""); } catch (e) { toast(e.message, true); } }
 </script>
 <script src="diary-prompts.js"></script>
-<script src="jev-prompts.js?v=20261001"></script>
+<script src="jev-prompts.js?v=20261001b"></script>
 <script src="admin-ui.js"></script>
 <script src="story-automation.js?v=20261001-2"></script>
 <script src="character-items.js?v=20260928"></script>
