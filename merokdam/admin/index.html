@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<base href="/merokdam/admin/">
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>미록담 운영 콘솔</title>
@@ -221,15 +222,17 @@ $("btnGoogle").onclick = () => sb.auth.signInWithOAuth({ provider: "google", opt
 $("btnPw").onclick = async () => { const { error } = await sb.auth.signInWithPassword({ email: $("email").value.trim(), password: $("pw").value }); if (error) $("loginMsg").textContent = error.message; };
 $("logout").onclick = async () => { await sb.auth.signOut(); location.reload(); };
 $("reload").onclick = () => { const t = document.querySelector(".tab.on"); if (t) openTab(t.dataset.t, true); };
-sb.auth.onAuthStateChange((_e, session) => { if (session) enter(); });
-sb.auth.getSession().then(({ data: { session } }) => { if (session) enter(); });
+window.addEventListener("DOMContentLoaded", () => {
+  sb.auth.onAuthStateChange((_e, session) => { if (session) setTimeout(enter, 0); });
+  sb.auth.getSession().then(({ data: { session } }) => { if (session) enter(); });
+});
 let entered = false;
 async function enter() {
   if (entered) return; entered = true;
   try {
     const me = await api("whoami");
     $("who").textContent = me.email; $("logout").style.display = ""; $("login").classList.add("hidden"); $("app").classList.remove("hidden");
-    loadPolicies(); openTab("today", true);
+    loadPolicies(); window.adminRoute.restore(true);
   } catch (e) {
     entered = false;
     $("loginMsg").textContent = e.message === "forbidden" ? "관리자 명단에 없는 계정이에요 (admin_users에 추가 필요)" : e.message;
@@ -724,6 +727,7 @@ async function loadAudit() { try { const rows = (await api("audit.list")).rows; 
 <script src="story-automation.js?v=20261001-2"></script>
 <script src="character-items.js?v=20260928"></script>
 <script src="character-portraits.js?v=20260929"></script>
+<script src="admin-routes.js?v=20261001-1"></script>
 </body>
 </html>
 <script src="tarot-cards.js?v=20260930e"></script>
