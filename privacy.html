@@ -476,7 +476,7 @@
                         <tr>
                             <td>계정 정보</td>
                             <td>생년월일</td>
-                            <td>만 16세 이상 가입 확인, 연령대에 맞춘 일기 문체</td>
+                            <td>만 16세 이상 가입 확인, 연령대에 맞춘 일기 문체. 맞춤형 광고에 동의한 경우에만 연령대(10년 단위 구간값)를 광고 세그먼트에 사용(3-5)</td>
                             <td>Supabase 계정</td>
                         </tr>
                         <tr>
@@ -631,7 +631,7 @@
                 <ul>
                     <li>미록담은 <strong>국내외 광고 네트워크</strong>를 통해 광고를 게재하며, 광고 네트워크는 광고 식별자와 광고 이용 기록을 바탕으로 <strong>이용자의 관심사에 맞춘 맞춤형 광고</strong>를 보여줄 수 있습니다. 광고 네트워크별로 수집해 가는 정보와 거부 방법은 본 방침 3-8에 표기합니다.</li>
                     <li><strong>동의:</strong> 앱은 처음 광고를 보여주기 전에 <strong>'맞춤형 광고 및 광고 정보의 국외 이전' 동의(선택)</strong>를 묻습니다(「개인정보 보호법」 제28조의8 제1항 제1호). 동의한 경우에만 맞춤형 광고를 요청하며, iOS에서는 이어서 애플의 '추적 허용' 여부를 묻고 허용한 경우에만 광고 식별자(IDFA)를 이용합니다. 동의 여부는 앱의 '설정 › 광고'에서 언제든 바꿀 수 있습니다.</li>
-                    <li><strong>동의하지 않으면:</strong> 맞춤형이 아닌 광고만 요청합니다. 이 경우에도 광고를 표시하고 부정 클릭을 막는 데 필요한 IP 주소·기기 정보(모델·OS)는 광고 네트워크에 전송되며, 이는 광고 게재에 필요한 범위로 한정됩니다.</li>
+                    <li><strong>동의하지 않으면:</strong> 맞춤형이 아닌 광고만 요청합니다(비개인화 신호 전송). 이 경우에도 광고를 표시하고 부정 클릭을 막는 데 필요한 IP 주소·기기 정보(모델·OS)는 광고 네트워크에 전송되며, Android 광고 ID 는 기기 설정에서 삭제하지 않는 한 노출 빈도 제한·부정 방지 목적으로 전송될 수 있으나 맞춤형 광고에는 사용되지 않습니다. 그 밖의 내용은 다음과 같습니다 —되며, 이는 광고 게재에 필요한 범위로 한정됩니다.</li>
                     <li><strong>일기 본문·사진·건강 정보·기분 기록은 광고에 사용하지 않으며 광고 네트워크에 전달하지 않습니다.</strong></li>
                     <li>행태정보 처리 내용
                         <table class="privacy-table" style="margin-top:0.5rem;">
@@ -788,7 +788,7 @@
                             <td>회사 서버에는 저장하지 않음. 업체의 서버 로그에 최대 90일 보관될 수 있음 (업체 방침)</td>
                         </tr>
                         <tr>
-                            <td>광고 네트워크 사업자 (3-8 표의 각 사업자 — 연락처는 각 사 개인정보처리방침)</td>
+                            <td>광고 네트워크 사업자 (3-8 표의 9개 사업자 — 각 사 개인정보 문의 창구 URL 은 3-8 표에 표기)</td>
                             <td>미국 등 각 사업자 소재국</td>
                             <td>광고 식별자(ADID·IDFA — iOS는 추적 허용 시), IP 주소, 기기 정보, 광고 노출·클릭</td>
                             <td>맞춤형 광고 게재·성과 측정·부정 클릭 방지</td>
@@ -883,15 +883,15 @@
                         <tr><th>수집 도구</th><th>종류</th><th>수집해 가는 사업자</th><th>수집해 가는 행태정보</th><th>목적</th><th>수집 거부 방법</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>Google Mobile Ads SDK</td><td>SDK(모바일 앱)</td><td>Google LLC</td><td>광고 식별자(ADID·IDFA — iOS는 추적 허용 시), IP 주소, 기기 정보(모델·OS), 광고 노출·클릭 등 상호작용 정보</td><td>광고 게재(맞춤형 포함), 성과 측정, 부정 클릭 방지</td><td>iOS: 설정 › 개인정보 보호 및 보안 › 추적 › 미록담 끄기<br>Android: 설정 › Google › 광고 › 광고 ID 삭제 또는 맞춤 광고 해제</td></tr>
-                        <tr><td>AppLovin SDK</td><td>SDK(모바일 앱)</td><td>AppLovin</td><td>광고 식별자(ADID·IDFA — iOS는 추적 허용 시), IP 주소, 기기 정보(모델·OS), 광고 노출·클릭 등 상호작용 정보</td><td>광고 게재(맞춤형 포함), 성과 측정·분석</td><td>iOS: 설정 › 개인정보 보호 및 보안 › 추적 › 미록담 끄기<br>Android: 설정 › Google › 광고 › 광고 ID 삭제 또는 맞춤 광고 해제</td></tr>
-                        <tr><td>Audience Network SDK</td><td>SDK(모바일 앱)</td><td>Meta (Meta Audience Network)</td><td>광고 식별자(ADID·IDFA — iOS는 추적 허용 시), IP 주소, 기기 정보(모델·OS), 광고 노출·클릭 등 상호작용 정보</td><td>광고 게재(맞춤형 포함), 성과 측정</td><td>iOS: 설정 › 개인정보 보호 및 보안 › 추적 › 미록담 끄기<br>Android: 설정 › Google › 광고 › 광고 ID 삭제 또는 맞춤 광고 해제</td></tr>
-                        <tr><td>Pangle SDK</td><td>SDK(모바일 앱)</td><td>Pangle</td><td>광고 식별자(ADID·IDFA — iOS는 추적 허용 시), IP 주소, 기기 정보(모델·OS), 광고 노출·클릭 등 상호작용 정보</td><td>광고 게재(맞춤형 포함), 분석, 부정 이용 방지</td><td>iOS: 설정 › 개인정보 보호 및 보안 › 추적 › 미록담 끄기<br>Android: 설정 › Google › 광고 › 광고 ID 삭제 또는 맞춤 광고 해제</td></tr>
-                        <tr><td>Mintegral SDK</td><td>SDK(모바일 앱)</td><td>Mintegral</td><td>광고 식별자(ADID·IDFA — iOS는 추적 허용 시), IP 주소, 기기 정보(모델·OS), 광고 노출·클릭 등 상호작용 정보</td><td>광고 게재(맞춤형 포함), 성과 분석, 부정 이용 방지</td><td>iOS: 설정 › 개인정보 보호 및 보안 › 추적 › 미록담 끄기<br>Android: 설정 › Google › 광고 › 광고 ID 삭제 또는 맞춤 광고 해제</td></tr>
-                        <tr><td>Unity Ads SDK</td><td>SDK(모바일 앱)</td><td>Unity</td><td>광고 식별자(ADID·IDFA — iOS는 추적 허용 시), IP 주소, 기기 정보(모델·OS), 광고 노출·클릭 등 상호작용 정보</td><td>광고 게재(맞춤형 포함), 성과 측정·분석</td><td>iOS: 설정 › 개인정보 보호 및 보안 › 추적 › 미록담 끄기<br>Android: 설정 › Google › 광고 › 광고 ID 삭제 또는 맞춤 광고 해제</td></tr>
-                        <tr><td>DT Exchange SDK</td><td>SDK(모바일 앱)</td><td>Digital Turbine (DT)</td><td>광고 식별자(ADID·IDFA — iOS는 추적 허용 시), IP 주소, 기기 정보(모델·OS), 광고 노출·클릭 등 상호작용 정보</td><td>광고 게재(맞춤형 포함), 성과 측정</td><td>iOS: 설정 › 개인정보 보호 및 보안 › 추적 › 미록담 끄기<br>Android: 설정 › Google › 광고 › 광고 ID 삭제 또는 맞춤 광고 해제</td></tr>
-                        <tr><td>Moloco SDK</td><td>SDK(모바일 앱)</td><td>Moloco</td><td>광고 식별자(ADID·IDFA — iOS는 추적 허용 시), IP 주소, 기기 정보(모델·OS), 광고 노출·클릭 등 상호작용 정보</td><td>광고 게재(맞춤형 포함), 성과 측정</td><td>iOS: 설정 › 개인정보 보호 및 보안 › 추적 › 미록담 끄기<br>Android: 설정 › Google › 광고 › 광고 ID 삭제 또는 맞춤 광고 해제</td></tr>
-                        <tr><td>InMobi SDK</td><td>SDK(모바일 앱)</td><td>InMobi</td><td>광고 식별자(ADID·IDFA — iOS는 추적 허용 시), IP 주소, 기기 정보(모델·OS), 광고 노출·클릭 등 상호작용 정보</td><td>광고 게재(맞춤형 포함), 성과 측정</td><td>iOS: 설정 › 개인정보 보호 및 보안 › 추적 › 미록담 끄기<br>Android: 설정 › Google › 광고 › 광고 ID 삭제 또는 맞춤 광고 해제</td></tr>
+                        <tr><td>Google Mobile Ads SDK</td><td>SDK(모바일 앱)</td><td>Google LLC<br><small>개인정보 문의: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a></small></td><td>광고 식별자(ADID·IDFA — iOS는 추적 허용 시), IP 주소, 기기 정보(모델·OS), 광고 노출·클릭 등 상호작용 정보</td><td>광고 게재(맞춤형 포함), 성과 측정, 부정 클릭 방지</td><td>iOS: 설정 › 개인정보 보호 및 보안 › 추적 › 미록담 끄기<br>Android: 설정 › Google › 광고 › 광고 ID 삭제 또는 맞춤 광고 해제</td></tr>
+                        <tr><td>AppLovin SDK</td><td>SDK(모바일 앱)</td><td>AppLovin<br><small>개인정보 문의: <a href="https://www.applovin.com/privacy/" target="_blank" rel="noopener">www.applovin.com/privacy/</a></small></td><td>광고 식별자(ADID·IDFA — iOS는 추적 허용 시), IP 주소, 기기 정보(모델·OS), 광고 노출·클릭 등 상호작용 정보</td><td>광고 게재(맞춤형 포함), 성과 측정·분석</td><td>iOS: 설정 › 개인정보 보호 및 보안 › 추적 › 미록담 끄기<br>Android: 설정 › Google › 광고 › 광고 ID 삭제 또는 맞춤 광고 해제</td></tr>
+                        <tr><td>Audience Network SDK</td><td>SDK(모바일 앱)</td><td>Meta (Meta Audience Network)<br><small>개인정보 문의: <a href="https://www.facebook.com/privacy/policy/" target="_blank" rel="noopener">www.facebook.com/privacy/policy/</a></small></td><td>광고 식별자(ADID·IDFA — iOS는 추적 허용 시), IP 주소, 기기 정보(모델·OS), 광고 노출·클릭 등 상호작용 정보</td><td>광고 게재(맞춤형 포함), 성과 측정</td><td>iOS: 설정 › 개인정보 보호 및 보안 › 추적 › 미록담 끄기<br>Android: 설정 › Google › 광고 › 광고 ID 삭제 또는 맞춤 광고 해제</td></tr>
+                        <tr><td>Pangle SDK</td><td>SDK(모바일 앱)</td><td>Pangle<br><small>개인정보 문의: <a href="https://www.pangleglobal.com/privacy" target="_blank" rel="noopener">www.pangleglobal.com/privacy</a></small></td><td>광고 식별자(ADID·IDFA — iOS는 추적 허용 시), IP 주소, 기기 정보(모델·OS), 광고 노출·클릭 등 상호작용 정보</td><td>광고 게재(맞춤형 포함), 분석, 부정 이용 방지</td><td>iOS: 설정 › 개인정보 보호 및 보안 › 추적 › 미록담 끄기<br>Android: 설정 › Google › 광고 › 광고 ID 삭제 또는 맞춤 광고 해제</td></tr>
+                        <tr><td>Mintegral SDK</td><td>SDK(모바일 앱)</td><td>Mintegral<br><small>개인정보 문의: <a href="https://www.mintegral.com/en/privacy/" target="_blank" rel="noopener">www.mintegral.com/en/privacy/</a></small></td><td>광고 식별자(ADID·IDFA — iOS는 추적 허용 시), IP 주소, 기기 정보(모델·OS), 광고 노출·클릭 등 상호작용 정보</td><td>광고 게재(맞춤형 포함), 성과 분석, 부정 이용 방지</td><td>iOS: 설정 › 개인정보 보호 및 보안 › 추적 › 미록담 끄기<br>Android: 설정 › Google › 광고 › 광고 ID 삭제 또는 맞춤 광고 해제</td></tr>
+                        <tr><td>Unity Ads SDK</td><td>SDK(모바일 앱)</td><td>Unity<br><small>개인정보 문의: <a href="https://unity.com/legal/privacy-policy" target="_blank" rel="noopener">unity.com/legal/privacy-policy</a></small></td><td>광고 식별자(ADID·IDFA — iOS는 추적 허용 시), IP 주소, 기기 정보(모델·OS), 광고 노출·클릭 등 상호작용 정보</td><td>광고 게재(맞춤형 포함), 성과 측정·분석</td><td>iOS: 설정 › 개인정보 보호 및 보안 › 추적 › 미록담 끄기<br>Android: 설정 › Google › 광고 › 광고 ID 삭제 또는 맞춤 광고 해제</td></tr>
+                        <tr><td>DT Exchange SDK</td><td>SDK(모바일 앱)</td><td>Digital Turbine (DT)<br><small>개인정보 문의: <a href="https://www.digitalturbine.com/privacy-policy/" target="_blank" rel="noopener">www.digitalturbine.com/privacy-policy/</a></small></td><td>광고 식별자(ADID·IDFA — iOS는 추적 허용 시), IP 주소, 기기 정보(모델·OS), 광고 노출·클릭 등 상호작용 정보</td><td>광고 게재(맞춤형 포함), 성과 측정</td><td>iOS: 설정 › 개인정보 보호 및 보안 › 추적 › 미록담 끄기<br>Android: 설정 › Google › 광고 › 광고 ID 삭제 또는 맞춤 광고 해제</td></tr>
+                        <tr><td>Moloco SDK</td><td>SDK(모바일 앱)</td><td>Moloco<br><small>개인정보 문의: <a href="https://www.moloco.com/privacy-policy" target="_blank" rel="noopener">www.moloco.com/privacy-policy</a></small></td><td>광고 식별자(ADID·IDFA — iOS는 추적 허용 시), IP 주소, 기기 정보(모델·OS), 광고 노출·클릭 등 상호작용 정보</td><td>광고 게재(맞춤형 포함), 성과 측정</td><td>iOS: 설정 › 개인정보 보호 및 보안 › 추적 › 미록담 끄기<br>Android: 설정 › Google › 광고 › 광고 ID 삭제 또는 맞춤 광고 해제</td></tr>
+                        <tr><td>InMobi SDK</td><td>SDK(모바일 앱)</td><td>InMobi<br><small>개인정보 문의: <a href="https://www.inmobi.com/privacy-policy/" target="_blank" rel="noopener">www.inmobi.com/privacy-policy/</a></small></td><td>광고 식별자(ADID·IDFA — iOS는 추적 허용 시), IP 주소, 기기 정보(모델·OS), 광고 노출·클릭 등 상호작용 정보</td><td>광고 게재(맞춤형 포함), 성과 측정</td><td>iOS: 설정 › 개인정보 보호 및 보안 › 추적 › 미록담 끄기<br>Android: 설정 › Google › 광고 › 광고 ID 삭제 또는 맞춤 광고 해제</td></tr>
                         <tr><td>쿠팡 파트너스</td><td>웹 스크립트(물방울 받기 화면)</td><td>쿠팡 주식회사</td><td>광고 노출·클릭, 쿠팡 페이지 방문 기록(쿠키) — 미록담은 광고 식별자를 전달하지 않음</td><td>제휴 상품 광고 게재, 구매 연결 확인</td><td>광고를 누르지 않으면 쿠팡 페이지로 이동하지 않음 · 브라우저 쿠키 삭제</td></tr>
                     </tbody>
                 </table>
