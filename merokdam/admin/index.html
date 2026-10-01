@@ -45,7 +45,7 @@ details summary{cursor:pointer;color:var(--ink);font-weight:700}
 <section id="login" class="card">
   <h3>로그인</h3>
   <p class="muted">앱에 가입한 대표 계정으로 로그인해요. 관리자 명단(admin_users)에 없는 계정은 들어올 수 없어요.</p>
-  <button class="pri" id="btnGoogle" style="width:100%;margin-bottom:10px">Google로 로그인</button>
+  <button class="pri" id="btnGoogle" disabled style="width:100%;margin-bottom:10px">Google로 로그인</button>
   <details><summary class="muted">이메일·비밀번호로 로그인</summary>
     <div style="margin-top:8px"><input id="email" type="email" placeholder="이메일" autocomplete="username"><div style="height:8px"></div><input id="pw" type="password" placeholder="비밀번호" autocomplete="current-password"><div style="height:8px"></div><button class="ghost" id="btnPw" style="width:100%">로그인</button></div>
   </details>
@@ -727,7 +727,7 @@ async function loadAudit() { try { const rows = (await api("audit.list")).rows; 
 <script src="story-automation.js?v=20261001-2"></script>
 <script src="character-items.js?v=20260928"></script>
 <script src="character-portraits.js?v=20260929"></script>
-<script src="admin-routes.js?v=20261001-1"></script>
+<script src="admin-routes.js?v=20261001-2"></script>
 </body>
 </html>
 <script src="tarot-cards.js?v=20260930e"></script>

@@ -72,6 +72,7 @@
     const target=new URL(stored,location.origin);
     if(target.origin===location.origin && Object.values(routes).some(slug=>target.pathname===base+slug || target.pathname===base+slug+'/'))history.replaceState(null,'',target.pathname+target.search+location.hash);
   }
+  $('btnGoogle').disabled=false;
   $('btnGoogle').onclick=()=>{
     sessionStorage.setItem(returnKey,location.pathname+location.search);
     sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+base}}).then(({error})=>{if(error)$('loginMsg').textContent=error.message;});
