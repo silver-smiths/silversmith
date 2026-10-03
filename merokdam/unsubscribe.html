@@ -24,7 +24,23 @@
   var q = new URLSearchParams(location.search), r = q.get('r'), d = q.get('d') || '';
   var t = document.getElementById('t'), m = document.getElementById('m');
   var dateKo = /^\d{4}-\d{2}-\d{2}$/.test(d) ? d.slice(0,4) + '년 ' + (+d.slice(5,7)) + '월 ' + (+d.slice(8,10)) + '일' : '';
-  if (r === 'ok') {
+  // 영어: 서버가 l=en 을 붙였거나(앱 언어 영어), 사용자를 모르는 오류 화면에서 브라우저가 한국어가 아닐 때 (2026-10-03)
+  var l = q.get('l'), en = l === 'en' || (!l && r !== 'ok' && !/^ko/i.test(navigator.language || ''));
+  var dateEn = /^\d{4}-\d{2}-\d{2}$/.test(d) ? new Date(d + 'T00:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }) : '';
+  if (en) {
+    document.documentElement.lang = 'en'; document.title = 'Unsubscribe from MeRokDam promotional messages';
+    document.querySelector('small').textContent = 'Questions: help@silver-smiths.com';
+    if (r === 'ok') {
+      t.textContent = "You're unsubscribed";
+      m.textContent = 'You will no longer get MeRokDam promotional messages (push & email)' + (dateEn ? ' as of ' + dateEn : '') + ". You'll still get notifications you need to use the app.";
+    } else if (r === 'err') {
+      t.textContent = 'Please try again in a moment';
+      m.textContent = "We couldn't process this. You can also turn it off in the app: Settings › Notifications › Marketing & events.";
+    } else {
+      t.textContent = "We couldn't verify this link";
+      m.textContent = "This unsubscribe link isn't valid. You can turn it off in the app: Settings › Notifications › Marketing & events.";
+    }
+  } else if (r === 'ok') {
     t.textContent = '수신 거부가 완료됐어요';
     m.textContent = '미록담의 광고성 정보(앱 푸시·이메일) 수신 거부가 ' + (dateKo ? dateKo + '에 ' : '') + '처리됐어요. 서비스 이용에 필요한 알림은 계속 받을 수 있어요.';
   } else if (r === 'err') {

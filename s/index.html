@@ -1,7 +1,15 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="robots" content="noindex"><title>함께 나눈 하루 · 미록담</title><style>
 body{margin:0;background:#fff8ed;color:#25364d;font-family:system-ui,sans-serif;display:grid;min-height:100dvh;place-items:center}main{max-width:390px;padding:32px}small{color:#806b4d}h1{font-size:30px;line-height:1.4}p{line-height:1.8;color:#58616c}a{display:block;padding:16px;margin:12px 0;border-radius:16px;background:#263b60;color:white;text-align:center;text-decoration:none}a.secondary{background:#e9decc;color:#25364d}[hidden]{display:none!important}
-</style></head><body><main><small>미록담 · 하루의 조각을 모아</small><h1>당신에게 건넨<br>하루가 있어요.</h1><p id="message">미록담에서 공유받은 일기를 읽어보세요. 앱을 설치한 뒤 이 링크를 다시 누르면 일기로 이어집니다.</p><section id="actions" hidden><a id="open">앱에서 일기 열기</a><a id="ios" class="secondary" href="https://apps.apple.com/app/id6760283013">App Store에서 설치</a><a id="android" class="secondary" href="https://play.google.com/store/apps/details?id=com.silversmiths.merokdam">Google Play에서 설치</a></section><p><small>일기가 비공개로 바뀌거나 삭제되면 열 수 없습니다.</small></p></main><script>
+</style></head><body><main><small id="tag">미록담 · 하루의 조각을 모아</small><h1 id="head">당신에게 건넨<br>하루가 있어요.</h1><p id="message">미록담에서 공유받은 일기를 읽어보세요. 앱을 설치한 뒤 이 링크를 다시 누르면 일기로 이어집니다.</p><section id="actions" hidden><a id="open">앱에서 일기 열기</a><a id="ios" class="secondary" href="https://apps.apple.com/app/id6760283013">App Store에서 설치</a><a id="android" class="secondary" href="https://play.google.com/store/apps/details?id=com.silversmiths.merokdam">Google Play에서 설치</a></section><p><small id="foot">일기가 비공개로 바뀌거나 삭제되면 열 수 없습니다.</small></p></main><script>
+// 기기 언어가 한국어가 아니면 영어로 (2026-10-03, en-glossary)
+const en=!/^ko/i.test(navigator.language||'');
+if(en){document.documentElement.lang='en';document.title='A day shared with you · MeRokDam';
+ const set=(id,t)=>{document.getElementById(id).textContent=t;};
+ set('tag','MeRokDam · pieces of your days');document.getElementById('head').innerHTML='Someone shared<br>a day with you.';
+ set('message','Read the diary entry shared with you on MeRokDam. Install the app, then tap this link again to open it.');
+ set('open','Open in the app');set('ios','Get it on the App Store');set('android','Get it on Google Play');
+ set('foot',"If the entry is made private or deleted, it can't be opened.");}
 const token=new URL(location.href).searchParams.get('d')||'';
 let id='';
 if(/^[A-Za-z0-9_-]{22}$/.test(token)){
@@ -13,7 +21,7 @@ if(/^[A-Za-z0-9_-]{22}$/.test(token)){
   }
  }catch(_){}
 }
-if(!/^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i.test(id||'')){document.getElementById('message').textContent='올바른 공유 링크가 아니에요. 보내주신 분에게 링크를 다시 받아 주세요.';}
+if(!/^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i.test(id||'')){document.getElementById('message').textContent=en?"This share link isn't valid. Ask the sender for the link again.":'올바른 공유 링크가 아니에요. 보내주신 분에게 링크를 다시 받아 주세요.';}
 else{
  document.getElementById('actions').hidden=false;
  document.getElementById('open').href='merokdam:///shared-diary/'+id;

@@ -5,15 +5,15 @@ function ciDate(s){return s?new Date(s+':00+09:00').toISOString():null;}
 function ciUrl(p){return sb.storage.from('character-items').getPublicUrl(p).data.publicUrl;}
 function ciEdit(id){
  ciEditing=ciRows.find(r=>r.id===id)||null;ciImage=ciEditing?{image_path:ciEditing.image_path,image_version:ciEditing.image_version}:null;
- const r=ciEditing||{id:'',label:'',prompt:'',sort_order:ciRows.length,visible:false};
- $('ciId').value=r.id;$('ciId').disabled=!!ciEditing;$('ciLabel').value=r.label;$('ciPrompt').value=r.prompt;$('ciOrder').value=r.sort_order;$('ciVisible').checked=r.visible;
+ const r=ciEditing||{id:'',label:'',label_en:'',prompt:'',sort_order:ciRows.length,visible:false};
+ $('ciId').value=r.id;$('ciId').disabled=!!ciEditing;$('ciLabel').value=r.label;$('ciLabelEn').value=r.label_en||'';$('ciPrompt').value=r.prompt;$('ciOrder').value=r.sort_order;$('ciVisible').checked=r.visible;
  $('ciStart').value=ciKstInput(r.starts_at);$('ciEnd').value=ciKstInput(r.ends_at);$('ciFile').value='';$('ciStatus').textContent=ciEditing?'수정 후 저장하면 적용됩니다.':'이미지 등록 후 저장해 주세요.';
  ciPreview(ciImage?ciUrl(ciImage.image_path):'');$('ciEditor').scrollIntoView({block:'nearest'});
 }
 function ciPreview(url){for(const id of ['ciLight','ciDark']){$(id).replaceChildren();if(url){const im=new Image();im.src=url;im.width=64;im.height=64;im.style.objectFit='contain';im.alt=$('ciLabel').value||'아이템 미리보기';$(id).append(im);}const t=document.createElement('span');t.textContent=$('ciLabel').value||'아이템 이름';$(id).append(t);}}
 async function ciLoad(){
  try{const r=await api('character_items.list');ciRows=r.rows||[];
- $('ciList').innerHTML=ciRows.map(r=>`<button class="ghost ci-card" data-ci="${esc(r.id)}"><img src="${esc(ciUrl(r.image_path))}" width="64" height="64" alt=""><b>${esc(r.label)}</b><small>${r.visible?'공개':'숨김'} · 순서 ${Number(r.sort_order)}${r.starts_at||r.ends_at?' · 기간 설정':''}</small></button>`).join('')||'<p>등록된 아이템이 없습니다.</p>';
+ $('ciList').innerHTML=ciRows.map(r=>`<button class="ghost ci-card" data-ci="${esc(r.id)}"><img src="${esc(ciUrl(r.image_path))}" width="64" height="64" alt=""><b>${esc(r.label)}</b>${r.label_en?`<small>${esc(r.label_en)}</small>`:''}<small>${r.visible?'공개':'숨김'} · 순서 ${Number(r.sort_order)}${r.starts_at||r.ends_at?' · 기간 설정':''}</small></button>`).join('')||'<p>등록된 아이템이 없습니다.</p>';
  $('ciList').querySelectorAll('[data-ci]').forEach(el=>el.onclick=()=>ciEdit(el.dataset.ci));
  }catch(e){$('ciStatus').textContent=e.message;toast(e.message,true);}
 }
@@ -36,7 +36,7 @@ async function ciUpload(){
 async function ciSave(){
  if(!ciImage)return toast('이미지를 먼저 등록해 주세요.',true);
  $('ciSave').disabled=true;
- try{const item={id:$('ciId').value.trim(),label:$('ciLabel').value.trim(),prompt:$('ciPrompt').value.trim(),sort_order:Number($('ciOrder').value),visible:$('ciVisible').checked,starts_at:ciDate($('ciStart').value),ends_at:ciDate($('ciEnd').value),...ciImage};
+ try{const item={id:$('ciId').value.trim(),label:$('ciLabel').value.trim(),label_en:$('ciLabelEn').value.trim()||null,prompt:$('ciPrompt').value.trim(),sort_order:Number($('ciOrder').value),visible:$('ciVisible').checked,starts_at:ciDate($('ciStart').value),ends_at:ciDate($('ciEnd').value),...ciImage};
  const r=await api('character_items.save',{item,expected_revision:ciEditing?.revision||null});await ciLoad();ciEdit(r.item.id);$('ciStatus').textContent='저장 완료. 새 앱에서 캐릭터 화면을 다시 열면 반영됩니다. 목록 확인 간격은 5분입니다.';toast('아이템 저장 완료');
  }catch(e){$('ciStatus').textContent=e.message;toast(e.message,true);}finally{$('ciSave').disabled=false;}
 }
@@ -47,6 +47,7 @@ async function ciSave(){
  <div id="ciEditor" class="card"><h3>아이템 등록·수정</h3><div class="ci-fields">
  <label>식별자(최초 등록 후 고정)<input id="ciId" maxlength="48" placeholder="winter_mittens"></label>
  <label>표시 이름(12자 이내)<input id="ciLabel" maxlength="12" placeholder="장갑"></label>
+ <label>영어 이름(24자 이내, 선택)<input id="ciLabelEn" maxlength="24" placeholder="Mittens"><small class="muted">앱 언어가 영어인 사용자에게 보입니다. 비우면 한국어 이름이 보입니다.</small></label>
  <label>노출 순서(작은 숫자가 먼저)<input id="ciOrder" type="number" min="0" max="10000" value="0"></label>
  <label>이미지(투명 PNG)<input id="ciFile" type="file" accept="image/png"></label>
  <label>시작 시각(한국 시간, 비워두면 즉시)<input id="ciStart" type="datetime-local"></label>
