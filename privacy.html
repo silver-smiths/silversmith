@@ -174,6 +174,38 @@
             font-weight: 600;
             color: var(--clr-text);
         }
+
+        /* 언어 전환 (한국어 | English) */
+        .policy-lang-switch {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .policy-lang-switch[hidden] {
+            display: none;
+        }
+
+        .policy-lang-switch button {
+            background: transparent;
+            border: 1px solid var(--clr-border);
+            border-radius: 9999px;
+            color: var(--clr-text-muted);
+            font-size: 0.85rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .policy-lang-switch button[aria-pressed="true"] {
+            border-color: var(--clr-accent2);
+            color: var(--clr-text);
+            font-weight: 600;
+        }
+
+        .policy-lang-switch button:focus-visible {
+            outline: 2px solid var(--clr-accent2);
+            outline-offset: 2px;
+        }
     </style>
 </head>
 
@@ -232,6 +264,11 @@
 
     <main style="padding-top: 5rem; min-height: 100vh;">
         <div class="privacy-container reveal">
+            <div class="policy-lang-switch" id="policy-lang-switch" role="group" aria-label="언어 선택 / Language" hidden>
+                <button type="button" data-lang="ko" lang="ko" aria-pressed="true">한국어</button>
+                <button type="button" data-lang="en" lang="en" aria-pressed="false">English</button>
+            </div>
+            <div id="policy-ko" lang="ko">
             <h1 class="privacy-title">개인정보처리방침</h1>
 
             <div class="privacy-section">
@@ -1056,6 +1093,870 @@
                 </ul>
                 <p>이 개인정보처리방침은 법령 및 회사 방침에 따라 변경될 수 있으며, 변경 내용은 이 웹사이트에 게시하고 앱 안에서도 알려드립니다. 수집 항목이나 제공 대상 추가 등 이용자 권리에 중요한 변경은 시행 7일 전부터 공지합니다. 다만 이용자에게 알리는 내용을 보완하는 변경은 게시와 함께 적용할 수 있습니다.</p>
             </div>
+            </div>
+
+            <div id="policy-en" lang="en" hidden>
+            <h1 class="privacy-title">Privacy policy</h1>
+
+            <div class="callout" style="margin-bottom: 2rem;">
+                <strong>About this translation</strong><br>
+                This English version is provided for convenience. If it differs from the Korean version, the Korean version prevails.
+            </div>
+
+            <div class="privacy-section">
+                <p>Silversmith Co., Ltd. (실버스미스 주식회사; the "Company") establishes and discloses this privacy policy as follows, in accordance with relevant laws such as the Act on Promotion of Information and Communications Network Utilization and Information Protection (정보통신망 이용촉진 및 정보보호 등에 관한 법률) and the Personal Information Protection Act (개인정보 보호법), in order to protect users' personal information and rights and to handle related complaints promptly and smoothly.</p>
+                <p>The Company interacts with various forms of customer data in the course of operating its own services as a <strong>direct publisher (media owner)</strong>, acting as an agency that handles <strong>ad revenue optimization (Ad Monetization)</strong>, or performing <strong>marketing services for advertisers (SA/DA, SMS, etc.)</strong>.
+                </p>
+                <div class="callout" style="margin-top: 1.5rem;">
+                    <strong>Notice</strong><br>
+                    This policy may apply not only to users of the Company's own platforms, but also to customers of publishers that the Company operates or manages on a consignment basis, and to the target customers of campaigns the Company runs on behalf of advertisers.
+                </div>
+            </div>
+
+            <div class="privacy-section">
+                <h2>1. Collection and use of information for ad monetization</h2>
+                <p>As a publisher (media owner), the Company uses various domestic and global ad networks and SSP platforms to operate its own services or to help partner media companies optimize their ad revenue. In this process, de-identified data may be collected and transmitted to serve targeted ads.</p>
+
+                <h3>Main ad platforms we use</h3>
+                <table class="privacy-table">
+                    <thead>
+                        <tr>
+                            <th>Partner</th>
+                            <th>Main products</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Google</td>
+                            <td>Google AdMob, Google Ad Manager</td>
+                        </tr>
+                        <tr>
+                            <td>Meta</td>
+                            <td>Meta Audience Network</td>
+                        </tr>
+                        <tr>
+                            <td>AppLovin</td>
+                            <td>AppLovin</td>
+                        </tr>
+                        <tr>
+                            <td>Pangle</td>
+                            <td>Pangle</td>
+                        </tr>
+                        <tr>
+                            <td>Digital Turbine</td>
+                            <td>Digital Turbine</td>
+                        </tr>
+                        <tr>
+                            <td>Moloco</td>
+                            <td>Moloco, etc.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Types of information collected and shared</h3>
+                <table class="privacy-table">
+                    <thead>
+                        <tr>
+                            <th>Item collected</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Advertising identifiers</td>
+                            <td>ADID (Android), IDFA (iOS)</td>
+                        </tr>
+                        <tr>
+                            <td>Cookies</td>
+                            <td>Web browser environment</td>
+                        </tr>
+                        <tr>
+                            <td>IP address</td>
+                            <td>Collected automatically through SDKs</td>
+                        </tr>
+                        <tr>
+                            <td>Device information</td>
+                            <td>OS version, device model, etc.</td>
+                        </tr>
+                        <tr>
+                            <td>Approximate location</td>
+                            <td>Country/city level (de-identified)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="margin-top:0.5rem;">The information above does not include information that directly identifies an individual, such as a name or contact details. However, because advertising identifiers and usage records may constitute personal information when combined with other information, we protect them as required by law, and they may be provided to the partners listed above. The specific processing for each service follows the section for that service.</p>
+            </div>
+
+            <div class="privacy-section">
+                <h2>2. Collection and use of information for advertising agency services</h2>
+
+                <h3>2-1. Search and display advertising agency services</h3>
+                <p>The Company performs performance marketing (Search Ads, Display Ads, etc.) on behalf of its advertiser clients. In this process, the Company may install tracking tags (pixels, scripts, etc.) on the advertiser's website to analyze visitors' behavioral data and run retargeting campaigns.</p>
+
+                <h3>Main SA/DA platforms we use</h3>
+                <table class="privacy-table">
+                    <thead>
+                        <tr>
+                            <th>Partner</th>
+                            <th>Main products</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Google</td>
+                            <td>Google Ads, Google Analytics 4</td>
+                        </tr>
+                        <tr>
+                            <td>Meta</td>
+                            <td>Meta Ads (Facebook / Instagram)</td>
+                        </tr>
+                        <tr>
+                            <td>Naver</td>
+                            <td>Naver Search / Display Ads</td>
+                        </tr>
+                        <tr>
+                            <td>Kakao</td>
+                            <td>Kakao Moment, etc.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>How the data is used</h3>
+                <table class="privacy-table">
+                    <thead>
+                        <tr>
+                            <th>Item collected</th>
+                            <th>Purpose of use</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Ad click history</td>
+                            <td>Ad efficiency analysis and retargeting</td>
+                        </tr>
+                        <tr>
+                            <td>Website visit records</td>
+                            <td>Visitor behavior analysis</td>
+                        </tr>
+                        <tr>
+                            <td>Purchase conversion history</td>
+                            <td>Conversion rate measurement and campaign optimization</td>
+                        </tr>
+                        <tr>
+                            <td>IP address / device information</td>
+                            <td>Targeting and duplicate prevention</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>2-2. Text message (SMS/LMS/RCS) ad delivery services</h3>
+                <p>The Company provides text message advertising services (RCS, etc.) to target customers on behalf of advertisers.</p>
+
+                <h3>How data is processed</h3>
+                <table class="privacy-table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Data handled</td>
+                            <td>Identifying information, such as mobile phone numbers, of people who have consented to receive marketing</td>
+                        </tr>
+                        <tr>
+                            <td>Data source</td>
+                            <td>Limited to data entrusted to us by clients (advertisers)</td>
+                        </tr>
+                        <tr>
+                            <td>Time of destruction</td>
+                            <td>Immediately once the purpose of sending the messages has been achieved, or when the contract ends</td>
+                        </tr>
+                        <tr>
+                            <td>Security standard</td>
+                            <td>Compliance with the policies of each text messaging service and with relevant laws</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="privacy-section">
+                <h2>3. Mobile app service (MeRokDam / 미록담)</h2>
+                <p>The Company's "AI emotional diary" app <strong>MeRokDam (미록담)</strong> collects and uses personal information as described below. This section has been prepared on the same basis as the privacy labels on the Apple App Store and Google Play. <strong>MeRokDam shows personalized ads tailored to your interests through its ad partners only if you consent. If you do not consent, non-personalized ads are shown, and your use of the service is not restricted. Diary content and health information are not used for ads (see 3-5).</strong></p>
+
+                <h3>3-1. Personal information we collect</h3>
+                <table class="privacy-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Item</th>
+                            <th>What is collected / purpose</th>
+                            <th>Where it is stored and processed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Contact info</td>
+                            <td>Email address</td>
+                            <td>Identifying your Apple/social login account; responding to inquiries</td>
+                            <td>Supabase account</td>
+                        </tr>
+                        <tr>
+                            <td>Contact info</td>
+                            <td>Name (nickname, display name)</td>
+                            <td>Name displayed in the app</td>
+                            <td>Supabase account</td>
+                        </tr>
+                        <tr>
+                            <td>Health &amp; fitness</td>
+                            <td>Health (sleep, heart rate, menstrual cycle, etc.)</td>
+                            <td>Generating context for AI diaries</td>
+                            <td>Read on the device with your permission; the diary materials you select are then processed on the Supabase server and by the configured AI services</td>
+                        </tr>
+                        <tr>
+                            <td>Health &amp; fitness</td>
+                            <td>Fitness (steps, workout records)</td>
+                            <td>Generating context for AI diaries</td>
+                            <td>The selected materials read on the device are processed on the Supabase server and by the configured AI services</td>
+                        </tr>
+                        <tr>
+                            <td>Location</td>
+                            <td>Current location (once, when you write a diary) · neighborhood (dong) name (approximate location)</td>
+                            <td>Weather lookup and diary context such as "A day in Seongsu-dong." <strong>Precise coordinates are passed only temporarily for the weather lookup, and only the neighborhood (dong) name (approximate location) is stored on the Company's servers.</strong> Collected only if you allow location permission</td>
+                            <td>On the device / Open-Meteo (weather lookup; not stored on the Company's servers) / ad networks (approximate location based on IP)</td>
+                        </tr>
+                        <tr>
+                            <td>User content</td>
+                            <td>Photos or videos</td>
+                            <td>Diary attachments (optional). Sent only when you request Vision AI analysis</td>
+                            <td>On the device, plus Supabase when posted to the feed / sent temporarily to the Gemini API for Vision analysis and destroyed immediately afterward</td>
+                        </tr>
+                        <tr>
+                            <td>User content</td>
+                            <td>Diary text and public feed posts</td>
+                            <td>Writing and keeping diaries, and the social feed. AI processing and the extent to which public diaries are used in story videos are described below</td>
+                            <td>Device cache and Supabase server (including private diaries)</td>
+                        </tr>
+                        <tr>
+                            <td>Account information</td>
+                            <td>Date of birth</td>
+                            <td>Confirming at sign-up that you are 16 or older; diary writing style suited to your age group. Only if you consent to personalized ads, your age group (a 10-year bracket) is used in ad segments (3-5)</td>
+                            <td>Supabase account</td>
+                        </tr>
+                        <tr>
+                            <td>Optional information</td>
+                            <td>Gender, MBTI</td>
+                            <td>Tailoring the writing style and perspective of diaries to you (all features are available even if you do not enter these)</td>
+                            <td>Stored per Supabase account and processed by the configured AI services</td>
+                        </tr>
+                        <tr>
+                            <td>Calendar</td>
+                            <td>Event titles and times (for the selected date)</td>
+                            <td>Generating diary context if you allow calendar permission and select your calendar as a diary material</td>
+                            <td>Read on the device; only the selected materials are processed on the Supabase server and by the configured AI services</td>
+                        </tr>
+                        <tr>
+                            <td>Identifiers</td>
+                            <td>App push token</td>
+                            <td>Sending service notifications and, if you consent, marketing notifications</td>
+                            <td>Supabase / Apple (APNs), Google (FCM)</td>
+                        </tr>
+                        <tr>
+                            <td>Usage data</td>
+                            <td>Pen name search terms</td>
+                            <td>Neighbor search — used only for the search and not stored</td>
+                            <td>Supabase (only while the search is processed)</td>
+                        </tr>
+                        <tr>
+                            <td>Optional information</td>
+                            <td>Lifestyle type</td>
+                            <td>After you consent, used as background information for diary generation until you change or remove your saved selection</td>
+                            <td>Stored per Supabase account and processed by the configured AI services</td>
+                        </tr>
+                        <tr>
+                            <td>User content</td>
+                            <td>Customer support inquiries</td>
+                            <td>Responding to inquiries</td>
+                            <td>Supabase</td>
+                        </tr>
+                        <tr>
+                            <td>Identifiers</td>
+                            <td>User ID</td>
+                            <td>Account identification</td>
+                            <td>Supabase account UUID</td>
+                        </tr>
+                        <tr>
+                            <td>Identifiers</td>
+                            <td>Device ID / app instance ID</td>
+                            <td>Showing ads (including personalized ads) and analytics — on iOS, the advertising identifier is used only if you allow tracking</td>
+                            <td>Domestic and international ad networks / Firebase</td>
+                        </tr>
+                        <tr>
+                            <td>Usage data</td>
+                            <td>Product interaction</td>
+                            <td>Firebase Analytics + the Company's own events (for app features such as counting the daily limit of 5 rewarded ads)</td>
+                            <td>Firebase</td>
+                        </tr>
+                        <tr>
+                            <td>Usage data</td>
+                            <td>Usage context at the time of an ad request (bucketed values)</td>
+                            <td>Ad performance analysis — time of day, day of the week, weather, screen, subscription tier, time since sign-up, and usage patterns (writing frequency, share of entries with photos attached, rating rate, etc.) are recorded as bucketed (range) values that do not identify individuals. <strong>Diary content, mood types and health information are not included.</strong> Age group and gender (bucketed values) are added only if you consent to personalized ads — see 3-5</td>
+                            <td>Company servers (Supabase) — raw data for 48 hours; after that, only daily statistics without identifiers</td>
+                        </tr>
+                        <tr>
+                            <td>Usage data</td>
+                            <td>Advertising data</td>
+                            <td>Ad impressions and clicks (personalized and contextual ads)</td>
+                            <td>Domestic and international ad networks</td>
+                        </tr>
+                        <tr>
+                            <td>Diagnostics</td>
+                            <td>Crash, performance and other diagnostics</td>
+                            <td>Monitoring app stability (stack traces, device and OS information, etc.)</td>
+                            <td>Firebase Crashlytics</td>
+                        </tr>
+                        <tr>
+                            <td>Purchases</td>
+                            <td>Purchase (subscription) history</td>
+                            <td>Determining subscription status (Purple, Gold, etc.)</td>
+                            <td>Apple/Google payments + Supabase (status value)</td>
+                        </tr>
+                        <tr>
+                            <td>On-device processing (Android)</td>
+                            <td>App usage time</td>
+                            <td>Generating diary context (Android only; not sent to servers)</td>
+                            <td>On the device</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>3-2. Information we do not collect</h3>
+                <p>MeRokDam does <strong>not collect</strong> the following.</p>
+                <ul>
+                    <li><strong>Sensitive information other than health</strong> — ideology and beliefs, membership in trade unions or political parties, political opinions, sex life, race and ethnicity, etc. <strong>Health and fitness information is sensitive information under Article 23 of the Personal Information Protection Act, and we process it only if you give separate consent</strong> (see "Health data policy" below)</li>
+                    <li><strong>Location movement history and background location</strong> — location is read only once when you write a diary, and only the neighborhood (dong) name is stored on the server</li>
+                    <li><strong>Contacts (address book), phone numbers, addresses</strong></li>
+                    <li><strong>Financial information</strong> — payments are processed by Apple/Google, and the Company does not view payment method information such as card numbers</li>
+                    <li><strong>Web browsing history, audio (voice) data, and the content of emails and text messages</strong> — pen name search terms in the app are used only for the search and are not stored</li>
+                </ul>
+
+                <h3>3-3. Purposes of collection and use</h3>
+                <table class="privacy-table">
+                    <thead>
+                        <tr>
+                            <th>Purpose</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Providing app features</td>
+                            <td>Account identification and login, AI diary generation, social feed, pre-publication content moderation (public diaries and comments to Mutual neighbors), responding to inquiries, determining subscription status, counting the rewarded ad limit</td>
+                        </tr>
+                        <tr>
+                            <td>Service notifications</td>
+                            <td>Notifications needed to use the service (app push and email), such as reactions, comments, news from neighbors, memoir preparation and replies to inquiries. You can turn off each type of notification in Settings › Notifications</td>
+                        </tr>
+                        <tr>
+                            <td>Marketing (optional consent)</td>
+                            <td>Promotional information such as events, benefits and new features, sent by app push and email — <strong>only if you consent to receive it</strong>. See 3-9</td>
+                        </tr>
+                        <tr>
+                            <td>Product personalization</td>
+                            <td>Health and fitness information and approximate location are used to <strong>generate diary context</strong> (this raw data is not used for ads). <strong>Gender and MBTI that you choose to enter</strong>, and the age group derived from your date of birth, are used <strong>only to tailor the writing style and perspective of your diaries</strong>, and are not used for advertising, marketing or provision to third parties. All features are available even if you do not enter gender or MBTI.</td>
+                        </tr>
+                        <tr>
+                            <td>Analytics</td>
+                            <td>Understanding usage and improving the service with Firebase Analytics and the Company's own events</td>
+                        </tr>
+                        <tr>
+                            <td>App stability</td>
+                            <td>Collecting and fixing errors using Firebase Crashlytics diagnostic information</td>
+                        </tr>
+                        <tr>
+                            <td>Advertising</td>
+                            <td>Serving ads through domestic and international ad networks (<strong>including personalized ads</strong>), frequency capping, measuring ad performance, and preventing fraudulent clicks — see 3-5</td>
+                        </tr>
+                        <tr>
+                            <td>Story videos (service promotion) — <strong>effective 2026-09-01</strong></td>
+                            <td>Some of the diaries <strong>you have set to public</strong> are edited into short videos, credited with your pen name and with identifying expressions removed, and posted on the Company's official channels (YouTube, Instagram, TikTok). You are notified before posting and may decline within 24 hours, and you can turn off participation, exclude specific diaries or request deletion in Settings (Terms of Service, Article 8(3))</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 style="margin-top:1.2rem;">Automated moderation (pre-publication content checks)</h4>
+                <p>Before diaries shared with Everyone or Mutual neighbors, and comments to Mutual neighbors, are posted, AI (the TypeSafe classification API and the Google Gemini API) automatically checks them for profanity and defamation, exposure of personal information, sexual or violent expressions, self-harm methods, and illegal activity or spam. Content that fails these criteria is not posted, and the app tells you why. If you disagree with the result, you can request an explanation or a review by a person at <a href="mailto:help@silver-smiths.com" style="color:var(--clr-accent2);text-decoration:underline;">help@silver-smiths.com</a> or through Settings › Support › Contact us in the app, and the staff member in charge will check and let you know the result (Article 37-2 of the Personal Information Protection Act). Private (Only me) diaries are not checked.</p>
+                <p>Public diaries and comments are not posted if they reveal information that can identify a specific individual, such as your own or another person's real name, phone number, address, bank account or email address. If something about you is written in another user's public diary, you can request its deletion using the report feature or the email address above.</p>
+
+                <h3>3-4. About diagnostic data</h3>
+                <p>Crash data and other diagnostic data are collected through Firebase Crashlytics and include stack traces, the state of the app at the time of the crash, and device and OS information. Performance data is not separately collected by the Company's SDKs; however, because data for diagnostic purposes may be processed along with it, it is shown as "Diagnostics" on the label.</p>
+
+                <h3>3-5. Advertising — personalized ads and behavioral information</h3>
+                <ul>
+                    <li>MeRokDam serves ads through <strong>domestic and international ad networks</strong>, and the ad networks may show <strong>personalized ads tailored to your interests</strong> based on advertising identifiers and ad usage records. The information each ad network collects and how to opt out are listed in 3-8 of this policy.</li>
+                    <li><strong>Consent:</strong> Before showing ads for the first time, the app asks for your <strong>consent (optional) to "personalized ads and the overseas transfer of ad information"</strong> (Article 28-8(1)1 of the Personal Information Protection Act). Personalized ads are requested only if you consent. On iOS, the app then asks whether you allow Apple's "Allow Tracking," and the advertising identifier (IDFA) is used only if you allow it. You can change your choice at any time in Settings › Ads in the app.</li>
+                    <li><strong>If you do not consent:</strong> Only non-personalized ads are requested (a non-personalization signal is sent). Even in this case, the IP address and device information (model, OS) needed to display ads and prevent fraudulent clicks are sent to the ad networks, and the Android advertising ID may be sent for frequency capping and fraud prevention unless you delete it in your device settings, but it is not used for personalized ads. This is limited to what is necessary to serve ads.</li>
+                    <li><strong>Diary text, photos, health information and mood records are not used for ads and are not passed to ad networks.</strong></li>
+                    <li>Processing of behavioral information
+                        <table class="privacy-table" style="margin-top:0.5rem;">
+                            <thead><tr><th>Item</th><th>Details</th></tr></thead>
+                            <tbody>
+                                <tr><td>Behavioral information collected</td><td>Advertising identifiers (ADID, IDFA — on iOS, only if you allow tracking), records of ad impressions and clicks in the app, approximate location (based on IP). Ad requests also carry <strong>bucketed usage-context values</strong> that do not identify individuals (time of day, day of the week, weather, screen, subscription tier, time since sign-up), and if you consent to personalized ads, bucketed age group and gender values are added</td></tr>
+                                <tr><td>Collection method</td><td>Sent automatically to the ad networks when the ad SDKs included in the app (Google Mobile Ads, etc.) request ads</td></tr>
+                                <tr><td>Purpose of use</td><td>Providing ads tailored to your interests, frequency capping, measuring ad performance, preventing fraudulent clicks</td></tr>
+                                <tr><td>Retention and use period</td><td>The Company's servers do not store advertising identifiers. Records of ad impressions and clicks and bucketed usage-context values (excluding identifiers) are kept for 48 hours for ad quality and performance analysis and then automatically deleted, leaving only daily statistics with user identifiers removed (totals of requests, impressions and revenue by dimension). Information kept by the ad networks is subject to each company's policy</td></tr>
+                                <tr><td>How you can control it</td><td>See "Opting out of mobile advertising identifier (ADID/IDFA) collection" below — delete the advertising ID or turn off personalized ads in your device settings, and turn off tracking permission on iOS</td></tr>
+                            </tbody>
+                        </table>
+                    </li>
+                    <li><strong>Diary content and health and fitness data are not used for ads.</strong> However, <strong>approximate location (neighborhood level) may be used for location-based (contextual) ads.</strong></li>
+                </ul>
+
+                <h3>3-6. Provision to third parties and outsourcing of processing</h3>
+                <table class="privacy-table">
+                    <thead>
+                        <tr>
+                            <th>Recipient</th>
+                            <th>Information provided</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Firebase Crashlytics / Analytics (Google)</td>
+                            <td>Diagnostic information, app instance ID, usage events</td>
+                            <td>App stability and analytics</td>
+                        </tr>
+                        <tr>
+                            <td>Domestic and international ad networks <a href="#ad-networks-en" style="color:var(--clr-accent2);text-decoration:underline;">(listed separately below)</a></td>
+                            <td>Device ID/advertising identifiers (ADID, IDFA — on iOS, only if you allow tracking), approximate location, ad impressions and clicks</td>
+                            <td>Serving ads (including personalized ads), frequency capping, performance measurement, preventing fraudulent clicks</td>
+                        </tr>
+                        <tr>
+                            <td>Google Gemini API / Anthropic Claude API (used depending on the configured generation step)</td>
+                            <td>Selected diary materials, summaries of health, activity and calendar information, the thoughts and mood you enter, and diary drafts. For photo analysis, the selected images are sent. For moderation, the title and text of the diary you want to make public, or the text of the comment, are sent (Google Gemini API)</td>
+                            <td>AI diary generation; secondary check in pre-publication content moderation</td>
+                        </tr>
+                        <tr>
+                            <td>TypeSafe AI, Inc. (TypeSafe classification API)</td>
+                            <td>Title and text of diaries you want to share with Everyone or Mutual neighbors, and the text of comments you write to Mutual neighbors. Account information and pen names are not sent</td>
+                            <td>Pre-publication content moderation (classifying harmful expressions such as profanity, defamation and exposure of personal information). The processor does not use the input it receives for AI training</td>
+                        </tr>
+                        <tr>
+                            <td>Supabase</td>
+                            <td>Account information, private and public diaries, material summaries, generation records, subscription status values</td>
+                            <td>Operating account, feed and subscription services</td>
+                        </tr>
+                        <tr>
+                            <td>Apple (APNs) · Google (Firebase Cloud Messaging)</td>
+                            <td>App push tokens, notification titles and text</td>
+                            <td>Sending app push notifications (service notifications and, if you consent, marketing notifications)</td>
+                        </tr>
+                        <tr>
+                            <td>Resend, Inc.</td>
+                            <td>Email address, email subject and body</td>
+                            <td>Sending email (service email such as replies to inquiries and, if you consent, marketing email)</td>
+                        </tr>
+                        <tr>
+                            <td>OpenMeteo GmbH (Open-Meteo)</td>
+                            <td>Current location coordinates (passed temporarily when you write a diary)</td>
+                            <td>Weather lookup — not stored on the Company's servers</td>
+                        </tr>
+                        <tr>
+                            <td>Apple / Google</td>
+                            <td>Payment and subscription processing (the Company does not view payment method information)</td>
+                            <td>In-app purchases</td>
+                        </tr>
+                        <tr>
+                            <td>Google (YouTube) · Meta (Instagram) · TikTok — <em>from 2026-09-01, public diaries only (you can turn off participation in Settings)</em></td>
+                            <td>Edited versions of public diaries (pen name and identifying expressions removed) and video descriptions</td>
+                            <td>Posting story videos (service promotion)</td>
+                        </tr>
+                        <tr>
+                            <td>Google Cloud Text-to-Speech — <em>from 2026-09-01</em></td>
+                            <td>Story video script text (not stored after synthesis)</td>
+                            <td>Synthesizing narration audio (outsourced processing)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 style="margin-top:1.2rem;">Overseas transfer of personal information</h4>
+                <p>To perform the contract for providing the service, the Company outsources the processing of personal information to, and stores it with, the overseas recipients described below (Article 28-8(1)3 of the Personal Information Protection Act; disclosed in this privacy policy). Transfers to ad networks take place only if you give separate consent (subparagraph 1 of the same paragraph; see 3-5).</p>
+                <div style="overflow-x:auto">
+                <table class="privacy-table">
+                    <thead>
+                        <tr>
+                            <th>Recipient (contact)</th>
+                            <th>Country</th>
+                            <th>Items transferred</th>
+                            <th>Purpose of transfer</th>
+                            <th>Time and method of transfer</th>
+                            <th>Retention and use period</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Supabase, Inc. (privacy@supabase.com)</td>
+                            <td>Australia (Sydney data center)</td>
+                            <td>Account information (email, pen name, date of birth, etc.), private and public diaries, diary material summaries (including health and calendar summaries), generation records, subscription status values, app push tokens, inquiry content</td>
+                            <td>Storing and operating service data (accounts, diaries, feed, subscriptions)</td>
+                            <td>Transmitted over encrypted networks and stored on an ongoing basis when you sign up and use the service</td>
+                            <td>Until you delete your account (per "Data retention and deletion" in 3-6)</td>
+                        </tr>
+                        <tr>
+                            <td>Google LLC (<a href="https://policies.google.com/privacy" target="_blank" style="color:var(--clr-accent2);text-decoration:underline;">contact details in Google's privacy policy</a>)</td>
+                            <td>United States</td>
+                            <td>Inputs for AI diary generation and moderation (selected diary materials, thoughts and mood, diary drafts, images for photo analysis, text of public diaries and comments), diagnostic information, app instance ID and usage events (Firebase), story video scripts (Text-to-Speech), app push tokens and notification content (FCM)</td>
+                            <td>AI diary generation, pre-publication moderation, app stability and analytics, speech synthesis, push delivery</td>
+                            <td>Transmitted over encrypted networks each time you use the relevant feature</td>
+                            <td>For the period needed to process the request (Firebase analytics and diagnostics follow Google's retention policy)</td>
+                        </tr>
+                        <tr>
+                            <td>Anthropic, PBC (privacy@anthropic.com)</td>
+                            <td>United States</td>
+                            <td>Inputs for AI diary generation (selected diary materials, thoughts and mood, diary drafts)</td>
+                            <td>AI diary generation</td>
+                            <td>Transmitted over encrypted networks with each generation request</td>
+                            <td>For the period needed to process the request (per the processor's policy)</td>
+                        </tr>
+                        <tr>
+                            <td>TypeSafe AI, Inc. (privacy@typesafe.ai)</td>
+                            <td>United States</td>
+                            <td>Title and text of diaries you want to make public, text of comments to Mutual neighbors (excluding account information and pen names)</td>
+                            <td>Pre-publication content moderation</td>
+                            <td>Transmitted over encrypted networks each time you make a diary public or write a comment</td>
+                            <td>For the period needed to process the moderation request (not used for AI training)</td>
+                        </tr>
+                        <tr>
+                            <td>Resend, Inc. (support@resend.com)</td>
+                            <td>United States</td>
+                            <td>Email address, email subject and body</td>
+                            <td>Sending email</td>
+                            <td>Transmitted over encrypted networks each time an email is sent</td>
+                            <td>For the period needed to process delivery (per the processor's policy)</td>
+                        </tr>
+                        <tr>
+                            <td>Apple Inc. (<a href="https://www.apple.com/kr/legal/privacy/contact/" target="_blank" style="color:var(--clr-accent2);text-decoration:underline;">Apple privacy contact</a>)</td>
+                            <td>United States</td>
+                            <td>App push tokens, notification titles and text</td>
+                            <td>Sending iOS app push notifications (APNs)</td>
+                            <td>Transmitted over encrypted networks each time a notification is sent</td>
+                            <td>For the period needed to process delivery (per Apple's policy)</td>
+                        </tr>
+                        <tr>
+                            <td>OpenMeteo GmbH (info@open-meteo.com)</td>
+                            <td>Switzerland</td>
+                            <td>Current location coordinates, IP address</td>
+                            <td>Weather lookup</td>
+                            <td>Transmitted over encrypted networks when you write a diary</td>
+                            <td>Not stored on the Company's servers. May be kept in the provider's server logs for up to 90 days (provider's policy)</td>
+                        </tr>
+                        <tr>
+                            <td>Ad network companies (the 9 companies in the table in 3-8 — each company's privacy contact URL is shown in the 3-8 table)</td>
+                            <td>United States and the other countries where each company is located</td>
+                            <td>Advertising identifiers (ADID, IDFA — on iOS, only if you allow tracking), IP address, device information, ad impressions and clicks</td>
+                            <td>Serving personalized ads, measuring performance, preventing fraudulent clicks</td>
+                            <td>Sent over encrypted networks by the app's ad SDKs each time an ad is requested</td>
+                            <td>Per each company's policy</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+                <p style="font-size:0.85rem;color:var(--clr-text-muted);margin-top:0.5rem;"><strong>How to refuse, and what happens if you do:</strong> If you do not consent, or withdraw your consent, in Settings › Ads, transfers to ad networks for personalized ads stop (non-personalized ads continue to be shown). Transfers for moderation do not take place if you keep your diaries set to "Only me" and do not write comments, and the transfer for the weather lookup does not take place if you do not allow location permission. Data storage (Supabase) and AI diary generation are core features of the service, so if you refuse these transfers you cannot use the service; in that case, you can stop the processing by deleting your account.</p>
+
+                <h3>Health data policy (HealthKit / Health Connect)</h3>
+                <ul>
+                    <li>Health and fitness information is <strong>sensitive information</strong> under Article 23 of the Personal Information Protection Act. Separately from the health app permission on your device, MeRokDam reads it only if it has obtained, within MeRokDam, your <strong>separate consent, distinct from your consent to other personal information processing</strong>. Even if you do not consent, you can write diaries without health materials</li>
+                    <li>Health and fitness data is used only for AI diary generation (context) and is not used for ads</li>
+                    <li>Health data is not shared with third-party ad networks</li>
+                    <li>Health and activity information that you allow access to and select as a diary material is sent to the Company's servers and the configured AI services and processed there to generate your diary. This information may be stored in the diary's material summary and generation records</li>
+                    <li><strong>Public diaries and sensitive information:</strong> If you set a diary to "Everyone" or "Mutual neighbors," sensitive content written in it, such as your health condition, is also visible to other users. Check the content before making it public, and if you do not want it seen, keep it set to "Only me." You can change the visibility of each diary at any time</li>
+                </ul>
+
+                <h3>Data retention and deletion</h3>
+                <table class="privacy-table">
+                    <thead>
+                        <tr>
+                            <th>Data item</th>
+                            <th>Retention period / deletion condition</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Selected health, activity and calendar information, and diary material summaries</td>
+                            <td>Kept together with the diary stored on the server and its linked generation records. Generation records not linked to a diary are cleaned up periodically once 30 days have passed since generation, and are deleted when you delete your account. App usage time is not collected</td>
+                        </tr>
+                        <tr>
+                            <td>Usage context at the time of an ad request (bucketed values) and records of ad impressions and clicks</td>
+                            <td>Automatically deleted after 48 hours. Only daily statistics with user identifiers removed are kept</td>
+                        </tr>
+                        <tr>
+                            <td>Approximate location data (neighborhood name)</td>
+                            <td>Automatically deleted 30 days after collection. Precise coordinates are used only for the weather lookup and are not stored on the Company's servers</td>
+                        </tr>
+                        <tr>
+                            <td>Images analyzed by Vision AI</td>
+                            <td>Destroyed immediately after the analysis is complete (not stored)</td>
+                        </tr>
+                        <tr>
+                            <td>Data stored on the server (Supabase), such as account information, posts and subscription status</td>
+                            <td>Deleted after your account deletion request is received. Temporary processing failures are retried automatically, and we tell you whether deletion has been completed or your request has only been received</td>
+                        </tr>
+                        <tr>
+                            <td>Minimum identifiers and processing status needed to process account deletion</td>
+                            <td>To clean up files that finish late, we re-check 24 hours after the account is deleted, and these are deleted by a scheduled job once 7 days have passed after the re-cleanup is complete. Failed deletion jobs are retried until they complete</td>
+                        </tr>
+                        <tr>
+                            <td>Story videos (posts on the Company's channels) and selection and posting records</td>
+                            <td>Deleted from the channels within 24 hours after you turn off participation or request deletion. Selection and posting records are kept for 1 year to handle disputes and then destroyed</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="margin-top:0.5rem;">You can request deletion of your data at any time through <strong>Settings › Account › Delete account</strong> in the app.</p>
+
+                <h3>3-7. App Store privacy label summary</h3>
+                <p>This is a summary of the privacy label shown on the Apple App Store. <strong>"Identifiers (Device ID)," "Usage Data (Product Interaction, Advertising Data)" and "Location (Coarse Location)" may be used for "Tracking" for personalized ads (if you consent to personalized ads and allow tracking on iOS); the other items are not used for tracking.</strong></p>
+                <table class="privacy-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Item</th>
+                            <th>Linked to you</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Contact Info</td><td>Email Address, Name</td><td>Yes</td><td>App Functionality, Developer's Advertising or Marketing (email, if you consent to receive it)</td></tr>
+                        <tr><td>Health &amp; Fitness</td><td>Health, Fitness</td><td>Yes</td><td>App Functionality, Product Personalization</td></tr>
+                        <tr><td>Location</td><td>Coarse Location</td><td>Yes</td><td>App Functionality, Product Personalization, Third-Party Advertising</td></tr>
+                        <tr><td>User Content</td><td>Photos or Videos, Other User Content, Customer Support</td><td>Yes</td><td>App Functionality</td></tr>
+                        <tr><td>Identifiers</td><td>User ID, Device ID</td><td>Yes</td><td>App Functionality, Analytics, Third-Party Advertising</td></tr>
+                        <tr><td>Usage Data</td><td>Product Interaction, Advertising Data</td><td>Yes</td><td>App Functionality, Analytics, Third-Party Advertising</td></tr>
+                        <tr><td>Diagnostics</td><td>Crash Data, Performance Data, Other Diagnostic Data</td><td>No</td><td>App Functionality, Analytics</td></tr>
+                        <tr><td>Purchases</td><td>Purchase History</td><td>Yes</td><td>App Functionality</td></tr>
+                        <tr><td>Other Data</td><td>Gender, MBTI (optional input)</td><td>Yes</td><td>App Functionality, Product Personalization</td></tr>
+                    </tbody>
+                </table>
+                <p style="font-size:0.85rem;color:var(--clr-text-muted);margin-top:0.5rem;">※ We do not collect sensitive information other than health information, contacts (address book), financial information, web browsing history or audio data. Last revision of this app section: 2026-09-30, afternoon (supplemented the overseas transfer table — country where data is stored (Australia), recipients' contact details and the weather provider; processing of health information as sensitive information; optional consent to personalized ads; information on automated moderation; additional processed items; user rights, destruction and security measures). Previous revision: 2026-09-30, morning (personalized ads and behavioral information, table of behavioral information collected by each ad network, push and email delivery processors, receiving marketing information). Earlier revisions: 2026-09-29 (added TypeSafe to pre-publication content moderation; information on overseas transfer for AI processing), 2026-09-20 (scope of AI processing; information on lifestyle type and account deletion retries).</p>
+
+                <h3 id="ad-networks-en">3-8. Ad networks — behavioral information collected by third parties</h3>
+                <p>MeRokDam serves ads from the ad networks below through Google Ad Manager mediation and bidding. When an ad is displayed, each company's SDK or script collects the information below directly. The companies that actually serve ads may vary depending on integration status, and we will update this table when the setup changes. Processing of the collected information is subject to each company's policy. <strong>Diary text, photos, health information and mood records are not passed to any ad network.</strong></p>
+                <div style="overflow-x:auto">
+                <table class="privacy-table">
+                    <thead>
+                        <tr><th>Collection tool</th><th>Type</th><th>Company collecting the information</th><th>Behavioral information collected</th><th>Purpose</th><th>How to opt out</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Google Mobile Ads SDK</td><td>SDK (mobile app)</td><td>Google LLC<br><small>Privacy contact: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a></small></td><td>Advertising identifiers (ADID, IDFA — on iOS, only if you allow tracking), IP address, device information (model, OS), and interaction information such as ad impressions and clicks</td><td>Serving ads (including personalized ads), performance measurement, preventing fraudulent clicks</td><td>iOS: Settings › Privacy &amp; Security › Tracking › turn off MeRokDam<br>Android: Settings › Google › Ads › delete the advertising ID or turn off ad personalization</td></tr>
+                        <tr><td>AppLovin SDK</td><td>SDK (mobile app)</td><td>AppLovin<br><small>Privacy contact: <a href="https://www.applovin.com/privacy/" target="_blank" rel="noopener">www.applovin.com/privacy/</a></small></td><td>Advertising identifiers (ADID, IDFA — on iOS, only if you allow tracking), IP address, device information (model, OS), and interaction information such as ad impressions and clicks</td><td>Serving ads (including personalized ads), performance measurement and analytics</td><td>iOS: Settings › Privacy &amp; Security › Tracking › turn off MeRokDam<br>Android: Settings › Google › Ads › delete the advertising ID or turn off ad personalization</td></tr>
+                        <tr><td>Audience Network SDK</td><td>SDK (mobile app)</td><td>Meta (Meta Audience Network)<br><small>Privacy contact: <a href="https://www.facebook.com/privacy/policy/" target="_blank" rel="noopener">www.facebook.com/privacy/policy/</a></small></td><td>Advertising identifiers (ADID, IDFA — on iOS, only if you allow tracking), IP address, device information (model, OS), and interaction information such as ad impressions and clicks</td><td>Serving ads (including personalized ads), performance measurement</td><td>iOS: Settings › Privacy &amp; Security › Tracking › turn off MeRokDam<br>Android: Settings › Google › Ads › delete the advertising ID or turn off ad personalization</td></tr>
+                        <tr><td>Pangle SDK</td><td>SDK (mobile app)</td><td>Pangle<br><small>Privacy contact: <a href="https://www.pangleglobal.com/privacy" target="_blank" rel="noopener">www.pangleglobal.com/privacy</a></small></td><td>Advertising identifiers (ADID, IDFA — on iOS, only if you allow tracking), IP address, device information (model, OS), and interaction information such as ad impressions and clicks</td><td>Serving ads (including personalized ads), analytics, preventing fraudulent use</td><td>iOS: Settings › Privacy &amp; Security › Tracking › turn off MeRokDam<br>Android: Settings › Google › Ads › delete the advertising ID or turn off ad personalization</td></tr>
+                        <tr><td>Mintegral SDK</td><td>SDK (mobile app)</td><td>Mintegral<br><small>Privacy contact: <a href="https://www.mintegral.com/en/privacy/" target="_blank" rel="noopener">www.mintegral.com/en/privacy/</a></small></td><td>Advertising identifiers (ADID, IDFA — on iOS, only if you allow tracking), IP address, device information (model, OS), and interaction information such as ad impressions and clicks</td><td>Serving ads (including personalized ads), performance analysis, preventing fraudulent use</td><td>iOS: Settings › Privacy &amp; Security › Tracking › turn off MeRokDam<br>Android: Settings › Google › Ads › delete the advertising ID or turn off ad personalization</td></tr>
+                        <tr><td>Unity Ads SDK</td><td>SDK (mobile app)</td><td>Unity<br><small>Privacy contact: <a href="https://unity.com/legal/privacy-policy" target="_blank" rel="noopener">unity.com/legal/privacy-policy</a></small></td><td>Advertising identifiers (ADID, IDFA — on iOS, only if you allow tracking), IP address, device information (model, OS), and interaction information such as ad impressions and clicks</td><td>Serving ads (including personalized ads), performance measurement and analytics</td><td>iOS: Settings › Privacy &amp; Security › Tracking › turn off MeRokDam<br>Android: Settings › Google › Ads › delete the advertising ID or turn off ad personalization</td></tr>
+                        <tr><td>DT Exchange SDK</td><td>SDK (mobile app)</td><td>Digital Turbine (DT)<br><small>Privacy contact: <a href="https://www.digitalturbine.com/privacy-policy/" target="_blank" rel="noopener">www.digitalturbine.com/privacy-policy/</a></small></td><td>Advertising identifiers (ADID, IDFA — on iOS, only if you allow tracking), IP address, device information (model, OS), and interaction information such as ad impressions and clicks</td><td>Serving ads (including personalized ads), performance measurement</td><td>iOS: Settings › Privacy &amp; Security › Tracking › turn off MeRokDam<br>Android: Settings › Google › Ads › delete the advertising ID or turn off ad personalization</td></tr>
+                        <tr><td>Moloco SDK</td><td>SDK (mobile app)</td><td>Moloco<br><small>Privacy contact: <a href="https://www.moloco.com/privacy-policy" target="_blank" rel="noopener">www.moloco.com/privacy-policy</a></small></td><td>Advertising identifiers (ADID, IDFA — on iOS, only if you allow tracking), IP address, device information (model, OS), and interaction information such as ad impressions and clicks</td><td>Serving ads (including personalized ads), performance measurement</td><td>iOS: Settings › Privacy &amp; Security › Tracking › turn off MeRokDam<br>Android: Settings › Google › Ads › delete the advertising ID or turn off ad personalization</td></tr>
+                        <tr><td>InMobi SDK</td><td>SDK (mobile app)</td><td>InMobi<br><small>Privacy contact: <a href="https://www.inmobi.com/privacy-policy/" target="_blank" rel="noopener">www.inmobi.com/privacy-policy/</a></small></td><td>Advertising identifiers (ADID, IDFA — on iOS, only if you allow tracking), IP address, device information (model, OS), and interaction information such as ad impressions and clicks</td><td>Serving ads (including personalized ads), performance measurement</td><td>iOS: Settings › Privacy &amp; Security › Tracking › turn off MeRokDam<br>Android: Settings › Google › Ads › delete the advertising ID or turn off ad personalization</td></tr>
+                        <tr><td>Coupang Partners</td><td>Web script (dewdrops screen)</td><td>Coupang Corp. (쿠팡 주식회사)</td><td>Ad impressions and clicks, Coupang page visit records (cookies) — MeRokDam does not pass advertising identifiers</td><td>Serving affiliate product ads, confirming purchase referrals</td><td>If you do not tap the ad, you are not taken to the Coupang page · delete browser cookies</td></tr>
+                    </tbody>
+                </table>
+                </div>
+
+                <h3 id="marketing-en">3-9. Receiving marketing information (app push and email)</h3>
+                <p>We send promotional information, such as news about events, benefits and new features, <strong>only to people who have consented to receive it</strong>. Your use of the service is not restricted if you do not consent. Notifications needed to use the service (reactions, comments, replies to inquiries, etc.) are not promotional information, and you can turn off each type in notification settings.</p>
+                <table class="privacy-table">
+                    <thead><tr><th>Item</th><th>Details</th></tr></thead>
+                    <tbody>
+                        <tr><td>Legal basis</td><td>Article 15(1)1 of the Personal Information Protection Act (consent of the data subject); Article 50 of the Act on Promotion of Information and Communications Network Utilization and Information Protection (restrictions on transmitting advertising information for commercial purposes)</td></tr>
+                        <tr><td>Delivery channels</td><td>App push, email</td></tr>
+                        <tr><td>Items processed</td><td>App push token, email address (the email address of your login account), whether you consented to receive marketing, and the date and time of consent and withdrawal</td></tr>
+                        <tr><td>Purpose of use</td><td>Information about events, benefits and new features; encouraging use of the service</td></tr>
+                        <tr><td>Retention and use period</td><td>Until you withdraw consent or delete your account. The date and time of consent and withdrawal are kept along with it to verify your consent to receive marketing, and are deleted when you delete your account</td></tr>
+                        <tr><td>Sending rules</td><td>We put "(광고)" (Korean for "advertisement") at the start of the title and also state the sender (MeRokDam) and how to unsubscribe. We do not send promotional information from 9 p.m. to 8 a.m. the next day. Every 2 years from the date we received your consent, we check your consent status again and notify you</td></tr>
+                        <tr><td>How to withdraw consent</td><td>Turn off "Marketing &amp; events" in Settings › Notifications in the app, or use the unsubscribe link at the bottom of marketing emails. When you withdraw, we immediately stop sending promotional information and notify you of the result</td></tr>
+                    </tbody>
+                </table>
+
+                <h3 id="rights-en">3-10. Your rights and how to exercise them</h3>
+                <ul>
+                    <li>You may at any time request <strong>access to, correction or deletion of, or suspension of processing of</strong> your personal information, and may <strong>withdraw</strong> your consent.</li>
+                    <li>You can check and edit your information yourself in Settings › Account in the app, and delete it through Settings › Account › Delete account. You can withdraw each optional consent in Settings — health information in Settings › Permissions, personalized ads in Settings › Ads, and receiving marketing in Settings › Notifications.</li>
+                    <li>If you send a request to <a href="mailto:help@silver-smiths.com" style="color:var(--clr-accent2);text-decoration:underline;">help@silver-smiths.com</a>, we will process it without delay (within 10 days) and notify you of the result. Your legal representative or a person you have authorized may also make a request; in that case, we will verify the authorization.</li>
+                    <li>You cannot request deletion of information that other laws require to be retained, and if we refuse a request to suspend processing, we will tell you the reason.</li>
+                    <li>Only people aged 16 or older can sign up for MeRokDam. If we learn that personal information of a child under 14 has been collected, we will immediately stop its use and delete that information.</li>
+                </ul>
+
+                <h3>3-11. Procedure and method for destroying personal information</h3>
+                <p>We destroy personal information without delay once the retention period has passed or the purpose of processing has been achieved. The time of destruction follows "Data retention and deletion" in 3-6, and electronic files are deleted in a way that makes them unrecoverable. The Company does not keep personal information in paper documents.</p>
+
+                <h3>3-12. Measures to ensure the security of personal information</h3>
+                <ul>
+                    <li><strong>Administrative measures:</strong> We limit the people who handle personal information to the minimum necessary and separate permissions so that administrator functions can be used only by designated accounts.</li>
+                    <li><strong>Technical measures:</strong> We encrypt all transmission paths (TLS) and apply row-level access control to the database so that users can view only their own data. Administrative keys for the server are not included in the app and are kept only on the server.</li>
+                    <li><strong>Physical measures:</strong> Data is stored in the data centers of security-certified cloud providers (Supabase, Google).</li>
+                </ul>
+            </div>
+
+            <div class="privacy-section">
+                <h2>4. Desktop app services</h2>
+
+                <h3>4-1. YouTube subtitle auto-translator &amp; uploader (자막 자동 번역&amp;등록기) (Chrome extension)</h3>
+                <p>The Company's "자막 자동 번역&amp;등록기 (YTAT)" is a paid, credit-based Chrome extension that automatically translates the subtitles, titles and descriptions of videos in YouTube Studio with Google Gemini AI and registers them for each language. To provide the service, we collect and process personal information as described below.
+                </p>
+                <p>This service uses YouTube API Services. When you use this service, the YouTube Terms of Service and the Google Privacy Policy apply. You can revoke data access permissions at any time on the Google security settings page: <a href="https://myaccount.google.com/connections?filters=3,4&hl=en" target="_blank" rel="noopener" style="color:var(--clr-accent2);text-decoration:underline;">https://myaccount.google.com/connections?filters=3,4&amp;hl=en</a></p>
+
+                <h3>Items collected and stored (Company servers)</h3>
+                <table class="privacy-table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Purpose of collection and use</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Google account identifier and email</td>
+                            <td>Login and credit account identification</td>
+                        </tr>
+                        <tr>
+                            <td>Credit balance and transaction history</td>
+                            <td>Settlement for paid services</td>
+                        </tr>
+                        <tr>
+                            <td>Payment history (payment method, amount, approval information)</td>
+                            <td>Processing payments and refunds</td>
+                        </tr>
+                        <tr>
+                            <td>Translation job records (video ID, target language, usage)</td>
+                            <td>Providing the service and billing</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Outsourcing to third parties and overseas transfer</h3>
+                <table class="privacy-table">
+                    <thead>
+                        <tr>
+                            <th>Recipient</th>
+                            <th>Information provided</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Google LLC (Gemini API / YouTube API)</td>
+                            <td>Subtitle, title and description text; retrieving and uploading YouTube subtitles</td>
+                            <td>AI translation and registration</td>
+                        </tr>
+                        <tr>
+                            <td>Cloudflare, Supabase, Vercel (United States)</td>
+                            <td>Data needed for the backend, database and translation relay</td>
+                            <td>Service operation infrastructure</td>
+                        </tr>
+                        <tr>
+                            <td>KakaoPay (Portone), PayPal</td>
+                            <td>Information needed to process payments</td>
+                            <td>Payments</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="margin-top:0.5rem;">For Google's data processing practices, please refer to the <a href="https://policies.google.com/privacy" target="_blank"
+                        style="color:var(--clr-accent2);text-decoration:underline;">Google Privacy Policy</a>.</p>
+
+                <h3>YouTube permission scope</h3>
+                <p>We use your YouTube channel permission to retrieve and upload subtitles, and we do not access any data other than your channel's subtitles, titles and descriptions.</p>
+
+                <h3>Retention and deletion</h3>
+                <p>Payment and transaction records are kept as required by relevant laws such as the Act on the Consumer Protection in Electronic Commerce (전자상거래 등에서의 소비자보호에 관한 법률) (records of payment, and of contracts and order withdrawals: 5 years; records of consumer complaints and dispute resolution: 3 years), and account information is kept until you request deletion. If you would like your account and data deleted, send a request to <a href="mailto:help@silver-smiths.com" style="color:var(--clr-accent2);text-decoration:underline;">help@silver-smiths.com</a> and we will delete the related information.</p>
+
+                <h3>Information stored locally in your browser</h3>
+                <p>The data below is stored only in your browser (<code>chrome.storage.local</code>) and is deleted when you remove the extension.</p>
+                <ul>
+                    <li>User settings (selected language, translation targets)</li>
+                    <li>Translation processing records</li>
+                    <li>Cache of translation results in progress (deleted when the upload is complete)</li>
+                </ul>
+                <p>Login tokens are managed securely by Chrome.</p>
+            </div>
+
+            <div class="privacy-section">
+                <h2>5. Your rights and how to opt out</h2>
+                <p>You may at any time refuse to receive personalized ads or refuse the collection of personal information (including non-identifying identifiers).</p>
+
+                <h3>Opting out of mobile advertising identifier (ADID/IDFA) collection</h3>
+                <ul>
+                    <li><strong>Android (AOS)</strong>: Settings &gt; Google &gt; Ads &gt; "Delete advertising ID" or "Opt out of Ads Personalization"</li>
+                    <li><strong>iPhone (iOS)</strong>: Settings &gt; Privacy &amp; Security &gt; Tracking &gt; turn off "Allow Apps to Request to Track"</li>
+                </ul>
+
+                <h3>Refusing web browser cookies</h3>
+                <ul>
+                    <li><strong>Chrome</strong>: Settings &gt; Privacy and security &gt; "Block third-party cookies," etc.</li>
+                    <li><strong>Edge</strong>: Settings &gt; Cookies and site permissions &gt; "Manage and delete cookies and site data"</li>
+                    <li>Google Ads settings: turn off personalization in <a href="https://myadcenter.google.com/" target="_blank"
+                            style="color:var(--clr-accent2);text-decoration:underline;">Google My Ad Center</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="privacy-section">
+                <h2>6. Department responsible for privacy</h2>
+                <p>If you have questions, complaints or need relief for damages relating to this privacy policy or the Company's handling of data, please contact us using the details below.</p>
+                <ul>
+                    <li><strong>Officer / department in charge</strong>: 윤정희 (CEO)</li>
+                    <li><strong>Email</strong>: <a href="mailto:help@silver-smiths.com"
+                            style="color:var(--clr-accent2); font-weight: 500;">help@silver-smiths.com</a></li>
+                    <li><strong>Phone</strong>: 0507-1408-4101</li>
+                </ul>
+                <p>If you need to report or get advice about a privacy violation, you can contact the organizations below.</p>
+                <ul>
+                    <li>Personal Information Dispute Mediation Committee (개인정보분쟁조정위원회): 1833-6972 (no area code needed) · www.kopico.go.kr</li>
+                    <li>Personal Information Infringement Report Center (개인정보침해신고센터): 118 (no area code needed) · privacy.kisa.or.kr</li>
+                    <li>Supreme Prosecutors' Office (대검찰청): 1301 (no area code needed) · www.spo.go.kr</li>
+                    <li>Korean National Police Agency (경찰청): 182 (no area code needed) · ecrm.police.go.kr</li>
+                </ul>
+                <p><strong>Revision history</strong></p>
+                <ul>
+                    <li><strong>Revised 2026-10-01 — effective 2026-10-08</strong>: procedure for <strong>optional consent</strong> to personalized ads and the overseas transfer of ad information (3-5); collection and retention of <strong>bucketed usage-context values</strong> at the time of an ad request (3-1, 3-5, data retention table); privacy contact points for the 9 ad network companies (3-8); added the age group bucket of consenting users to the purposes for which date of birth is used (3-1). The new collection items apply once you install the app update (build 100), and the changes are also announced in in-app notices.</li>
+                </ul>
+                <p>This privacy policy may change in accordance with laws and Company policy, and changes will be posted on this website and also announced in the app. Changes that are significant to your rights, such as adding items collected or recipients of information, will be announced at least 7 days before they take effect. However, changes that only supplement the information provided to you may take effect when they are posted.</p>
+            </div>
+            </div>
+
+            <script>
+                // 개인정보처리방침 언어 전환 — ?lang=en|ko 우선, 없으면 브라우저 언어(ko → 한국어, 그 외 → 영어)
+                (function () {
+                    var ko = document.getElementById('policy-ko');
+                    var en = document.getElementById('policy-en');
+                    var sw = document.getElementById('policy-lang-switch');
+                    if (!ko || !en || !sw) return;
+                    var titles = { ko: '개인정보처리방침 — Silversmith', en: 'Privacy policy — Silversmith' };
+                    var buttons = sw.querySelectorAll('button[data-lang]');
+
+                    function setLang(lang) {
+                        ko.hidden = lang !== 'ko';
+                        en.hidden = lang !== 'en';
+                        document.documentElement.lang = lang;
+                        document.title = titles[lang];
+                        for (var i = 0; i < buttons.length; i++) {
+                            var b = buttons[i];
+                            b.setAttribute('aria-pressed', b.getAttribute('data-lang') === lang ? 'true' : 'false');
+                        }
+                    }
+
+                    var m = /[?&]lang=(ko|en)(?:&|$)/i.exec(window.location.search);
+                    var initial = m ? m[1].toLowerCase()
+                        : ((navigator.language || '').toLowerCase().indexOf('ko') === 0 ? 'ko' : 'en');
+
+                    for (var i = 0; i < buttons.length; i++) {
+                        buttons[i].addEventListener('click', function () {
+                            setLang(this.getAttribute('data-lang'));
+                        });
+                    }
+                    sw.hidden = false;
+                    setLang(initial);
+                })();
+            </script>
 
         </div>
     </main>
