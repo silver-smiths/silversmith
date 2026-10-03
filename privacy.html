@@ -495,14 +495,14 @@
                         <tr>
                             <td>위치</td>
                             <td>현재 위치(일기 작성 시 1회) · 동 이름(대략적 위치)</td>
-                            <td>날씨 조회와 "성수동에서의 하루" 같은 일기 문맥. <strong>정확한 좌표는 날씨 조회에만 일시 전달하고, 회사 서버에는 동 이름(대략적 위치)만 저장</strong>합니다. 위치 권한을 허용한 경우에만 수집합니다</td>
-                            <td>기기 내 / Open-Meteo(날씨 조회, 회사 서버 미저장) / 광고 네트워크(IP 기반 대략적 위치)</td>
+                            <td>날씨 조회와 "성수동에서의 하루" 같은 일기 문맥. <strong>정확한 좌표는 날씨 조회와 동네 이름 변환(기기 운영체제의 지오코딩 — Apple·Google)에만 일시 전달하고, 회사 서버에는 동 이름(대략적 위치)만 저장</strong>합니다. 위치 권한을 허용한 경우에만 수집합니다</td>
+                            <td>기기 내 / Open-Meteo(날씨 조회, 회사 서버 미저장) / 운영체제 지오코딩(Apple·Google, 좌표 → 동 이름 변환) / 광고 네트워크(IP 기반 대략적 위치)</td>
                         </tr>
                         <tr>
                             <td>사용자 콘텐츠</td>
                             <td>사진 또는 비디오</td>
-                            <td>일기 첨부(선택). Vision AI 분석 요청 시에만 전송</td>
-                            <td>기기 내 + 피드 게시 시 Supabase / Vision 분석 시 Gemini API 임시 전송 후 즉시 파기</td>
+                            <td>일기 재료(선택). 고른 사진은 축소본(긴 변 768px)만 사진 분석·일기 생성에 보내고 저장하지 않습니다. 고른 영상은 압축본을 일기 생성 동안만 임시 보관하고 생성이 끝나면 삭제합니다. 사진 권한을 허용한 경우 그날 사진의 촬영 시각과 동네 이름(사진 좌표를 기기 운영체제의 지오코딩(Apple·Google)으로 변환하며, 좌표 자체는 회사 서버로 보내지 않음)을 일기 재료로 씁니다</td>
+                            <td>기기 내 / 분석·생성 시 Supabase 서버를 거쳐 Gemini API로 임시 전송 후 파기(회사 서버 미저장). 피드에는 원본 사진이 아니라 AI가 그린 요약 그림만 표시</td>
                         </tr>
                         <tr>
                             <td>사용자 콘텐츠</td>
@@ -513,7 +513,7 @@
                         <tr>
                             <td>계정 정보</td>
                             <td>생년월일</td>
-                            <td>만 16세 이상 가입 확인, 연령대에 맞춘 일기 문체. 맞춤형 광고에 동의한 경우에만 연령대(10년 단위 구간값)를 광고 세그먼트에 사용(3-5)</td>
+                            <td>만 16세 이상 가입 확인, 연령대에 맞춘 일기 문체. 맞춤형 광고에 동의한 경우(iOS는 추적 허용도 한 경우)에만 연령대(10년 단위 구간값)를 광고 세그먼트에 사용(3-5)</td>
                             <td>Supabase 계정</td>
                         </tr>
                         <tr>
@@ -524,7 +524,7 @@
                         </tr>
                         <tr>
                             <td>캘린더</td>
-                            <td>일정 제목·시간(선택한 날짜)</td>
+                            <td>일정 제목·시간(선택한 날짜), 일정 장소('일정 장소 사용'을 켠 경우)</td>
                             <td>캘린더 권한을 허용하고 일기 재료로 선택한 경우 일기 문맥 생성</td>
                             <td>기기에서 읽은 뒤 선택 재료만 Supabase 서버와 설정된 AI 서비스에서 처리</td>
                         </tr>
@@ -573,8 +573,8 @@
                         <tr>
                             <td>사용 현황 데이터</td>
                             <td>광고 요청 시점의 이용 맥락(구간값)</td>
-                            <td>광고 성과 분석 — 시간대·요일·날씨·화면·구독 등급·가입 경과·사용 패턴(작성 빈도, 사진 첨부 비율, 평가 비율 등)을 개인을 식별하지 않는 구간값으로 기록. <strong>일기 내용·기분 종류·건강 정보는 포함하지 않습니다.</strong> 맞춤형 광고에 동의한 경우에만 연령대·성별(구간값)을 더합니다 — 3-5 참고</td>
-                            <td>회사 서버(Supabase) — 원본 48시간, 이후 식별자 없는 일 단위 통계만</td>
+                            <td>광고 성과 분석 — 시간대·요일(평일·주말)·계절·날씨·화면·피드 보기 방식·화면 크기·앱 언어·운영체제·알림 허용 여부·구독 등급·가입 경과·사용 패턴(작성 빈도, 사진 첨부 비율, 평가 비율, 기능 이용 여부 등)을 구간값으로 기록합니다. 원본 광고 기록은 <strong>사용자 ID와 함께 저장되어 48시간 보관 후 삭제</strong>되고, 이후에는 식별자 없는 일 단위 통계만 남습니다. <strong>일기 내용·기분 종류·건강 정보는 포함하지 않습니다.</strong> 맞춤형 광고에 동의한 경우(iOS는 추적 허용도 한 경우)에만 연령대·성별(구간값)을 더합니다 — 3-5 참고</td>
+                            <td>회사 서버(Supabase) — 원본(사용자 ID 포함) 48시간, 이후 식별자 없는 일 단위 통계만</td>
                         </tr>
                         <tr>
                             <td>사용 현황 데이터</td>
@@ -593,12 +593,6 @@
                             <td>구매(구독) 내역</td>
                             <td>구독 상태(퍼플/골드 등) 판별</td>
                             <td>Apple/Google 결제 + Supabase(상태값)</td>
-                        </tr>
-                        <tr>
-                            <td>기기 내 처리(Android)</td>
-                            <td>앱 사용 시간</td>
-                            <td>일기 문맥 생성 (Android 전용, 서버 미전송)</td>
-                            <td>기기 내</td>
                         </tr>
                     </tbody>
                 </table>
@@ -636,7 +630,7 @@
                         </tr>
                         <tr>
                             <td>제품 개인화</td>
-                            <td>건강·피트니스·대략적 위치를 <strong>일기 문맥 생성</strong>에 활용 (해당 원시 데이터는 광고에 사용하지 않음). 이용자가 <strong>선택적으로 입력한 성별·MBTI</strong>와 생년월일에서 얻는 연령대는 <strong>일기의 문체·관점을 개인에 맞추는 데</strong> 사용합니다. MBTI는 광고·마케팅·제3자 제공에 사용하지 않으며, 성별과 연령대는 <strong>맞춤형 광고에 동의한 경우에만</strong> 구간값으로 광고 요청에 함께 전달됩니다(3-5). 성별·MBTI는 입력하지 않아도 모든 기능을 이용할 수 있습니다.</td>
+                            <td>건강·피트니스·대략적 위치를 <strong>일기 문맥 생성</strong>에 활용 (해당 원시 데이터는 광고에 사용하지 않음). 이용자가 <strong>선택적으로 입력한 성별·MBTI</strong>와 생년월일에서 얻는 연령대는 <strong>일기의 문체·관점을 개인에 맞추는 데</strong> 사용합니다. MBTI는 광고·마케팅·제3자 제공에 사용하지 않으며, 성별과 연령대는 <strong>맞춤형 광고에 동의한 경우(iOS는 추적 허용도 한 경우)에만</strong> 구간값으로 광고 요청에 함께 전달됩니다(3-5). 성별·MBTI는 입력하지 않아도 모든 기능을 이용할 수 있습니다.</td>
                         </tr>
                         <tr>
                             <td>분석</td>
@@ -652,13 +646,13 @@
                         </tr>
                         <tr>
                             <td>사연 영상(서비스 홍보) — <strong>2026-09-01 시행</strong></td>
-                            <td>이용자가 <strong>'전체 공개'로 설정한 일기</strong> 중 일부를 필명 표기·식별 표현 제거 후 짧은 영상으로 편집해 회사 공식 채널(YouTube·Instagram·TikTok)에 게시. 게시 전 알림 및 24시간 내 거절, 설정에서 참여 끄기·특정 일기 제외·삭제 요청 가능(이용약관 제8조 ③)</td>
+                            <td>이용자가 <strong>'전체 공개'로 설정한 일기</strong> 중 일부를 필명 표기·식별 표현 제거 후 짧은 영상으로 편집해 회사 공식 채널(YouTube·Instagram·Threads·TikTok)에 게시. 게시 전 알림 및 24시간 내 거절, 특정 일기 제외 가능. 설정에서 참여를 끄면 그 이후 새 영상에 쓰지 않으며, 이미 게시된 영상은 삭제 요청 또는 탈퇴 후 24시간 내 채널에서 내립니다(미록담 이용약관 제13조)</td>
                         </tr>
                     </tbody>
                 </table>
 
                 <h4 style="margin-top:1.2rem;">자동 검수(게시 전 콘텐츠 검사) 안내</h4>
-                <p>전체·서로 이웃 공개로 올리는 일기와 서로 이웃 댓글은 게시 전에 AI(TypeSafe 분류 API, Google Gemini API)가 욕설·비방, 개인정보 노출, 성적·폭력적 표현, 자해 방법, 불법 행위·스팸 여부를 자동으로 검사합니다. 기준에 걸리면 게시되지 않고 앱에서 이유를 안내합니다. 결과에 동의하지 않으시면 <a href="mailto:help@silver-smiths.com" style="color:var(--clr-accent2);text-decoration:underline;">help@silver-smiths.com</a> 또는 앱의 '설정 › 지원 › 문의하기'로 설명이나 사람의 재검토를 요청하실 수 있으며, 담당자가 확인해 결과를 알려드립니다(「개인정보 보호법」 제37조의2). 비공개(나만 보기) 일기는 검사하지 않습니다.</p>
+                <p>전체·서로 이웃 공개로 올리는 일기와 서로 이웃 댓글은 게시 전에 AI(TypeSafe 분류 API, Google Gemini API)가 욕설·비방, 개인정보 노출, 성적·폭력적 표현, 자해 방법, 불법 행위·스팸 여부를 자동으로 검사합니다. 기준에 걸리면 게시되지 않고 앱에서 이유를 안내합니다. 결과에 동의하지 않으시면 <a href="mailto:help@silver-smiths.com" style="color:var(--clr-accent2);text-decoration:underline;">help@silver-smiths.com</a> 또는 앱의 '설정 › 도움말·문의 › 문의하기'로 설명이나 사람의 재검토를 요청하실 수 있으며, 담당자가 확인해 결과를 알려드립니다(「개인정보 보호법」 제37조의2). 비공개(나만 보기) 일기는 검사하지 않습니다.</p>
                 <p>공개 일기와 댓글에 본인이나 다른 사람의 실명·전화번호·주소·계좌·이메일 등 특정 개인을 알아볼 수 있는 정보가 드러나면 게시되지 않습니다. 자신에 관한 내용이 다른 이용자의 공개 일기에 적혀 있다면 신고 기능 또는 위 이메일로 삭제를 요청하실 수 있습니다.</p>
 
                 <h3>3-4. 진단 데이터에 관한 안내</h3>
@@ -667,17 +661,17 @@
                 <h3>3-5. 광고 — 맞춤형 광고와 행태정보</h3>
                 <ul>
                     <li>미록담은 <strong>국내외 광고 네트워크</strong>를 통해 광고를 게재하며, 광고 네트워크는 광고 식별자와 광고 이용 기록을 바탕으로 <strong>이용자의 관심사에 맞춘 맞춤형 광고</strong>를 보여줄 수 있습니다. 광고 네트워크별로 수집해 가는 정보와 거부 방법은 본 방침 3-8에 표기합니다.</li>
-                    <li><strong>동의:</strong> 앱은 처음 광고를 보여주기 전에 <strong>'맞춤형 광고 및 광고 정보의 국외 이전' 동의(선택)</strong>를 묻습니다(「개인정보 보호법」 제28조의8 제1항 제1호). 동의한 경우에만 맞춤형 광고를 요청하며, iOS에서는 이어서 애플의 '추적 허용' 여부를 묻고 허용한 경우에만 광고 식별자(IDFA)를 이용합니다. 동의 여부는 앱의 '설정 › 광고'에서 언제든 바꿀 수 있습니다.</li>
+                    <li><strong>동의:</strong> 앱은 처음 광고를 보여주기 전에 <strong>'맞춤형 광고 및 광고 정보의 국외 이전' 동의(선택)</strong>를 묻습니다(「개인정보 보호법」 제28조의8 제1항 제1호). 동의한 경우에만 맞춤형 광고를 요청하며, iOS에서는 이어서 애플의 '추적 허용' 여부를 묻고 허용한 경우에만 광고 식별자(IDFA)를 이용합니다. 동의 여부는 앱의 '설정 › 연결된 데이터 › 광고'에서 언제든 바꿀 수 있습니다.</li>
                     <li><strong>동의하지 않으면:</strong> 맞춤형이 아닌 광고만 요청합니다(비개인화 신호 전송). 이 경우에도 광고를 표시하고 부정 클릭을 막는 데 필요한 IP 주소·기기 정보(모델·OS)는 광고 네트워크에 전송되며, Android 광고 ID 는 기기 설정에서 삭제하지 않는 한 노출 빈도 제한·부정 방지 목적으로 전송될 수 있으나 맞춤형 광고에는 사용되지 않습니다. 이러한 전송은 광고 게재와 부정 방지에 필요한 범위로 한정됩니다.</li>
                     <li><strong>일기 본문·사진·건강 정보·기분 기록은 광고에 사용하지 않으며 광고 네트워크에 전달하지 않습니다.</strong></li>
                     <li>행태정보 처리 내용
                         <table class="privacy-table" style="margin-top:0.5rem;">
                             <thead><tr><th>항목</th><th>내용</th></tr></thead>
                             <tbody>
-                                <tr><td>수집하는 행태정보</td><td>광고 식별자(ADID, IDFA — iOS는 추적 허용 시), 앱 안 광고 노출·클릭 기록, 대략적 위치(IP 기반). 광고 요청에는 개인을 식별하지 않는 <strong>이용 맥락 구간값</strong>(시간대·요일·날씨·화면·구독 등급·가입 경과)이 함께 전달되며, 맞춤형 광고에 동의한 경우 연령대·성별 구간값이 더해집니다</td></tr>
+                                <tr><td>수집하는 행태정보</td><td>광고 식별자(ADID, IDFA — iOS는 추적 허용 시), 앱 안 광고 노출·클릭 기록, 대략적 위치(IP 기반). 광고 요청에는 개인을 식별하지 않는 <strong>이용 맥락 구간값</strong>(시간대·요일(평일·주말)·계절·날씨·화면·피드 보기 방식·화면 크기·앱 언어·운영체제·알림 허용 여부·구독 등급·가입 경과)이 함께 전달되며, 맞춤형 광고에 동의한 경우(iOS는 추적 허용도 한 경우) 연령대·성별 구간값이 더해집니다</td></tr>
                                 <tr><td>수집 방법</td><td>앱에 포함된 광고 SDK(Google Mobile Ads 등)가 광고를 요청할 때 자동으로 광고 네트워크에 전송</td></tr>
                                 <tr><td>이용 목적</td><td>관심사에 맞춘 광고 제공, 노출 빈도 제어, 광고 성과 측정, 부정 클릭 방지</td></tr>
-                                <tr><td>보유·이용 기간</td><td>회사 서버는 광고 식별자를 저장하지 않습니다. 광고 노출·클릭 기록과 이용 맥락 구간값(식별자 제외)은 광고 품질·성과 분석을 위해 48시간 보관 후 자동 삭제하고, 사용자 식별자를 제거한 일 단위 통계(차원별 요청·노출·수익 합계)만 남깁니다. 광고 네트워크가 보관하는 정보는 각 사업자 방침을 따릅니다</td></tr>
+                                <tr><td>보유·이용 기간</td><td>회사 서버는 광고 식별자를 저장하지 않습니다. 광고 요청·노출·클릭 기록과 이용 맥락 구간값은 광고 품질·성과 분석을 위해 사용자 ID와 함께 48시간 보관 후 자동 삭제하고, 이후에는 사용자 식별자를 제거한 일 단위 통계(차원별 요청·노출·수익 합계)만 남깁니다. 광고 네트워크가 보관하는 정보는 각 사업자 방침을 따릅니다</td></tr>
                                 <tr><td>이용자 통제 방법</td><td>아래 '모바일 기기 앱 광고 식별자(ADID/IDFA) 수집 거부' 참고 — 기기 설정에서 광고 ID 삭제·맞춤 광고 해제, iOS 추적 허용 해제</td></tr>
                             </tbody>
                         </table>
@@ -741,7 +735,7 @@
                             <td>인앱 결제</td>
                         </tr>
                         <tr>
-                            <td>Google (YouTube) · Meta (Instagram) · TikTok — <em>2026-09-01부터, 공개 일기에 한함(설정에서 참여 끄기 가능)</em></td>
+                            <td>Google (YouTube) · Meta (Instagram·Threads) · TikTok — <em>2026-09-01부터, 공개 일기에 한함(설정에서 참여 끄기 가능)</em></td>
                             <td>전체 공개 일기 편집본(필명 표기, 식별 표현 제거)과 영상 설명문</td>
                             <td>사연 영상 게시(서비스 홍보)</td>
                         </tr>
@@ -779,8 +773,8 @@
                         <tr>
                             <td>Google LLC (<a href="https://policies.google.com/privacy" target="_blank" style="color:var(--clr-accent2);text-decoration:underline;">Google 개인정보처리방침의 문의 안내</a>)</td>
                             <td>미국</td>
-                            <td>AI 일기 생성·검수 입력(선택한 일기 재료, 생각과 기분, 일기 초안, 사진 분석 이미지, 공개 일기·댓글 본문), 진단 정보·앱 인스턴스 ID·사용 이벤트(Firebase), 사연 영상 대본(Text-to-Speech), 앱 푸시 토큰·알림 내용(FCM)</td>
-                            <td>AI 일기 생성, 게시 전 검수, 앱 안정성·분석, 음성 합성, 푸시 발송</td>
+                            <td>AI 일기 생성·검수 입력(선택한 일기 재료, 생각과 기분, 일기 초안, 사진 분석 이미지, 공개 일기·댓글 본문), 일기 제목·본문과 검색어(의미 검색 임베딩), 일기와 인터뷰 답(자서전 생성), 일기 내용(요약 그림 생성), 전체 공개 일기(사연 영상 심사), 진단 정보·앱 인스턴스 ID·사용 이벤트(Firebase), 사연 영상 대본(Text-to-Speech), 앱 푸시 토큰·알림 내용(FCM)</td>
+                            <td>AI 일기 생성, 게시 전 검수, 의미 검색, 자서전 생성, 요약 그림 생성, 사연 영상 심사, 앱 안정성·분석, 음성 합성, 푸시 발송</td>
                             <td>해당 기능을 이용할 때마다 암호화된 네트워크로 전송</td>
                             <td>요청 처리에 필요한 기간 (Firebase 분석·진단은 Google 보관 정책에 따름)</td>
                         </tr>
@@ -825,6 +819,22 @@
                             <td>회사 서버에는 저장하지 않음. 업체의 서버 로그에 최대 90일 보관될 수 있음 (업체 방침)</td>
                         </tr>
                         <tr>
+                            <td>Telegram (<a href="https://telegram.org/privacy" target="_blank" style="color:var(--clr-accent2);text-decoration:underline;">Telegram 개인정보처리방침의 문의 안내</a>)</td>
+                            <td>업체 서버 소재국 (Telegram 방침에 따름)</td>
+                            <td>운영자 알림 — 오류 유형·오류 메시지·내부 처리 번호(일기·후보 번호, 사용자 ID 앞 8자리 등), 문의 도착 알림(문의 분류·글자 수·회신 이메일 유무·기기 종류·앱 버전 — 문의 본문과 이메일 주소는 보내지 않음), 구독 변동(스토어·상품·만료일), 사연 영상 후보 요약(필명, 식별 표현을 지운 제목·대본 첫 줄)</td>
+                            <td>서비스 오류 대응, 문의·구독·사연 영상 후보 확인(운영자 알림)</td>
+                            <td>해당 사건이 생길 때마다 암호화된 네트워크로 전송</td>
+                            <td>Telegram 방침에 따름</td>
+                        </tr>
+                        <tr>
+                            <td>사연 영상 게시 플랫폼 — Google LLC (YouTube), Meta (Instagram·Threads), TikTok (각 사 개인정보처리방침의 문의 안내)</td>
+                            <td>미국 등 각 사업자 소재국</td>
+                            <td>전체 공개 일기를 편집한 사연 영상(필명 표기, 식별 표현 제거)과 영상 설명문</td>
+                            <td>사연 영상 게시(서비스 홍보)</td>
+                            <td>영상을 게시할 때 각 플랫폼에 업로드</td>
+                            <td>회사 채널에 게시된 동안. 삭제 요청 또는 탈퇴 후 24시간 내 채널에서 삭제</td>
+                        </tr>
+                        <tr>
                             <td>광고 네트워크 사업자 (3-8 표의 9개 사업자 — 각 사 개인정보 문의 창구 URL 은 3-8 표에 표기)</td>
                             <td>미국 등 각 사업자 소재국</td>
                             <td>광고 식별자(ADID·IDFA — iOS는 추적 허용 시), IP 주소, 기기 정보, 광고 노출·클릭</td>
@@ -835,7 +845,7 @@
                     </tbody>
                 </table>
                 </div>
-                <p style="font-size:0.85rem;color:var(--clr-text-muted);margin-top:0.5rem;"><strong>거부 방법과 효과:</strong> 광고 네트워크로의 이전은 '설정 › 광고'에서 동의하지 않거나 철회하면 맞춤형 광고용 이전이 중단됩니다(맞춤형이 아닌 광고는 계속 표시). 검수 목적의 이전은 일기를 '나만 보기'로 두고 댓글을 쓰지 않으면 일어나지 않고, 날씨 조회는 위치 권한을 허용하지 않으면 일어나지 않습니다. 데이터 저장(Supabase)과 AI 일기 생성은 서비스의 핵심 기능이라 이전을 거부하시면 서비스를 이용할 수 없으며, 이 경우 회원 탈퇴로 처리를 중단할 수 있습니다.</p>
+                <p style="font-size:0.85rem;color:var(--clr-text-muted);margin-top:0.5rem;"><strong>거부 방법과 효과:</strong> 광고 네트워크로의 이전은 '설정 › 연결된 데이터 › 광고'에서 동의하지 않거나 철회하면 맞춤형 광고용 이전이 중단됩니다(맞춤형이 아닌 광고는 계속 표시). 검수 목적의 이전은 일기를 '나만 보기'로 두고 댓글을 쓰지 않으면 일어나지 않고, 날씨 조회는 위치 권한을 허용하지 않으면 일어나지 않습니다. 데이터 저장(Supabase)과 AI 일기 생성은 서비스의 핵심 기능이라 이전을 거부하시면 서비스를 이용할 수 없으며, 이 경우 회원 탈퇴로 처리를 중단할 수 있습니다.</p>
 
                 <h3>건강 데이터 전용 정책 (HealthKit / Health Connect)</h3>
                 <ul>
@@ -861,7 +871,7 @@
                         </tr>
                         <tr>
                             <td>광고 요청 시점의 이용 맥락(구간값)과 광고 노출·클릭 기록</td>
-                            <td>48시간 후 자동 삭제. 사용자 식별자를 제거한 일 단위 통계만 보관</td>
+                            <td>사용자 ID와 함께 48시간 보관 후 자동 삭제. 이후 사용자 식별자를 제거한 일 단위 통계만 보관</td>
                         </tr>
                         <tr>
                             <td>대략적 위치 데이터(동 이름)</td>
@@ -881,11 +891,11 @@
                         </tr>
                         <tr>
                             <td>사연 영상(회사 채널 게시물) 및 선정·게시 기록</td>
-                            <td>참여 끄기 또는 삭제 요청 후 24시간 내 채널에서 삭제. 선정·게시 기록은 분쟁 대응을 위해 1년 보관 후 파기</td>
+                            <td>게시된 영상은 삭제 요청 또는 탈퇴 후 24시간 내 채널에서 삭제(참여를 끄면 그 이후 새 영상에 쓰지 않음). 선정·게시 기록은 분쟁 대응을 위해 1년 보관 후 파기</td>
                         </tr>
                     </tbody>
                 </table>
-                <p style="margin-top:0.5rem;">앱 내 <strong>'설정 › 계정 › 회원 탈퇴'</strong> 메뉴를 통해 언제든지 데이터 삭제를 요청할 수 있습니다.</p>
+                <p style="margin-top:0.5rem;">앱 내 <strong>'설정 › 계정 관리 › 회원 탈퇴'</strong> 메뉴를 통해 언제든지 데이터 삭제를 요청할 수 있습니다.</p>
 
                 <h3>3-7. App Store 개인정보 라벨 요약</h3>
                 <p>Apple App Store에 표시되는 개인정보 처리 라벨 요약입니다. <strong>'식별자(기기 ID)', '사용 현황 데이터(제품 상호작용·광고 데이터)', '위치(대략적인 위치)', '기타 데이터(성별)'는 맞춤형 광고를 위한 '추적(Tracking)'에 사용될 수 있으며(맞춤형 광고 동의 및 iOS 추적 허용 시), 그 밖의 항목은 추적에 사용되지 않습니다.</strong></p>
@@ -910,7 +920,7 @@
                         <tr><td>기타 데이터</td><td>성별·MBTI(선택 입력)</td><td>예</td><td>앱 기능, 제품 개인화, 제3자 광고(성별 — 맞춤형 광고 동의 시)</td></tr>
                     </tbody>
                 </table>
-                <p style="font-size:0.85rem;color:var(--clr-text-muted);margin-top:0.5rem;">※ 건강 외 민감정보·연락처(주소록)·금융 정보·웹 브라우징 기록·오디오 데이터는 수집하지 않습니다. 본 앱 조항 최종 개정: 2026-09-30 오후 (국외 이전 표 보완 — 데이터 보관 국가(호주)·이전받는 자 연락처·날씨 업체, 건강 정보의 민감정보 처리, 맞춤형 광고 선택 동의, 자동 검수 안내, 처리 항목 보완, 이용자 권리·파기·안전성 확보 조치). 이전 개정: 2026-09-30 오전 (맞춤형 광고·행태정보, 광고 네트워크별 행태정보 수집 표, 푸시·이메일 발송 수탁사, 마케팅 정보 수신). 이전 개정: 2026-09-29 (게시 전 콘텐츠 검수에 TypeSafe 추가, AI 처리 국외 이전 안내), 2026-09-20 (AI 처리 범위, 생활 유형 및 탈퇴 재시도 안내).</p>
+                <p style="font-size:0.85rem;color:var(--clr-text-muted);margin-top:0.5rem;">※ 건강 외 민감정보·연락처(주소록)·금융 정보·웹 브라우징 기록·오디오 데이터는 수집하지 않습니다. 본 앱 조항 최종 개정: 2026-10-03 (아래 '개정 이력' 참고). 이전 개정: 2026-10-01, 2026-09-30 오후 (국외 이전 표 보완 — 데이터 보관 국가(호주)·이전받는 자 연락처·날씨 업체, 건강 정보의 민감정보 처리, 맞춤형 광고 선택 동의, 자동 검수 안내, 처리 항목 보완, 이용자 권리·파기·안전성 확보 조치). 이전 개정: 2026-09-30 오전 (맞춤형 광고·행태정보, 광고 네트워크별 행태정보 수집 표, 푸시·이메일 발송 수탁사, 마케팅 정보 수신). 이전 개정: 2026-09-29 (게시 전 콘텐츠 검수에 TypeSafe 추가, AI 처리 국외 이전 안내), 2026-09-20 (AI 처리 범위, 생활 유형 및 탈퇴 재시도 안내).</p>
 
                 <h3 id="ad-networks">3-8. 광고 네트워크 — 제3자가 수집해 가는 행태정보</h3>
                 <p>미록담은 Google 애드매니저의 미디에이션·입찰을 통해 아래 광고 네트워크의 광고를 게재합니다. 광고가 표시될 때 각 사업자의 SDK 또는 스크립트가 아래 정보를 직접 수집합니다. 실제로 광고를 게재하는 사업자는 연동 상태에 따라 달라질 수 있으며, 구성이 바뀌면 이 표를 갱신합니다. 수집된 정보의 처리는 각 사업자 방침을 따릅니다. <strong>일기 본문·사진·건강 정보·기분 기록은 어떤 광고 네트워크에도 전달하지 않습니다.</strong></p>
@@ -952,10 +962,10 @@
                 <h3 id="rights">3-10. 이용자의 권리와 행사 방법</h3>
                 <ul>
                     <li>이용자는 언제든지 자신의 개인정보 <strong>열람·정정·삭제·처리정지</strong>를 요구하고, 동의를 <strong>철회</strong>할 수 있습니다.</li>
-                    <li>앱의 '설정 › 계정'에서 직접 확인·수정하고, '설정 › 계정 › 회원 탈퇴'로 삭제할 수 있습니다. 선택 동의는 설정에서 각각 철회할 수 있습니다 — 건강 정보는 '설정 › 권한', 맞춤형 광고는 '설정 › 광고', 마케팅 수신은 '설정 › 알림'.</li>
+                    <li>앱의 '설정 › 계정 관리'에서 직접 확인·수정하고, '설정 › 계정 관리 › 회원 탈퇴'로 삭제할 수 있습니다. 선택 동의는 설정에서 각각 철회할 수 있습니다 — 건강 정보는 '설정 › 연결된 데이터', 맞춤형 광고는 '설정 › 연결된 데이터 › 광고', 마케팅 수신은 '설정 › 알림'.</li>
                     <li><a href="mailto:help@silver-smiths.com" style="color:var(--clr-accent2);text-decoration:underline;">help@silver-smiths.com</a>으로 요청하시면 지체 없이(10일 이내) 처리하고 결과를 알려드립니다. 법정대리인이나 위임을 받은 사람도 요청할 수 있으며, 이 경우 위임 사실을 확인합니다.</li>
                     <li>다른 법령에서 보존하도록 정한 정보는 삭제를 요구할 수 없으며, 처리정지 요구를 거절할 경우 그 사유를 알려드립니다.</li>
-                    <li>미록담은 만 16세 이상만 가입할 수 있습니다. 만 14세 미만 아동의 개인정보가 수집된 사실을 알게 되면 즉시 이용을 중지하고 해당 정보를 삭제합니다.</li>
+                    <li>미록담은 만 16세 이상만 가입할 수 있습니다. 만 16세 미만인 사람의 개인정보가 수집된 사실을 알게 되면 즉시 이용을 중지하고 해당 정보를 삭제합니다.</li>
                 </ul>
 
                 <h3>3-11. 개인정보의 파기 절차와 방법</h3>
@@ -1089,7 +1099,7 @@
                 </ul>
                 <p><strong>개정 이력</strong></p>
                 <ul>
-                    <li><strong>2026-10-03 개정 — 시행 2026-10-10</strong>: 문구 정리 — 성별·연령대의 광고 이용 범위를 3-1·3-5와 같게(맞춤형 광고 동의자만, 3-3), 사연 영상 대상을 '전체 공개' 일기로·필명 표기 명확화(3-3·3-6), 문의 시 처리 항목(기기 종류·앱 버전) 명시, 탈퇴 후 24시간 재확인 방식 명확화, 3-5 문장 오류 수정. 처리 방식 자체는 바뀌지 않았습니다.</li>
+                    <li><strong>2026-10-03 개정 — 시행 2026-10-10</strong>: 문구 정리 — 성별·연령대의 광고 이용 범위를 3-1·3-5와 같게(맞춤형 광고 동의자만, 3-3), 사연 영상 대상을 '전체 공개' 일기로·필명 표기 명확화(3-3·3-6), 문의 시 처리 항목(기기 종류·앱 버전) 명시, 탈퇴 후 24시간 재확인 방식 명확화, 3-5 문장 오류 수정. 처리 방식 자체는 바뀌지 않았습니다. 추가 정정(2026-10-04 게시): 앱 메뉴 경로를 실제 화면 이름으로 고침, 사연 영상 근거 조항(미록담 이용약관 제13조)·게시 채널(Threads)·'참여 끄기'와 '게시 영상 삭제' 구분, 광고 원본 기록의 사용자 ID 포함 48시간 보관과 광고 요청 맥락값 목록, 사진·영상 처리와 운영체제 지오코딩(Apple·Google)·일정 장소, 국외 이전 표(Telegram 운영자 알림, Google 처리 목적, 사연 영상 게시처), 연령 기준(만 16세) 문구, 수집하지 않는 '앱 사용 시간' 행 삭제. 처리 방식이 바뀐 것이 아니라 고지 누락과 표기를 바로잡은 것입니다.</li>
                     <li><strong>2026-10-01 개정 — 시행 2026-10-08</strong>: 맞춤형 광고·광고 정보의 국외 이전 <strong>선택 동의</strong> 절차(3-5), 광고 요청 시점의 <strong>이용 맥락 구간값</strong> 수집·보관(3-1·3-5·데이터 보관 표), 광고 네트워크 9개사 개인정보 문의 창구(3-8), 생년월일의 이용 목적에 동의자 연령대 구간값 추가(3-1). 새 수집 항목은 앱 업데이트(빌드 100) 설치 후부터 적용되며, 변경 내용은 앱 공지로도 안내합니다.</li>
                 </ul>
                 <p>이 개인정보처리방침은 법령 및 회사 방침에 따라 변경될 수 있으며, 변경 내용은 이 웹사이트에 게시하고 앱 안에서도 알려드립니다. 수집 항목이나 제공 대상 추가 등 이용자 권리에 중요한 변경은 시행 7일 전부터 공지합니다. 다만 이용자에게 알리는 내용을 보완하는 변경은 게시와 함께 적용할 수 있습니다.</p>
@@ -1324,14 +1334,14 @@
                         <tr>
                             <td>Location</td>
                             <td>Current location (once, when you write a diary) · neighborhood (dong) name (approximate location)</td>
-                            <td>Weather lookup and diary context such as "A day in Seongsu-dong." <strong>Precise coordinates are passed only temporarily for the weather lookup, and only the neighborhood (dong) name (approximate location) is stored on the Company's servers.</strong> Collected only if you allow location permission</td>
-                            <td>On the device / Open-Meteo (weather lookup; not stored on the Company's servers) / ad networks (approximate location based on IP)</td>
+                            <td>Weather lookup and diary context such as "A day in Seongsu-dong." <strong>Precise coordinates are passed only temporarily for the weather lookup and for converting them into a neighborhood name (your device operating system's geocoding service — Apple, Google), and only the neighborhood (dong) name (approximate location) is stored on the Company's servers.</strong> Collected only if you allow location permission</td>
+                            <td>On the device / Open-Meteo (weather lookup; not stored on the Company's servers) / operating system geocoding (Apple, Google; converting coordinates into a neighborhood name) / ad networks (approximate location based on IP)</td>
                         </tr>
                         <tr>
                             <td>User content</td>
                             <td>Photos or videos</td>
-                            <td>Diary attachments (optional). Sent only when you request Vision AI analysis</td>
-                            <td>On the device, plus Supabase when posted to the feed / sent temporarily to the Gemini API for Vision analysis and destroyed immediately afterward</td>
+                            <td>Diary ingredients (optional). For photos you choose, only a reduced copy (768px on the long side) is sent for photo analysis and diary generation, and it is not stored. For a video you choose, a compressed copy is kept temporarily only while the diary is generated and is deleted when generation finishes. If you allow photo access, the capture time and neighborhood name of that day's photos (converted from the photo's coordinates by your device operating system's geocoding service (Apple, Google); the coordinates themselves are not sent to the Company's servers) are used as diary ingredients</td>
+                            <td>On the device / sent temporarily through the Supabase server to the Gemini API for analysis and generation, then destroyed (not stored on the Company's servers). The feed shows only a summary picture drawn by AI, not your original photos</td>
                         </tr>
                         <tr>
                             <td>User content</td>
@@ -1342,7 +1352,7 @@
                         <tr>
                             <td>Account information</td>
                             <td>Date of birth</td>
-                            <td>Confirming at sign-up that you are 16 or older; diary writing style suited to your age group. Only if you consent to personalized ads, your age group (a 10-year bracket) is used in ad segments (3-5)</td>
+                            <td>Confirming at sign-up that you are 16 or older; diary writing style suited to your age group. Only if you consent to personalized ads (and, on iOS, also allow tracking), your age group (a 10-year bracket) is used in ad segments (3-5)</td>
                             <td>Supabase account</td>
                         </tr>
                         <tr>
@@ -1353,7 +1363,7 @@
                         </tr>
                         <tr>
                             <td>Calendar</td>
-                            <td>Event titles and times (for the selected date)</td>
+                            <td>Event titles and times (for the selected date), event locations (if you turn on "Use event locations")</td>
                             <td>Generating diary context if you allow calendar permission and select your calendar as a diary material</td>
                             <td>Read on the device; only the selected materials are processed on the Supabase server and by the configured AI services</td>
                         </tr>
@@ -1402,8 +1412,8 @@
                         <tr>
                             <td>Usage data</td>
                             <td>Usage context at the time of an ad request (bucketed values)</td>
-                            <td>Ad performance analysis — time of day, day of the week, weather, screen, subscription tier, time since sign-up, and usage patterns (writing frequency, share of entries with photos attached, rating rate, etc.) are recorded as bucketed (range) values that do not identify individuals. <strong>Diary content, mood types and health information are not included.</strong> Age group and gender (bucketed values) are added only if you consent to personalized ads — see 3-5</td>
-                            <td>Company servers (Supabase) — raw data for 48 hours; after that, only daily statistics without identifiers</td>
+                            <td>Ad performance analysis — time of day, day type (weekday or weekend), season, weather, screen, feed view mode, screen size, app language, operating system, whether notifications are allowed, subscription tier, time since sign-up, and usage patterns (writing frequency, share of entries with photos attached, rating rate, feature use, etc.) are recorded as bucketed (range) values. The raw ad records are <strong>stored with your user ID and deleted after 48 hours</strong>; after that, only daily statistics without identifiers remain. <strong>Diary content, mood types and health information are not included.</strong> Age group and gender (bucketed values) are added only if you consent to personalized ads (and, on iOS, also allow tracking) — see 3-5</td>
+                            <td>Company servers (Supabase) — raw data (including user ID) for 48 hours; after that, only daily statistics without identifiers</td>
                         </tr>
                         <tr>
                             <td>Usage data</td>
@@ -1422,12 +1432,6 @@
                             <td>Purchase (subscription) history</td>
                             <td>Determining subscription status (Purple, Gold, etc.)</td>
                             <td>Apple/Google payments + Supabase (status value)</td>
-                        </tr>
-                        <tr>
-                            <td>On-device processing (Android)</td>
-                            <td>App usage time</td>
-                            <td>Generating diary context (Android only; not sent to servers)</td>
-                            <td>On the device</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1465,7 +1469,7 @@
                         </tr>
                         <tr>
                             <td>Product personalization</td>
-                            <td>Health and fitness information and approximate location are used to <strong>generate diary context</strong> (this raw data is not used for ads). <strong>Gender and MBTI that you choose to enter</strong>, and the age group derived from your date of birth, are used <strong>to tailor the writing style and perspective of your diaries</strong>. MBTI is not used for advertising, marketing or provision to third parties; gender and age group are sent with ad requests as bucketed (range) values <strong>only if you consent to personalized ads</strong> (3-5). All features are available even if you do not enter gender or MBTI.</td>
+                            <td>Health and fitness information and approximate location are used to <strong>generate diary context</strong> (this raw data is not used for ads). <strong>Gender and MBTI that you choose to enter</strong>, and the age group derived from your date of birth, are used <strong>to tailor the writing style and perspective of your diaries</strong>. MBTI is not used for advertising, marketing or provision to third parties; gender and age group are sent with ad requests as bucketed (range) values <strong>only if you consent to personalized ads (and, on iOS, also allow tracking)</strong> (3-5). All features are available even if you do not enter gender or MBTI.</td>
                         </tr>
                         <tr>
                             <td>Analytics</td>
@@ -1481,13 +1485,13 @@
                         </tr>
                         <tr>
                             <td>Story videos (service promotion) — <strong>effective 2026-09-01</strong></td>
-                            <td>Some of the diaries <strong>you have set to Everyone</strong> are edited into short videos, credited with your pen name and with identifying expressions removed, and posted on the Company's official channels (YouTube, Instagram, TikTok). You are notified before posting and may decline within 24 hours, and you can turn off participation, exclude specific diaries or request deletion in Settings (Terms of Service, Article 8(3))</td>
+                            <td>Some of the diaries <strong>you have set to Everyone</strong> are edited into short videos, credited with your pen name and with identifying expressions removed, and posted on the Company's official channels (YouTube, Instagram, Threads, TikTok). You are notified before posting and may decline within 24 hours, and you can exclude specific diaries. If you turn off participation in Settings, your diaries are not used in new videos from then on; videos already posted are taken down from the channels within 24 hours after you request deletion or delete your account (MeRokDam Terms of Service, Section 13)</td>
                         </tr>
                     </tbody>
                 </table>
 
                 <h4 style="margin-top:1.2rem;">Automated moderation (pre-publication content checks)</h4>
-                <p>Before diaries shared with Everyone or Mutual neighbors, and comments to Mutual neighbors, are posted, AI (the TypeSafe classification API and the Google Gemini API) automatically checks them for profanity and defamation, exposure of personal information, sexual or violent expressions, self-harm methods, and illegal activity or spam. Content that fails these criteria is not posted, and the app tells you why. If you disagree with the result, you can request an explanation or a review by a person at <a href="mailto:help@silver-smiths.com" style="color:var(--clr-accent2);text-decoration:underline;">help@silver-smiths.com</a> or through Settings › Support › Contact us in the app, and the staff member in charge will check and let you know the result (Article 37-2 of the Personal Information Protection Act). Private (Only me) diaries are not checked.</p>
+                <p>Before diaries shared with Everyone or Mutual neighbors, and comments to Mutual neighbors, are posted, AI (the TypeSafe classification API and the Google Gemini API) automatically checks them for profanity and defamation, exposure of personal information, sexual or violent expressions, self-harm methods, and illegal activity or spam. Content that fails these criteria is not posted, and the app tells you why. If you disagree with the result, you can request an explanation or a review by a person at <a href="mailto:help@silver-smiths.com" style="color:var(--clr-accent2);text-decoration:underline;">help@silver-smiths.com</a> or through Settings › Help &amp; support › Contact us in the app, and the staff member in charge will check and let you know the result (Article 37-2 of the Personal Information Protection Act). Private (Only me) diaries are not checked.</p>
                 <p>Public diaries and comments are not posted if they reveal information that can identify a specific individual, such as your own or another person's real name, phone number, address, bank account or email address. If something about you is written in another user's public diary, you can request its deletion using the report feature or the email address above.</p>
 
                 <h3>3-4. About diagnostic data</h3>
@@ -1496,17 +1500,17 @@
                 <h3>3-5. Advertising — personalized ads and behavioral information</h3>
                 <ul>
                     <li>MeRokDam serves ads through <strong>domestic and international ad networks</strong>, and the ad networks may show <strong>personalized ads tailored to your interests</strong> based on advertising identifiers and ad usage records. The information each ad network collects and how to opt out are listed in 3-8 of this policy.</li>
-                    <li><strong>Consent:</strong> Before showing ads for the first time, the app asks for your <strong>consent (optional) to "personalized ads and the overseas transfer of ad information"</strong> (Article 28-8(1)1 of the Personal Information Protection Act). Personalized ads are requested only if you consent. On iOS, the app then asks whether you allow Apple's "Allow Tracking," and the advertising identifier (IDFA) is used only if you allow it. You can change your choice at any time in Settings › Ads in the app.</li>
+                    <li><strong>Consent:</strong> Before showing ads for the first time, the app asks for your <strong>consent (optional) to "personalized ads and the overseas transfer of ad information"</strong> (Article 28-8(1)1 of the Personal Information Protection Act). Personalized ads are requested only if you consent. On iOS, the app then asks whether you allow Apple's "Allow Tracking," and the advertising identifier (IDFA) is used only if you allow it. You can change your choice at any time in Settings › Connected data › Ads in the app.</li>
                     <li><strong>If you do not consent:</strong> Only non-personalized ads are requested (a non-personalization signal is sent). Even in this case, the IP address and device information (model, OS) needed to display ads and prevent fraudulent clicks are sent to the ad networks, and the Android advertising ID may be sent for frequency capping and fraud prevention unless you delete it in your device settings, but it is not used for personalized ads. These transmissions are limited to what is necessary to serve ads and prevent fraud.</li>
                     <li><strong>Diary text, photos, health information and mood records are not used for ads and are not passed to ad networks.</strong></li>
                     <li>Processing of behavioral information
                         <table class="privacy-table" style="margin-top:0.5rem;">
                             <thead><tr><th>Item</th><th>Details</th></tr></thead>
                             <tbody>
-                                <tr><td>Behavioral information collected</td><td>Advertising identifiers (ADID, IDFA — on iOS, only if you allow tracking), records of ad impressions and clicks in the app, approximate location (based on IP). Ad requests also carry <strong>bucketed usage-context values</strong> that do not identify individuals (time of day, day of the week, weather, screen, subscription tier, time since sign-up), and if you consent to personalized ads, bucketed age group and gender values are added</td></tr>
+                                <tr><td>Behavioral information collected</td><td>Advertising identifiers (ADID, IDFA — on iOS, only if you allow tracking), records of ad impressions and clicks in the app, approximate location (based on IP). Ad requests also carry <strong>bucketed usage-context values</strong> that do not identify individuals (time of day, day type (weekday or weekend), season, weather, screen, feed view mode, screen size, app language, operating system, whether notifications are allowed, subscription tier, time since sign-up), and if you consent to personalized ads (and, on iOS, also allow tracking), bucketed age group and gender values are added</td></tr>
                                 <tr><td>Collection method</td><td>Sent automatically to the ad networks when the ad SDKs included in the app (Google Mobile Ads, etc.) request ads</td></tr>
                                 <tr><td>Purpose of use</td><td>Providing ads tailored to your interests, frequency capping, measuring ad performance, preventing fraudulent clicks</td></tr>
-                                <tr><td>Retention and use period</td><td>The Company's servers do not store advertising identifiers. Records of ad impressions and clicks and bucketed usage-context values (excluding identifiers) are kept for 48 hours for ad quality and performance analysis and then automatically deleted, leaving only daily statistics with user identifiers removed (totals of requests, impressions and revenue by dimension). Information kept by the ad networks is subject to each company's policy</td></tr>
+                                <tr><td>Retention and use period</td><td>The Company's servers do not store advertising identifiers. Records of ad requests, impressions and clicks and bucketed usage-context values are kept with your user ID for 48 hours for ad quality and performance analysis and then automatically deleted; after that, only daily statistics with user identifiers removed (totals of requests, impressions and revenue by dimension) remain. Information kept by the ad networks is subject to each company's policy</td></tr>
                                 <tr><td>How you can control it</td><td>See "Opting out of mobile advertising identifier (ADID/IDFA) collection" below — delete the advertising ID or turn off personalized ads in your device settings, and turn off tracking permission on iOS</td></tr>
                             </tbody>
                         </table>
@@ -1570,7 +1574,7 @@
                             <td>In-app purchases</td>
                         </tr>
                         <tr>
-                            <td>Google (YouTube) · Meta (Instagram) · TikTok — <em>from 2026-09-01, public diaries only (you can turn off participation in Settings)</em></td>
+                            <td>Google (YouTube) · Meta (Instagram, Threads) · TikTok — <em>from 2026-09-01, public diaries only (you can turn off participation in Settings)</em></td>
                             <td>Edited versions of diaries set to Everyone (credited with the pen name, identifying expressions removed) and video descriptions</td>
                             <td>Posting story videos (service promotion)</td>
                         </tr>
@@ -1608,8 +1612,8 @@
                         <tr>
                             <td>Google LLC (<a href="https://policies.google.com/privacy" target="_blank" style="color:var(--clr-accent2);text-decoration:underline;">contact details in Google's privacy policy</a>)</td>
                             <td>United States</td>
-                            <td>Inputs for AI diary generation and moderation (selected diary materials, thoughts and mood, diary drafts, images for photo analysis, text of public diaries and comments), diagnostic information, app instance ID and usage events (Firebase), story video scripts (Text-to-Speech), app push tokens and notification content (FCM)</td>
-                            <td>AI diary generation, pre-publication moderation, app stability and analytics, speech synthesis, push delivery</td>
+                            <td>Inputs for AI diary generation and moderation (selected diary materials, thoughts and mood, diary drafts, images for photo analysis, text of public diaries and comments), diary titles and text and search terms (semantic search embeddings), diaries and interview answers (memoir generation), diary content (summary picture generation), diaries set to Everyone (story video screening), diagnostic information, app instance ID and usage events (Firebase), story video scripts (Text-to-Speech), app push tokens and notification content (FCM)</td>
+                            <td>AI diary generation, pre-publication moderation, semantic search, memoir generation, summary picture generation, story video screening, app stability and analytics, speech synthesis, push delivery</td>
                             <td>Transmitted over encrypted networks each time you use the relevant feature</td>
                             <td>For the period needed to process the request (Firebase analytics and diagnostics follow Google's retention policy)</td>
                         </tr>
@@ -1654,6 +1658,22 @@
                             <td>Not stored on the Company's servers. May be kept in the provider's server logs for up to 90 days (provider's policy)</td>
                         </tr>
                         <tr>
+                            <td>Telegram (<a href="https://telegram.org/privacy" target="_blank" style="color:var(--clr-accent2);text-decoration:underline;">contact details in Telegram's privacy policy</a>)</td>
+                            <td>Countries where the provider's servers are located (per Telegram's policy)</td>
+                            <td>Operator alerts — error types, error messages and internal reference numbers (diary and candidate numbers, the first 8 characters of a user ID, etc.); new-inquiry alerts (inquiry category, length, whether a reply email was given, device type, app version — the inquiry text and email address are not sent); subscription changes (store, product, expiry date); story video candidate summaries (pen name, and the title and first line of the script with identifying expressions removed)</td>
+                            <td>Responding to service errors; checking inquiries, subscriptions and story video candidates (operator alerts)</td>
+                            <td>Transmitted over encrypted networks each time such an event occurs</td>
+                            <td>Per Telegram's policy</td>
+                        </tr>
+                        <tr>
+                            <td>Story video publishing platforms — Google LLC (YouTube), Meta (Instagram, Threads), TikTok (contact details in each company's privacy policy)</td>
+                            <td>United States and the other countries where each company is located</td>
+                            <td>Story videos edited from diaries set to Everyone (credited with the pen name, identifying expressions removed) and video descriptions</td>
+                            <td>Posting story videos (service promotion)</td>
+                            <td>Uploaded to each platform when a video is posted</td>
+                            <td>While posted on the Company's channels. Deleted from the channels within 24 hours after you request deletion or delete your account</td>
+                        </tr>
+                        <tr>
                             <td>Ad network companies (the 9 companies in the table in 3-8 — each company's privacy contact URL is shown in the 3-8 table)</td>
                             <td>United States and the other countries where each company is located</td>
                             <td>Advertising identifiers (ADID, IDFA — on iOS, only if you allow tracking), IP address, device information, ad impressions and clicks</td>
@@ -1664,7 +1684,7 @@
                     </tbody>
                 </table>
                 </div>
-                <p style="font-size:0.85rem;color:var(--clr-text-muted);margin-top:0.5rem;"><strong>How to refuse, and what happens if you do:</strong> If you do not consent, or withdraw your consent, in Settings › Ads, transfers to ad networks for personalized ads stop (non-personalized ads continue to be shown). Transfers for moderation do not take place if you keep your diaries set to "Only me" and do not write comments, and the transfer for the weather lookup does not take place if you do not allow location permission. Data storage (Supabase) and AI diary generation are core features of the service, so if you refuse these transfers you cannot use the service; in that case, you can stop the processing by deleting your account.</p>
+                <p style="font-size:0.85rem;color:var(--clr-text-muted);margin-top:0.5rem;"><strong>How to refuse, and what happens if you do:</strong> If you do not consent, or withdraw your consent, in Settings › Connected data › Ads, transfers to ad networks for personalized ads stop (non-personalized ads continue to be shown). Transfers for moderation do not take place if you keep your diaries set to "Only me" and do not write comments, and the transfer for the weather lookup does not take place if you do not allow location permission. Data storage (Supabase) and AI diary generation are core features of the service, so if you refuse these transfers you cannot use the service; in that case, you can stop the processing by deleting your account.</p>
 
                 <h3>Health data policy (HealthKit / Health Connect)</h3>
                 <ul>
@@ -1690,7 +1710,7 @@
                         </tr>
                         <tr>
                             <td>Usage context at the time of an ad request (bucketed values) and records of ad impressions and clicks</td>
-                            <td>Automatically deleted after 48 hours. Only daily statistics with user identifiers removed are kept</td>
+                            <td>Kept with your user ID for 48 hours and then automatically deleted. After that, only daily statistics with user identifiers removed are kept</td>
                         </tr>
                         <tr>
                             <td>Approximate location data (neighborhood name)</td>
@@ -1710,7 +1730,7 @@
                         </tr>
                         <tr>
                             <td>Story videos (posts on the Company's channels) and selection and posting records</td>
-                            <td>Deleted from the channels within 24 hours after you turn off participation or request deletion. Selection and posting records are kept for 1 year to handle disputes and then destroyed</td>
+                            <td>Posted videos are deleted from the channels within 24 hours after you request deletion or delete your account (if you turn off participation, your diaries are not used in new videos from then on). Selection and posting records are kept for 1 year to handle disputes and then destroyed</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1739,7 +1759,7 @@
                         <tr><td>Other Data</td><td>Gender, MBTI (optional input)</td><td>Yes</td><td>App Functionality, Product Personalization, Third-Party Advertising (gender — if you consent to personalized ads)</td></tr>
                     </tbody>
                 </table>
-                <p style="font-size:0.85rem;color:var(--clr-text-muted);margin-top:0.5rem;">※ We do not collect sensitive information other than health information, contacts (address book), financial information, web browsing history or audio data. Last revision of this app section: 2026-09-30, afternoon (supplemented the overseas transfer table — country where data is stored (Australia), recipients' contact details and the weather provider; processing of health information as sensitive information; optional consent to personalized ads; information on automated moderation; additional processed items; user rights, destruction and security measures). Previous revision: 2026-09-30, morning (personalized ads and behavioral information, table of behavioral information collected by each ad network, push and email delivery processors, receiving marketing information). Earlier revisions: 2026-09-29 (added TypeSafe to pre-publication content moderation; information on overseas transfer for AI processing), 2026-09-20 (scope of AI processing; information on lifestyle type and account deletion retries).</p>
+                <p style="font-size:0.85rem;color:var(--clr-text-muted);margin-top:0.5rem;">※ We do not collect sensitive information other than health information, contacts (address book), financial information, web browsing history or audio data. Last revision of this app section: 2026-10-03 (see "Revision history" below). Previous revisions: 2026-10-01, 2026-09-30, afternoon (supplemented the overseas transfer table — country where data is stored (Australia), recipients' contact details and the weather provider; processing of health information as sensitive information; optional consent to personalized ads; information on automated moderation; additional processed items; user rights, destruction and security measures). Previous revision: 2026-09-30, morning (personalized ads and behavioral information, table of behavioral information collected by each ad network, push and email delivery processors, receiving marketing information). Earlier revisions: 2026-09-29 (added TypeSafe to pre-publication content moderation; information on overseas transfer for AI processing), 2026-09-20 (scope of AI processing; information on lifestyle type and account deletion retries).</p>
 
                 <h3 id="ad-networks-en">3-8. Ad networks — behavioral information collected by third parties</h3>
                 <p>MeRokDam serves ads from the ad networks below through Google Ad Manager mediation and bidding. When an ad is displayed, each company's SDK or script collects the information below directly. The companies that actually serve ads may vary depending on integration status, and we will update this table when the setup changes. Processing of the collected information is subject to each company's policy. <strong>Diary text, photos, health information and mood records are not passed to any ad network.</strong></p>
@@ -1781,10 +1801,10 @@
                 <h3 id="rights-en">3-10. Your rights and how to exercise them</h3>
                 <ul>
                     <li>You may at any time request <strong>access to, correction or deletion of, or suspension of processing of</strong> your personal information, and may <strong>withdraw</strong> your consent.</li>
-                    <li>You can check and edit your information yourself in Settings › Account in the app, and delete it through Settings › Account › Delete account. You can withdraw each optional consent in Settings — health information in Settings › Permissions, personalized ads in Settings › Ads, and receiving marketing in Settings › Notifications.</li>
+                    <li>You can check and edit your information yourself in Settings › Account in the app, and delete it through Settings › Account › Delete account. You can withdraw each optional consent in Settings — health information in Settings › Connected data, personalized ads in Settings › Connected data › Ads, and receiving marketing in Settings › Notifications.</li>
                     <li>If you send a request to <a href="mailto:help@silver-smiths.com" style="color:var(--clr-accent2);text-decoration:underline;">help@silver-smiths.com</a>, we will process it without delay (within 10 days) and notify you of the result. Your legal representative or a person you have authorized may also make a request; in that case, we will verify the authorization.</li>
                     <li>You cannot request deletion of information that other laws require to be retained, and if we refuse a request to suspend processing, we will tell you the reason.</li>
-                    <li>Only people aged 16 or older can sign up for MeRokDam. If we learn that personal information of a child under 14 has been collected, we will immediately stop its use and delete that information.</li>
+                    <li>Only people aged 16 or older can sign up for MeRokDam. If we learn that personal information of a person under 16 has been collected, we will immediately stop its use and delete that information.</li>
                 </ul>
 
                 <h3>3-11. Procedure and method for destroying personal information</h3>
@@ -1918,7 +1938,7 @@
                 </ul>
                 <p><strong>Revision history</strong></p>
                 <ul>
-                    <li><strong>Revised 2026-10-03 — effective 2026-10-10</strong>: wording clarified — the use of gender and age group for ads now matches 3-1 and 3-5 (only with consent to personalized ads, 3-3); story videos use diaries set to Everyone and are credited with the pen name (3-3, 3-6); items processed for support inquiries (device type, app version) listed; the 24-hour re-check after account deletion clarified; a sentence error in 3-5 fixed. How data is processed has not changed.</li>
+                    <li><strong>Revised 2026-10-03 — effective 2026-10-10</strong>: wording clarified — the use of gender and age group for ads now matches 3-1 and 3-5 (only with consent to personalized ads, 3-3); story videos use diaries set to Everyone and are credited with the pen name (3-3, 3-6); items processed for support inquiries (device type, app version) listed; the 24-hour re-check after account deletion clarified; a sentence error in 3-5 fixed. How data is processed has not changed. Further corrections (posted 2026-10-04): app menu paths updated to the actual screen names; the basis for story videos (MeRokDam Terms of Service, Section 13), the Threads channel, and the difference between turning off participation and deleting posted videos; raw ad records kept with the user ID for 48 hours, and the list of ad request context values; handling of photos and videos, operating system geocoding (Apple, Google) and event locations; the overseas transfer table (Telegram operator alerts, Google processing purposes, story video publishing platforms); the age wording (16 or older); and removal of the "app usage time" row, which is not collected. How data is processed has not changed — these correct omissions and wording in the notice.</li>
                     <li><strong>Revised 2026-10-01 — effective 2026-10-08</strong>: procedure for <strong>optional consent</strong> to personalized ads and the overseas transfer of ad information (3-5); collection and retention of <strong>bucketed usage-context values</strong> at the time of an ad request (3-1, 3-5, data retention table); privacy contact points for the 9 ad network companies (3-8); added the age group bucket of consenting users to the purposes for which date of birth is used (3-1). The new collection items apply once you install the app update (build 100), and the changes are also announced in in-app notices.</li>
                 </ul>
                 <p>This privacy policy may change in accordance with laws and Company policy, and changes will be posted on this website and also announced in the app. Changes that are significant to your rights, such as adding items collected or recipients of information, will be announced at least 7 days before they take effect. However, changes that only supplement the information provided to you may take effect when they are posted.</p>
