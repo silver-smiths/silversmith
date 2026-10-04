@@ -618,7 +618,7 @@
                     <tbody>
                         <tr>
                             <td>앱 기능 제공</td>
-                            <td>계정 식별·로그인, AI 일기 생성, 소셜 피드, 게시 전 콘텐츠 검수(공개 일기·서로 이웃 댓글), 문의 응대, 구독 상태 판별, 보상형 광고 한도 집계</td>
+                            <td>계정 식별·로그인, AI 일기 생성, 소셜 피드, 게시 전 콘텐츠 검수(직접 쓰거나 고친 공개 일기·서로 이웃 댓글), 문의 응대, 구독 상태 판별, 보상형 광고 한도 집계</td>
                         </tr>
                         <tr>
                             <td>서비스 알림</td>
@@ -652,8 +652,8 @@
                 </table>
 
                 <h4 style="margin-top:1.2rem;">자동 검수(게시 전 콘텐츠 검사) 안내</h4>
-                <p>전체·서로 이웃 공개로 올리는 일기와 서로 이웃 댓글은 게시 전에 AI(TypeSafe 분류 API, Google Gemini API)가 욕설·비방, 개인정보 노출, 성적·폭력적 표현, 자해 방법, 불법 행위·스팸 여부를 자동으로 검사합니다. 기준에 걸리면 게시되지 않고 앱에서 이유를 안내합니다. 결과에 동의하지 않으시면 <a href="mailto:help@silver-smiths.com" style="color:var(--clr-accent2);text-decoration:underline;">help@silver-smiths.com</a> 또는 앱의 '설정 › 도움말·문의 › 문의하기'로 설명이나 사람의 재검토를 요청하실 수 있으며, 담당자가 확인해 결과를 알려드립니다(「개인정보 보호법」 제37조의2). 비공개(나만 보기) 일기는 검사하지 않습니다.</p>
-                <p>공개 일기와 댓글에 본인이나 다른 사람의 실명·전화번호·주소·계좌·이메일 등 특정 개인을 알아볼 수 있는 정보가 드러나면 게시되지 않습니다. 자신에 관한 내용이 다른 이용자의 공개 일기에 적혀 있다면 신고 기능 또는 위 이메일로 삭제를 요청하실 수 있습니다.</p>
+                <p>직접 쓰거나 고친 일기(전체·서로 이웃 공개)와 서로 이웃 댓글은 게시 전에 AI 검수를 거칩니다. AI(TypeSafe 분류 API, Google Gemini API)가 욕설·비방, 개인정보 노출, 성적·폭력적 표현, 자해 방법, 불법 행위·스팸 여부를 자동으로 검사합니다. AI가 지은 일기는 생성 단계에서 개인정보와 유해한 표현이 들어가지 않도록 작성됩니다. 기준에 걸리면 게시되지 않고 앱에서 이유를 안내합니다. 결과에 동의하지 않으시면 <a href="mailto:help@silver-smiths.com" style="color:var(--clr-accent2);text-decoration:underline;">help@silver-smiths.com</a> 또는 앱의 '설정 › 도움말·문의 › 문의하기'로 설명이나 사람의 재검토를 요청하실 수 있으며, 담당자가 확인해 결과를 알려드립니다(「개인정보 보호법」 제37조의2). 비공개(나만 보기) 일기는 검사하지 않습니다.</p>
+                <p>직접 쓰거나 고친 공개 일기와 댓글에 본인이나 다른 사람의 실명·전화번호·주소·계좌·이메일 등 특정 개인을 알아볼 수 있는 정보가 드러나면 게시되지 않습니다. 자신에 관한 내용이 다른 이용자의 공개 일기에 적혀 있다면 신고 기능 또는 위 이메일로 삭제를 요청하실 수 있습니다.</p>
 
                 <h3>3-4. 진단 데이터에 관한 안내</h3>
                 <p>충돌 데이터(Crash Data)와 기타 진단 데이터는 Firebase Crashlytics를 통해 수집되며, 스택 트레이스·충돌 시점 앱 상태·기기 및 OS 정보 등을 포함합니다. 실적 데이터(Performance Data)는 회사 SDK가 별도로 수집하지 않으나, 진단 목적의 데이터가 함께 처리될 수 있어 라벨상 '진단'으로 표시합니다.</p>
@@ -701,12 +701,12 @@
                         </tr>
                         <tr>
                             <td>Google Gemini API / Anthropic Claude API (설정된 생성 단계에 따라 사용)</td>
-                            <td>선택한 일기 재료, 건강·활동·일정 요약, 입력한 생각과 기분, 일기 초안. 사진 분석에는 선택한 이미지가 전달됩니다. 검수에는 공개하려는 일기의 제목·본문 또는 댓글 본문이 전달됩니다(Google Gemini API)</td>
+                            <td>선택한 일기 재료, 건강·활동·일정 요약, 입력한 생각과 기분, 일기 초안. 사진 분석에는 선택한 이미지가 전달됩니다. 검수에는 공개하려는 직접 쓰거나 고친 일기의 제목·본문 또는 댓글 본문이 전달됩니다(Google Gemini API)</td>
                             <td>AI 일기 생성, 게시 전 콘텐츠 검수의 2차 확인</td>
                         </tr>
                         <tr>
                             <td>TypeSafe AI, Inc. (TypeSafe 분류 API)</td>
-                            <td>전체·서로 이웃에게 공개하려는 일기의 제목·본문, 서로 이웃에게 쓰는 댓글 본문. 계정 정보·필명은 전달하지 않습니다</td>
+                            <td>전체·서로 이웃에게 공개하려는 직접 쓰거나 고친 일기의 제목·본문, 서로 이웃에게 쓰는 댓글 본문. 계정 정보·필명은 전달하지 않습니다</td>
                             <td>게시 전 콘텐츠 검수(욕설·비방·개인정보 노출 등 유해 표현 분류). 수탁사는 전달받은 입력을 AI 학습에 사용하지 않습니다</td>
                         </tr>
                         <tr>
@@ -744,6 +744,16 @@
                             <td>사연 영상 대본 텍스트 (합성 후 미저장)</td>
                             <td>낭독 음성 합성 (처리위탁)</td>
                         </tr>
+                        <tr>
+                            <td>Telegram</td>
+                            <td>운영자 알림 — 오류 유형·오류 메시지·내부 처리 번호(일기·후보 번호, 사용자 ID 앞 8자리 등), 문의 도착 알림(문의 분류·글자 수·회신 이메일 유무·기기 종류·앱 버전 — 문의 본문과 이메일 주소는 보내지 않음), 구독 변동(스토어·상품·만료일), 사연 영상 후보 요약(필명, 식별 표현을 지운 제목·대본 첫 줄)</td>
+                            <td>서비스 오류 대응, 문의·구독·사연 영상 후보 확인(운영자 알림)</td>
+                        </tr>
+                        <tr>
+                            <td>OpenAI (OpenAI API)</td>
+                            <td>운영자 계정만 쓰는 내부 실험 기능에 운영자가 직접 입력한 시험용 글. 일반 이용자의 일기·재료·계정 정보는 전달하지 않습니다</td>
+                            <td>운영자 내부 실험 기능(일기 추가 질문 시험) — 일반 이용자 데이터 미사용</td>
+                        </tr>
                     </tbody>
                 </table>
 
@@ -773,7 +783,7 @@
                         <tr>
                             <td>Google LLC (<a href="https://policies.google.com/privacy" target="_blank" style="color:var(--clr-accent2);text-decoration:underline;">Google 개인정보처리방침의 문의 안내</a>)</td>
                             <td>미국</td>
-                            <td>AI 일기 생성·검수 입력(선택한 일기 재료, 생각과 기분, 일기 초안, 사진 분석 이미지, 공개 일기·댓글 본문), 일기 제목·본문과 검색어(의미 검색 임베딩), 일기와 인터뷰 답(자서전 생성), 일기 내용(요약 그림 생성), 전체 공개 일기(사연 영상 심사), 진단 정보·앱 인스턴스 ID·사용 이벤트(Firebase), 사연 영상 대본(Text-to-Speech), 앱 푸시 토큰·알림 내용(FCM)</td>
+                            <td>AI 일기 생성·검수 입력(선택한 일기 재료, 생각과 기분, 일기 초안, 사진 분석 이미지, 직접 쓰거나 고친 공개 일기·댓글 본문), 일기 제목·본문과 검색어(의미 검색 임베딩), 일기와 인터뷰 답(자서전 생성), 일기 내용(요약 그림 생성), 전체 공개 일기(사연 영상 심사), 진단 정보·앱 인스턴스 ID·사용 이벤트(Firebase), 사연 영상 대본(Text-to-Speech), 앱 푸시 토큰·알림 내용(FCM)</td>
                             <td>AI 일기 생성, 게시 전 검수, 의미 검색, 자서전 생성, 요약 그림 생성, 사연 영상 심사, 앱 안정성·분석, 음성 합성, 푸시 발송</td>
                             <td>해당 기능을 이용할 때마다 암호화된 네트워크로 전송</td>
                             <td>요청 처리에 필요한 기간 (Firebase 분석·진단은 Google 보관 정책에 따름)</td>
@@ -787,11 +797,19 @@
                             <td>요청 처리에 필요한 기간 (수탁사 방침에 따름)</td>
                         </tr>
                         <tr>
+                            <td>OpenAI, L.L.C. (<a href="https://openai.com/policies/privacy-policy/" target="_blank" style="color:var(--clr-accent2);text-decoration:underline;">OpenAI 개인정보처리방침의 문의 안내</a>)</td>
+                            <td>미국</td>
+                            <td>운영자 내부 실험 기능에 운영자가 직접 입력한 시험용 글 (일반 이용자의 일기·재료·계정 정보는 전송하지 않음)</td>
+                            <td>운영자 내부 실험 기능(일기 추가 질문 시험) — 일반 이용자 데이터 미사용</td>
+                            <td>운영자가 실험 기능을 실행할 때 암호화된 네트워크로 전송</td>
+                            <td>요청 처리에 필요한 기간 (업체 방침에 따름)</td>
+                        </tr>
+                        <tr>
                             <td>TypeSafe AI, Inc. (privacy@typesafe.ai)</td>
                             <td>미국</td>
-                            <td>공개하려는 일기의 제목·본문, 서로 이웃 댓글 본문 (계정 정보·필명 제외)</td>
+                            <td>공개하려는 직접 쓰거나 고친 일기의 제목·본문, 서로 이웃 댓글 본문 (계정 정보·필명 제외)</td>
                             <td>게시 전 콘텐츠 검수</td>
-                            <td>공개·댓글 작성 시마다 암호화된 네트워크로 전송</td>
+                            <td>직접 쓰거나 고친 일기의 공개·댓글 작성 시마다 암호화된 네트워크로 전송</td>
                             <td>검수 요청 처리에 필요한 기간 (AI 학습 미사용)</td>
                         </tr>
                         <tr>
@@ -1099,7 +1117,7 @@
                 </ul>
                 <p><strong>개정 이력</strong></p>
                 <ul>
-                    <li><strong>2026-10-03 개정 — 시행 2026-10-10</strong>: 문구 정리 — 성별·연령대의 광고 이용 범위를 3-1·3-5와 같게(맞춤형 광고 동의자만, 3-3), 사연 영상 대상을 '전체 공개' 일기로·필명 표기 명확화(3-3·3-6), 문의 시 처리 항목(기기 종류·앱 버전) 명시, 탈퇴 후 24시간 재확인 방식 명확화, 3-5 문장 오류 수정. 처리 방식 자체는 바뀌지 않았습니다. 추가 정정(2026-10-04 게시): 앱 메뉴 경로를 실제 화면 이름으로 고침, 사연 영상 근거 조항(미록담 이용약관 제13조)·게시 채널(Threads)·'참여 끄기'와 '게시 영상 삭제' 구분, 광고 원본 기록의 사용자 ID 포함 48시간 보관과 광고 요청 맥락값 목록, 사진·영상 처리와 운영체제 지오코딩(Apple·Google)·일정 장소, 국외 이전 표(Telegram 운영자 알림, Google 처리 목적, 사연 영상 게시처), 연령 기준(만 16세) 문구, 수집하지 않는 '앱 사용 시간' 행 삭제. 처리 방식이 바뀐 것이 아니라 고지 누락과 표기를 바로잡은 것입니다.</li>
+                    <li><strong>2026-10-03 개정 — 시행 2026-10-10</strong>: 문구 정리 — 성별·연령대의 광고 이용 범위를 3-1·3-5와 같게(맞춤형 광고 동의자만, 3-3), 사연 영상 대상을 '전체 공개' 일기로·필명 표기 명확화(3-3·3-6), 문의 시 처리 항목(기기 종류·앱 버전) 명시, 탈퇴 후 24시간 재확인 방식 명확화, 3-5 문장 오류 수정. 처리 방식 자체는 바뀌지 않았습니다. 추가 정정(2026-10-04 게시): 앱 메뉴 경로를 실제 화면 이름으로 고침, 사연 영상 근거 조항(미록담 이용약관 제13조)·게시 채널(Threads)·'참여 끄기'와 '게시 영상 삭제' 구분, 광고 원본 기록의 사용자 ID 포함 48시간 보관과 광고 요청 맥락값 목록, 사진·영상 처리와 운영체제 지오코딩(Apple·Google)·일정 장소, 국외 이전 표(Telegram 운영자 알림, Google 처리 목적, 사연 영상 게시처), 연령 기준(만 16세) 문구, 수집하지 않는 '앱 사용 시간' 행 삭제, 게시 전 검수 대상을 실제대로(직접 쓰거나 고친 일기와 댓글 — AI가 지은 일기는 생성 단계에서 개인정보·유해 표현 배제), 3-6 표에 Telegram 운영자 알림 추가, OpenAI(운영자 내부 실험 기능, 일반 이용자 데이터 미사용)를 3-6 표와 국외 이전 표에 추가. 처리 방식이 바뀐 것이 아니라 고지 누락과 표기를 바로잡은 것입니다.</li>
                     <li><strong>2026-10-01 개정 — 시행 2026-10-08</strong>: 맞춤형 광고·광고 정보의 국외 이전 <strong>선택 동의</strong> 절차(3-5), 광고 요청 시점의 <strong>이용 맥락 구간값</strong> 수집·보관(3-1·3-5·데이터 보관 표), 광고 네트워크 9개사 개인정보 문의 창구(3-8), 생년월일의 이용 목적에 동의자 연령대 구간값 추가(3-1). 새 수집 항목은 앱 업데이트(빌드 100) 설치 후부터 적용되며, 변경 내용은 앱 공지로도 안내합니다.</li>
                 </ul>
                 <p>이 개인정보처리방침은 법령 및 회사 방침에 따라 변경될 수 있으며, 변경 내용은 이 웹사이트에 게시하고 앱 안에서도 알려드립니다. 수집 항목이나 제공 대상 추가 등 이용자 권리에 중요한 변경은 시행 7일 전부터 공지합니다. 다만 이용자에게 알리는 내용을 보완하는 변경은 게시와 함께 적용할 수 있습니다.</p>
@@ -1457,7 +1475,7 @@
                     <tbody>
                         <tr>
                             <td>Providing app features</td>
-                            <td>Account identification and login, AI diary generation, social feed, pre-publication content moderation (public diaries and comments to Mutual neighbors), responding to inquiries, determining subscription status, counting the rewarded ad limit</td>
+                            <td>Account identification and login, AI diary generation, social feed, pre-publication content moderation (public diaries you write or edit yourself, and comments to Mutual neighbors), responding to inquiries, determining subscription status, counting the rewarded ad limit</td>
                         </tr>
                         <tr>
                             <td>Service notifications</td>
@@ -1491,8 +1509,8 @@
                 </table>
 
                 <h4 style="margin-top:1.2rem;">Automated moderation (pre-publication content checks)</h4>
-                <p>Before diaries shared with Everyone or Mutual neighbors, and comments to Mutual neighbors, are posted, AI (the TypeSafe classification API and the Google Gemini API) automatically checks them for profanity and defamation, exposure of personal information, sexual or violent expressions, self-harm methods, and illegal activity or spam. Content that fails these criteria is not posted, and the app tells you why. If you disagree with the result, you can request an explanation or a review by a person at <a href="mailto:help@silver-smiths.com" style="color:var(--clr-accent2);text-decoration:underline;">help@silver-smiths.com</a> or through Settings › Help &amp; support › Contact us in the app, and the staff member in charge will check and let you know the result (Article 37-2 of the Personal Information Protection Act). Private (Only me) diaries are not checked.</p>
-                <p>Public diaries and comments are not posted if they reveal information that can identify a specific individual, such as your own or another person's real name, phone number, address, bank account or email address. If something about you is written in another user's public diary, you can request its deletion using the report feature or the email address above.</p>
+                <p>Diaries you write or edit yourself (shared with Everyone or Mutual neighbors), and comments to Mutual neighbors, are checked by AI before they are posted. AI (the TypeSafe classification API and the Google Gemini API) automatically checks them for profanity and defamation, exposure of personal information, sexual or violent expressions, self-harm methods, and illegal activity or spam. Diaries written by AI are generated so that they don't include personal information or harmful content. Content that fails these criteria is not posted, and the app tells you why. If you disagree with the result, you can request an explanation or a review by a person at <a href="mailto:help@silver-smiths.com" style="color:var(--clr-accent2);text-decoration:underline;">help@silver-smiths.com</a> or through Settings › Help &amp; support › Contact us in the app, and the staff member in charge will check and let you know the result (Article 37-2 of the Personal Information Protection Act). Private (Only me) diaries are not checked.</p>
+                <p>Public diaries you write or edit yourself, and comments, are not posted if they reveal information that can identify a specific individual, such as your own or another person's real name, phone number, address, bank account or email address. If something about you is written in another user's public diary, you can request its deletion using the report feature or the email address above.</p>
 
                 <h3>3-4. About diagnostic data</h3>
                 <p>Crash data and other diagnostic data are collected through Firebase Crashlytics and include stack traces, the state of the app at the time of the crash, and device and OS information. Performance data is not separately collected by the Company's SDKs; however, because data for diagnostic purposes may be processed along with it, it is shown as "Diagnostics" on the label.</p>
@@ -1540,12 +1558,12 @@
                         </tr>
                         <tr>
                             <td>Google Gemini API / Anthropic Claude API (used depending on the configured generation step)</td>
-                            <td>Selected diary materials, summaries of health, activity and calendar information, the thoughts and mood you enter, and diary drafts. For photo analysis, the selected images are sent. For moderation, the title and text of the diary you want to make public, or the text of the comment, are sent (Google Gemini API)</td>
+                            <td>Selected diary materials, summaries of health, activity and calendar information, the thoughts and mood you enter, and diary drafts. For photo analysis, the selected images are sent. For moderation, the title and text of a diary you wrote or edited yourself and want to make public, or the text of the comment, are sent (Google Gemini API)</td>
                             <td>AI diary generation; secondary check in pre-publication content moderation</td>
                         </tr>
                         <tr>
                             <td>TypeSafe AI, Inc. (TypeSafe classification API)</td>
-                            <td>Title and text of diaries you want to share with Everyone or Mutual neighbors, and the text of comments you write to Mutual neighbors. Account information and pen names are not sent</td>
+                            <td>Title and text of diaries you wrote or edited yourself and want to share with Everyone or Mutual neighbors, and the text of comments you write to Mutual neighbors. Account information and pen names are not sent</td>
                             <td>Pre-publication content moderation (classifying harmful expressions such as profanity, defamation and exposure of personal information). The processor does not use the input it receives for AI training</td>
                         </tr>
                         <tr>
@@ -1583,6 +1601,16 @@
                             <td>Story video script text (not stored after synthesis)</td>
                             <td>Synthesizing narration audio (outsourced processing)</td>
                         </tr>
+                        <tr>
+                            <td>Telegram</td>
+                            <td>Operator alerts — error types, error messages and internal reference numbers (diary and candidate numbers, the first 8 characters of a user ID, etc.); new-inquiry alerts (inquiry category, length, whether a reply email was given, device type, app version — the inquiry text and email address are not sent); subscription changes (store, product, expiry date); story video candidate summaries (pen name, and the title and first line of the script with identifying expressions removed)</td>
+                            <td>Responding to service errors; checking inquiries, subscriptions and story video candidates (operator alerts)</td>
+                        </tr>
+                        <tr>
+                            <td>OpenAI (OpenAI API)</td>
+                            <td>Test text typed by the operator into an internal experimental feature available only to operator accounts. General users' diaries, materials and account information are not sent</td>
+                            <td>Operator-only internal experimental feature (testing follow-up questions for diaries) — general users' data is not used</td>
+                        </tr>
                     </tbody>
                 </table>
 
@@ -1612,7 +1640,7 @@
                         <tr>
                             <td>Google LLC (<a href="https://policies.google.com/privacy" target="_blank" style="color:var(--clr-accent2);text-decoration:underline;">contact details in Google's privacy policy</a>)</td>
                             <td>United States</td>
-                            <td>Inputs for AI diary generation and moderation (selected diary materials, thoughts and mood, diary drafts, images for photo analysis, text of public diaries and comments), diary titles and text and search terms (semantic search embeddings), diaries and interview answers (memoir generation), diary content (summary picture generation), diaries set to Everyone (story video screening), diagnostic information, app instance ID and usage events (Firebase), story video scripts (Text-to-Speech), app push tokens and notification content (FCM)</td>
+                            <td>Inputs for AI diary generation and moderation (selected diary materials, thoughts and mood, diary drafts, images for photo analysis, text of public diaries you wrote or edited yourself, and comments), diary titles and text and search terms (semantic search embeddings), diaries and interview answers (memoir generation), diary content (summary picture generation), diaries set to Everyone (story video screening), diagnostic information, app instance ID and usage events (Firebase), story video scripts (Text-to-Speech), app push tokens and notification content (FCM)</td>
                             <td>AI diary generation, pre-publication moderation, semantic search, memoir generation, summary picture generation, story video screening, app stability and analytics, speech synthesis, push delivery</td>
                             <td>Transmitted over encrypted networks each time you use the relevant feature</td>
                             <td>For the period needed to process the request (Firebase analytics and diagnostics follow Google's retention policy)</td>
@@ -1626,11 +1654,19 @@
                             <td>For the period needed to process the request (per the processor's policy)</td>
                         </tr>
                         <tr>
+                            <td>OpenAI, L.L.C. (<a href="https://openai.com/policies/privacy-policy/" target="_blank" style="color:var(--clr-accent2);text-decoration:underline;">contact details in OpenAI's privacy policy</a>)</td>
+                            <td>United States</td>
+                            <td>Test text typed by the operator into an internal experimental feature (general users' diaries, materials and account information are not sent)</td>
+                            <td>Operator-only internal experimental feature (testing follow-up questions for diaries) — general users' data is not used</td>
+                            <td>Transmitted over encrypted networks when the operator runs the experimental feature</td>
+                            <td>For the period needed to process the request (per the provider's policy)</td>
+                        </tr>
+                        <tr>
                             <td>TypeSafe AI, Inc. (privacy@typesafe.ai)</td>
                             <td>United States</td>
-                            <td>Title and text of diaries you want to make public, text of comments to Mutual neighbors (excluding account information and pen names)</td>
+                            <td>Title and text of diaries you wrote or edited yourself and want to make public, text of comments to Mutual neighbors (excluding account information and pen names)</td>
                             <td>Pre-publication content moderation</td>
-                            <td>Transmitted over encrypted networks each time you make a diary public or write a comment</td>
+                            <td>Transmitted over encrypted networks each time you make a diary you wrote or edited yourself public, or write a comment</td>
                             <td>For the period needed to process the moderation request (not used for AI training)</td>
                         </tr>
                         <tr>
@@ -1938,7 +1974,7 @@
                 </ul>
                 <p><strong>Revision history</strong></p>
                 <ul>
-                    <li><strong>Revised 2026-10-03 — effective 2026-10-10</strong>: wording clarified — the use of gender and age group for ads now matches 3-1 and 3-5 (only with consent to personalized ads, 3-3); story videos use diaries set to Everyone and are credited with the pen name (3-3, 3-6); items processed for support inquiries (device type, app version) listed; the 24-hour re-check after account deletion clarified; a sentence error in 3-5 fixed. How data is processed has not changed. Further corrections (posted 2026-10-04): app menu paths updated to the actual screen names; the basis for story videos (MeRokDam Terms of Service, Section 13), the Threads channel, and the difference between turning off participation and deleting posted videos; raw ad records kept with the user ID for 48 hours, and the list of ad request context values; handling of photos and videos, operating system geocoding (Apple, Google) and event locations; the overseas transfer table (Telegram operator alerts, Google processing purposes, story video publishing platforms); the age wording (16 or older); and removal of the "app usage time" row, which is not collected. How data is processed has not changed — these correct omissions and wording in the notice.</li>
+                    <li><strong>Revised 2026-10-03 — effective 2026-10-10</strong>: wording clarified — the use of gender and age group for ads now matches 3-1 and 3-5 (only with consent to personalized ads, 3-3); story videos use diaries set to Everyone and are credited with the pen name (3-3, 3-6); items processed for support inquiries (device type, app version) listed; the 24-hour re-check after account deletion clarified; a sentence error in 3-5 fixed. How data is processed has not changed. Further corrections (posted 2026-10-04): app menu paths updated to the actual screen names; the basis for story videos (MeRokDam Terms of Service, Section 13), the Threads channel, and the difference between turning off participation and deleting posted videos; raw ad records kept with the user ID for 48 hours, and the list of ad request context values; handling of photos and videos, operating system geocoding (Apple, Google) and event locations; the overseas transfer table (Telegram operator alerts, Google processing purposes, story video publishing platforms); the age wording (16 or older); removal of the "app usage time" row, which is not collected; the scope of pre-publication moderation stated as it actually works (diaries you write or edit yourself, and comments — diaries written by AI are generated without personal information or harmful content); Telegram operator alerts added to the 3-6 table; and OpenAI (an operator-only internal experimental feature that does not use general users' data) added to the 3-6 table and the overseas transfer table. How data is processed has not changed — these correct omissions and wording in the notice.</li>
                     <li><strong>Revised 2026-10-01 — effective 2026-10-08</strong>: procedure for <strong>optional consent</strong> to personalized ads and the overseas transfer of ad information (3-5); collection and retention of <strong>bucketed usage-context values</strong> at the time of an ad request (3-1, 3-5, data retention table); privacy contact points for the 9 ad network companies (3-8); added the age group bucket of consenting users to the purposes for which date of birth is used (3-1). The new collection items apply once you install the app update (build 100), and the changes are also announced in in-app notices.</li>
                 </ul>
                 <p>This privacy policy may change in accordance with laws and Company policy, and changes will be posted on this website and also announced in the app. Changes that are significant to your rights, such as adding items collected or recipients of information, will be announced at least 7 days before they take effect. However, changes that only supplement the information provided to you may take effect when they are posted.</p>
