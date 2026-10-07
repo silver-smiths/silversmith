@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /private/
+Disallow: /waterfall/
 Sitemap: https://silver-smiths.com/sitemap.xml
 Sitemap: https://silver-smiths.com/page-sitemap.xml
 Sitemap: https://silver-smiths.com/post-sitemap.xml
