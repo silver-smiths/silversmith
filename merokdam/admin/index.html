@@ -770,10 +770,26 @@ async function hideDiary(id) { if (!confirm("이 일기를 비공개로 전환�
 async function showDiary(id) { try { await api("content.set_visibility", { diary_id: id, visibility: "public" }); toast("공개 복원"); loadSafety(); } catch (e) { toast(e.message, true); } }
 
 // ── 문의·사연·감사
+function adReportDetails(q) {
+  const a = q.ad_report;
+  if (!a || q.category !== '광고 신고') return '';
+  const image = typeof a.creative_image_url === 'string' && a.creative_image_url.startsWith('https://')
+    ? `<img src="${esc(a.creative_image_url)}" alt="신고된 광고 소재" loading="lazy" style="display:block;max-width:180px;max-height:130px;object-fit:contain;margin-top:8px">` : '';
+  const advertiserUrl = typeof a.advertiser_url === 'string' && /^https:\/\//i.test(a.advertiser_url)
+    ? `<a href="${esc(a.advertiser_url)}" target="_blank" rel="noopener noreferrer">${esc(a.advertiser_url)}</a>` : '없음';
+  return `<div style="margin-top:8px;padding:8px 10px;background:var(--deep);border-radius:10px">
+    <b>신고된 광고</b><br>
+    표시: ${esc(a.displayed_at ? fmtT(a.displayed_at) : '미확인')} · 위치: ${esc(a.placement || '미확인')}<br>
+    출처: ${esc(a.ad_source || '미확인')} · 응답 ID: <span class="mono">${esc(a.response_id || '없음')}</span><br>
+    광고주: ${esc(a.advertiser_name || '없음')} · URL: ${advertiserUrl}<br>
+    광고 단위: <span class="mono">${esc(a.ad_unit_id || '없음')}</span> · 소재 ID: <span class="mono">${esc(a.creative_id || '없음')}</span>
+    ${image || '<div class="muted">소재 이미지 없음</div>'}
+  </div>`;
+}
 async function loadInq() { try { const rows = (await api("inquiries.list")).rows; $("inqTable").innerHTML = "<tr><th style='width:120px'>일시 · 앱</th><th style='width:80px'>분류</th><th>내용 · 답변</th><th style='width:130px'>상태</th></tr>" + rows.map((q) => `<tr>
   <td class="muted">${fmtT(q.created_at)}<br>${esc(q.platform || "")} ${esc(q.app_version || "")}<br>${q.reply_email ? `<span class="mono">${esc(q.reply_email)}</span>` : "<span class='bad'>이메일 없음</span>"}${q.user_id ? `<br><a href="#" onclick="openTab('users');userDetail('${q.user_id}');return false">작성자</a>` : ""}</td>
   <td>${esc(q.category)}</td>
-  <td><div style="white-space:pre-wrap">${esc(q.message)}</div>${q.reply ? `<div style="margin-top:8px;padding:8px 10px;background:var(--deep);border-radius:10px"><b>📮 답변</b> <span class="muted">${fmtT(q.replied_at)}</span><div style="white-space:pre-wrap">${esc(q.reply)}</div></div>` : `<textarea id="rep_${q.id}" rows="3" placeholder="답변 — 앱 알림함으로 전달되고, 회신 이메일이 있으면 메일도 함께" style="margin-top:8px;font-family:inherit"></textarea><button class="pri" style="margin-top:6px" onclick="replyInq('${q.id}')">답변 보내기</button>`}</td>
+  <td><div style="white-space:pre-wrap">${esc(q.message)}</div>${adReportDetails(q)}${q.reply ? `<div style="margin-top:8px;padding:8px 10px;background:var(--deep);border-radius:10px"><b>📮 답변</b> <span class="muted">${fmtT(q.replied_at)}</span><div style="white-space:pre-wrap">${esc(q.reply)}</div></div>` : `<textarea id="rep_${q.id}" rows="3" placeholder="답변 — 앱 알림함으로 전달되고, 회신 이메일이 있으면 메일도 함께" style="margin-top:8px;font-family:inherit"></textarea><button class="pri" style="margin-top:6px" onclick="replyInq('${q.id}')">답변 보내기</button>`}</td>
   <td>${esc(q.status)}<br>${q.status !== "closed" ? `<button class="ghost" style="margin-top:6px" onclick="closeInq('${q.id}')">처리 완료</button>` : ""}</td></tr>`).join("") || "<tr><td class='muted'>문의 없음</td></tr>"; } catch (e) { toast(e.message, true); } }
 async function replyInq(id) { const reply = ($("rep_" + id).value || "").trim(); if (!reply) return toast("답변이 비었어요", true); if (!confirm("이 답변을 보낼까요? (앱 알림함 + 회신 이메일)")) return; try { const r = await api("inquiries.reply", { id, reply }); toast(r.mail_error ? "앱 알림 전송 · 메일 실패: " + r.mail_error : "답변 전송 완료", !!r.mail_error); loadInq(); loadToday(); } catch (e) { toast(e.message, true); } }
 async function closeInq(id) { try { await api("inquiries.set_status", { id, status: "closed" }); loadInq(); loadToday(); } catch (e) { toast(e.message, true); } }

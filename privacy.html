@@ -558,6 +558,12 @@
                             <td>Supabase</td>
                         </tr>
                         <tr>
+                            <td>사용 현황 데이터</td>
+                            <td>광고 신고용 최근 광고 기록</td>
+                            <td>신고할 광고를 찾고 확인하기 위해 최근 노출 20건의 표시 시각·화면 위치·광고 단위·광고 출처·응답 ID·소재 ID와 제공 가능한 광고주명·제목을 계정 ID와 함께 보관합니다. 기기에는 제공 가능한 작은 소재 이미지도 보관하며, 이용자가 해당 광고를 신고하면 선택한 기록과 이미지(있는 경우)를 문의에 첨부합니다. 광고주 URL은 앱에 제공되는 경우에만 신고에 포함합니다. 일기·사진·건강 정보는 포함하지 않습니다.</td>
+                            <td>기기와 회사 서버(Supabase). 신고된 작은 이미지는 비공개 저장 공간에 보관하고 관리자에게만 표시합니다.</td>
+                        </tr>
+                        <tr>
                             <td>식별자</td>
                             <td>사용자 ID</td>
                             <td>계정 식별</td>
@@ -670,6 +676,7 @@
                     <li><strong>동의하지 않으면:</strong> 맞춤형이 아닌 광고만 요청합니다(비개인화 신호 전송). 이 경우에도 광고를 표시하고 부정 클릭을 막는 데 필요한 IP 주소·기기 정보(모델·OS)는 광고 네트워크에 전송되며, Android 광고 ID 는 기기 설정에서 삭제하지 않는 한 노출 빈도 제한·부정 방지 목적으로 전송될 수 있으나 맞춤형 광고에는 사용되지 않습니다. 이러한 전송은 광고 게재와 부정 방지에 필요한 범위로 한정됩니다.</li>
                     <li><strong>만 18세 미만:</strong> 생년월일 기준 만 18세 미만인 이용자에게는 동의 여부와 관계없이 맞춤형 광고를 요청하지 않으며(비개인화 신호 전송), 맞춤형 광고 동의와 iOS 추적 허용도 묻지 않습니다. 연령대·성별도 광고 요청에 포함하지 않습니다. 만 18세가 되면 맞춤형 광고 동의 여부를 다시 묻습니다.</li>
                     <li><strong>일기 본문·사진·건강 정보·기분 기록은 광고에 사용하지 않으며 광고 네트워크에 전달하지 않습니다.</strong></li>
+                    <li><strong>광고 신고:</strong> 앱의 설정 › 도움말·문의 › 광고 신고하기에서 최근 광고를 선택하거나, 목록에 없으면 날짜·시각·화면을 직접 적어 신고할 수 있습니다. 신고용 최근 광고 기록은 광고 성과 분석용 48시간 기록과 별도로 기기와 서버에 각각 최대 20건·30일 보관하며, 광고 맞춤 설정에 사용하지 않습니다. 선택한 광고의 작은 소재 이미지가 제공되는 경우에만 문의에 첨부합니다.</li>
                     <li>행태정보 처리 내용
                         <table class="privacy-table" style="margin-top:0.5rem;">
                             <thead><tr><th>항목</th><th>내용</th></tr></thead>
@@ -898,6 +905,10 @@
                             <td>사용자 ID와 함께 48시간 보관 후 자동 삭제. 이후 사용자 식별자를 제거한 일 단위 통계만 보관</td>
                         </tr>
                         <tr>
+                            <td>광고 신고용 최근 광고 기록·소재 이미지</td>
+                            <td>기기와 서버의 최근 광고 기록은 각각 최대 20건·30일 보관합니다. 신고에 첨부된 기록과 작은 이미지는 문의 처리 자료로 계정 탈퇴 시 함께 삭제합니다. 광고 성과 분석용 48시간 기록과 별도로 운영합니다.</td>
+                        </tr>
+                        <tr>
                             <td>대략적 위치 데이터(동 이름)</td>
                             <td>수집일로부터 30일 경과 시 자동 삭제. 정확한 좌표는 날씨 조회에만 쓰고 회사 서버에 저장하지 않음</td>
                         </tr>
@@ -944,7 +955,7 @@
                         <tr><td>기타 데이터</td><td>성별·MBTI(선택 입력)</td><td>예</td><td>앱 기능, 제품 개인화, 제3자 광고(성별 — 맞춤형 광고 동의 시)</td></tr>
                     </tbody>
                 </table>
-                <p style="font-size:0.85rem;color:var(--clr-text-muted);margin-top:0.5rem;">※ 건강 외 민감정보·연락처(주소록)·금융 정보·웹 브라우징 기록·오디오 데이터는 수집하지 않습니다. 본 앱 조항 최종 개정: 2026-10-03 (아래 '개정 이력' 참고). 이전 개정: 2026-10-01, 2026-09-30 오후 (국외 이전 표 보완 — 데이터 보관 국가(호주)·이전받는 자 연락처·날씨 업체, 건강 정보의 민감정보 처리, 맞춤형 광고 선택 동의, 자동 검수 안내, 처리 항목 보완, 이용자 권리·파기·안전성 확보 조치). 이전 개정: 2026-09-30 오전 (맞춤형 광고·행태정보, 광고 네트워크별 행태정보 수집 표, 푸시·이메일 발송 수탁사, 마케팅 정보 수신). 이전 개정: 2026-09-29 (게시 전 콘텐츠 검수에 TypeSafe 추가, AI 처리 국외 이전 안내), 2026-09-20 (AI 처리 범위, 생활 유형 및 탈퇴 재시도 안내).</p>
+                <p style="font-size:0.85rem;color:var(--clr-text-muted);margin-top:0.5rem;">※ 건강 외 민감정보·연락처(주소록)·금융 정보·웹 브라우징 기록·오디오 데이터는 수집하지 않습니다. 본 앱 조항 최종 개정: 2026-10-10 (시행 2026-10-17, 아래 '개정 이력' 참고). 이전 개정: 2026-10-08, 2026-10-03, 2026-10-01.</p>
 
                 <h3 id="ad-networks">3-8. 광고 네트워크 — 제3자가 수집해 가는 행태정보</h3>
                 <p>미록담은 Google 애드매니저의 미디에이션·입찰을 통해 아래 광고 네트워크의 광고를 게재합니다. 광고가 표시될 때 각 사업자의 SDK 또는 스크립트가 아래 정보를 직접 수집합니다. 실제로 광고를 게재하는 사업자는 연동 상태에 따라 달라질 수 있으며, 구성이 바뀌면 이 표를 갱신합니다. 수집된 정보의 처리는 각 사업자 방침을 따릅니다. <strong>일기 본문·사진·건강 정보·기분 기록은 어떤 광고 네트워크에도 전달하지 않습니다.</strong></p>
@@ -1124,6 +1135,7 @@
                 </ul>
                 <p><strong>개정 이력</strong></p>
                 <ul>
+                    <li><strong>2026-10-10 개정 — 시행 2026-10-17</strong>: 앱의 광고 신고에서 최근 광고 20건을 기기와 서버에 최대 30일 보관하고, 선택한 광고의 식별 정보와 제공 가능한 작은 소재 이미지를 문의에 첨부하는 내용을 3-1·3-5·3-6에 추가했습니다. 새 앱 버전이 설치된 뒤부터 적용됩니다.</li>
                     <li><strong>2026-10-08 개정 — 시행 2026-10-15</strong>: 광고 수집 도구에 Liftoff Monetize SDK(Vungle) 추가(3-8, 광고 파트너 요약 표). 이전 앱 버전이 남아 있는 동안 AppLovin·Mintegral·Unity·Moloco 항목은 유지합니다.</li>
                     <li><strong>2026-10-05 정정</strong>: 서버를 호주(시드니)에서 대한민국(서울)으로 옮긴 사실을 국외 이전 표에 반영(전환 이전 데이터 사본은 옛 서버 정리 때까지 호주에 보관), 만 18세 미만 이용자에게는 맞춤형 광고를 요청하지 않는다는 내용 추가(3-5).</li>
                     <li><strong>2026-10-03 개정 — 시행 2026-10-10</strong>: 문구 정리 — 성별·연령대의 광고 이용 범위를 3-1·3-5와 같게(맞춤형 광고 동의자만, 3-3), 사연 영상 대상을 '전체 공개' 일기로·필명 표기 명확화(3-3·3-6), 문의 시 처리 항목(기기 종류·앱 버전) 명시, 탈퇴 후 24시간 재확인 방식 명확화, 3-5 문장 오류 수정. 처리 방식 자체는 바뀌지 않았습니다. 추가 정정(2026-10-04 게시): 앱 메뉴 경로를 실제 화면 이름으로 고침, 사연 영상 근거 조항(미록담 이용약관 제13조)·게시 채널(Threads)·'참여 끄기'와 '게시 영상 삭제' 구분, 광고 원본 기록의 사용자 ID 포함 48시간 보관과 광고 요청 맥락값 목록, 사진·영상 처리와 운영체제 지오코딩(Apple·Google)·일정 장소, 국외 이전 표(Telegram 운영자 알림, Google 처리 목적, 사연 영상 게시처), 연령 기준(만 16세) 문구, 수집하지 않는 '앱 사용 시간' 행 삭제, 게시 전 검수 대상을 실제대로(직접 쓰거나 고친 일기와 댓글 — AI가 지은 일기는 생성 단계에서 개인정보를 옮기지 않음), 3-6 표에 Telegram 운영자 알림 추가, OpenAI(운영자 내부 실험 기능, 일반 이용자 데이터 미사용)를 3-6 표와 국외 이전 표에 추가. 처리 방식이 바뀐 것이 아니라 고지 누락과 표기를 바로잡은 것입니다.</li>
@@ -1423,6 +1435,12 @@
                             <td>Supabase</td>
                         </tr>
                         <tr>
+                            <td>Usage data</td>
+                            <td>Recently viewed ads for reporting</td>
+                            <td>To identify and investigate a reported ad, we keep up to 20 recent impressions with the display time, in-app placement, ad unit, ad source, response ID and creative ID, plus the advertiser name and headline when provided, linked to your account ID. A small creative image is kept on the device when available. If you submit a report, the selected details and image, when available, are attached to your inquiry. An advertiser URL is included only if available. Diary, photo and health data are excluded.</td>
+                            <td>Device and Company server (Supabase). Submitted small images are kept in private storage and shown only to administrators.</td>
+                        </tr>
+                        <tr>
                             <td>Identifiers</td>
                             <td>User ID</td>
                             <td>Account identification</td>
@@ -1535,6 +1553,7 @@
                     <li><strong>If you do not consent:</strong> Only non-personalized ads are requested (a non-personalization signal is sent). Even in this case, the IP address and device information (model, OS) needed to display ads and prevent fraudulent clicks are sent to the ad networks, and the Android advertising ID may be sent for frequency capping and fraud prevention unless you delete it in your device settings, but it is not used for personalized ads. These transmissions are limited to what is necessary to serve ads and prevent fraud.</li>
                     <li><strong>Under 18:</strong> If you are under 18 based on your date of birth, personalized ads are never requested regardless of consent (a non-personalization signal is sent), and the app does not ask for personalized-ad consent or iOS tracking permission. Age group and gender are not included in ad requests. Once you turn 18, the app asks for your personalized-ad choice.</li>
                     <li><strong>Diary text, photos, health information and mood records are not used for ads and are not passed to ad networks.</strong></li>
+                    <li><strong>Reporting an ad:</strong> In Settings › Help &amp; support › Report an ad, you can select a recently viewed ad or describe its date, time and screen if it is no longer listed. The device and server each keep up to 20 recent ads for up to 30 days for this purpose, separately from the 48-hour ad-performance records. This history is not used for ad targeting. A small creative image is attached to the inquiry only when available.</li>
                     <li>Processing of behavioral information
                         <table class="privacy-table" style="margin-top:0.5rem;">
                             <thead><tr><th>Item</th><th>Details</th></tr></thead>
@@ -1763,6 +1782,10 @@
                             <td>Kept with your user ID for 48 hours and then automatically deleted. After that, only daily statistics with user identifiers removed are kept</td>
                         </tr>
                         <tr>
+                            <td>Recent ads and creative images used for reporting</td>
+                            <td>Recent ad history on the device and server is limited to 20 entries each and kept for up to 30 days. Details and small images attached to submitted inquiries are deleted with the account. This is separate from the 48-hour ad-performance records.</td>
+                        </tr>
+                        <tr>
                             <td>Approximate location data (neighborhood name)</td>
                             <td>Automatically deleted 30 days after collection. Precise coordinates are used only for the weather lookup and are not stored on the Company's servers</td>
                         </tr>
@@ -1809,7 +1832,7 @@
                         <tr><td>Other Data</td><td>Gender, MBTI (optional input)</td><td>Yes</td><td>App Functionality, Product Personalization, Third-Party Advertising (gender — if you consent to personalized ads)</td></tr>
                     </tbody>
                 </table>
-                <p style="font-size:0.85rem;color:var(--clr-text-muted);margin-top:0.5rem;">※ We do not collect sensitive information other than health information, contacts (address book), financial information, web browsing history or audio data. Last revision of this app section: 2026-10-03 (see "Revision history" below). Previous revisions: 2026-10-01, 2026-09-30, afternoon (supplemented the overseas transfer table — country where data is stored (Australia), recipients' contact details and the weather provider; processing of health information as sensitive information; optional consent to personalized ads; information on automated moderation; additional processed items; user rights, destruction and security measures). Previous revision: 2026-09-30, morning (personalized ads and behavioral information, table of behavioral information collected by each ad network, push and email delivery processors, receiving marketing information). Earlier revisions: 2026-09-29 (added TypeSafe to pre-publication content moderation; information on overseas transfer for AI processing), 2026-09-20 (scope of AI processing; information on lifestyle type and account deletion retries).</p>
+                <p style="font-size:0.85rem;color:var(--clr-text-muted);margin-top:0.5rem;">※ We do not collect sensitive information other than health information, contacts (address book), financial information, web browsing history or audio data. Last revision of this app section: 2026-10-10 (effective 2026-10-17; see "Revision history" below). Previous revisions: 2026-10-08, 2026-10-03 and 2026-10-01.</p>
 
                 <h3 id="ad-networks-en">3-8. Ad networks — behavioral information collected by third parties</h3>
                 <p>MeRokDam serves ads from the ad networks below through Google Ad Manager mediation and bidding. When an ad is displayed, each company's SDK or script collects the information below directly. The companies that actually serve ads may vary depending on integration status, and we will update this table when the setup changes. Processing of the collected information is subject to each company's policy. <strong>Diary text, photos, health information and mood records are not passed to any ad network.</strong></p>
@@ -1988,6 +2011,7 @@
                 </ul>
                 <p><strong>Revision history</strong></p>
                 <ul>
+                    <li><strong>Revised 2026-10-10 — effective 2026-10-17</strong>: Sections 3-1, 3-5 and 3-6 now explain that the app keeps up to 20 recently viewed ads on the device and server for up to 30 days to help identify an ad for reporting. A report includes the selected ad's identifiers and a small creative image when available. This begins only after the new app version is installed.</li>
                     <li><strong>Corrected 2026-10-05</strong>: the overseas transfer table now reflects the server move from Australia (Sydney) to South Korea (Seoul) (a copy of earlier data stays in Australia until the old server is retired); added that personalized ads are never requested for users under 18 (3-5).</li>
                     <li><strong>Revised 2026-10-03 — effective 2026-10-10</strong>: wording clarified — the use of gender and age group for ads now matches 3-1 and 3-5 (only with consent to personalized ads, 3-3); story videos use diaries set to Everyone and are credited with the pen name (3-3, 3-6); items processed for support inquiries (device type, app version) listed; the 24-hour re-check after account deletion clarified; a sentence error in 3-5 fixed. How data is processed has not changed. Further corrections (posted 2026-10-04): app menu paths updated to the actual screen names; the basis for story videos (MeRokDam Terms of Service, Section 13), the Threads channel, and the difference between turning off participation and deleting posted videos; raw ad records kept with the user ID for 48 hours, and the list of ad request context values; handling of photos and videos, operating system geocoding (Apple, Google) and event locations; the overseas transfer table (Telegram operator alerts, Google processing purposes, story video publishing platforms); the age wording (16 or older); removal of the "app usage time" row, which is not collected; the scope of pre-publication moderation stated as it actually works (diaries you write or edit yourself, and comments — diaries written by AI are generated from your own materials without carrying over personal details); Telegram operator alerts added to the 3-6 table; and OpenAI (an operator-only internal experimental feature that does not use general users' data) added to the 3-6 table and the overseas transfer table. How data is processed has not changed — these correct omissions and wording in the notice.</li>
                     <li><strong>Revised 2026-10-01 — effective 2026-10-08</strong>: procedure for <strong>optional consent</strong> to personalized ads and the overseas transfer of ad information (3-5); collection and retention of <strong>bucketed usage-context values</strong> at the time of an ad request (3-1, 3-5, data retention table); privacy contact points for the 9 ad network companies (3-8); added the age group bucket of consenting users to the purposes for which date of birth is used (3-1). The new collection items apply once you install the app update (build 100), and the changes are also announced in in-app notices.</li>
