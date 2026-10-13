@@ -123,6 +123,16 @@ Silversmith의 사업은 크게 네 가지 축으로 구성됩니다: 컨설팅(
 - 여러 창작자가 함께 아이디어를 발전시키고 작품을 완성해 나가는 협업 창작 공간.
 - **페이지**: https://silver-smiths.com/project/ggeujag.html
 
+#### 미록담 (MeRokDam)
+
+- 사진·일정·걸음·수면 같은 하루의 기록에 오늘의 마음을 더하면 AI가 일기를 지어주는 감성 다이어리 모바일 앱(iOS·Android, 한국어·영어).
+- 주요 기능: 9가지 감정 선택, 미록담만을 위해 정원 세계관으로 새로 그린 '오늘의 타로'와 카드별 '미록담의 시선', 일기 재료 근거 표시, 미록담의 답장(위로 한 줄), 월간 자서전, 그림일기(퍼플 이상, 15종 캐릭터·특별 아이템), 필명 기반 피드, 카카오톡·인스타그램·스레드 공유.
+- 이용 등급: 블루(무료) · 퍼플(구독) · 골드(출시 예정).
+- 개인정보: 필명 공개, 일기별 공개 범위, 사진 원본 서버 미저장, 건강정보 별도 동의, 일기 내용·건강 정보 광고 미사용.
+- **소개 페이지**: https://silver-smiths.com/project/merokdam.html
+- **App Store**: https://apps.apple.com/kr/app/id6760283013
+- **Google Play**: https://play.google.com/store/apps/details?id=com.silversmiths.merokdam
+
 ---
 
 ## 핵심 키워드 및 브랜드 연관성

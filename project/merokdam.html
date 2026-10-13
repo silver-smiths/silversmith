@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="ko" prefix="og: https://ogp.me/ns#">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="미록담은 사진·일정·걸음·수면 같은 하루의 기록에 오늘의 마음만 더하면 AI가 알아서 일기를 지어주는 감성 다이어리 앱입니다. 9가지 감정, 오늘의 타로, 필명 공개, 월간 자서전까지. iOS·Android 무료 다운로드." />
+    <meta name="keywords" content="미록담, MeRokDam, AI 일기, AI 다이어리, 감성 다이어리, 일기 앱, 자동 일기, 감정 일기, 그림일기, 타로 일기, 오늘의 타로, 하루 기록, 월간 자서전, 일기 공유, 개인정보 보호 일기 앱, Silversmith" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="author" content="Silversmith" />
+    <link rel="canonical" href="https://silver-smiths.com/project/merokdam.html" />
+    <link rel="alternate" hreflang="ko" href="https://silver-smiths.com/project/merokdam.html" />
+    <link rel="alternate" hreflang="x-default" href="https://silver-smiths.com/project/merokdam.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://silver-smiths.com/project/merokdam.html" />
+    <meta property="og:title" content="미록담(MeRokDam) — 편리하게 하루를 지어주는 AI 감성 다이어리" />
+    <meta property="og:description" content="몇 가지만 고르면, 나머지는 미록담이 씁니다. 사진과 생활 기록에 오늘의 마음을 더해 완성하는 AI 감성 다이어리." />
+    <meta property="og:image" content="https://silver-smiths.com/images/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:site_name" content="Silversmith" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="미록담(MeRokDam) — 편리하게 하루를 지어주는 AI 감성 다이어리" />
+    <meta name="twitter:description" content="몇 가지만 고르면, 나머지는 미록담이 씁니다. AI 감성 다이어리 미록담." />
+    <meta name="twitter:image" content="https://silver-smiths.com/images/og-image.png" />
+    <meta name="apple-itunes-app" content="app-id=6760283013" />
+
+    <title>미록담(MeRokDam) — 편리하게 하루를 지어주는 AI 감성 다이어리 | Silversmith</title>
+
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@graph":[
+      {"@type":"MobileApplication","@id":"https://silver-smiths.com/project/merokdam.html#app","name":"미록담 (MeRokDam)","alternateName":"MeRokDam",
+        "description":"미록담은 사진·일정·걸음·수면 같은 하루의 기록에 오늘의 마음만 더하면 AI가 알아서 일기를 지어주는 감성 다이어리 앱입니다. 9가지 감정, 오늘의 타로, 필명 공개, 월간 자서전까지. iOS·Android 무료 다운로드.","applicationCategory":"LifestyleApplication","operatingSystem":"iOS, Android",
+        "url":"https://silver-smiths.com/project/merokdam.html","installUrl":["https://apps.apple.com/kr/app/id6760283013","https://play.google.com/store/apps/details?id=com.silversmiths.merokdam"],"inLanguage":"ko",
+        "offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},
+        "image":"https://silver-smiths.com/images/merokdam/icon.png","screenshot":["https://silver-smiths.com/images/merokdam/screen-01.webp","https://silver-smiths.com/images/merokdam/screen-03.webp"],
+        "publisher":{"@id":"https://silver-smiths.com/#org"},"author":{"@id":"https://silver-smiths.com/#org"}},
+      {"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"미록담은 어떤 앱인가요?","acceptedAnswer":{"@type":"Answer","text":"휴대폰에 남은 사진·일정·건강·활동 기록에 오늘의 기분과 짧은 생각을 더하면, AI가 알아서 일기를 지어주는 감성 다이어리 앱입니다. 일기 끝에는 오늘의 타로에 담긴 응원과 위로의 답장도 함께 받을 수 있어요."}},{"@type":"Question","name":"무료로 쓸 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"네. 블루 등급으로 직접 쓰는 일기와 기본 기능을 무료로 이용할 수 있습니다. 일부 기능은 광고 시청·일기 완성 등으로 받는 무상 포인트인 물방울로 이용하며, 유료 구독 이용권인 퍼플을 선택하면 그림일기, 하루 1회 포함된 AI 일기, 무료 월간 자서전, 사진 분석 3장 등을 이용할 수 있습니다. 등급별 이용 범위는 앱 안 안내가 기준입니다."}},{"@type":"Question","name":"사진이나 건강 기록이 서버에 저장되나요?","acceptedAnswer":{"@type":"Answer","text":"허용한 항목만 읽어옵니다. 사진 원본은 분석에만 잠시 쓰고 회사 서버에 저장하지 않습니다. 건강·일정 기록은 일기를 짓는 데 필요한 요약만 보관하며, 일기 내용과 건강 정보는 광고에 사용하지 않습니다. 자세한 내용은 개인정보처리방침을 확인해 주세요."}},{"@type":"Question","name":"다른 사람이 내 일기를 볼 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"공개한 일기는 필명으로만 보이며 이름이나 얼굴은 필요 없습니다. 일기마다 '전체', '서로 이웃', '나만 보기' 중 공개 범위를 언제든 바꿀 수 있어요."}},{"@type":"Question","name":"AI가 쓴 일기에 거친 표현이 들어가지는 않나요?","acceptedAnswer":{"@type":"Answer","text":"미록담의 AI는 사용자가 쓰지 않은 욕설을 보태거나 수위를 높이지 않도록, 타인을 악의적으로 해석하거나 힘든 감정을 부풀리지 않도록 만들어졌습니다. 일기의 마지막은 그날의 기분에 맞춘 위로로 맺어요. 다만 사용자가 직접 입력한 말투는 억지로 바꾸지 않고 그대로 살립니다."}},{"@type":"Question","name":"일기를 다른 곳에 공유할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"네. 카카오톡·인스타그램·스레드·메시지로 바로 보내거나 사진으로 저장할 수 있어요. 피드(4:5)·스토리(9:16) 비율과 담을 내용(그림·한줄·마음·재료·필명)을 고를 수 있고, 본문은 자동으로 복사됩니다. 월간 자서전은 PDF로 저장할 수 있어요."}},{"@type":"Question","name":"누가 이용할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"만 16세 이상 이용할 수 있으며, iOS(App Store)와 Android(Google Play)에서 내려받을 수 있습니다. 한국어와 영어를 지원합니다."}}]},
+      {"@type":"BreadcrumbList","itemListElement":[
+        {"@type":"ListItem","position":1,"name":"홈","item":"https://silver-smiths.com/"},
+        {"@type":"ListItem","position":2,"name":"프로젝트","item":"https://silver-smiths.com/#projects"},
+        {"@type":"ListItem","position":3,"name":"미록담","item":"https://silver-smiths.com/project/merokdam.html"}]}]}
+    </script>
+
+
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-MQT4J6J');
+    </script>
+    <!-- End Google Tag Manager -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style"
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Inter:wght@400;500;700;900&display=swap"
+        onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript>
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Inter:wght@400;500;700;900&display=swap" />
+    </noscript>
+    <link rel="preload" href="../css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="preload" href="../css/pages.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript>
+        <link rel="stylesheet" href="../css/style.css" />
+        <link rel="stylesheet" href="../css/pages.css" />
+    </noscript>
+
+    <style>
+        :root{--mrd:#a78bfa;--mrd-2:#7dd3fc;--mrd-dim:rgba(167,139,250,.12);--mrd-border:rgba(167,139,250,.3);--mrd-glow:rgba(167,139,250,.2);}
+        .mrd-hero{display:grid;grid-template-columns:1.15fr .85fr;gap:3rem;align-items:center;}
+        @media(max-width:860px){.mrd-hero{grid-template-columns:1fr;gap:2rem;}}
+        .mrd-icon{width:80px;height:80px;border-radius:20px;box-shadow:0 0 40px var(--mrd-glow);flex-shrink:0;}
+        .mrd-copy{font-size:clamp(1.05rem,2vw,1.3rem);color:#c4b5fd;font-weight:600;margin-bottom:.75rem;line-height:1.6;}
+        .store-btns{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1.6rem;}
+        .store-btn{display:inline-flex;align-items:center;gap:.65rem;padding:.75rem 1.25rem;border-radius:14px;background:#0f1424;border:1px solid rgba(148,163,210,.25);color:#e8ecf4;text-decoration:none;transition:border-color .2s,transform .2s;}
+        .store-btn:hover{border-color:var(--mrd-border);transform:translateY(-2px);}
+        .store-btn small{display:block;font-size:.68rem;color:var(--clr-text-muted);line-height:1.1;}
+        .store-btn strong{display:block;font-size:1rem;line-height:1.2;}
+        /* 스토어 캡처 */
+        .shot{display:block;width:100%;height:auto;border-radius:22px;box-shadow:0 24px 60px rgba(0,0,0,.45);}
+        .shot-hero{max-width:300px;margin:0 auto;box-shadow:0 30px 80px rgba(0,0,0,.5),0 0 60px var(--mrd-glow);}
+        /* 기능 */
+        .feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.25rem;margin-top:2rem;}
+        .feat{background:rgba(255,255,255,.03);border:1px solid rgba(148,163,210,.1);border-radius:16px;padding:1.5rem;}
+        .feat .ic{font-size:1.8rem;margin-bottom:.5rem;}
+        .feat h3{font-size:1.05rem;font-weight:700;color:#e8ecf4;margin:0 0 .45rem;}
+        .feat p{font-size:.9rem;color:var(--clr-text-muted);line-height:1.75;margin:0;}
+        .moods{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem;}
+        .moods span{padding:.4rem .9rem;border-radius:999px;background:var(--mrd-dim);border:1px solid var(--mrd-border);color:#ddd6fe;font-size:.88rem;}
+        /* 따뜻한 일기 · 공유 */
+        .warm-wrap{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center;margin-top:2rem;}
+        @media(max-width:860px){.warm-wrap{grid-template-columns:1fr;}}
+        .warm-list{display:grid;gap:1rem;}
+        .warm-item{display:flex;gap:1rem;padding:1.15rem 1.3rem;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(148,163,210,.1);}
+        .warm-item .n{flex-shrink:0;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;color:#1a1035;background:linear-gradient(135deg,var(--mrd),var(--mrd-2));}
+        .warm-item h3{font-size:1rem;color:#e8ecf4;margin:0 0 .3rem;}
+        .warm-item p{font-size:.9rem;color:var(--clr-text-muted);line-height:1.7;margin:0;}
+        .letter{position:relative;padding:2rem 1.8rem;border-radius:20px;background:linear-gradient(160deg,#fbf6ee,#f3ecff);color:#3b2f52;box-shadow:0 30px 70px rgba(0,0,0,.45);font-family:'Noto Serif KR',serif;line-height:2;}
+        .letter small{display:block;font-family:'Noto Sans KR',sans-serif;font-size:.75rem;color:#8a7aa6;margin-bottom:.6rem;letter-spacing:.02em;}
+        .letter .reply{margin-top:1.2rem;padding-top:1rem;border-top:1px dashed rgba(91,63,140,.25);font-family:'Noto Sans KR',sans-serif;font-size:.9rem;color:#5b3f8c;}
+        .share-ch{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin:1.6rem 0 0;}
+        .share-ch span{padding:.5rem 1rem;border-radius:999px;font-size:.9rem;font-weight:600;background:rgba(255,255,255,.04);border:1px solid rgba(148,163,210,.18);color:#e8ecf4;}
+        .trust{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))!important;}
+        .trust .ic{font-size:1.4rem;margin-bottom:.35rem;}
+        /* 오늘의 타로 */
+        .tarot-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:3rem;align-items:center;margin-top:2rem;}
+        @media(max-width:860px){.tarot-wrap{grid-template-columns:1fr;gap:2rem;}}
+        .tarot-names{display:flex;flex-wrap:wrap;gap:.45rem;margin:.9rem 0 0;}
+        .tarot-names span{font-size:.8rem;padding:.3rem .75rem;border-radius:999px;background:rgba(123,160,91,.12);border:1px solid rgba(123,160,91,.35);color:#cfe3bf;}
+        .gaze{margin-top:1.4rem;padding:1.2rem 1.4rem;border-left:3px solid var(--mrd);background:rgba(167,139,250,.06);border-radius:0 14px 14px 0;}
+        .gaze small{display:block;font-size:.75rem;color:var(--clr-text-muted);margin-bottom:.4rem;}
+        .gaze p{margin:0;font-family:'Noto Serif KR',serif;color:#ede9fe;line-height:1.85;}
+        /* 단계 */
+        .flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:2rem;counter-reset:s;}
+        .flow li{list-style:none;background:rgba(255,255,255,.03);border:1px solid rgba(148,163,210,.1);border-radius:16px;padding:1.3rem;}
+        .flow li::before{counter-increment:s;content:"0" counter(s);display:block;font-weight:900;font-size:1.4rem;background:linear-gradient(135deg,var(--mrd),var(--mrd-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.4rem;}
+        .flow h3{font-size:1rem;color:#e8ecf4;margin:0 0 .35rem;}
+        .flow p{font-size:.88rem;color:var(--clr-text-muted);line-height:1.7;margin:0;}
+        /* 스크린샷 */
+        .shots{display:flex;gap:1.25rem;overflow-x:auto;padding:1rem .25rem 1.5rem;scroll-snap-type:x mandatory;}
+        .shots figure{margin:0;width:230px;flex-shrink:0;scroll-snap-align:center;}
+        .shots figcaption{text-align:center;font-size:.82rem;color:var(--clr-text-muted);margin-top:.6rem;}
+        /* 등급 */
+        .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:2rem;}
+        @media(max-width:760px){.plans{grid-template-columns:1fr;}}
+        .plan{border-radius:18px;padding:1.6rem;border:1px solid rgba(148,163,210,.14);background:rgba(255,255,255,.03);}
+        .plan.blue{border-color:rgba(125,211,252,.35);} .plan.gold{position:relative;border-style:dashed;border-color:rgba(240,192,64,.45);background:linear-gradient(160deg,rgba(240,192,64,.07),rgba(255,255,255,.02));}
+        .soon{display:inline-block;margin-left:.5rem;padding:.15rem .6rem;border-radius:999px;font-size:.7rem;font-weight:700;letter-spacing:.04em;vertical-align:middle;color:#3a2a00;background:linear-gradient(90deg,#D4A017,#F0C040);} .plan.purple{border-color:var(--mrd-border);box-shadow:0 0 40px var(--mrd-glow);}
+        .plan h3{font-size:1.15rem;margin:0 0 .8rem;}
+        .plan ul{margin:0;padding-left:1.1rem;color:var(--clr-text-muted);line-height:1.9;font-size:.92rem;}
+        .trust{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem;margin-top:2rem;}
+        .trust>div{padding:1.2rem 1.3rem;border-radius:14px;background:rgba(148,163,210,.05);border:1px solid rgba(148,163,210,.12);font-size:.9rem;color:#c8d0ea;line-height:1.7;}
+        .trust strong{display:block;color:#e8ecf4;margin-bottom:.25rem;}
+    </style>
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MQT4J6J" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe>
+    </noscript>
+
+    <header>
+    <nav id="main-nav" aria-label="주 내비게이션">
+      <a href="../index.html" class="nav-logo" aria-label="Silversmith 홈">Silver<span>smith</span></a>
+      <ul class="nav-links" role="list">
+        <li class="nav-group">
+          <a href="../index.html#consulting">컨설팅 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg></a>
+          <div class="nav-dropdown">
+            <a href="../consulting/ad-monetization.html">Ad Monetization</a>
+            <a href="../consulting/self-check.html" style="padding-left:2rem;font-size:0.9em;opacity:.85;">↳ 자가진단</a>
+            <a href="../waterfall/" style="padding-left:2rem;font-size:0.9em;opacity:.85;">↳ 워터폴 최적화</a>
+            <a href="../consulting/seo-aeo-geo.html">SEO / AEO / GEO</a>
+            <a href="../consulting/ax-rpa.html">AX / RPA</a>
+          </div>
+        </li>
+        <li class="nav-group">
+          <a href="../index.html#service">에이전시 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg></a>
+          <div class="nav-dropdown">
+            <a href="../agency/search-display-ads.html">SA/DA 광고</a>
+            <a href="../agency/sms-lms-mms-rcs.html">SKT 문자광고</a>
+          </div>
+        </li>
+        <li class="nav-group">
+          <a href="../index.html#projects">프로젝트 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg></a>
+          <div class="nav-dropdown">
+            <a href="../project/ggeujag.html">그작그작</a>
+            <a href="../project/youtube-auto-translator.html">YouTube 자동번역기</a>
+            <a href="../project/jsbin.html">JSBin.kr</a>
+            <a href="../project/y-to-x.html">y-to-x</a>
+            <a href="../project/merokdam.html">MeRokDam</a>
+          </div>
+        </li>
+        <li><a href="../story.html">스토리</a></li>
+        <li><a href="../contact.html" class="btn-nav">문의하기</a></li>
+      </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="nav-overlay">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+    <div class="nav-overlay" id="nav-overlay" role="dialog" aria-label="모바일 메뉴">
+    <button class="nav-acc-btn" aria-expanded="false">
+      컨설팅 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </button>
+    <div class="nav-acc-items">
+      <a href="../index.html#consulting">컨설팅 홈</a>
+      <a href="../consulting/ad-monetization.html">Ad Monetization</a>
+      <a href="../consulting/self-check.html" style="padding-left:2rem;font-size:0.92em;opacity:.85;">↳ 자가진단</a>
+      <a href="../waterfall/" style="padding-left:2rem;font-size:0.92em;opacity:.85;">↳ 워터폴 최적화</a>
+      <a href="../consulting/seo-aeo-geo.html">SEO / AEO / GEO</a>
+      <a href="../consulting/ax-rpa.html">AX / RPA</a>
+    </div>
+
+    <button class="nav-acc-btn" aria-expanded="false">
+      에이전시 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </button>
+    <div class="nav-acc-items">
+      <a href="../index.html#service">에이전시 홈</a>
+      <a href="../agency/search-display-ads.html">SA/DA 광고</a>
+      <a href="../agency/sms-lms-mms-rcs.html">SKT 문자광고</a>
+    </div>
+
+    <button class="nav-acc-btn" aria-expanded="false">
+      프로젝트 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </button>
+    <div class="nav-acc-items">
+      <a href="../index.html#projects">프로젝트 홈</a>
+      <a href="../project/ggeujag.html">그작그작</a>
+      <a href="../project/youtube-auto-translator.html">YouTube 자동번역기</a>
+      <a href="../project/jsbin.html">JSBin.kr</a>
+      <a href="../project/y-to-x.html">y-to-x</a>
+      <a href="../project/merokdam.html">MeRokDam</a>
+    </div>
+
+    <a href="../story.html" style="margin-top:0.5rem">스토리</a>
+    <a href="../contact.html" class="btn-nav-mobile" style="margin-top:1rem">문의하기</a>
+  </div>
+
+        <main id="main-content">
+
+        <!-- HERO -->
+        <section class="page-hero">
+            <div class="blob" style="width:520px;height:420px;top:-8%;right:-6%;opacity:.14;background:radial-gradient(circle,#a78bfa,transparent 70%)"></div>
+            <div class="container">
+                <nav class="breadcrumb" aria-label="현재 위치">
+                    <a href="../index.html">홈</a>
+                    <span class="breadcrumb-sep" aria-hidden="true">›</span>
+                    <a href="../index.html#projects">프로젝트</a>
+                    <span class="breadcrumb-sep" aria-hidden="true">›</span>
+                    <span>미록담</span>
+                </nav>
+                <div class="mrd-hero">
+                    <div>
+                        <div class="page-hero-eyebrow">
+                            <span class="tag" style="background:var(--mrd-dim);border-color:var(--mrd-border);color:#c4b5fd">Mobile App</span>
+                            <span class="tag" style="background:var(--mrd-dim);border-color:var(--mrd-border);color:#c4b5fd;margin-left:.5rem">iOS · Android</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:1.1rem;margin-bottom:1rem">
+                            <img class="mrd-icon reveal" src="../images/merokdam/icon-192.png" width="80" height="80" alt="미록담 앱 아이콘" />
+                            <h1 class="reveal" style="font-size:clamp(2rem,5vw,3.4rem)">미록담<span style="font-size:.45em;color:var(--clr-text-muted);font-weight:600;margin-left:.6rem">MeRokDam</span></h1>
+                        </div>
+                        <p class="mrd-copy reveal reveal-delay-1">몇 가지만 고르면, 나머지는 미록담이 씁니다.</p>
+                        <p class="reveal reveal-delay-1" style="max-width:600px;line-height:1.85">
+                            일기를 쓰려고 마음먹은 날은 많았지만, 실제로 쓴 날은 며칠뿐이었죠.
+                            미록담은 휴대폰에 남은 <strong>사진·일정·걸음·수면</strong> 같은 하루의 기록에 <strong>오늘의 마음</strong>만 더하면
+                            AI가 알아서 일기를 지어주는 감성 다이어리입니다. 그리고 하루의 끝에는, 미록담이 건네는 다정한 위로 한 줄이 오늘을 포근하게 감싸 줍니다.
+                        </p>
+                        <div class="store-btns">
+                        <a class="store-btn" href="https://apps.apple.com/kr/app/id6760283013" target="_blank" rel="noopener" id="mrd-ios">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 12.6c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.72-1.35-.14-2.64.8-3.33.8-.69 0-1.74-.78-2.86-.76-1.47.02-2.83.86-3.59 2.17-1.53 2.66-.39 6.6 1.1 8.76.73 1.06 1.59 2.24 2.72 2.2 1.1-.05 1.51-.71 2.84-.71 1.32 0 1.7.71 2.86.69 1.18-.02 1.93-1.07 2.65-2.13.84-1.22 1.18-2.41 1.2-2.47-.03-.01-2.29-.88-2.31-3.52zM14.2 6.1c.6-.73 1.01-1.74.9-2.75-.87.04-1.92.58-2.54 1.31-.56.64-1.05 1.67-.92 2.66.97.07 1.96-.49 2.56-1.22z"/></svg>
+                            <span><small>Download on the</small><strong>App Store</strong></span>
+                        </a>
+                        <a class="store-btn" href="https://play.google.com/store/apps/details?id=com.silversmiths.merokdam" target="_blank" rel="noopener" id="mrd-aos">
+                            <svg width="20" height="22" viewBox="0 0 24 24" aria-hidden="true"><path fill="#34d399" d="M3.6 1.8 13.4 12 3.6 22.2c-.4-.2-.6-.6-.6-1.1V2.9c0-.5.2-.9.6-1.1z"/><path fill="#fbbf24" d="m17 8.4-3.6 3.6 3.6 3.6 4-2.3c.9-.5.9-1.4 0-1.9z"/><path fill="#60a5fa" d="M13.4 12 3.6 1.8c.3-.1.7-.1 1.1.1L17 8.4z"/><path fill="#f87171" d="M13.4 12 17 15.6 4.7 22.1c-.4.2-.8.2-1.1.1z"/></svg>
+                            <span><small>GET IT ON</small><strong>Google Play</strong></span>
+                        </a>
+                    </div>
+                    </div>
+                    <div class="reveal reveal-delay-2" aria-hidden="true">
+                        <img class="shot shot-hero" src="../images/merokdam/screen-03.webp" width="600" height="1298" alt="미록담 앱 화면 — 고르기만 하면 문장은 미록담이 써요" fetchpriority="high" />
+                </div>
+            </div>
+        </section>
+
+        <!-- HOW IT WORKS -->
+        <section class="section" aria-label="이용 방법">
+            <div class="container">
+                <div class="section-header reveal">
+                    <p class="section-eyebrow">How it works</p>
+                    <h2 class="section-title">고르기만 하면<br><span style="color:#c4b5fd">오늘의 일기가 완성돼요</span></h2>
+                    <p class="section-desc">빈 화면 앞에서 무엇을 쓸지 고민할 필요가 없어요. 네 단계면 충분합니다.</p>
+                </div>
+                <ol class="flow">
+                    <li class="reveal"><h3>마음 고르기</h3><p>아홉 가지 감정 가운데 오늘의 마음을 골라요. 여러 개를 골라도 괜찮아요.</p></li>
+                    <li class="reveal reveal-delay-1"><h3>오늘의 타로 뽑기</h3><p>펼쳐진 타로 카드 중 마음이 멈춘 한 장을 고르면, 그 카드의 시선으로 하루를 다시 바라봐요.</p></li>
+                    <li class="reveal reveal-delay-2"><h3>미록담이 일기 짓기</h3><p>허락한 사진·일정·건강 기록에 그날의 날씨까지 더해, 미록담이 한 편의 일기로 지어드려요.</p></li>
+                    <li class="reveal reveal-delay-3"><h3>위로의 답장 받기</h3><p>일기 끝에는 미록담의 답장이 도착해, 수고한 오늘을 따뜻하게 토닥여 줘요.</p></li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- FEATURES -->
+        <section class="section section-bg-alt" aria-label="주요 기능">
+            <div class="container">
+                <div class="section-header reveal">
+                    <p class="section-eyebrow">Features</p>
+                    <h2 class="section-title">쓰는 수고는 덜고,<br><span style="color:#c4b5fd">마음은 고스란히</span></h2>
+                </div>
+                <div class="feat-grid">
+                    <div class="feat reveal"><div class="ic">🌦️</div><h3>오늘, 마음의 날씨</h3><p>신남 · 놀람 · 분노 · 행복 · 담담 · 긴장 · 흡족 · 피곤 · 슬픔. 하루에는 여러 마음이 함께 살기에, 몇 개든 골라도 돼요.</p></div>
+                    <div class="feat reveal reveal-delay-1"><div class="ic">🃏</div><h3>미록담의 답장</h3><p>일기를 다 쓰면, 오늘 뽑은 타로의 따뜻한 시선을 담아 미록담이 응원과 위로의 답장을 건네요.</p></div>
+                    <div class="feat reveal reveal-delay-2"><div class="ic">📷</div><h3>하루의 재료가 문장으로</h3><p>걸음 수, 잠든 시간, 오늘 찍은 사진, 다녀온 동네, 날씨와 일정까지. 흩어진 조각이 모여 한 편의 글이 돼요.</p></div>
+                    <div class="feat reveal"><div class="ic">🔍</div><h3>무엇을 보고 썼는지 투명하게</h3><p>“사진 3장, 흐림, 4,017걸음, 수면 5시간 13분.” 어떤 기록을 보고 썼는지 일기 아래에 그대로 보여드려요.</p></div>
+                    <div class="feat reveal reveal-delay-1"><div class="ic">✍️</div><h3>제목까지 알아서</h3><p>제목이 떠오르지 않아도 괜찮아요. 완성된 일기에 어울리는 제목을 미록담이 붙여드려요. 일기 스타일과 서체 15종도 누구나 무료로 고를 수 있어요.</p></div>
+                    <div class="feat reveal reveal-delay-2"><div class="ic">📱</div><h3>홈 화면 위젯</h3><p>앱을 열지 않아도 홈 화면에서 이번 달 기록이 얼마나 모였는지, 자서전 소식은 어떤지 바로 확인해요.</p></div>
+                    <div class="feat reveal"><div class="ic">🍂</div><h3>쌓인 하루가 나의 계절로</h3><p>하루가 모여 한 달이, 한 달이 모여 한 해가 돼요. 감정의 흐름을 돌아보고, 그날의 기분이나 문장으로 지난 하루를 다시 찾아보세요.</p></div>
+                    <div class="feat reveal reveal-delay-1"><div class="ic">📖</div><h3>월간 자서전</h3><p>한 달의 일기를 한 권의 이야기로 엮어 드려요. 가볍게 남긴 오늘이, 오래 간직할 삶의 이야기가 됩니다.</p></div>
+                    <div class="feat reveal reveal-delay-2"><div class="ic">🎨</div><h3>그림으로 남는 하루 <span style="font-size:.72rem;color:#c4b5fd;font-weight:600">퍼플 이상</span></h3><p>15종의 캐릭터 중 나를 닮은 친구를 고르고 특별 아이템으로 꾸며 보세요. 일기가 완성되면 그날의 장면이 한 장의 그림으로 남는 나만의 그림일기가 돼요.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAROT -->
+        <section class="section" aria-label="오늘의 타로">
+            <div class="container">
+                <div class="section-header reveal">
+                    <p class="section-eyebrow">Today's Tarot</p>
+                    <h2 class="section-title">미록담만을 위해 그린<br><span style="color:#c4b5fd">오늘의 타로</span></h2>
+                    <p class="section-desc">미래를 맞히는 카드가 아니라, 오늘의 마음을 다른 시선으로 바라보게 하는 작은 질문이에요.</p>
+                </div>
+                <div class="tarot-wrap">
+                    <div>
+                        <div class="warm-list">
+                            <div class="warm-item reveal"><span class="n">🌿</span><div><h3>정원과 호수의 세계로 다시 그린 22장</h3><p>메이저 아르카나 22장을 달리아·수련·클로버가 피어나는 미록담의 정원 세계관으로 새로 그렸어요. 이름도 그림에 맞게 새로 붙였어요.</p>
+                                <div class="tarot-names"><span>호수의 여사제</span><span>온실의 여황제</span><span>정원의 황제</span><span>식물학자</span><span>꽃마차</span><span>운명의 화관</span><span>무너진 정원</span></div></div></div>
+                            <div class="warm-item reveal reveal-delay-1"><span class="n">✍️</span><div><h3>카드마다 직접 쓴 '미록담의 시선'</h3><p>그림 속 장면에서 길어 올린 문장을 카드마다 직접 썼어요. 같은 카드를 뽑아도 날마다 다른 한 줄을 만나요.</p></div></div>
+                            <div class="warm-item reveal reveal-delay-2"><span class="n">☀️</span><div><h3>어두운 해석 대신, 다정한 시선</h3><p>원작 타로의 무서운 해석은 쓰지 않아요. '죽음' 카드도 마른 꽃 아래 클로버 싹이 트는, 새로운 시작의 날로 읽어요.</p></div></div>
+                            <div class="warm-item reveal reveal-delay-3"><span class="n">🃏</span><div><h3>하루 한 장, 오늘만의 카드</h3><p>78장 가운데 마음이 멈춘 한 장을 고르면 그날 하루는 그 카드로 고정돼요. 카드의 시선은 일기와 미록담의 답장에 함께 스며들어요.</p></div></div>
+                        </div>
+                        <div class="gaze reveal">
+                            <small>미록담의 시선 · XIII. 죽음 (Death)</small>
+                            <p>마른 꽃과 찢어진 도감 아래, 흙 속에서 클로버 싹이 트는 날</p>
+                        </div>
+                    </div>
+                    <div class="reveal reveal-delay-2">
+                        <!-- 커스텀 카드 그림을 받으면 이 자리에 카드 3~5장 배치 -->
+                        <img class="shot shot-hero" src="../images/merokdam/screen-02.webp" width="600" height="1298" loading="lazy" decoding="async" alt="미록담 앱 화면 — 미록담 전용 타로 카드가 펼쳐진 오늘의 타로 화면" />
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- WARM WRITING -->
+        <section class="section" aria-label="따뜻한 일기">
+            <div class="container">
+                <div class="section-header reveal">
+                    <p class="section-eyebrow">Warm by design</p>
+                    <h2 class="section-title">힘든 하루에도,<br><span style="color:#c4b5fd">위로받는 일기</span></h2>
+                    <p class="section-desc">미록담의 AI는 처음부터 다정하게 쓰도록 만들어졌어요. 거친 말 대신 오늘의 마음을 보듬는 문장으로 하루를 정리합니다.</p>
+                </div>
+                <div class="warm-wrap">
+                    <div class="warm-list">
+                        <div class="warm-item reveal"><span class="n">1</span><div><h3>먼저 거친 말을 꺼내지 않아요</h3><p>내가 쓰지 않은 험한 말을 AI가 보태거나 수위를 높이지 않아요. 남을 깎아내리거나 해치는 표현도 쓰지 않도록 만들었어요.</p></div></div>
+                        <div class="warm-item reveal reveal-delay-1"><span class="n">2</span><div><h3>마음을 부풀리지도, 지우지도 않아요</h3><p>힘든 감정을 과장하지 않고, 억지로 밝게 바꾸지도 않아요. 오늘의 마음을 있는 그대로 인정하는 데서 시작해요.</p></div></div>
+                        <div class="warm-item reveal reveal-delay-2"><span class="n">3</span><div><h3>다른 사람을 나쁘게 해석하지 않아요</h3><p>일기를 완성하기 전에 한 번 더 살펴, 누군가의 의도를 악의적으로 넘겨짚은 문장이 없는지 확인해요.</p></div></div>
+                        <div class="warm-item reveal reveal-delay-3"><span class="n">4</span><div><h3>마지막은 마음을 보듬는 한 줄로</h3><p>뻔한 교훈이나 설교 대신, 그날 고른 기분에 맞춘 짧은 위로로 일기를 맺어요. 그리고 미록담의 답장이 한 번 더 토닥여 줘요.</p></div></div>
+                    </div>
+                    <div class="reveal reveal-delay-2" aria-hidden="true">
+                        <div class="letter">
+                            <small>예시 · 피곤 · 담담</small>
+                            회의가 길어진 탓에 점심을 놓친 날이었다. 저녁 무렵 집 앞 골목에 들어서자 오늘 걸은 칠천 걸음이 한꺼번에 발끝에 내려앉았다.
+                            잘해내지 못한 일들이 자꾸 떠올랐지만, 지친 몸을 끌고 여기까지 돌아온 나에게 오늘은 조금 너그러워져도 괜찮겠다.
+                            <div class="reply">💌 미록담의 답장 · 오늘 하루도 잘 이겨냈어요. 푹 쉬어요.</div>
+                        </div>
+                    </div>
+                </div>
+                <p style="font-size:.82rem;color:var(--clr-text-dim);margin-top:1.2rem;line-height:1.8">※ 위 일기는 이해를 돕기 위한 예시입니다. 내가 직접 입력한 표현과 말투는 억지로 바꾸지 않고 그대로 살려요.</p>
+            </div>
+        </section>
+
+        <!-- SHARE -->
+        <section class="section section-bg-alt" aria-label="공유 기능">
+            <div class="container">
+                <div class="section-header reveal">
+                    <p class="section-eyebrow">Share</p>
+                    <h2 class="section-title">오늘의 일기,<br><span style="color:#c4b5fd">탭 몇 번이면 나눌 수 있어요</span></h2>
+                    <p class="section-desc">자랑하고 싶은 하루도, 위로받고 싶은 하루도. 원하는 곳에 원하는 모양으로 보내 보세요.</p>
+                </div>
+                <div class="share-ch reveal" aria-label="공유 채널">
+                    <span>💬 카카오톡</span><span>📸 인스타그램</span><span>🧵 스레드</span><span>✉️ 메시지</span><span>🖼️ 사진에 저장</span>
+                </div>
+                <div class="feat-grid">
+                    <div class="feat reveal"><div class="ic">📐</div><h3>피드와 스토리에 딱 맞게</h3><p>피드용 4:5, 스토리용 9:16 비율로 공유 이미지를 만들어 드려요. 따로 자르거나 편집할 필요가 없어요.</p></div>
+                    <div class="feat reveal reveal-delay-1"><div class="ic">🧩</div><h3>담을 내용은 내가 골라요</h3><p>🎨 그림 · 📝 한줄 · ❤️ 마음 · 🍱 재료 · ✍🏻 필명. 보여주고 싶은 카드만 골라 한 장에 담을 수 있어요.</p></div>
+                    <div class="feat reveal reveal-delay-2"><div class="ic">📋</div><h3>본문은 자동으로 복사</h3><p>공유하면 일기 본문이 클립보드에 복사돼 바로 붙여 넣을 수 있어요. 긴 일기는 여러 장으로 알아서 나눠 드려요.</p></div>
+                    <div class="feat reveal"><div class="ic">🔗</div><h3>링크로 보내는 하루</h3><p>받은 사람은 링크를 눌러 미록담에서 일기를 열어요. 일기를 비공개로 바꾸거나 지우면 링크도 더 이상 열리지 않아요.</p></div>
+                    <div class="feat reveal reveal-delay-1"><div class="ic">📚</div><h3>자서전은 PDF로</h3><p>한 달을 엮은 월간 자서전은 PDF 파일로 저장해 소중한 사람에게 건넬 수 있어요.</p></div>
+                    <div class="feat reveal reveal-delay-2"><div class="ic">🤝</div><h3>필명으로 나누는 피드</h3><p>앱 안에서는 필명으로 일기를 나누고, 응원해요 · 공감해요 · 위로해요로 마음을 전해요.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREENS -->
+        <section class="section" aria-label="앱 화면">
+            <div class="container">
+                <div class="section-header reveal">
+                    <p class="section-eyebrow">Screens</p>
+                    <h2 class="section-title">미록담 <span style="color:#c4b5fd">둘러보기</span></h2>
+                </div>
+                <div class="shots reveal" aria-label="앱 화면 미리보기">
+                    <figure><img class="shot" src="../images/merokdam/screen-01.webp" width="600" height="1298" loading="lazy" decoding="async" alt="미록담 앱 화면 — 아홉 가지 감정 중 오늘의 마음을 고르는 화면" /><figcaption>오늘, 마음의 날씨는 어땠나요?</figcaption></figure>
+                    <figure><img class="shot" src="../images/merokdam/screen-02.webp" width="600" height="1298" loading="lazy" decoding="async" alt="미록담 앱 화면 — 펼쳐진 타로 카드 중 한 장을 고르는 오늘의 타로 화면" /><figcaption>오늘의 타로 한 장이 일기에 스며들어요</figcaption></figure>
+                    <figure><img class="shot" src="../images/merokdam/screen-03.webp" width="600" height="1298" loading="lazy" decoding="async" alt="미록담 앱 화면 — 내 캐릭터 그림과 함께 AI가 지은 일기 화면" /><figcaption>고르기만 하면 문장은 미록담이 써요</figcaption></figure>
+                    <figure><img class="shot" src="../images/merokdam/screen-04.webp" width="600" height="1298" loading="lazy" decoding="async" alt="미록담 앱 화면 — 날씨·일정·걸음·수면 등 일기 재료를 보여주는 화면" /><figcaption>무엇을 보고 썼는지 숨기지 않아요</figcaption></figure>
+                    <figure><img class="shot" src="../images/merokdam/screen-05.webp" width="600" height="1298" loading="lazy" decoding="async" alt="미록담 앱 화면 — 월별로 쌓인 일기 기록을 모아보는 화면" /><figcaption>쌓인 하루가 나의 계절이 돼요</figcaption></figure>
+                    <figure><img class="shot" src="../images/merokdam/screen-06.webp" width="600" height="1298" loading="lazy" decoding="async" alt="미록담 앱 화면 — 한 달의 기록을 엮은 월간 자서전 화면" /><figcaption>한 달의 일기가 나의 자서전이 돼요</figcaption></figure>
+                    <figure><img class="shot" src="../images/merokdam/screen-07.webp" width="600" height="1298" loading="lazy" decoding="async" alt="미록담 앱 화면 — 필명으로 공개된 이웃의 일기를 보는 피드 화면" /><figcaption>이웃의 하루에 마음을 놓고 오세요</figcaption></figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- PLANS -->
+        <section class="section section-bg-alt" aria-label="이용 등급">
+            <div class="container">
+                <div class="section-header reveal">
+                    <p class="section-eyebrow">Plans</p>
+                    <h2 class="section-title">이용 등급 — <span style="color:#7dd3fc">블루</span> · <span style="color:#c4b5fd">퍼플</span> · <span style="color:#F0C040">골드</span></h2>
+                    <p class="section-desc">기본 기능은 블루로 무료로 쓸 수 있어요. 그림일기와 함께 더 깊이 기록하고 싶다면 퍼플을, 곧 선보일 골드도 기대해 주세요.</p>
+                </div>
+                <div class="plans">
+                    <div class="plan blue reveal"><h3 style="color:#7dd3fc">블루 · 무료</h3><ul>
+                        <li>직접 쓰는 일기는 무료</li>
+                        <li>AI 일기는 💧 물방울로</li>
+                        <li>월간 자서전 💧500</li>
+                        <li>피드 · 서로 이웃 · 댓글 등 기본 기능</li>
+                        <li>광고 시청 · 일기 완성으로 💧 적립</li>
+                    </ul></div>
+                    <div class="plan purple reveal reveal-delay-1"><h3 style="color:#c4b5fd">퍼플 · 구독</h3><ul>
+                        <li><strong>🎨 그림일기</strong> — 15종의 캐릭터와 특별 아이템으로 꾸미는 오늘의 그림</li>
+                        <li>AI 일기 하루 1회 포함 (추가 생성은 💧)</li>
+                        <li>월간 자서전 무료</li>
+                        <li>지난 7일의 기록도 💧 없이</li>
+                        <li>사진 분석 3장 — 사진 속 이야기까지 일기로</li>
+                        <li>재료를 바꿔 처음부터 다시 짓기</li>
+                        <li>지운 일기도 30일 안에 되살리기</li>
+                    </ul></div>
+                    <div class="plan gold reveal reveal-delay-2"><h3 style="color:#F0C040">골드<span class="soon">COMING SOON</span></h3><ul>
+                        <li>퍼플의 모든 기능</li>
+                        <li>그 외 혜택은 미정 — 준비되는 대로 앱에서 먼저 알려드릴게요</li>
+                    </ul></div>
+                </div>
+                <p style="font-size:.82rem;color:var(--clr-text-dim);margin-top:1rem;line-height:1.8">※ 등급별 이용 범위와 가격은 앱 안 화면과 스토어 결제 화면의 안내가 기준입니다. 구독은 App Store · Google Play에서 결제하며, 해지하지 않으면 같은 기간 단위로 자동 갱신됩니다. 물방울은 현금 가치가 없으며 환불·양도할 수 없습니다. 구독 중에도 피드에는 광고가 표시될 수 있어요. 자세한 내용은 <a href="../merokdam/terms.html" style="color:inherit;text-decoration:underline">이용약관</a>을 확인해 주세요.</p>
+            </div>
+        </section>
+
+        <!-- TRUST -->
+        <section class="section" aria-label="개인정보와 안전">
+            <div class="container">
+                <div class="section-header reveal">
+                    <p class="section-eyebrow">Privacy</p>
+                    <h2 class="section-title">이 일기의 주인은 <span style="color:#c4b5fd">당신</span>이니까요</h2>
+                </div>
+                <div class="trust">
+                    <div class="reveal"><div class="ic">✍🏻</div><strong>이름 대신 필명</strong>실명도 얼굴도 필요 없어요. 공개된 일기에는 필명만 보여요.</div>
+                    <div class="reveal reveal-delay-1"><div class="ic">🔒</div><strong>일기마다 공개 범위</strong>전체 · 서로 이웃 · 나만 보기를 일기마다 정해요. 댓글은 일기 주인과 서로 이웃에게만 보여요.</div>
+                    <div class="reveal reveal-delay-2"><div class="ic">🧺</div><strong>허락한 재료만</strong>사진·일정·건강·위치는 직접 연결하고 고른 기록만 일기에 써요.</div>
+                    <div class="reveal reveal-delay-3"><div class="ic">💗</div><strong>건강 정보는 따로 동의</strong>민감정보인 건강 기록은 별도 동의를 받은 경우에만 읽어요. 동의하지 않아도 일기를 쓸 수 있어요.</div>
+                    <div class="reveal"><div class="ic">🖼️</div><strong>사진 원본은 서버에 남기지 않아요</strong>분석에만 잠시 쓰고 회사 서버에 저장하지 않아요. 피드에도 원본 사진은 올라가지 않아요.</div>
+                    <div class="reveal reveal-delay-1"><div class="ic">🙈</div><strong>개인정보는 문장에서 빼요</strong>AI가 일기를 지을 때 실명·전화번호·주소 같은 개인정보를 문장에 옮기지 않도록 작성해요.</div>
+                    <div class="reveal reveal-delay-2"><div class="ic">🛡️</div><strong>올리기 전에 한 번 더</strong>직접 쓴 공개 일기와 댓글은 게시 전 AI가 개인정보 노출·욕설 등을 검사하고, 불편한 글은 신고·차단할 수 있어요.</div>
+                    <div class="reveal reveal-delay-3"><div class="ic">📵</div><strong>일기는 광고에 쓰지 않아요</strong>일기 내용과 건강 정보는 광고에 쓰지 않아요. 맞춤형 광고는 동의한 경우에만, 만 18세 미만에게는 보내지 않아요.</div>
+                </div>
+                <p style="font-size:.82rem;color:var(--clr-text-dim);margin-top:1.2rem;line-height:1.8">
+                    전체 공개한 일기는 필명만 표시해 미록담 소개 영상(사연 영상)에 쓰일 수 있으며, 설정에서 언제든 참여를 끌 수 있어요. 미록담은 의료 기기가 아니며 진단·치료의 근거가 될 수 없습니다. 만 16세 이상 이용할 수 있습니다.
+                    · <a href="../merokdam/terms.html" style="color:inherit;text-decoration:underline">이용약관</a>
+                    · <a href="../privacy.html" style="color:inherit;text-decoration:underline">개인정보처리방침</a>
+                    · <a href="merokdam-delete.html" style="color:inherit;text-decoration:underline">계정 삭제 안내</a>
+                </p>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="section section-bg-alt" aria-label="자주 묻는 질문">
+            <div class="container container-narrow">
+                <div class="section-header reveal">
+                    <p class="section-eyebrow">FAQ</p>
+                    <h2 class="section-title">자주 묻는 <span style="color:#c4b5fd">질문</span></h2>
+                </div>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">미록담은 어떤 앱인가요?<svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg></button>
+                        <div class="faq-a" role="region"><p>휴대폰에 남은 사진·일정·건강·활동 기록에 오늘의 기분과 짧은 생각을 더하면, AI가 알아서 일기를 지어주는 감성 다이어리 앱입니다. 일기 끝에는 오늘의 타로에 담긴 응원과 위로의 답장도 함께 받을 수 있어요.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">무료로 쓸 수 있나요?<svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg></button>
+                        <div class="faq-a" role="region"><p>네. 블루 등급으로 직접 쓰는 일기와 기본 기능을 무료로 이용할 수 있습니다. 일부 기능은 광고 시청·일기 완성 등으로 받는 무상 포인트인 물방울로 이용하며, 유료 구독 이용권인 퍼플을 선택하면 그림일기, 하루 1회 포함된 AI 일기, 무료 월간 자서전, 사진 분석 3장 등을 이용할 수 있습니다. 등급별 이용 범위는 앱 안 안내가 기준입니다.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">사진이나 건강 기록이 서버에 저장되나요?<svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg></button>
+                        <div class="faq-a" role="region"><p>허용한 항목만 읽어옵니다. 사진 원본은 분석에만 잠시 쓰고 회사 서버에 저장하지 않습니다. 건강·일정 기록은 일기를 짓는 데 필요한 요약만 보관하며, 일기 내용과 건강 정보는 광고에 사용하지 않습니다. 자세한 내용은 개인정보처리방침을 확인해 주세요.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">다른 사람이 내 일기를 볼 수 있나요?<svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg></button>
+                        <div class="faq-a" role="region"><p>공개한 일기는 필명으로만 보이며 이름이나 얼굴은 필요 없습니다. 일기마다 '전체', '서로 이웃', '나만 보기' 중 공개 범위를 언제든 바꿀 수 있어요.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">AI가 쓴 일기에 거친 표현이 들어가지는 않나요?<svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg></button>
+                        <div class="faq-a" role="region"><p>미록담의 AI는 사용자가 쓰지 않은 욕설을 보태거나 수위를 높이지 않도록, 타인을 악의적으로 해석하거나 힘든 감정을 부풀리지 않도록 만들어졌습니다. 일기의 마지막은 그날의 기분에 맞춘 위로로 맺어요. 다만 사용자가 직접 입력한 말투는 억지로 바꾸지 않고 그대로 살립니다.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">일기를 다른 곳에 공유할 수 있나요?<svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg></button>
+                        <div class="faq-a" role="region"><p>네. 카카오톡·인스타그램·스레드·메시지로 바로 보내거나 사진으로 저장할 수 있어요. 피드(4:5)·스토리(9:16) 비율과 담을 내용(그림·한줄·마음·재료·필명)을 고를 수 있고, 본문은 자동으로 복사됩니다. 월간 자서전은 PDF로 저장할 수 있어요.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false">누가 이용할 수 있나요?<svg class="faq-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg></button>
+                        <div class="faq-a" role="region"><p>만 16세 이상 이용할 수 있으며, iOS(App Store)와 Android(Google Play)에서 내려받을 수 있습니다. 한국어와 영어를 지원합니다.</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section" aria-label="다운로드">
+            <div class="container" style="text-align:center">
+                <p class="section-eyebrow" style="margin-bottom:1rem">Download</p>
+                <h2 class="reveal">특별한 일이 없었던 날도,<br><span style="color:#c4b5fd">남겨둘 가치가 있습니다</span></h2>
+                <p class="reveal reveal-delay-1">오늘의 사진과 짧은 생각부터, 미록담에 남겨보세요.</p>
+                <div style="display:flex;justify-content:center"><div class="store-btns">
+                        <a class="store-btn" href="https://apps.apple.com/kr/app/id6760283013" target="_blank" rel="noopener" id="mrd-ios-cta">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 12.6c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.72-1.35-.14-2.64.8-3.33.8-.69 0-1.74-.78-2.86-.76-1.47.02-2.83.86-3.59 2.17-1.53 2.66-.39 6.6 1.1 8.76.73 1.06 1.59 2.24 2.72 2.2 1.1-.05 1.51-.71 2.84-.71 1.32 0 1.7.71 2.86.69 1.18-.02 1.93-1.07 2.65-2.13.84-1.22 1.18-2.41 1.2-2.47-.03-.01-2.29-.88-2.31-3.52zM14.2 6.1c.6-.73 1.01-1.74.9-2.75-.87.04-1.92.58-2.54 1.31-.56.64-1.05 1.67-.92 2.66.97.07 1.96-.49 2.56-1.22z"/></svg>
+                            <span><small>Download on the</small><strong>App Store</strong></span>
+                        </a>
+                        <a class="store-btn" href="https://play.google.com/store/apps/details?id=com.silversmiths.merokdam" target="_blank" rel="noopener" id="mrd-aos-cta">
+                            <svg width="20" height="22" viewBox="0 0 24 24" aria-hidden="true"><path fill="#34d399" d="M3.6 1.8 13.4 12 3.6 22.2c-.4-.2-.6-.6-.6-1.1V2.9c0-.5.2-.9.6-1.1z"/><path fill="#fbbf24" d="m17 8.4-3.6 3.6 3.6 3.6 4-2.3c.9-.5.9-1.4 0-1.9z"/><path fill="#60a5fa" d="M13.4 12 3.6 1.8c.3-.1.7-.1 1.1.1L17 8.4z"/><path fill="#f87171" d="M13.4 12 17 15.6 4.7 22.1c-.4.2-.8.2-1.1.1z"/></svg>
+                            <span><small>GET IT ON</small><strong>Google Play</strong></span>
+                        </a>
+                    </div></div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="../index.html" class="footer-logo" aria-label="Silversmith 홈">Silversmith</a>
+                    <p class="footer-tagline">전략 · 기술 · 제품으로 디지털 성장을 가속합니다</p>
+                </div>
+                <nav class="footer-nav" aria-label="푸터 내비게이션">
+                    <div class="footer-col">
+                        <h3>컨설팅</h3>
+                        <ul role="list">
+                            <li><a href="../consulting/seo-aeo-geo.html">SEO / AEO / GEO</a></li>
+                            <li><a href="../consulting/ax-rpa.html">AX / RPA</a></li>
+                            <li><a href="../consulting/ad-monetization.html">Ad Monetization</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h3>서비스 & 프로젝트</h3>
+                        <ul role="list">
+                            <li><a href="../agency/search-display-ads.html">SA/DA 광고</a></li>
+                            <li><a href="../agency/sms-lms-mms-rcs.html">SKT 문자광고</a></li>
+                            <li><a href="../project/ggeujag.html">그작그작</a></li>
+                            <li><a href="../project/youtube-auto-translator.html">YouTube 자동번역기</a></li>
+                            <li><a href="../project/jsbin.html">JSBin.kr</a></li>
+                            <li><a href="../project/y-to-x.html">y-to-x</a></li>
+                            <li><a href="../project/merokdam.html">MeRokDam</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h3>회사</h3>
+                        <ul role="list">
+                            <li><a href="../story.html">회사 스토리</a></li>
+                            <li><a href="../contact.html">문의하기</a></li>
+                            <li><a href="../privacy.html">개인정보처리방침</a></li>
+                            <li><a href="../terms.html">이용약관</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copy">© 2026 실버스미스 주식회사 · 사업자등록번호 272-87-02545 · 대표이사 윤정희 · <a href="mailto:help@silver-smiths.com" style="color:inherit">help@silver-smiths.com</a><br>경기도 양평군 양서면 식곡길 109-46 · <a href="tel:050714084101" style="color:inherit">0507-1408-4101</a> · 통신판매업신고번호 제2024-경기양평-1546호</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js" defer></script>
+</body>
+
+</html>
