@@ -9,6 +9,21 @@
 
   <!-- 포스팅 -->
   <url>
+    <loc>https://silver-smiths.com/post/2026/merokdam-launch.html</loc>
+    <lastmod>2026-10-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Silversmith</news:name>
+        <news:language>ko</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-14</news:publication_date>
+      <news:title>미록담 출시 — AI가 알아서 일기를 지어주는 감성 일기 앱</news:title>
+    </news:news>
+  </url>
+
+  <url>
     <loc>https://silver-smiths.com/post/2026/ad-monetization-cautions.html</loc>
     <lastmod>2026-08-13</lastmod>
     <changefreq>monthly</changefreq>

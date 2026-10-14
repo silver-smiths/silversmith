@@ -130,6 +130,7 @@ Silversmith의 사업은 크게 네 가지 축으로 구성됩니다: 컨설팅(
 - 이용 등급: 블루(무료) · 퍼플(구독) · 골드(출시 예정).
 - 개인정보: 필명 공개, 일기별 공개 범위, 사진 원본 서버 미저장, 건강정보 별도 동의, 일기 내용·건강 정보 광고 미사용.
 - **소개 페이지**: https://silver-smiths.com/project/merokdam.html
+- **출시 소개 글**: https://silver-smiths.com/post/2026/merokdam-launch.html
 - **App Store**: https://apps.apple.com/kr/app/id6760283013
 - **Google Play**: https://play.google.com/store/apps/details?id=com.silversmiths.merokdam
 
