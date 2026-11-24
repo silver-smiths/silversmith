@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<base href="/admin/merokdam/">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>미록담 운영 콘솔</title>
+<link rel="icon" href="/silver-smiths-favicon.ico">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<style>
+:root{--paper:#FFF9F3;--deep:#FBF1E4;--ink:#4B0082;--body:#5A4B6B;--soft:#77688C;--orange:#FF8C00;--gold:#FFCE44;--leaf:#7BA05B;--line:rgba(75,0,130,.12);--red:#B2402B;--blue:#87CEEB}
+*{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--body);font:14px/1.6 Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif}
+header{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:1px solid var(--line);background:#fff;position:sticky;top:0;z-index:5}
+header b{color:var(--ink);font-size:18px} header small{color:var(--soft)}
+main{max-width:1140px;margin:0 auto;padding:16px 22px 60px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 16px} .tab{padding:8px 13px;border-radius:12px;border:1px solid var(--line);background:#fff;font-weight:700;cursor:pointer;color:var(--body)} .tab.on{background:var(--ink);color:#fff;border-color:var(--ink)} .tab .n{background:var(--red);color:#fff;border-radius:9px;padding:0 6px;font-size:11px;margin-left:5px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:14px} .card h3{margin:0 0 10px;color:var(--ink);font-size:16px;display:flex;align-items:center;gap:6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px} @media(max-width:800px){.grid2{grid-template-columns:1fr}}
+table{width:100%;border-collapse:collapse;font-size:13px} th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top} th{color:var(--ink);font-weight:700;white-space:nowrap}
+code,.mono{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;background:var(--deep);padding:2px 6px;border-radius:6px;color:var(--ink);word-break:break-all}
+button{border:0;border-radius:10px;padding:8px 13px;font-weight:700;cursor:pointer;font-size:13px} .pri{background:var(--orange);color:#fff} .ghost{background:#fff;color:var(--ink);border:1px solid var(--line)} .danger{background:#fff;color:var(--red);border:1px solid rgba(178,64,43,.35)} button:disabled{opacity:.5;cursor:default}
+input,textarea,select{width:100%;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font:inherit;font-size:13px;background:var(--paper);color:var(--body)} textarea{min-height:64px;font-family:ui-monospace,Menlo,monospace}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap} .row>*{flex:1} .row>button{flex:none}
+.kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px} .kv div{background:var(--deep);border-radius:12px;padding:10px;text-align:center;position:relative} .kv b{display:block;font-size:20px;color:var(--ink)} .kv span{font-size:12px;color:var(--soft)} .kv .sub{font-size:11px;color:var(--soft);display:block;margin-top:2px}
+.ok{color:var(--leaf);font-weight:700} .bad{color:var(--red);font-weight:700} .warn{color:#B07A00;font-weight:700} .muted{color:var(--soft);font-size:12.5px}
+.light{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle} .light.g{background:var(--leaf)} .light.r{background:var(--red)} .light.y{background:#E0A400} .light.x{background:#CFC7DA}
+.tog{width:44px;height:26px;border-radius:13px;background:#CFC7DA;position:relative;cursor:pointer;flex:none;border:0;padding:0} .tog::after{content:'';position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.15s} .tog.on{background:var(--leaf)} .tog.on::after{left:21px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-weight:700;display:none;z-index:9;max-width:90vw}
+#login{max-width:380px;margin:80px auto} .hidden{display:none}
+.help{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;background:var(--deep);color:var(--ink);font-size:11px;font-weight:800;cursor:help;position:relative;flex:none;border:1px solid var(--line);vertical-align:middle;margin-left:4px}
+.help:hover::after,.help.open::after{content:attr(data-h);position:absolute;left:50%;bottom:130%;transform:translateX(-50%);width:300px;background:#2E1A4A;color:#fff;padding:10px 12px;border-radius:10px;font-size:12.5px;font-weight:500;line-height:1.55;white-space:pre-line;z-index:20;text-align:left;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.bar{display:flex;align-items:flex-end;gap:3px;height:120px;padding-top:8px} .bar i{flex:1;background:var(--ink);opacity:.75;border-radius:3px 3px 0 0;min-height:1px;position:relative} .bar i.b{background:var(--leaf)} .bar i.c{background:var(--orange)} .bar i:hover::after{content:attr(data-v);position:absolute;bottom:100%;left:50%;transform:translateX(-50%);font-size:11px;background:#2E1A4A;color:#fff;padding:2px 6px;border-radius:6px;white-space:nowrap}
+.legend{font-size:12px;color:var(--soft);margin-top:4px} .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 4px 0 10px;vertical-align:middle}
+.hbar{display:flex;align-items:center;gap:8px;font-size:12.5px;margin:3px 0} .hbar span:first-child{width:90px;color:var(--body)} .hbar em{display:block;height:10px;background:var(--ink);border-radius:5px;opacity:.7} .hbar span:last-child{width:50px;text-align:right;color:var(--soft)}
+.pill{display:inline-block;padding:1px 8px;border-radius:99px;font-size:11.5px;font-weight:800} .t-blue{background:rgba(135,206,235,.25);color:#2F6F8F;border:1px solid rgba(135,206,235,.7)} .t-purple{background:#4B0082;color:#fff} .t-gold{background:linear-gradient(90deg,#D4A017,#F0C040);color:#3A1F5C}
+.danger-zone{border-color:rgba(178,64,43,.35);background:#fff7f5}
+details summary{cursor:pointer;color:var(--ink);font-weight:700}
+</style>
+<link rel="stylesheet" href="admin-ui.css">
+</head>
+<body>
+<header><div><b>🌱 미록담 운영 콘솔</b> <small id="who"></small></div><div class="row" style="gap:6px"><button class="ghost" id="reload">새로고침</button><button class="ghost" id="logout" style="display:none">로그아웃</button></div></header>
+
+<main>
+<section id="login" class="card">
+  <h3>로그인</h3>
+  <p class="muted">앱에 가입한 대표 계정으로 로그인해요. 관리자 명단(admin_users)에 없는 계정은 들어올 수 없어요.</p>
+  <button class="pri" id="btnGoogle" disabled style="width:100%;margin-bottom:10px">Google로 로그인</button>
+  <details><summary class="muted">이메일·비밀번호로 로그인</summary>
+    <div style="margin-top:8px"><input id="email" type="email" placeholder="이메일" autocomplete="username"><div style="height:8px"></div><input id="pw" type="password" placeholder="비밀번호" autocomplete="current-password"><div style="height:8px"></div><button class="ghost" id="btnPw" style="width:100%">로그인</button></div>
+  </details>
+  <p id="loginMsg" class="bad"></p>
+</section>
+
+<section id="app" class="hidden">
+<nav class="tabs" id="tabs" aria-label="운영 메뉴"><div class="nav-brand">미록담<span>운영 콘솔</span></div><div class="nav-group">현황</div><button type="button" class="tab on" data-t="today">종합 현황</button><button type="button" class="tab" data-t="usage">사용 통계</button><div class="nav-group">운영</div><button type="button" class="tab" data-t="users">회원</button><button type="button" class="tab" data-t="inq">문의<span class="n hidden" id="inqBadge"></span></button><button type="button" class="tab" data-t="safety">콘텐츠·안전</button><button type="button" class="tab" data-t="story">사연 영상</button><div class="nav-group">서비스 관리</div><button type="button" class="tab" data-t="diaryprompts">일기 생성</button><button type="button" class="tab" data-t="jev">추가 질문</button><button type="button" class="tab" data-t="money">수익·비용</button><button type="button" class="tab" data-t="ads">광고</button><button type="button" class="tab" data-t="notice">공지·푸시</button><div class="nav-group">시스템</div><button type="button" class="tab" data-t="ops">운영 설정</button><button type="button" class="tab" data-t="audit">운영 변경 이력</button><div class="nav-footer">MeRokDam<br>서비스 운영 공간</div></nav><div class="page-heading"><div><p>미록담 운영 콘솔</p><h1 id="pageTitle">종합 현황</h1></div><span class="workspace-label">운영 관리</span></div>
+
+<div id="t-diaryprompts" class="hidden">
+  <div class="card"><h3>일기 생성 규칙</h3><p>초안 수정 → 같은 재료로 비교 → 초안 저장 → 운영 적용 순서로 관리합니다. 분석 담당은 재료를 정리하고, 작성 담당은 사용자 설정에 맞춰 글을 씁니다.</p><p id="diaryPromptStatus" class="muted"></p><p id="diaryPromptEditState" class="muted"></p><div id="diaryPromptEditor"></div></div>
+  <div class="card"><h3>같은 텍스트 재료로 비교</h3><p class="muted">입력한 재료를 선택한 AI 서비스로 보내 시험합니다. 사진 파일 분석은 이 화면에 포함되지 않습니다. 사용자 일기·포인트에 저장하거나 반영하지 않습니다.</p>
+  <label>일기 날짜<input type="date" id="dpDate"></label><label>오늘의 생각<textarea id="dpSeed" rows="2" maxlength="8000"></textarea></label><label>재료와 시간대별 기분<textarea id="dpMaterials" rows="6" maxlength="8000" placeholder="예: 오전 9시 산책 사진. 오후 2시 회의 예정. 저녁 기분은 차분함. 하루 5,000보. 모르는 정보는 넣지 마세요."></textarea></label>
+  <div class="row"><label>분량<select id="dpLen"><option value="normal">재료에 맞게</option><option value="short">간결하게</option><option value="long">자세하게</option></select></label><label>말투<select id="dpWarmth"><option value="plain">담백하게</option><option value="warm">다정하게</option></select></label><label>중심<select id="dpFocus"><option value="balance">균형</option><option value="fact">기록 위주</option><option value="feeling">감정 위주</option></select></label><label>인칭<select id="dpPov"><option value="first">나</option><option value="second">너</option><option value="third">그 사람</option></select></label></div>
+  <button class="ghost" onclick="testDiaryPrompts()" style="margin-top:12px">운영 버전과 현재 초안 비교 생성</button></div>
+  <div class="grid2"><div class="card"><h3>운영 버전 결과</h3><div id="dpActiveResult">비교할 재료를 입력해 주세요.</div></div><div class="card"><h3>초안 결과</h3><div id="dpDraftResult">초안은 운영에 적용되지 않습니다.</div></div></div>
+  <div class="card"><h3>운영 적용 이력</h3><div id="diaryPromptHistory"></div></div>
+</div>
+
+  <!-- 오늘 -->
+  <div id="t-today">
+    <div class="overview-intro">서비스의 상태와 주요 지표를 한곳에서 확인하세요.</div>
+    <div id="overviewSummary" class="summary-grid" aria-live="polite"></div>
+    <div class="grid2">
+      <div class="card"><h3>상태등 <span class="help" data-h="서버 크론·함수·마이그레이션이 제대로 돌고 있는지. 빨간 불이 하나라도 있으면 사용자에게 무언가 안 가고 있다는 뜻이라 가장 먼저 봅니다.&#10;• 크론: 마지막 실행 결과가 succeeded면 초록&#10;• 점검(checks): SQL 적용·함수 존재 여부&#10;• story_judge_ran_today는 사연 영상이 일시정지 상태면 false가 정상">?</span></h3><div id="health" class="muted">불러오는 중…</div></div>
+      <div class="card"><h3>처리 대기 <span class="help" data-h="사람이 손대야 하는 것들. 문의는 답변, 신고는 열람 후 비공개 조치, 검수 실패는 확인, 렌더 완료 영상은 게시 자격증명 등록 후 자동 게시됩니다.">?</span></h3><div id="pending" class="kv"></div></div>
+    </div>
+    <div class="card"><h3>오늘·최근 숫자 <span class="help" data-h="활성 사용자 = 오늘 앱을 열었거나(app_open 이벤트) 일기를 쓴 사람 수. 신규 = 가입일 기준. 일기 = 삭제되지 않은 생성 건수(AI+직접). 재방문율 = 지난주 활동자 중 이번 주에도 활동한 비율(주간 리텐션).">?</span></h3><div id="todayStats" class="kv"></div></div>
+  </div>
+
+  <!-- 사용 통계 -->
+  <div id="t-usage" class="hidden">
+    <div class="card"><h3>최근 30일 추세 <span class="help" data-h="막대는 하루 단위(KST). 위: 활성 사용자(진보라)와 신규 가입(초록). 아래: 일기 생성 — AI(진보라) vs 직접 쓰기(주황). 막대에 마우스를 올리면 값이 보입니다. 현재 모든 지표는 서버에서 즉석 집계라 회원이 수만 명이 되면 일 단위 집계 테이블로 바꿔야 합니다.">?</span></h3>
+      <div class="muted">활성 · 신규</div><div id="chartActive" class="bar"></div><div class="legend"><i style="background:var(--ink)"></i>활성 <i style="background:var(--leaf)"></i>신규</div>
+      <div class="muted" style="margin-top:10px">일기 (AI · 직접)</div><div id="chartDiary" class="bar"></div><div class="legend"><i style="background:var(--ink)"></i>AI 생성 <i style="background:var(--orange)"></i>직접 쓰기</div></div>
+    <div class="grid2">
+      <div class="card"><h3>기록 행태 (30일) <span class="help" data-h="공개율 = 공개로 저장된 일기 비율(피드 활력의 원천). 씨앗 사용률 = 씨앗 한 줄을 적은 비율(높을수록 생성 품질↑). 편집률 = 생성 후 손본 비율(높으면 AI 결과 불만 신호). 직접 쓰기 비율이 급증하면 AI 생성에 문제가 있거나 과금 저항입니다.">?</span></h3><div id="diaryStats" class="kv"></div></div>
+      <div class="card"><h3>사용자 구성 <span class="help" data-h="등급 분포, 성별·MBTI 입력률(개인화 재료), 사연 영상 참여 끔(옵트아웃) 수, 상세 감정 끔 수, 자동 일기 켠 수, 알림 '모아서' 선택 수, 서체 분포.">?</span></h3><div id="userStats" class="kv"></div></div>
+    </div>
+    <div class="grid2">
+      <div class="card"><h3>마음 분포 (30일) <span class="help" data-h="일기에 담긴 9가지 마음의 빈도. 콘텐츠·프롬프트 방향을 잡을 때 참고. 불안·지침이 늘면 위로 콘텐츠, 활기·설렘이 늘면 공유 유도 콘텐츠가 맞습니다.">?</span></h3><div id="moodStats"></div></div>
+      <div class="card"><h3>피드·관계 (30일) <span class="help" data-h="반응 3종 수와 이웃(팔로우) 관계 수, 자서전 생성 수. 반응이 일기 수보다 훨씬 적으면 피드 노출이나 공감 버튼 위치를 의심합니다.">?</span></h3><div id="socialStats" class="kv"></div><div class="muted" style="margin-top:8px">앱 이벤트 (30일)</div><div id="eventStats" class="mono" style="background:transparent;font-size:12px"></div></div>
+    </div>
+    <div class="card"><h3>품질·속도 <span class="help" data-h="2026-10-02 성능 점검에서 정한 '판단할 데이터'. 내용은 받지 않고 범주·수치만 봅니다.&#10;• 다듬기율 = 수동 편집된 일기 ÷ 저장 일기. 편집 유형은 앱이 초안↔최종본을 비교해 범주만 보낸 것(fact 사실 수정 · style 문장 다듬기 · length 길이 · mixed)&#10;• 👍율·사유: 일기 본문·그림·자서전 평가(다음 날 재방문 때 1회 노출 — 빌드 100 부터)&#10;• 자서전 깔때기: 서가 열람 → 조건 충족 → 시작 → 완료 → 끝까지 읽음, 안 만든 이유 칩&#10;• 속도: 실기기 첫 프레임·홈 준비·피드 첫 그림까지 ms (중앙값/p90). 캐시 hit/miss 비율로 재시작 편차 확인&#10;빌드 100 이전 기록에는 편집 유형·속도 이벤트가 없어 비어 있습니다.">?</span> <select id="qualityDays" onchange="loadQuality()"><option value="7">최근 7일</option><option value="30" selected>최근 30일</option><option value="90">최근 90일</option></select></h3>
+      <div id="qualityTiles" class="kv"></div>
+      <div id="qualityDetail" class="muted" style="margin-top:8px">불러오는 중…</div>
+    </div>
+    <div class="card"><h3>생성 품질 (평점, 30일) <span class="help" data-h="일기·자서전 생성 직후 사용자가 남긴 👍/👎 평가 (design/mockup/29-quality-rating.html, 2026-09-24). kind×prompt_version별 평균 평점(-1~1)과 건수 — 프롬프트를 바꾸면 버전을 올려 서로 비교합니다. 지금은 사람이 보고 판단하는 1단계이며, 자동 조정은 아직 없습니다(quality.auto_tune.enabled). 아래 표는 개별 평가 — '아쉬웠어요' 위주로 사유·기타 메모를 읽고 프롬프트를 손봅니다.">?</span></h3>
+      <div id="genQualityStats" class="kv"></div>
+      <div id="genQualityTags" class="muted" style="margin-top:8px"></div>
+      <div class="row" style="margin-top:12px">
+        <select id="genFbKind" onchange="loadGenFeedbackLog()"><option value="">전체 종류</option><option value="diary_text">일기 내용</option><option value="diary_art">그림</option><option value="diary_image">기존 통합 평가</option><option value="autobiography">자서전</option></select>
+        <select id="genFbRating" onchange="loadGenFeedbackLog()"><option value="">전체 평가</option><option value="-1">아쉬웠어요만</option><option value="1">좋았어요만</option></select>
+      </div>
+      <div style="overflow-x:auto"><table id="genFbTable" style="margin-top:8px"></table></div>
+    </div>
+  </div>
+
+  <!-- 수익·비용 -->
+  <div id="t-money" class="hidden">
+    <div class="card danger-zone"><h3>⚠️ 결제 기록이 서버에 없습니다 <span class="help" data-h="현재 구독 구매는 앱이 직접 등급(profiles.tier)을 바꾸는 구조라 서버에 영수증·결제 내역이 없습니다. 그래서 아래 '가정 매출'은 등급별 인원 × 가격일 뿐 실제 결제·해지·환불을 반영하지 못합니다. 유료 출시 전에 서버 검증(App Store Server API + Play Developer API) 또는 RevenueCat 도입이 필요합니다. 결정 사항.">?</span></h3>
+      <p class="muted" style="margin:0">아래 수치는 <b>추정</b>입니다. 등급별 인원 × 표시 가격으로 계산하며, 테스터 무료 골드도 포함되어 실제 매출과 다릅니다. 실제 매출은 스토어 콘솔(App Store Connect 매출, Play Console 수익)에서 확인하세요.</p></div>
+    <div class="grid2">
+      <div class="card"><h3>구독 (추정) <span class="help" data-h="등급별 현재 인원과 만료일(tier_until)이 있는 체험·테스터 계정 수. 가정 월매출 = 퍼플 인원×퍼플 월가격 + 골드 인원×골드 월가격 (가격은 운영 설정의 price.* 키). 결제 검증 도입 전까지는 참고용.">?</span></h3><div id="subStats" class="kv"></div></div>
+      <div class="card"><h3>물방울 경제 (30일) <span class="help" data-h="발행 = 광고 시청·추천·선물 등으로 지급된 💧, 소진 = 생성·자서전 등으로 차감된 💧. 총 잔액은 사용자들이 쥔 부채(언젠가 소진될 무료 재화)입니다. 발행이 소진보다 훨씬 크면 광고 보상이 과하고, 소진이 크면 과금 압박이 큽니다.">?</span></h3><div id="pointStats" class="kv"></div><div id="pointDetail" class="muted"></div></div>
+    </div>
+    <div class="card"><h3>AI 비용 (추정) <span class="help" data-h="30일 AI 일기 수 × 편당 단가 + 요약 이미지 수 × 장당 단가 + 자서전 수 × 권당 단가. 단가는 운영 설정의 cost.* 키(원)이며 기본값은 가정치라 Google Cloud 청구서와 대조해 조정해야 합니다.">?</span></h3><div id="costStats" class="kv"></div><p class="muted">실제 청구: https://console.cloud.google.com/billing (Gemini·Veo·Lyria), Supabase 사용량은 대시보드 Usage.</p></div>
+  </div>
+
+  <!-- 회원 -->
+  <div id="t-users" class="hidden">
+    <div class="card"><h3>회원 검색 <span class="help" data-h="이메일(중계 주소 포함)·필명·UID로 검색. 비우면 최근 가입 30명. 행을 누르면 상세(활동·물방울 원장·문의·안전·메모). 애플 '이메일 가리기' 사용자는 xxx@privaterelay.appleid.com 으로 보이며 '중계'로 표시됩니다 — 그런 사용자는 운영 메모에 누구인지 적어 두세요.">?</span></h3><div class="row"><input id="uq" placeholder="이메일 · 필명 · UID (비우면 최근 가입 30명)"><button class="pri" onclick="searchUsers()">검색</button></div>
+      <table id="userTable" style="margin-top:10px"></table></div>
+    <div id="userDetail" class="card hidden"></div>
+  </div>
+
+  <!-- 콘텐츠·안전 -->
+  <div id="t-safety" class="hidden">
+    <div class="card"><h3>신고된 일기 <span class="help" data-h="사용자가 '!'로 신고한 공개 일기. 자동 재검수는 없습니다 — 여기서 사람이 열람해 부적절하면 '비공개로' 조치합니다. 열람은 감사 로그에 남습니다(개인 일기 열람은 신고 처리 목적에 한정).">?</span></h3><table id="reportedTable"></table></div>
+    <div class="card"><h3>신고된 댓글 <span class="help" data-h="서로 이웃 댓글 신고(2026-09-29). 신고한 사람에게는 바로 숨고, 서로 다른 사람의 신고가 comment.report_hide_count(기본 3)만큼 모이면 글쓴이 말고 모두에게 숨습니다. 여기서 열람해 부적절하면 삭제합니다. 열람·삭제는 감사 로그에 남습니다.">?</span></h3><table id="reportedComments"></table><div id="commentView" class="hidden" style="margin-top:10px"></div></div>
+    <div class="card"><h3>검수 실패 (최근 50) <span class="help" data-h="공개 전 자동 검수(moderate-diary)에서 fail 판정을 받은 건. pre_publish = 공개 시도 시, report_threshold = 신고 누적 시. fail이면 이미 비공개 처리되어 있습니다. 오탐이 많으면 검수 프롬프트를 조정합니다.">?</span></h3><table id="modTable"></table></div>
+    <div id="diaryView" class="card hidden"></div>
+  </div>
+
+  <!-- 운영 설정 -->
+  <div id="t-ops" class="hidden">
+    <div class="card"><h3>기능 스위치 <span class="help" data-h="앱·서버 기능을 켜고 끕니다. 앱은 다음 콜드 스타트(완전히 종료 후 실행)에, 서버 함수는 60초 안에 반영됩니다. 끄기는 언제든 안전하고, 켜기는 비용·정책 영향이 있으니 설명을 읽고 켜세요.">?</span></h3><table id="switches"></table></div>
+    <div class="card"><h3>체험·요금·한도 <span class="help" data-h="숫자 정책. JSON 형식으로 저장됩니다(숫자는 그대로, 문자열은 따옴표). 바꾸면 즉시 새 요청부터 적용.">?</span></h3><table id="fees"></table></div>
+    <div class="card"><h3>AI 모델·프롬프트 <span class="help" data-h="일기·자서전 생성에 쓰는 Gemini 모델 체인(앞에서부터 시도, 실패 시 다음)과 편집자·작가 프롬프트에 덧붙이는 규칙. 모델을 바꾸면 비용·품질이 같이 바뀌니 테스트 생성 후 적용하세요. 프롬프트 추가분은 '금지 규칙' 위주로 짧게.">?</span></h3><table id="models"></table></div>
+    <div class="card"><h3>검수·댓글 <span class="help" data-h="공개 일기·서로 이웃 댓글 검수와 댓글 제한. 값은 JSON(문자열은 따옴표). 서버 함수가 다음 요청부터 읽습니다. 근거: docs/reviews/2026-09-29-moderation-engine-eval.md">?</span></h3><table id="safetyPolicies"></table></div>
+    <div class="card"><h3>광고·타로·기타 <span class="help" data-h="광고 유닛 ID(ad.*)는 AdMob 콘솔 값. 타로 덱 버전·이미지 경로. 위 표에 없는 모든 키는 여기 '전체 키'에 나옵니다.">?</span></h3><table id="misc"></table>
+      <details style="margin-top:10px"><summary>전체 키 보기 / 새 키 추가</summary><table id="polTable" style="margin-top:8px"></table><div class="row" style="margin-top:8px"><input id="newKey" placeholder="예: ad.android.banner"><input id="newVal" placeholder='값(JSON) 예: "ca-app-pub-…"'><button class="pri" onclick="setPolicy(document.getElementById('newKey').value, document.getElementById('newVal').value)">추가</button></div></details></div>
+  </div>
+
+  <!-- 광고 -->
+  <div id="t-ads" class="hidden"><div class="card"><h3>광고 원본 로그 보관 기간</h3><p>광고 성과 조회에 쓰는 원본 로그의 보관 시간입니다. 이미 삭제된 기록은 복구되지 않습니다. 보관 기간을 늘리면 저장 공간과 조회량도 늘어납니다.</p><div class="row"><label>보관 시간 <input id="adRetentionHours" type="number" min="1" max="8760" value="48"> 시간</label><button onclick="saveAdRetention()">보관 기간 저장</button></div><p id="adRetentionState" role="status">매시간 10분에 설정 기간보다 오래된 원본 로그를 삭제합니다.</p></div>
+    <div class="card"><h3>광고는 이렇게 움직여요 <span class="help" data-h="미록담 광고는 Google Ad Manager(GAM)를 씁니다(AdMob 아님). 광고 '슬롯'은 앱 코드에 정해져 있고, 각 슬롯에 어떤 GAM 광고 단위 ID를 꽂을지는 여기서 바꿉니다. 노출 수·수익은 GAM 보고서에서, 보상형 시청 수와 물방울 지급은 아래 통계에서 봅니다.">?</span></h3>
+      <table>
+        <tr><th style="width:170px">어디서</th><td>광고 단위 만들기·수익 보기: <a href="https://admanager.google.com/23140388603#inventory/ad_unit/list" target="_blank" rel="noopener">Google Ad Manager → 인벤토리 → 광고 단위</a> (네트워크 코드 23140388603) · 수익: GAM → 보고서 → 새 보고서(측정기준 광고 단위, 측정항목 노출수·클릭·수익)</td></tr>
+        <tr><th>무엇을</th><td>슬롯 4종: <b>보상형 물방울</b>(블루가 광고 보고 💧 받기) · <b>보상형 사진 해금</b>(블루 사진 분석 1일 1회) · <b>네이티브 생성 대기</b>(블루, 일기 생성 중 화면) · <b>네이티브 피드</b>(블루, 피드 카드 사이, 5개 단위 순환). 전면 광고는 정책상 쓰지 않습니다. 퍼플·골드는 광고가 전혀 나오지 않습니다.</td></tr>
+        <tr><th>어떻게</th><td>① GAM에서 광고 단위를 만들거나 확인 → ② 아래 표의 해당 슬롯에 단위 경로(/23140388603/merokdam/…)를 붙여 저장 → ③ 앱을 완전히 종료 후 다시 열면 반영(콜드 스타트). 잘못된 경로면 광고가 빈 채로 넘어가므로(빈 자리 없음) 저장 후 블루 계정으로 확인하세요. 디버그 빌드는 항상 구글 샘플 단위를 씁니다.</td></tr>
+        <tr><th>SDK</th><td id="adSdk">Flutter 플러그인 google_mobile_ads <b>9.0.0</b> · Android GMA SDK 25.3 + <b>Next-Gen SDK 1.1 포함</b> · iOS GMA 13.3. 넥스트젠(AOS) 전환은 플러그인이 이미 의존성을 포함하지만 활성 방식·영향은 공식 문서 확인 필요 — 콘솔 할 일 문서에 검토 항목으로 등록.</td></tr>
+      </table></div>
+    <div class="grid2">
+      <div class="card"><h3>광고 단위 (슬롯별) <span class="help" data-h="비어 있으면 앱에 내장된 기본 단위를 씁니다(표시된 '기본'). 값을 넣으면 그 단위로 바뀝니다. 네이티브 피드는 5개 배열이며 n번째 광고가 n번째 단위를 쓰고 6번째부터는 마지막 단위를 재사용합니다. 반영: 앱 콜드 스타트.">?</span></h3><table id="adUnits"></table></div>
+      <div class="card"><h3>쿠팡 대체 광고</h3><p class="muted"><b>물방울 받는 자리에서만</b> 씁니다 — 정원의 '물방울 받기'와 일기 생성 대기 화면입니다. Google 광고가 채워지지 않았을 때만 나갑니다(피드에는 넣지 않습니다). 쿠팡 파트너스에서 발급한 배너 코드를 그대로 붙여넣으세요. 저장 후 앱을 완전히 종료하고 다시 실행하면 반영됩니다.<br>리포트에서는 형식이 <code>coupang</code> 으로 잡히며, <b>조회</b> 칸은 광고를 눌러 밖에서 머문 시간, <b>지급</b> 칸은 물방울이 실제로 들어갔는지입니다.</p><table id="coupangSettings"></table></div>
+      <div class="card"><h3>노출·보상 규칙 <span class="help" data-h="피드 간격: 카드 N개마다 광고 1개(최소 3). 보상형 1회 보상 💧와 1일 시청 한도는 서버 RPC가 읽습니다(SQL pending_20260909f_ads.sql 실행 후). 한도를 올리면 물방울 발행이 늘어 생성 과금 수익이 줄 수 있습니다.">?</span></h3><table id="adRules"></table></div>
+    </div>
+    <div class="card"><h3>보상형 통계 (30일) <span class="help" data-h="시청 = 보상형 광고를 끝까지 보고 💧를 받은 횟수(daily_usage). 사진 해금 = 광고로 사진 분석을 연 횟수. 지급 💧 = 원장 기준. 노출 수·eCPM·수익은 여기 없고 GAM 보고서에서 봅니다. 네이티브 광고 노출 수도 GAM에서만.">?</span></h3><div id="adStats" class="kv"></div><div class="muted" style="margin-top:8px">일별 시청</div><div id="chartAds" class="bar"></div></div>
+    <div class="card"><h3>광고 리포트 <span class="help" data-h="한 번의 광고 요청(묶음)을 한 줄로 접어 보여줍니다. 선형 이벤트에서 계산합니다.&#10;· 응답 = 요청→응답&#10;· 랜더 = 응답→화면에 그려짐&#10;· 조회 = 전면·보상형은 노출→닫힘, <b>네이티브는 카드가 화면에 절반 이상 보인 시간의 합</b>(피드는 화면 밖 카드도 잠시 살려두므로, 살아 있던 시간으로 재면 실제보다 몇 배 길게 잡힙니다)&#10;· 닫힘 기록이 없으면 중도 이탈(강제 종료 등) — <b>지급 칸에 '이탈'</b>로 적고, 조회는 잴 수 없으므로 비웁니다&#10;· 평균은 값이 있는 건만 나눕니다(측정 못 한 구간은 0으로 채우지 않습니다)&#10;· 합계의 ms 는 참고용 총합입니다&#10;· 수익은 onPaidEvent 실측이며 통화는 GAM 계정 통화입니다(USD 가 아니면 옆에 표기)&#10;· 지급 = 보상이 실제로 들어간 건 (광고를 닫아야 성립). 요약 행에서는 평균=지급률, 합계=건수&#10;· 요약 행의 사용자 = 그 범위에서 광고를 한 번이라도 요청한 순 사용자 수&#10;· 시각은 한국 시간(KST) 입니다&#10;· 줄을 누르면 그 묶음의 사건 전체가 JSON 으로 펼쳐집니다&#10;설정한 보관 기간이 지난 원본 기록은 자동 삭제됩니다.">?</span> <select id="adTelHours" onchange="loadAdTelemetry()"><option value="24">최근 24시간</option><option value="48">최근 48시간</option><option value="168">최근 7일</option></select></h3><div id="adTelSummary" class="muted">불러오는 중…</div><div style="overflow-x:auto"><table id="adReport"></table></div></div>
+    <div class="card"><h3>세그먼트별 eCPM <span class="help" data-h="광고 요청 때 함께 적은 맥락(버킷)별로 성과를 나눕니다 — 어떤 상황·어떤 사용자에게 단가가 높은지 보는 표입니다.&#10;• 원본(ad_events)은 48시간 뒤 지워지므로 지난 날은 매일 새벽 만든 일 집계(사용자 ID 없음)에서, 오늘은 원본에서 바로 계산합니다&#10;• eCPM = 수익 ÷ 노출 × 1000 (USD, onPaidEvent 추정치)&#10;• 채움률 = 노출 ÷ 요청, 클릭률 = 클릭 ÷ 노출&#10;• 요청 20건 미만인 값은 숫자를 가립니다(표본 부족, 재식별 방지)&#10;• 일기 내용·기분 종류·건강 정보는 어떤 차원에도 없습니다 (modules/ad-signals.md)">?</span> <select id="adSegDays" onchange="loadAdSegments()"><option value="7">최근 7일</option><option value="30">최근 30일</option><option value="90">최근 90일</option></select> <select id="adSegDim" onchange="loadAdSegments()"><optgroup label="환경"><option value="tod">시간대</option><option value="dow">요일</option><option value="season">계절</option><option value="weather">날씨</option><option value="screen">화면</option><option value="feed_mode">피드 형식</option><option value="screen_size">화면 크기</option><option value="lang">언어</option><option value="os">OS</option><option value="notif">알림 허용</option></optgroup><optgroup label="작성 습관"><option value="wrote_today">오늘 작성</option><option value="streak">연속 작성일</option><option value="diaries">누적 일기</option><option value="mode_mix">생성 방식</option><option value="len">글 길이</option><option value="tenure">가입 경과</option><option value="tier">등급</option><option value="public_rate">공개 비율</option><option value="edit_rate">다듬기 비율</option></optgroup><optgroup label="표현·관여"><option value="expr">표현 지수</option><option value="photo_rate">사진 첨부 비율</option><option value="photo_avg">사진 장수</option><option value="rate_rate">평가 비율</option><option value="rate_pos">평가 성향</option><option value="share">공유</option><option value="neighbors">이웃 수</option><option value="reacts_in">받은 반응</option></optgroup><optgroup label="기능 사용"><option value="calendar">캘린더</option><option value="tarot">타로</option><option value="autobio">자서전</option><option value="rewarded">보상형 시청</option><option value="drops">물방울 잔액</option><option value="item">아이템 선택</option><option value="item_id">아이템</option></optgroup><optgroup label="동의자"><option value="age">연령대</option><option value="gender">성별</option><option value="consent">맞춤 광고 동의</option></optgroup></select> <button onclick="downloadAdSegments()">CSV 내려받기</button></h3><div id="adSegSummary" class="muted">불러오는 중…</div><div style="overflow-x:auto"><table id="adSegTable"></table></div></div>
+    <div class="card"><h3>광고 로그 (건별) <span class="help" data-h="집계가 아니라 기록된 행 그대로입니다. 한 줄 = 광고 요청 한 건.&#10;• 사용자: user_id 앞 8자리 (이메일은 수집하지 않습니다). 전체 값은 마우스를 올리면 보입니다&#10;• 응답/렌더/조회: 요청→응답, 응답→화면에 그려짐, 노출→닫힘 (ms)&#10;• 백필: 실단위가 비어 구글 샘플(테스트 광고)로 채운 건&#10;• 행을 누르면 워터폴(어댑터별 시도)과 원본 값이 펼쳐집니다&#10;설정한 보관 기간이 지난 원본 기록은 자동 삭제됩니다.">?</span> <select id="adLogHours" onchange="loadAdLog()"><option value="24">최근 24시간</option><option value="48">최근 48시간</option><option value="168">최근 7일</option></select> <select id="adLogFilter" onchange="loadAdLog()"><option value="">전체</option><option value="backfill">백필만</option><option value="clicked">클릭만</option><option value="nofill">노필만</option></select> <select id="adLogLimit" onchange="loadAdLog()"><option value="300">300줄</option><option value="2000">2000줄</option></select> <button onclick="downloadAdLog()">CSV 내려받기</button></h3><div id="adLogSummary" class="muted">불러오는 중…</div><div style="overflow-x:auto"><table id="adLogTable"></table></div></div>
+  </div>
+
+  <!-- 공지·푸시 -->
+  <div id="t-notice" class="hidden">
+    <div class="grid2">
+      <div class="card"><h3>알림함 공지 <span class="help" data-h="모든 사용자의 알림함 맨 위에 초록 카드로 뜨는 공지 1건. 사용자는 카드를 닫을 수 있고(기기별), 대표가 '내리기'를 누르면 전원에게서 사라집니다. 앱은 다음 콜드 스타트에 반영. 푸시는 나가지 않으니 급한 건 아래 푸시와 함께.">?</span></h3>
+        <div class="row"><input id="nId" placeholder="id (예: 2026-09-overhaul)"><input id="nUntil" type="date" title="종료일(선택)"></div><div style="height:8px"></div>
+        <input id="nTitle" placeholder="제목"><div style="height:8px"></div><textarea id="nBody" placeholder="본문" style="font-family:inherit"></textarea><div style="height:8px"></div>
+        <input id="nTitleEn" placeholder="영어 제목 (선택)"><div style="height:8px"></div><textarea id="nBodyEn" placeholder="영어 본문 (선택)" style="font-family:inherit"></textarea><p class="muted" style="margin:4px 0 8px">비워 두면 영어 사용자에게도 한국어로 보여요.</p>
+        <div class="row"><button class="pri" onclick="setNotice()">게시</button><button class="danger" onclick="clearNotice()">내리기</button></div><p class="muted" id="noticeNow"></p></div>
+      <div class="card danger-zone"><h3>푸시 보내기 <span class="help" data-h="공지 = 서비스 안내(점검·약관 변경 등) — 푸시를 받는 모든 사용자. 광고 = 이벤트·혜택·신규 기능 권유 등 광고성 정보 — 마케팅 수신에 동의한 사람에게만, 제목 앞에 '(광고)'와 본문 끝에 수신 거부 방법이 자동으로 붙고, 밤 9시~오전 8시에는 서버가 거절합니다(정보통신망법 제50조·처리방침 3-9). 혜택·이벤트 내용이 조금이라도 있으면 '광고'로 보내세요. 취소 불가, 알림함에는 남지 않습니다. 제목 40자·본문 100자 안에서.">?</span></h3>
+        <div class="row" style="margin-bottom:8px"><label><input type="radio" name="pAudience" value="all"> 공지 (전원)</label> <label><input type="radio" name="pAudience" value="marketing"> 광고 (마케팅 동의자만)</label></div>
+        <input id="pTitle" placeholder="제목 (40자 이내)" maxlength="40"><div style="height:8px"></div><textarea id="pBody" placeholder="본문 (100자 이내)" maxlength="100" style="font-family:inherit"></textarea><div style="height:8px"></div>
+        <input id="pTitleEn" placeholder="영어 제목 (선택)" maxlength="40"><div style="height:8px"></div><textarea id="pBodyEn" placeholder="영어 본문 (선택)" maxlength="100" style="font-family:inherit"></textarea><p class="muted" style="margin:4px 0 8px">비워 두면 영어 사용자에게도 한국어로 보여요.</p>
+        <button class="pri" onclick="sendPush()">보내기</button> <span class="muted">대상을 먼저 고르세요. 확인 창이 두 번 떠요.</span></div>
+      <div class="card danger-zone"><h3>마케팅 메일 <span class="help" data-h="광고성 정보를 이메일로 — '앱 푸시·이메일' 문구(빌드 100 이상)에 동의한 사람에게만 갑니다. 빌드 99 이하에서 동의한 사람은 앱 푸시에만 동의했으므로 받지 않습니다. 제목 앞 '(광고)', 본문 끝 보내는 곳·수신 거부 링크가 자동으로 붙고, 밤 9시~오전 8시에는 서버가 거절합니다. Apple '이메일 가리기' 사용자는 Apple 중계 등록(console-todo A1) 전에는 닿지 않을 수 있습니다.">?</span></h3>
+        <input id="mSubject" placeholder="제목" maxlength="80"><div style="height:8px"></div><textarea id="mBody" placeholder="본문" rows="5" style="font-family:inherit"></textarea><div style="height:8px"></div>
+        <input id="mSubjectEn" placeholder="영어 제목 (선택)" maxlength="80"><div style="height:8px"></div><textarea id="mBodyEn" placeholder="영어 본문 (선택)" rows="5" style="font-family:inherit"></textarea><p class="muted" style="margin:4px 0 8px">비워 두면 영어 사용자에게도 한국어로 보여요.</p>
+        <button class="ghost" onclick="sendMarketingMail(true)">받는 사람 수 확인</button> <button class="pri" onclick="sendMarketingMail(false)">보내기</button></div>
+    </div>
+    <div class="card"><h3>발송 이력 (푸시 로그 최근 60) <span class="help" data-h="서버가 실제로 보낸 푸시의 키. notif:=개별 알림, digest:=저녁 요약, nbdiary:=이웃 새 일기, broadcast:=전원 푸시, autobio:=자서전 초대.">?</span></h3><table id="pushTable"></table></div>
+  </div>
+
+  <!-- 문의 -->
+  <div id="t-inq" class="hidden"><div class="card"><h3>문의 <span class="help" data-h="앱 설정 > 문의하기로 접수된 것. 접수 시 텔레그램+메일(help@)로도 옵니다. 답변을 쓰면 상태 answered, 사용자 알림함(+푸시)과 회신 이메일로 전달. 처리 완료는 답변 없이 닫을 때.">?</span></h3><table id="inqTable"></table></div></div>
+
+  <!-- 사연 영상 -->
+  <div id="t-story" class="hidden">
+    <div class="card"><h3>사연 영상 파이프라인 <span class="help" data-h="공개 일기 → 심사(story-judge, 매일 09:00) → 작성자 24시간 거절 창 → 승인 → 렌더(GitHub Actions 10:00) → 게시(YouTube·Instagram). 현재 심사 크론은 일시정지(SQL로 재개). 상태: candidate 심사 통과, notified 작성자 알림, declined 거절, approved 렌더 대기, rendered 게시 대기, posted 게시됨, removed 내림.">?</span></h3><table id="storyTable"></table></div>
+    <div class="card"><h3>게시 기록</h3><table id="postsTable"></table></div>
+  </div>
+
+  <div id="t-audit" class="hidden"><div class="card"><h3>감사 로그 (최근 80) <span class="help" data-h="누가 언제 어떤 설정을 바꿨는지, 전원 푸시·일기 열람·비공개 조치 같은 운영 행위 기록. 문제가 생기면 여기서 시점을 찍습니다.">?</span></h3><table id="auditTable"></table></div></div>
+</section>
+</main>
+<div id="toast"></div>
+
+<script>
+const SUPABASE_URL = "https://dlqaknfgeaesqnfduwjw.supabase.co";
+const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRscWFrbmZnZWFlc3FuZmR1d2p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3ODYyNjksImV4cCI6MjEwNjM2MjI2OX0.8QoNqiEeeqbQyBwe0cvtiLaZdTip5nNcH9K3A9qTwxw";
+const FN = SUPABASE_URL + "/functions/v1/admin-console";
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+// 콘솔의 모든 시각은 한국 시간(KST). 예전 fmtT 는 ISO 문자열을 자르기만 해 UTC 로 보였다
+// (2026-09-18 대표 지시로 통일). 날짜만 있는 값(YYYY-MM-DD)은 시간대 변환 없이 그대로 둔다.
+const _KST = (opt) => new Intl.DateTimeFormat("ko-KR", { timeZone: "Asia/Seoul", hour12: false, ...opt });
+const fmtT = (s) => { if (!s) return ""; const v = s.toString();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(v)) return v;           // 날짜만 — 그대로
+  const d = new Date(v); if (isNaN(d)) return v.slice(0, 16).replace("T", " ");
+  return _KST({ year: "2-digit", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" }).format(d); };
+const fmtKST = (s) => { if (!s) return "-"; const d = new Date(s); if (isNaN(d)) return "-";
+  return _KST({ month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" }).format(d); };
+const num = (n) => (n ?? 0).toLocaleString("ko-KR");
+let cache = { policies: [], overview: null };
+document.addEventListener("click", (e) => { const h = e.target.closest(".help"); document.querySelectorAll(".help.open").forEach((x) => { if (x !== h) x.classList.remove("open"); }); if (h) h.classList.toggle("open"); });
+
+function toast(m, bad) { const t = $("toast"); t.textContent = m; t.style.background = bad ? "#B2402B" : "#4B0082"; t.style.display = "block"; setTimeout(() => t.style.display = "none", 3000); }
+async function api(action, payload = {}) {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) throw new Error("로그인이 필요해요");
+  const r = await fetch(FN, { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token }, body: JSON.stringify({ action, ...payload }) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error || ("HTTP " + r.status));
+  return j;
+}
+
+// ── 로그인
+$("btnPw").onclick = async () => { const { error } = await sb.auth.signInWithPassword({ email: $("email").value.trim(), password: $("pw").value }); if (error) $("loginMsg").textContent = error.message; };
+$("logout").onclick = async () => { await sb.auth.signOut(); location.reload(); };
+$("reload").onclick = () => { const t = document.querySelector(".tab.on"); if (t) openTab(t.dataset.t, true); };
+window.addEventListener("DOMContentLoaded", () => {
+  sb.auth.onAuthStateChange((_e, session) => { if (session) setTimeout(enter, 0); });
+  sb.auth.getSession().then(({ data: { session } }) => { if (session) enter(); });
+});
+let entered = false;
+async function enter() {
+  if (entered) return; entered = true;
+  try {
+    const me = await api("whoami");
+    $("who").textContent = me.email; $("logout").style.display = ""; $("login").classList.add("hidden"); $("app").classList.remove("hidden");
+    loadPolicies(); window.adminRoute.restore(true);
+  } catch (e) {
+    entered = false;
+    $("loginMsg").textContent = e.message === "forbidden" ? "관리자 명단에 없는 계정이에요 (admin_users에 추가 필요)" : e.message;
+    await sb.auth.signOut();
+  }
+}
+
+// ── 탭
+const TABS = ["today","usage","money","users","safety","ops","diaryprompts","jev","ads","notice","inq","story","audit"];
+$("tabs").onclick = (ev) => { const t = ev.target.closest(".tab"); if (t) openTab(t.dataset.t); };
+function openTab(name, force) {
+  document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("on", x.dataset.t === name));
+  TABS.forEach((k) => $("t-" + k).classList.toggle("hidden", k !== name));
+  ({ today: loadToday, usage: loadUsage, money: loadMoney, users: searchUsers, safety: loadSafety, ops: renderOps, diaryprompts: loadDiaryPrompts, jev: loadJev, ads: loadAds, notice: loadNotice, inq: loadInq, story: loadStory, audit: loadAudit }[name] || (() => {}))(force);
+}
+
+// ── 오늘
+async function loadToday() {
+  try {
+    const h = await api("health");
+    const crons = Array.isArray(h.cron) ? h.cron : [];
+    const cronHtml = crons.length ? crons.map((c) => `<div><span class="light ${c.last_status === "succeeded" ? "g" : c.last_status ? "r" : "x"}"></span><b>${esc(c.jobname)}</b> <span class="muted">${esc(c.schedule)} UTC · 마지막 ${c.last_run ? fmtT(c.last_run) : "기록 없음"} ${esc(c.last_status || "")}${c.active === false ? " · 비활성" : ""}</span></div>`).join("")
+      : `<div class="warn">크론 상태를 읽지 못했어요 — SQL pending_20260909e_admin_v2.sql 실행 필요 ${h.cron && h.cron.error ? "(" + esc(h.cron.error) + ")" : ""}</div>`;
+    const checks = Object.entries(h.checks || {}).map(([k, v]) => `<div><span class="light ${v === true ? "g" : (k === "story_judge_ran_today" ? "y" : "r")}"></span>${esc(k)} <span class="muted">${v === true ? "OK" : esc(v)}</span></div>`).join("");
+    $("health").innerHTML = `<div class="muted" style="margin-bottom:4px">크론</div>${cronHtml}<div class="muted" style="margin:10px 0 4px">점검</div>${checks}<div class="muted" style="margin-top:8px">최근 24시간 푸시 ${num(h.pushes_24h)}건</div>`;
+    $("pending").innerHTML = [["미답변 문의", h.inquiries_open, "inq"], ["게시 대기 영상", h.story_rendered_waiting, "story"]].map(([k, v, tab]) => `<div style="cursor:pointer" onclick="openTab('${tab}')"><b class="${v > 0 ? "bad" : ""}">${num(v)}</b><span>${k}</span></div>`).join("");
+    if (h.inquiries_open > 0) { $("inqBadge").textContent = h.inquiries_open; $("inqBadge").classList.remove("hidden"); } else $("inqBadge").classList.add("hidden");
+  } catch (e) { $("health").innerHTML = `<span class="bad">${esc(e.message)}</span>`; }
+  const o = await overview();
+  if (!o) return;
+  $("pending").innerHTML += [["신고된 일기", o.safety.reported_diaries, "safety"], ["검수 실패 30일", o.safety.moderation_fail_30d, "safety"]].map(([k, v, tab]) => `<div style="cursor:pointer" onclick="openTab('${tab}')"><b class="${v > 0 ? "warn" : ""}">${num(v)}</b><span>${k}</span></div>`).join("");
+  $("todayStats").innerHTML = tiles([
+    ["오늘 활성", o.active.d1, "앱 열기·일기"], ["7일 활성", o.active.d7], ["30일 활성", o.active.d30], ["회원", o.users.total, tierLine(o.users.tiers)],
+    ["신규 오늘", o.users.new_1d], ["신규 7일", o.users.new_7d], ["일기 오늘", o.diaries.d1], ["일기 7일", o.diaries.d7],
+    ["주간 재방문율", o.active.retention_w1 == null ? "-" : o.active.retention_w1 + "%", `지난주 활동 ${o.active.retention_base}명 기준`], ["반응 30일", Object.values(o.reactions).reduce((a, b) => a + b, 0)], ["푸시 7일", o.pushes_7d], ["자서전 30일", o.autobiographies_30d],
+  ]);
+}
+function tierLine(t) { return `블루 ${t.blue ?? 0} · 퍼플 ${t.purple ?? 0} · 골드 ${t.gold ?? 0}`; }
+function tiles(arr) { return arr.map(([k, v, sub]) => `<div><b>${typeof v === "number" ? num(v) : esc(v)}</b><span>${esc(k)}</span>${sub ? `<span class="sub">${esc(sub)}</span>` : ""}</div>`).join(""); }
+async function overview(force) {
+  if (cache.overview && !force) return cache.overview;
+  try { cache.overview = await api("stats.overview", force ? { force: true } : {}); if (cache.overview.cached_at) toast("통계는 5분 캐시 (" + cache.overview.cached_at.slice(11, 16) + " UTC 기준)"); return cache.overview; } catch (e) { toast("통계 실패: " + e.message, true); return null; }
+}
+
+// ── 사용 통계
+function bars(el, series, keys, classes) {
+  const max = Math.max(1, ...series.flatMap((s) => keys.map((k) => s[k] || 0)));
+  el.innerHTML = series.map((s) => `<span style="flex:1;display:flex;gap:1px;align-items:flex-end;height:100%">${keys.map((k, i) => `<i class="${classes[i]}" style="height:${Math.round((s[k] || 0) * 100 / max)}%" data-v="${s.day.slice(5)} ${k}: ${s[k] || 0}"></i>`).join("")}</span>`).join("");
+}
+async function loadUsage(force) {
+  const o = await overview(force); if (!o) return;
+  bars($("chartActive"), o.series, ["active", "new_users"], ["", "b"]);
+  bars($("chartDiary"), o.series, ["diaries_ai", "diaries_manual"], ["", "c"]);
+  const d = o.diaries; const pct = (a, b) => b ? Math.round(a * 100 / b) + "%" : "-";
+  $("diaryStats").innerHTML = tiles([["일기 30일", d.d30], ["쓴 사람", d.writers_30d, `1인당 ${d.per_writer}편`], ["공개율", pct(d.public, d.d30)], ["씨앗 사용률", pct(d.with_seed, d.d30)], ["편집률", pct(d.edited, d.d30)], ["직접 쓰기", d.manual, pct(d.manual, d.d30)], ["자동 일기", d.auto], ["요약 이미지", d.with_image]]);
+  const u = o.users;
+  $("userStats").innerHTML = tiles([["블루", u.tiers.blue ?? 0], ["퍼플", u.tiers.purple ?? 0], ["골드", u.tiers.gold ?? 0], ["성별 입력", u.with_gender, pct(u.with_gender, u.total)], ["MBTI 입력", u.with_mbti, pct(u.with_mbti, u.total)], ["사연 옵트아웃", u.story_optout], ["상세 감정 끔", u.detail_off], ["자동 일기 켬", u.auto_diary_on], ["반응 '모아서'", u.reaction_digest], ["서체", Object.entries(u.fonts).map(([k, v]) => `${k} ${v}`).join(" · ") || "-"]]);
+  const MOOD = { vital: "🔥 활기찬", flutter: "💗 설렘", annoyed: "😤 짜증", proud: "🌟 뿌듯함", calmish: "🍵 담담함", anxious: "🌫️ 불안함", serene: "🌿 평온함", shy: "🍑 부끄러움", tired: "🌙 지침" };
+  const mmax = Math.max(1, ...Object.values(o.moods));
+  $("moodStats").innerHTML = Object.entries(o.moods).sort((a, b) => b[1] - a[1]).map(([k, v]) => `<div class="hbar"><span>${MOOD[k] || k}</span><em style="width:${Math.round(v * 100 / mmax)}%;flex:1;max-width:${Math.round(v * 100 / mmax)}%"></em><span>${v}</span></div>`).join("") || "<span class='muted'>데이터 없음</span>";
+  const RX = { amazing: "응원해요", feel_you: "공감해요", there_there: "위로해요" };
+  $("socialStats").innerHTML = tiles([...Object.entries(o.reactions).map(([k, v]) => [RX[k] || k, v]), ["이웃 관계", o.follows], ["자서전 30일", o.autobiographies_30d], ["차단", o.safety.blocks]]);
+  $("eventStats").textContent = Object.entries(o.events_30d).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${v}`).join(" · ") || "이벤트 없음";
+  loadGenFeedback();
+  loadGenFeedbackLog();
+  loadQuality();
+}
+const GEN_KIND = { diary_text: "일기 내용", diary_art: "그림", diary_image: "기존 통합 평가", autobiography: "자서전" };
+// 품질·속도 (2026-10-02) — stats.quality
+async function loadQuality() {
+  try {
+    const q = await api("stats.quality", { days: Number($("qualityDays").value) });
+    if (!q.ready) { $("qualityDetail").textContent = "조회 실패: " + (q.reason || ""); return; }
+    const pct = (v) => v === null || v === undefined ? "-" : v + "%";
+    const ms = (s) => !s || s.n === 0 ? "-" : `${s.p50}ms (p90 ${s.p90}, n=${s.n})`;
+    const d = q.diaries, a = q.autobio, sp = q.speed;
+    $("qualityTiles").innerHTML = tiles([
+      ["다듬기율", pct(d.edit_rate), `${d.edited}/${d.saved}편`],
+      ["삭제", d.deleted, `생성 ${d.created_events}건 중`],
+      ["일기 👍", pct(q.feedback.diary_text?.up_rate), `${q.feedback.diary_text?.n ?? 0}건`],
+      ["그림 👍", pct(q.feedback.diary_art?.up_rate), `${q.feedback.diary_art?.n ?? 0}건`],
+      ["자서전 👍", pct(q.feedback.autobiography?.up_rate), `${q.feedback.autobiography?.n ?? 0}건`],
+      ["자서전 깔때기", `${a.shelf_views}→${a.starts}→${a.completes}`, `열람→시작→완료 · 끝까지 읽음 ${a.read_ends} · 조건 충족 열람 ${a.shelf_eligible}`],
+    ]);
+    const kinds = Object.entries(q.edit_kinds || {}).sort((x, y) => y[1] - x[1]).map(([k, n]) => `${({fact:"사실 수정",style:"문장 다듬기",length:"길이",mixed:"복합"})[k] || k} ${n}`).join(" · ") || "기록 없음(빌드 100 부터)";
+    const tags = Object.entries(q.feedback || {}).map(([k, g]) => g.tags && g.tags.length ? `${({diary_text:"일기",diary_art:"그림",autobiography:"자서전",diary_image:"통합"})[k] || k}: ${g.tags.map(([t, n]) => `${t} ${n}`).join(", ")}` : "").filter(Boolean).join("<br>") || "아쉬움 사유 없음";
+    const skip = Object.entries(a.skip_reasons || {}).map(([k, n]) => `${k} ${n}`).join(" · ") || "없음";
+    $("qualityDetail").innerHTML = `편집 유형: ${esc(kinds)}${q.edit_body_change_ratio_avg !== null ? ` · 평균 변경 비율 ${Math.round(q.edit_body_change_ratio_avg * 100)}%` : ""} · 제목 변경 ${q.edit_title_changed}건<br>`
+      + `아쉬움 사유 — ${tags}<br>자서전 안 만든 이유 — ${esc(skip)}<br>`
+      + `속도 — 첫 프레임 ${ms(sp.startup_first_frame)} · 홈 준비 ${ms(sp.home_ready)} · 피드 첫 그림 ${ms(sp.feed_first_image)} · 홈 캐시 ${Object.entries(sp.home_ready_cache || {}).map(([k, n]) => `${k} ${n}`).join("/") || "-"}`;
+  } catch (e) { toast("품질·속도 실패: " + e.message, true); }
+}
+async function loadGenFeedback() {
+  try {
+    const s = await api("stats.generation_feedback");
+    $("genQualityStats").innerHTML = tiles((s.by_version || []).map((v) =>
+      [`${GEN_KIND[v.kind] || v.kind} · ${v.prompt_version}`, v.avg_rating, `👍${v.up} 👎${v.down} · ${v.n}건`]
+    )) || "<div class='muted'>데이터 없음</div>";
+    const tagLines = Object.entries(s.tags || {}).map(([k, tagmap]) =>
+      `${GEN_KIND[k] || k}: ` + (Object.entries(tagmap).sort((a, b) => b[1] - a[1]).map(([t, n]) => `${t} ${n}`).join(" · ") || "없음")
+    ).join("<br>");
+    $("genQualityTags").innerHTML = `최근 30일 사유 빈도<br>${tagLines || "데이터 없음"}`;
+  } catch (e) { toast("생성 품질 통계 실패: " + e.message, true); }
+}
+async function loadGenFeedbackLog() {
+  try {
+    const kind = $("genFbKind").value, rating = $("genFbRating").value;
+    const payload = { days: 14, limit: 200 };
+    if (kind) payload.kind = kind;
+    if (rating) payload.rating = Number(rating);
+    const r = await api("stats.generation_feedback_log", payload);
+    $("genFbTable").innerHTML = "<tr><th>일시</th><th>종류</th><th>버전</th><th>평가</th><th>사유</th><th>메모</th></tr>" +
+      ((r.rows || []).map((f) => `<tr><td class="muted">${fmtT(f.created_at)}</td><td>${esc(GEN_KIND[f.kind] || f.kind)}</td><td class="mono">${esc(f.prompt_version)}</td><td>${f.rating === 1 ? "👍" : "👎"}</td><td>${(f.tags || []).map(esc).join(", ")}</td><td>${esc(f.note || "")}</td></tr>`).join("")
+        || "<tr><td class='muted' colspan='6'>데이터 없음</td></tr>");
+  } catch (e) { toast("평가 로그 실패: " + e.message, true); }
+}
+
+// ── 수익·비용
+async function loadMoney(force) {
+  const o = await overview(force); if (!o) return;
+  const p = (k, d) => { const x = cache.policies.find((q) => q.key === k); return x ? Number(x.value) : d; };
+  const purple = o.users.tiers.purple ?? 0, gold = o.users.tiers.gold ?? 0;
+  const rev = purple * p("price.purple_month_krw", 9900) + gold * p("price.gold_month_krw", 19800);
+  $("subStats").innerHTML = tiles([["퍼플", purple], ["골드", gold], ["가정 월매출", "₩" + num(rev), "인원 × 월가격 · 테스터 무료 골드 포함"], ["체험·만료 예정", "-", "tier_until 있는 계정은 회원 탭에서"]]);
+  const pt = o.points; const sum = (obj) => Object.values(obj).reduce((a, b) => a + b, 0);
+  $("pointStats").innerHTML = tiles([["발행 30일", sum(pt.issued)], ["소진 30일", sum(pt.consumed)], ["총 잔액", pt.total_balance], ["총 부채", pt.total_debt], ["광고 보상 30일", pt.rewarded_ad_points_30d, "daily_usage 기준"], ["사진 분석 30일", pt.photos_analyzed_30d]]);
+  $("pointDetail").innerHTML = `발행: ${Object.entries(pt.issued).map(([k, v]) => `${k} ${v}`).join(" · ") || "-"}<br>소진: ${Object.entries(pt.consumed).map(([k, v]) => `${k} ${v}`).join(" · ") || "-"}`;
+  const ai = o.diaries.d30 - o.diaries.manual, img = o.diaries.with_image, ab = o.autobiographies_30d;
+  const c1 = p("cost.per_diary_krw", 30), c2 = p("cost.per_image_krw", 80), c3 = p("cost.per_autobio_krw", 200);
+  $("costStats").innerHTML = tiles([["AI 일기 30일", ai, `× ₩${c1} = ₩${num(ai * c1)}`], ["요약 이미지", img, `× ₩${c2} = ₩${num(img * c2)}`], ["자서전", ab, `× ₩${c3} = ₩${num(ab * c3)}`], ["추정 합계 30일", "₩" + num(ai * c1 + img * c2 + ab * c3), "단가는 운영 설정 cost.*"]]);
+}
+
+// ── 정책
+async function loadPolicies() { try { cache.policies = (await api("policies.list")).rows; } catch (e) { toast(e.message, true); } }
+function pol(key) { return cache.policies.find((p) => p.key === key); }
+async function setPolicy(key, raw) {
+  let value; try { value = JSON.parse(raw); } catch (_) { return toast("JSON 형식이 아니에요 (문자열은 따옴표 포함)", true); }
+  try { await api("policies.set", { key: key.trim(), value }); toast("저장됨: " + key); await loadPolicies(); renderOps(); } catch (e) { toast(e.message, true); }
+}
+// 도움말 사전 — 뜻 / 언제 / 영향 / 반영 / 기본
+const H = {
+  "moderation.engine": ["검수 엔진", "공개 일기·서로 이웃 댓글 검수 방식. \"hybrid\" = TypeSafe 기본(확실한 통과·차단은 TypeSafe, 목록 단어·자해 신호·애매한 점수는 Gemini). 값이 없거나 \"gemini\" = 예전처럼 Gemini 단독.", "문제가 생기면 이 줄을 지우거나 \"gemini\"로 저장 → 즉시 되돌아감(재배포 불필요).", "서버 즉시", "\"gemini\" (미설정)"],
+  "moderation.ts_pass_min": ["TypeSafe 통과 기준", "TypeSafe 가 '통과'를 이 확률 이상으로 확신하고 목록 단어·자해 신호가 없을 때만 TypeSafe 만으로 통과. 낮추면 Gemini 호출·비용이 줄고 놓침이 늘어납니다.", "0.95 권장(2026-09-29 시험).", "서버 즉시", "0.95"],
+  "moderation.ts_block_max": ["TypeSafe 차단 기준", "TypeSafe 가 위반 분류를 골랐고 통과 확률이 이 값 미만이면 TypeSafe 만으로 차단(분류별 고정 안내). 그 사이는 Gemini 가 정합니다.", "0.5 권장.", "서버 즉시", "0.5"],
+  "moderation.risk_words": ["검수 위험 단어", "이 목록의 단어(띄어쓰기·초성 변형 포함)가 들어 있으면 TypeSafe 점수와 상관없이 Gemini 가 판단. TypeSafe 가 모르는 한국어 은어·자해 수단을 여기서 메웁니다. JSON 배열.", "새 은어·수단이 보이면 추가. 비워 두면 기본 목록(번개탄·유서·급식충·틀딱 등 28개).", "서버 즉시", "기본 목록"],
+  "comment.min_interval_sec": ["댓글 간격(초)", "같은 사람이 댓글을 연달아 쓸 때 최소 간격. 도배 방지.", "도배가 보이면 늘림.", "서버 즉시", "10"],
+  "comment.daily_max": ["댓글 하루 한도", "한 사람이 하루(한국 시간)에 쓸 수 있는 댓글 수.", "과도한 사용이 보이면 줄임.", "서버 즉시", "100"],
+  "comment.report_hide_count": ["댓글 숨김 신고 수", "서로 다른 사람의 신고가 이만큼 모이면 그 댓글은 글쓴이 말고 모두에게 숨습니다. 신고한 사람에게는 1건만으로 바로 숨습니다.", "서로 이웃은 소수라 너무 크게 잡으면 숨지 않습니다.", "서버 즉시", "3"],
+  "feature.generate_charge": ["AI 생성 과금", "켜면 가입 14일(trial.days) 지난 사용자는 AI 일기 1편에 💧25(point.diary_generate)를 냅니다. 잔액 부족이면 생성 대신 안내가 뜨고 광고·직접 쓰기로 유도됩니다.", "테스터 기간엔 끔. 유료 모델 시작 시 켬. 끄면 전원 무료 생성.", "서버 60초 · 앱 콜드 스타트", "false"],
+  "feature.summary_image": ["요약 이미지", "퍼플·골드 회원의 일기가 생성되면 록이·담이 캐릭터로 그날 핵심 장면 이미지를 1장 만들어 피드·상세에 붙입니다. 장당 비용 발생(cost.per_image_krw 추정).", "유료 혜택을 보여주고 싶을 때 켬. 비용 급증 시 끔.", "서버 60초", "false"],
+  "feature.story_video": ["사연 영상 참여 UI", "앱 설정에 '사연 영상 참여' 스위치와 일기의 '사연 영상에서 제외'를 노출합니다. 심사 크론 자체는 SQL로 켜고 끕니다.", "마케팅(사연 영상)을 시작할 때 켬.", "앱 콜드 스타트", "false"],
+  "feature.trial_purple": ["퍼플 7일 체험", "켜면 가입 후 trial.days 동안 블루 회원을 <b>기능에서만</b> 퍼플로 대우합니다(사진 3장·피드 광고 없음·요약 이미지·문체 설정·휴지통·지나간 날 15일·다시 짓기 3회·AI 일기 무료). 결제 등급은 그대로 블루라 페이월·결제는 정상 동작합니다. 끄면 예전처럼 AI 일기 💧만 면제합니다.", "체험을 퍼플 맛보기로 운영할 때 켬. 사진·이미지 비용이 오르므로 지표를 보고 조절.", "서버 60초 · 앱 콜드 스타트", "false"],
+  "feature.tarot_reading": ["내일의 타로 코너", "오늘 일기 상세 아래에 ‘내일의 기운’ 코너를 보여줍니다. <b>아직 만드는 중</b>이라 버튼을 누르면 ‘준비 중’ 안내만 뜹니다 — 배치를 확인할 때만 켜세요.", "코너 위치를 눈으로 볼 때. 평소엔 끔.", "앱 콜드 스타트", "false"],
+  "feature.garden": ["정원 (폐기)", "정원 기능 스위치. v34부터 정원이 삭제되어 앱은 이 값을 읽지 않습니다.", "의미 없음 — 삭제 예정.", "-", "true"],
+  "trial.days": ["체험 일수", "가입 후 무료 체험 기간(일). 기존 회원은 trial.policy_start부터 계산. feature.trial_purple 이 켜져 있으면 이 기간 동안 퍼플로 대우합니다.", "<b>7일 권장</b> — 14일이면 매달 18~21일 가입자가 월간 자서전(마감된 달 + 10편)까지 무료로 체험하게 됩니다. 7일이면 그런 가입일이 없습니다.", "서버 즉시", "7"],
+  "trial.policy_start": ["기존 회원 체험 기산일", "정책 시행 전 가입자의 체험 시작일(YYYY-MM-DD 문자열).", "과금을 처음 켤 때 한 번 정합니다.", "서버 즉시", "\"2026-09-06\""],
+  "point.diary_generate": ["생성 차감", "{\"delta\": -25} 형식. AI 일기 1편당 차감 💧.", "가격 조정.", "서버 즉시", "{\"delta\":-25}"],
+  "point.diary_generate_refund": ["실패 환불", "생성 실패 시 돌려주는 💧. 차감과 절댓값이 같아야 합니다.", "diary_generate를 바꾸면 함께.", "서버 즉시", "{\"delta\":25}"],
+  "point.story_selected": ["사연 선정 보상", "사연 영상 후보로 선정된 작성자에게 주는 💧.", "마케팅 보상 조정.", "서버 즉시", "{\"delta\":50}"],
+  "point.admin_gift": ["어드민 선물", "회원 탭 '💧 선물' 버튼 1회 지급량.", "CS 보상·이벤트.", "즉시", "{\"delta\":25}"],
+  "point.autobio": ["자서전 (블루)", "블루 회원이 월간 자서전을 지을 때 내는 💧.", "가격 조정.", "서버 즉시", "{\"delta\":-500}"],
+  "limit.manual_per_day": ["직접 쓰기 하루 한도", "한 사람이 하루에 저장할 수 있는 직접 쓰기 편수(스팸 방지).", "남용 발견 시 낮춤.", "서버 즉시", "20"],
+  "limit.manual_per_minute": ["직접 쓰기 분당 한도", "분당 저장 한도.", "봇 방지.", "서버 즉시", "3"],
+  "limit.moderation_per_day": ["즉시 검수 하루 한도", "공개 저장 시 즉시 검수 호출 한도. 초과분은 비공개 저장 후 다음날 심사.", "검수 비용 조절.", "서버 즉시", "10"],
+  "diary.length": ["일기 길이 기준", "short/normal/long의 글자 수 범위와 재료 부족(sparse) 상한. 편집자·작가 프롬프트에 그대로 들어갑니다.", "\"억지로 길다\" 불만 시 낮춤.", "서버 60초", "-"],
+  "model.diary.flash_chain": ["일기 모델 체인", "AI 일기 생성에 쓰는 Gemini 모델 목록. 앞 모델이 실패/한도면 다음으로.", "새 모델 출시·장애 시. 이름을 틀리면 전부 실패하니 주의.", "서버 60초", "-"],
+  "model.autobio.pro_chain": ["자서전 모델 체인", "자서전 생성용(Pro급) 모델 목록.", "품질/비용 조정.", "서버 60초", "-"],
+  "prompt.diary.editor_extra": ["편집자 프롬프트 추가", "사실 정리(편집자) 단계에 덧붙일 규칙 문자열. 예: \"시간과 사건을 억지로 묶지 말 것\".", "특정 불만이 반복될 때 규칙 추가. 길게 쓰면 품질이 흔들립니다.", "서버 60초", "\"\""],
+  "prompt.diary.writer_extra": ["작가 프롬프트 추가", "문장 쓰기(작가) 단계에 덧붙일 규칙.", "문체 조정.", "서버 60초", "\"\""],
+  "notice.current": ["현재 공지", "알림함 공지 JSON. 공지·푸시 탭에서 편집하세요.", "-", "앱 콜드 스타트", "null"],
+  "cost.per_diary_krw": ["AI 일기 편당 단가(원)", "수익·비용 탭 추정에 쓰는 가정치.", "청구서와 대조 후 조정.", "콘솔 즉시", "30"],
+  "cost.per_image_krw": ["요약 이미지 장당 단가(원)", "추정치.", "청구서 대조 후.", "콘솔 즉시", "80"],
+  "cost.per_autobio_krw": ["자서전 권당 단가(원)", "추정치.", "청구서 대조 후.", "콘솔 즉시", "200"],
+  "price.purple_month_krw": ["퍼플 월 가격(원)", "운영 기준 가격. 실제 청구 가격은 Apple·Google 콘솔에서 별도 변경합니다.", "스토어 가격 변경 시 함께 수정.", "콘솔 즉시", "9900"],
+  "price.purple_year_krw": ["퍼플 연 가격(원)", "운영 기준 가격. 실제 청구 가격은 Apple·Google 콘솔에서 별도 변경합니다.", "스토어 가격 변경 시 함께 수정.", "콘솔 즉시", "99000"],
+  "price.purple_month_usd": ["퍼플 월 가격(USD)", "운영 기준 가격. 실제 청구 가격은 Apple·Google 콘솔에서 별도 변경합니다.", "스토어 가격 변경 시 함께 수정.", "콘솔 즉시", "7.99"],
+  "price.purple_year_usd": ["퍼플 연 가격(USD)", "운영 기준 가격. 실제 청구 가격은 Apple·Google 콘솔에서 별도 변경합니다.", "스토어 가격 변경 시 함께 수정.", "콘솔 즉시", "79.99"],
+  "price.gold_month_krw": ["골드(출시 보류) 월 가격(원)", "운영 기준 가격. 실제 청구 가격은 Apple·Google 콘솔에서 별도 변경합니다.", "스토어 가격 변경 시 함께 수정.", "콘솔 즉시", "14900"],
+  "price.gold_year_krw": ["골드(출시 보류) 연 가격(원)", "운영 기준 가격. 실제 청구 가격은 Apple·Google 콘솔에서 별도 변경합니다.", "스토어 가격 변경 시 함께 수정.", "콘솔 즉시", "149000"],
+  "price.gold_month_usd": ["골드(출시 보류) 월 가격(USD)", "운영 기준 가격. 실제 청구 가격은 Apple·Google 콘솔에서 별도 변경합니다.", "스토어 가격 변경 시 함께 수정.", "콘솔 즉시", "12.99"],
+  "price.gold_year_usd": ["골드(출시 보류) 연 가격(USD)", "운영 기준 가격. 실제 청구 가격은 Apple·Google 콘솔에서 별도 변경합니다.", "스토어 가격 변경 시 함께 수정.", "콘솔 즉시", "129.99"],
+  "ad.rewarded_drops": ["보상형 · 물방울 받기", "블루가 광고를 끝까지 보면 💧를 받는 슬롯의 GAM 단위.", "GAM에서 단위를 새로 만들었을 때.", "앱 콜드 스타트", "/23140388603/merokdam/reward01"],
+  "ad.rewarded_photo": ["보상형 · 사진 해금", "블루 사진 분석 1일 1회 해금용 보상형 단위.", "단위 교체 시.", "앱 콜드 스타트", "/23140388603/merokdam/reward02"],
+  "ad.native_generating": ["네이티브 · 생성 대기", "일기 생성 중 화면(블루, 누적 일기 4개 이상)에 나오는 네이티브 단위.", "단위 교체 시.", "앱 콜드 스타트", "/23140388603/merokdam/native00"],
+  "ad.native_feed": ["네이티브 · 피드 단위 목록", "피드 카드 사이에 쓸 광고 단위 목록(JSON 배열). <b>개수 제한이 없습니다</b> — 몇 개를 넣든 n번째 광고가 (n-1)번째 단위를 쓰고, 끝에 닿으면 처음으로 돌아갑니다. 비우면 앱 기본값 native01~native50(50개)을 씁니다. 아래 '목록 만들기'로 범위를 채울 수 있습니다.", "단위를 늘리거나 줄일 때.", "앱 콜드 스타트", "[\"…/native01\", \"…/native02\", …]"],
+  "ad.reward_format": ["보상 광고 형식", "물방울 받기·사진 추가 해금에 쓰는 광고의 형식입니다. <b>interstitial</b>(전면) = 닫으면 보상, 소재가 짧습니다. <b>rewarded</b>(보상형) = 끝까지 봐야 보상, 소재가 15~30초로 깁니다. 광고 단위(reward01·reward02)는 형식과 무관하게 그대로 쓰므로 GAM에서 바꿀 것이 없습니다. 값은 따옴표를 포함해 \"interstitial\" 또는 \"rewarded\" 로 넣습니다.", "시청 이탈이 많으면 전면으로, 단가가 떨어지면 보상형으로.", "앱 콜드 스타트", "\"interstitial\""],
+  "ad.telemetry": ["광고 성과 계측", "광고 한 건마다 요청→응답→렌더→노출→닫힘 구간과 클릭·보상·수익을 ad_events 에 기록합니다. <b>이메일은 담지 않습니다</b> — 식별은 user_id(UUID)만. 보관은 ad.telemetry_hours 시간(기본 48)이고 매시 10분에 자동 파기합니다. 광고 원본 응답은 Google SDK 가 앱에 주지 않아 담을 수 없고, 대신 누가 채웠는지(어댑터·워터폴)를 담습니다.", "형식·단위·간격을 바꿔가며 성과를 비교할 때 켬. 행이 빠르게 쌓이니 테스트가 끝나면 끔.", "앱 콜드 스타트", "true"],
+  "ad.telemetry_hours": ["계측 보관 시간", "ad_events 를 몇 시간 보관할지(시간 단위). 파기 크론이 이 값을 읽습니다.", "오래 비교해야 하면 늘리고, 용량이 부담되면 줄입니다.", "다음 매시간 10분 삭제 작업", "48"],
+  "ad.feed_interval": ["피드 광고 간격", "피드 카드 몇 개마다 광고 1개를 넣을지. 비우면 3. <b>여기 넣은 값을 앱이 그대로 씁니다</b> — 1·2 도 됩니다(0 이하만 1로 올립니다). 목록 피드와 몰입형 피드가 같은 값을 씁니다.", "광고가 잦다는 불만 → 올림, 수익 필요 → 내림.", "앱 콜드 스타트", "3"],
+  "ad.rewarded_daily_max": ["보상 광고 1일 한도", "한 사람이 하루에 보상을 받을 수 있는 광고 시청 횟수입니다. <b>서버(mrd_apply_points)가 강제</b>하므로 앱을 고쳐도 뚫을 수 없습니다. 앱은 같은 값을 미리 읽어, 한도를 다 쓴 사람에게는 <b>광고를 띄우지 않고</b> 안내합니다(빌드 55 이상). 0 으로 두면 보상 광고를 아예 막습니다.", "물방울 인플레이션 조절. 수익을 늘리려면 올리고, 지급이 과하면 내립니다.", "서버 즉시 · 앱 안내는 콜드 스타트", "5"],
+  "point.rewarded_ad": ["보상형 1회 보상", "광고 1회 시청에 지급하는 💧 {\"delta\": 5}.", "보상 크기 조절.", "서버 즉시", "{\"delta\":5}"],
+  "tarot.deck_version": ["타로 덱 버전", "앱이 쓰는 카드 이미지 세트 버전.", "덱 교체 시.", "앱 콜드 스타트", "-"],
+  "tarot.image_base": ["타로 이미지 경로", "Storage 경로 접두.", "덱 교체 시.", "앱 콜드 스타트", "-"],
+};
+const helpOf = (k) => { const h = H[k]; if (!h) { const pre = k.split(".")[0]; return { title: k, text: ({ ad: "광고 유닛 ID. AdMob 콘솔 값과 정확히 같아야 하며 틀리면 광고가 비어 보입니다. 앱 콜드 스타트에 반영.", font: "서체 관련 설정.", story: "사연 영상 관련 설정." }[pre] || "설명이 등록되지 않은 키입니다. 값을 바꾸기 전에 개발자에게 확인하세요.") }; } return { title: h[0], text: `${h[1]}\n\n언제: ${h[2]}\n반영: ${h[3]}\n기본값: ${h[4]}` }; };
+const helpSpan = (k) => { const h = helpOf(k); return `<span class="help" data-h="${esc(h.text)}">?</span>`; };
+// 피드 단위 목록 — 앱 기본값과 같다 (AdUnits.defaultNativeFeedSlots: native01~native50)
+const NATIVE_FEED_BASE = "/23140388603/merokdam/native";
+const nativeFeedRange = (from, to, base) => {
+  const out = [];
+  for (let i = from; i <= to; i++) out.push(base + String(i).padStart(2, "0"));
+  return out;
+};
+const NATIVE_FEED_DEFAULT = JSON.stringify(nativeFeedRange(1, 50, NATIVE_FEED_BASE));
+const AD_UNITS = [["ad.rewarded_drops", "/23140388603/merokdam/reward01"], ["ad.rewarded_photo", "/23140388603/merokdam/reward02"], ["ad.native_generating", "/23140388603/merokdam/native00"], ["ad.native_feed", NATIVE_FEED_DEFAULT]];
+
+/// 단위 목록은 길어서 그대로 뿌리면 화면을 덮는다 — 몇 개인지와 처음·끝만 보여 준다
+function unitListSummary(json) {
+  try {
+    const list = JSON.parse(json);
+    if (!Array.isArray(list) || !list.length) return esc(json);
+    const short = (u) => String(u).split("/").pop();
+    return list.length === 1 ? esc(short(list[0]))
+      : `${esc(short(list[0]))} ~ ${esc(short(list[list.length - 1]))} <b>(${list.length}개)</b>`;
+  } catch (_) { return esc(json); }
+}
+
+/// 범위로 목록 만들기 — 손으로 50줄을 적지 않게 (2026-09-21 대표)
+function buildNativeFeedList(textareaId) {
+  const base = ($("nfBase") || {}).value || NATIVE_FEED_BASE;
+  const from = Number(($("nfFrom") || {}).value || 1);
+  const to = Number(($("nfTo") || {}).value || 50);
+  if (!Number.isInteger(from) || !Number.isInteger(to) || from < 0 || to < from) {
+    return toast("시작·끝 번호를 확인해 주세요 (끝이 시작보다 커야 합니다).", true);
+  }
+  if (to - from + 1 > 200) return toast("한 번에 200개까지만 만듭니다.", true);
+  $(textareaId).value = JSON.stringify(nativeFeedRange(from, to, base.trim()));
+  toast(`${to - from + 1}개를 채웠습니다 — 오른쪽 '저장'을 눌러 주세요.`);
+}
+const AD_RULES = ["ad.reward_format", "ad.feed_interval", "ad.telemetry", "ad.rewarded_daily_max", "point.rewarded_ad"];
+const COUPANG_FIELDS = [
+  ['ad.coupang_script', '물방울 광고 배너 코드', 'script'],
+  ['ad.coupang_base_url', '파트너스에 등록한 매체 주소', 'text'],
+  ['ad.coupang_dwell_ms', '보상 최소 체류 시간 (밀리초, 최소 1000)', 'number'],
+  ['ad.coupang_enabled', '쿠팡 대체 광고 사용', 'boolean'],
+];
+function renderCoupangSettings() {
+  $('coupangSettings').innerHTML = COUPANG_FIELDS.map(([key, label, type], i) => {
+    const value = pol(key)?.value ?? (type === 'boolean' ? false : type === 'number' ? 1000 : '');
+    const id = 'coupang_' + i;
+    const field = type === 'boolean' ? `<input id="${id}" type="checkbox" ${value === true ? 'checked' : ''}>` : type === 'script' ? `<textarea id="${id}" rows="5" placeholder="배너 코드를 그대로 붙여넣기">${esc(value)}</textarea>` : `<input id="${id}" type="${type === 'number' ? 'number' : 'text'}" ${type === 'number' ? 'min="1000"' : ''} value="${esc(value)}">`;
+    return `<tr><td><label for="${id}">${esc(label)}</label></td><td>${field}</td><td><button class="ghost" onclick="saveCoupangSetting(${i})">저장</button></td></tr>`;
+  }).join('');
+}
+async function saveCoupangSetting(i) {
+  const [key, , type] = COUPANG_FIELDS[i];
+  const field = $('coupang_' + i);
+  const value = type === 'boolean' ? field.checked : type === 'number' ? Number(field.value) : field.value.trim();
+  if (type === 'number' && (!Number.isInteger(value) || value < 1000)) return toast('체류 시간은 1000 이상의 정수로 입력하세요.', true);
+  if (key === 'ad.coupang_enabled' && value && !(pol('ad.coupang_script')?.value || '').trim()) return toast('물방울 광고 배너 코드를 먼저 저장하세요.', true);
+  await setPolicy(key, JSON.stringify(value));
+}
+async function loadAds() {
+  if (!cache.policies.length) await loadPolicies();
+  renderCoupangSettings();
+  $("adRetentionHours").value=Number(pol("ad.telemetry_hours")?.value??48);
+  $("adUnits").innerHTML = AD_UNITS.map(([k, def], i) => {
+    const p = pol(k); const h = helpOf(k);
+    const cur = p ? JSON.stringify(p.value) : "";
+    const isList = k === "ad.native_feed";
+    const shown = isList ? unitListSummary(p ? cur : def) : esc(p ? cur : def);
+    const builder = isList
+      ? `<div class="muted" style="margin-top:6px;display:flex;gap:4px;align-items:center;flex-wrap:wrap">
+           <input id="nfBase" value="${esc(NATIVE_FEED_BASE)}" style="flex:1;min-width:190px">
+           <input id="nfFrom" type="number" min="0" value="1" style="width:64px">~
+           <input id="nfTo" type="number" min="0" value="50" style="width:64px">
+           <button class="ghost" onclick="buildNativeFeedList('ad_${i}')">목록 만들기</button>
+         </div>`
+      : "";
+    return `<tr><td style="width:38%"><b>${esc(h.title)}</b>${helpSpan(k)}<br><code>${k}</code><br><span class="muted">${p ? "덮어쓰기 중" : "기본 사용"}: <span class="mono">${shown}</span></span></td>`
+      + `<td><textarea id="ad_${i}" rows="${isList ? 4 : 1}" placeholder='${esc(isList ? def : JSON.stringify(def))}'>${esc(cur)}</textarea>${builder}</td>`
+      + `<td style="width:120px"><button class="ghost" onclick="setPolicy('${k}', document.getElementById('ad_${i}').value)">저장</button>${p ? ` <button class="danger" onclick="delPolicy('${k}')">기본으로</button>` : ""}</td></tr>`;
+  }).join("");
+  $("adRules").innerHTML = AD_RULES.map((k, i) => { const p = pol(k); const h = helpOf(k); return `<tr><td style="width:45%"><b>${esc(h.title)}</b>${helpSpan(k)}<br><code>${k}</code>${p ? "" : "<br><span class='warn'>미설정 — SQL pending_20260909f_ads.sql 실행 필요</span>"}</td><td><input id="adr_${i}" value='${esc(p ? JSON.stringify(p.value) : "")}' placeholder="${esc(H[k] ? H[k][4] : "")}"></td><td style="width:70px"><button class="ghost" onclick="setPolicy('${k}', document.getElementById('adr_${i}').value)">저장</button></td></tr>`; }).join("");
+  try { const a = await api("stats.ads");
+    $("adStats").innerHTML = tiles([["보상형 시청 30일", a.rewarded_views_30d], ["사진 해금 30일", a.photo_unlocks_30d], ["지급 💧 30일", a.points_issued_30d], ["광고 대상(블루)", a.blue_users, "퍼플·골드는 광고 없음"]]);
+    bars($("chartAds"), a.series, ["views", "unlocks"], ["", "c"]);
+  } catch (e) { toast("광고 통계 실패: " + e.message, true); }
+  await loadAdTelemetry();
+  await loadAdSegments();
+  await loadAdLog();
+}
+
+async function loadAdTelemetry() {
+  const hours = Number(($("adTelHours") || {}).value || 24);
+  const ms = (v) => (v === null || v === undefined) ? "-" : Math.round(v).toLocaleString() + "ms";
+  const money = (micros, cur) => !micros ? "-"
+    : (micros / 1000000).toFixed(4) + (cur && cur !== "USD" ? " " + cur : "");
+  const num = (v, d) => (v === null || v === undefined) ? "-" : (d ? v.toFixed(d) : v.toLocaleString());
+  const head = "<tr><th>시각 / 요청</th><th>사용자</th><th title=\"맞춤형 광고 동의 (앱 설정 › 광고). Y 동의 · N 거부(일반 광고) · - 아직 선택 안 함\">동의</th><th title=\"기기 OS. 옛 기록은 푸시 토큰의 기기로 추정 (both = 두 OS 모두)\">OS</th><th>자리</th><th>형식</th><th>응답</th>"
+    + "<th>랜더</th><th>조회</th><th>지급</th><th>클릭</th><th>수익(USD)</th></tr>";
+  // 요약 행 — 사용자 칸에는 순 사용자 수 (대표 지시).
+  // 라벨(평균/합계)은 '자리' 칸, 형식명은 '형식' 칸에 둔다. 전체 행은 두 칸을 합친다.
+  const users = (g) => `<b>${(g.users ?? 0).toLocaleString()}</b>명`;
+  const tail = (g, k, fmt) =>
+    `<td>${ms(g[k].latency_ms)}</td><td>${ms(g[k].render_ms)}</td><td>${ms(g[k].view_ms)}</td>`
+    + `<td>${fmt(g[k].granted)}</td><td>${fmt(g[k].clicks)}</td>`
+    + `<td>${money(g[k].revenue_micros, g.currency)}</td></tr>`;
+  const sumRow = (label, g, fmt) =>
+    `<tr><td>${g.requests.toLocaleString()}건</td><td>${users(g)}</td><td></td><td></td>`
+    + (fmt === null ? `<td colspan="2"><b>${esc(label)}</b></td>`
+                    : `<td><b>${esc(label)}</b></td><td>${esc(fmt)}</td>`)
+    + tail(g, "sum", (v) => (v || 0).toLocaleString());
+  const avgRow = (label, g, fmt) =>
+    `<tr><td>${g.requests.toLocaleString()}건</td><td>${users(g)}</td><td></td><td></td>`
+    + (fmt === null ? `<td colspan="2"><b>${esc(label)}</b></td>`
+                    : `<td><b>${esc(label)}</b></td><td>${esc(fmt)}</td>`)
+    + tail(g, "avg", (v) => num(v, 3));
+  try {
+    const a = await api("stats.ad_events", { hours });
+    if (!a.ready) {
+      $("adTelSummary").innerHTML = "<span class='muted'>아직 계측 테이블이 없습니다 — <code>pending_20260918_ad_events_linear.sql</code> 을 실행해 주세요.</span>";
+      $("adReport").innerHTML = ""; return;
+    }
+    if (!a.overall.requests) {
+      $("adTelSummary").innerHTML = "<span class='muted'>최근 " + a.hours + "시간 동안 기록이 없습니다. (수집이 꺼져 있거나 빌드가 아직 안 퍼졌을 수 있습니다 — 운영 설정의 ad.telemetry 확인)</span>";
+      $("adReport").innerHTML = ""; return;
+    }
+    adReportSessions = a.sessions || [];
+    $("adTelSummary").innerHTML = "최근 " + a.hours + "시간 · 요청 <b>" + a.overall.requests.toLocaleString() + "</b>건 · 사건 "
+      + a.events.toLocaleString() + "줄 · 중도이탈 " + a.overall.abandoned.toLocaleString()
+      + " · 노필 " + a.overall.nofill.toLocaleString() + " · 백필 " + a.overall.backfill.toLocaleString()
+      + (a.truncated ? " <span class='muted'>(10만 줄에서 잘림)</span>" : "");
+    let html = head;
+    html += `<tr><td colspan="12" class="muted">전체</td></tr>`;
+    html += avgRow("평균", a.overall, null);
+    html += sumRow("합계", a.overall, null);
+    html += `<tr><td colspan="12" class="muted">인벤토리 형식별</td></tr>`;
+    for (const f of a.by_format) {
+      html += avgRow("평균", f, f.format);
+      html += sumRow("합계", f, f.format);
+    }
+    html += `<tr><td colspan="12" class="muted">요청 단위 (최근 ${adReportSessions.length.toLocaleString()}건${a.session_total > adReportSessions.length ? " / 전체 " + a.session_total.toLocaleString() : ""})</td></tr>`;
+    html += adReportSessions.map((v, i) => {
+      const unit = (v.ad_unit_id || "").split("/").pop() || "-";
+      return `<tr style="cursor:pointer" onclick="adReportDetail(${i})">`
+        + `<td class="mono" title="단위 ${esc(unit)} · 마지막 사건 ${esc(v.last_event || "")}">${esc(fmtKST(v.requested_at))}</td>`
+        + `<td class="mono" title="${esc(v.user_id || "")}">${esc((v.user_id || "").slice(0, 8))}</td>`
+        + `<td>${yn(v.ad_personalized)}</td><td>${osLabel(v.os)}</td>`
+        + `<td>${esc(v.placement)}</td>`
+        + `<td>${esc(v.format)}${v.backfill ? " <b>백필</b>" : ""}</td>`
+        + `<td>${ms(v.latency_ms)}</td><td>${ms(v.render_ms)}</td>`
+        + `<td>${ms(v.view_ms)}</td>`
+        + `<td>${v.earned ? "<b>O</b>" : (v.abandoned ? "<b>이탈</b>" : "-")}</td>`
+        + `<td>${v.clicks || "-"}</td><td>${money(v.revenue_micros, v.currency)}</td></tr>`
+        + `<tr><td colspan="12" id="adrep_d_${i}"></td></tr>`;
+    }).join("");
+    $("adReport").innerHTML = html;
+  } catch (e) { toast("광고 리포트 실패: " + e.message, true); }
+}
+let adReportSessions = [];
+function adReportDetail(i) {
+  const v = adReportSessions[i]; if (!v) return;
+  const el = $("adrep_d_" + i); if (!el) return;
+  el.innerHTML = el.innerHTML ? "" : `<pre class="mono" style="white-space:pre-wrap;margin:6px 0">${esc(JSON.stringify(v, null, 2))}</pre>`;
+}
+
+let adLogRows = [];
+function adLogParams() {
+  const f = ($("adLogFilter") || {}).value || "";
+  return {
+    hours: Number(($("adLogHours") || {}).value || 24),
+    limit: Number(($("adLogLimit") || {}).value || 300),
+    only_backfill: f === "backfill" || undefined,
+    event: (f && f !== "backfill") ? f : undefined,
+  };
+}
+function adLogDetail(i) {
+  const r = adLogRows[i]; if (!r) return;
+  const el = $("adlog_d_" + i);
+  if (!el) return;
+  el.innerHTML = el.innerHTML ? "" : `<pre class="mono" style="white-space:pre-wrap;margin:6px 0">${esc(JSON.stringify(r, null, 2))}</pre>`;
+}
+// 세그먼트별 eCPM (modules/ad-signals.md) — 차원·기간을 골라 요청·노출·채움률·클릭률·수익·eCPM
+let adSegRows = [];
+async function loadAdSegments() {
+  try {
+    const a = await api("stats.ad_segments", { days: Number($("adSegDays").value), dim: $("adSegDim").value });
+    if (!a.ready) { $("adSegSummary").innerHTML = "<span class='muted'>집계표가 아직 없습니다 — SQL 20261002100000_ad_signals.sql 실행 필요 (" + esc(a.reason || "") + ")</span>"; $("adSegTable").innerHTML = ""; return; }
+    adSegRows = a.rows || [];
+    const total = adSegRows.reduce((s, r) => s + r.requests, 0);
+    $("adSegSummary").innerHTML = total ? `최근 ${a.days}일 · 요청 <b>${total.toLocaleString()}</b>건 · 값 ${adSegRows.length}개 · 요청 ${a.min_n}건 미만은 가림` : `최근 ${a.days}일 동안 이 차원의 기록이 없습니다 (빌드 100 부터 맥락이 기록됩니다)`;
+    const f = (v, d) => v === null || v === undefined ? "-" : Number(v).toFixed(d);
+    $("adSegTable").innerHTML = "<tr><th>값</th><th>요청</th><th>노출</th><th>채움률</th><th>클릭률</th><th>수익(USD)</th><th>eCPM(USD)</th></tr>"
+      + adSegRows.map((r) => `<tr${r.masked ? " class='muted'" : ""}><td><b>${esc(r.val)}</b></td><td>${r.requests.toLocaleString()}</td><td>${r.impressions.toLocaleString()}</td><td>${f(r.fill, 1)}${r.fill === null ? "" : "%"}</td><td>${f(r.ctr, 1)}${r.ctr === null ? "" : "%"}</td><td>${f(r.revenue_usd, 4)}</td><td><b>${f(r.ecpm_usd, 3)}</b></td></tr>`).join("");
+  } catch (e) { toast("세그먼트 eCPM 실패: " + e.message, true); }
+}
+function downloadAdSegments() {
+  if (!adSegRows.length) { toast("내려받을 데이터가 없습니다", true); return; }
+  const cols = ["val","requests","impressions","fill","ctr","revenue_usd","ecpm_usd","masked"];
+  const cell = (v) => v === null || v === undefined ? "" : `"${String(v).replace(/"/g, '""')}"`;
+  const csv = [cols.join(",")].concat(adSegRows.map((r) => cols.map((c) => cell(r[c])).join(","))).join("\n");
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob(["\ufeff" + csv], { type: "text/csv" })); a.download = `ad-segments-${$("adSegDim").value}-${$("adSegDays").value}d.csv`; a.click();
+}
+// 광고 리포트 공용 표기 — 동의 Y/N(미선택 -), OS aos/ios (2026-10-01 대표)
+function yn(v) { return v === true ? "Y" : v === false ? "N" : "-"; }
+function osLabel(v) { return v === "ios" ? "ios" : v === "android" ? "aos" : v === "both" ? "aos+ios" : "-"; }
+async function loadAdLog() {
+  const head = "<tr><th>시각</th><th>묶음</th><th>#</th><th>사건</th><th>경과</th><th>사용자</th><th>동의</th><th>OS</th>"
+    + "<th>자리</th><th>형식</th><th>단위</th><th>수익</th></tr>";
+  const EV = { requested: "요청", responded: "응답", nofill: "노필", backfill: "백필 전환",
+    rendered: "렌더", impression: "노출", click: "클릭", paid: "수익", dismissed: "닫힘", show_failed: "표시 실패" };
+  try {
+    const a = await api("stats.ad_log", adLogParams());
+    if (!a.ready) {
+      $("adLogSummary").innerHTML = "<span class='muted'>아직 계측 테이블이 없습니다 — <code>pending_20260918_ad_events_linear.sql</code> 을 실행해 주세요.</span>";
+      $("adLogTable").innerHTML = ""; return;
+    }
+    adLogRows = a.rows || [];
+    if (!adLogRows.length) {
+      $("adLogSummary").innerHTML = "<span class='muted'>최근 " + a.hours + "시간 동안 기록이 없습니다.</span>";
+      $("adLogTable").innerHTML = ""; return;
+    }
+    $("adLogSummary").innerHTML = adLogRows.length.toLocaleString() + "줄"
+      + (adLogRows.length >= a.limit ? " <span class='muted'>(" + a.limit + "줄에서 잘림)</span>" : "")
+      + " <span class='muted'>· 같은 묶음끼리 한 번의 광고입니다. 줄을 누르면 원본이 펼쳐집니다.</span>";
+    $("adLogTable").innerHTML = head + adLogRows.map((r, i) => {
+      const unit = (r.ad_unit_id || "").split("/").pop() || "-";
+      return `<tr style="cursor:pointer" onclick="adLogDetail(${i})">`
+        + `<td class="mono">${esc(fmtKST(r.created_at))}</td>`
+        + `<td class="mono" title="${esc(r.session_id || "")}">${esc((r.session_id || "").slice(0, 8))}</td>`
+        + `<td>${r.seq}</td><td><b>${esc(EV[r.event] || r.event)}</b>${r.event === "dismissed" && r.earned ? " (보상)" : ""}</td>`
+        + `<td class="mono">${r.elapsed_ms}ms</td>`
+        + `<td class="mono" title="${esc(r.user_id || "")}">${esc((r.user_id || "").slice(0, 8))}</td>`
+        + `<td>${yn(r.ad_personalized)}</td><td>${osLabel(r.os)}</td>`
+        + `<td>${esc(r.placement)}</td><td>${esc(r.format)}</td>`
+        + `<td class="mono" title="${esc(r.ad_unit_id || "")}">${esc(unit)}${r.backfill ? " <b>백필</b>" : ""}</td>`
+        + `<td>${r.revenue_micros ? (r.revenue_micros / 1000000).toFixed(4) + " " + (r.currency || "") : "-"}</td></tr>`
+        + `<tr><td colspan="12" id="adlog_d_${i}"></td></tr>`;
+    }).join("");
+  } catch (e) { toast("광고 로그 실패: " + e.message, true); }
+}
+function downloadAdLog() {
+  if (!adLogRows.length) { toast("내려받을 로그가 없습니다", true); return; }
+  const cols = ["created_at","session_id","seq","event","elapsed_ms","user_id","ad_personalized","os","placement","format","ad_unit_id","backfill","response_id","adapter","ad_source","revenue_micros","currency","precision","earned"];
+  const cell = (v) => v === null || v === undefined ? "" : `"${String(v).replace(/"/g, '""')}"`;
+  const csv = "\uFEFF" + [cols.join(","), ...adLogRows.map((r) => cols.map((c) => cell(r[c])).join(","))].join("\n");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+  a.download = `ad_log_${new Date().toISOString().slice(0, 16).replace(/[:T]/g, "")}.csv`;
+  a.click(); URL.revokeObjectURL(a.href);
+}
+const SWITCHES = ["feature.generate_charge", "feature.trial_purple", "feature.summary_image", "feature.story_video", "feature.tarot_reading", "feature.garden"];
+const FEES = ["trial.days", "trial.policy_start", "point.diary_generate", "point.diary_generate_refund", "point.story_selected", "point.admin_gift", "point.autobio", "limit.manual_per_day", "limit.manual_per_minute", "limit.moderation_per_day", "diary.length", "price.purple_month_krw", "price.gold_month_krw", "cost.per_diary_krw", "cost.per_image_krw", "cost.per_autobio_krw"];
+const SAFETY_POL = ["moderation.engine", "moderation.ts_pass_min", "moderation.ts_block_max", "moderation.risk_words", "comment.min_interval_sec", "comment.daily_max", "comment.report_hide_count"];
+const MODELS = ["model.diary.flash_chain", "model.autobio.pro_chain", "prompt.diary.editor_extra", "prompt.diary.writer_extra"];
+function valInput(k, i) { const p = pol(k); const v = p ? JSON.stringify(p.value, null, (k.startsWith("prompt.") || k.startsWith("model.") || k === "diary.length") ? 1 : 0) : ""; const id = "v_" + i; return `<textarea id="${id}" rows="${Math.min(6, (v.match(/\n/g) || []).length + 1)}">${esc(v)}</textarea>`; }
+function renderOps() {
+  if (!cache.policies.length) return;
+  $("switches").innerHTML = SWITCHES.map((k) => { const p = pol(k); const on = p && p.value === true; const h = helpOf(k); return `<tr><td><b>${esc(h.title)}</b>${helpSpan(k)}<br><code>${k}</code>${k === "feature.generate_charge" && on ? " <span class='warn'>과금 중</span>" : ""}</td><td class="muted" style="width:45%">${esc(H[k] ? H[k][1] : "")}</td><td style="width:60px"><button class="tog ${on ? "on" : ""}" onclick="toggleSwitch('${k}', ${on})" title="${on ? "켜짐" : "꺼짐"}"></button></td></tr>`; }).join("");
+  const rowFor = (k, i) => { const h = helpOf(k); const p = pol(k); return `<tr><td style="width:34%"><b>${esc(h.title)}</b>${helpSpan(k)}<br><code>${k}</code>${p ? `<br><span class="muted">수정 ${fmtT(p.updated_at)} ${esc(p.updated_by || "")}</span>` : "<br><span class='warn'>미설정</span>"}</td><td>${valInput(k, i)}</td><td style="width:70px"><button class="ghost" onclick="setPolicy('${k}', document.getElementById('v_${i}').value)">저장</button></td></tr>`; };
+  $("fees").innerHTML = FEES.map((k, i) => rowFor(k, "f" + i)).join("");
+  $("models").innerHTML = MODELS.map((k, i) => rowFor(k, "m" + i)).join("");
+  $("safetyPolicies").innerHTML = SAFETY_POL.map((k, i) => rowFor(k, "s" + i)).join("");
+  const known = new Set([...SWITCHES, ...FEES, ...MODELS, ...SAFETY_POL, "notice.current", ...AD_UNITS.map((a) => a[0]), ...AD_RULES]);
+  const misc = cache.policies.filter((p) => !known.has(p.key) && !["prompt.diary.active","prompt.diary.draft"].includes(p.key));
+  $("misc").innerHTML = misc.map((p, i) => rowFor(p.key, "x" + i)).join("") || "<tr><td class='muted'>없음</td></tr>";
+  $("polTable").innerHTML = "<tr><th>키</th><th>값</th><th>수정</th><th></th></tr>" + cache.policies.filter(p => !["prompt.diary.active","prompt.diary.draft"].includes(p.key)).map((p, i) => `<tr><td><code>${esc(p.key)}</code></td><td class="mono">${esc(JSON.stringify(p.value))}</td><td class="muted">${fmtT(p.updated_at)}<br>${esc(p.updated_by || "")}</td><td><button class="danger" onclick="delPolicy('${esc(p.key)}')">삭제</button></td></tr>`).join("");
+}
+async function toggleSwitch(k, on) {
+  if (!on && k === "feature.generate_charge" && !confirm("AI 생성 과금을 켤까요? 체험 기간이 지난 사용자는 즉시 💧를 내게 됩니다.")) return;
+  if (!on && k === "feature.trial_purple" && !confirm("퍼플 7일 체험을 켤까요?\n\n앱(빌드 51 이상)과 함수(generate-diary · generate-diary-image · generate-autobiography)가 모두 올라간 뒤에 켜야 합니다.\n앱만 최신이면 서버가 블루로 판정해 사진이 거절됩니다.")) return;
+  setPolicy(k, on ? "false" : "true");
+}
+async function delPolicy(k) { if (!confirm(`정책 ${k}를 삭제할까요? 함수는 기본값으로 동작합니다.`)) return; try { await api("policies.delete", { key: k }); toast("삭제됨"); await loadPolicies(); renderOps(); } catch (e) { toast(e.message, true); } }
+
+// ── 공지·푸시
+async function loadNotice() {
+  const n = pol("notice.current"); const v = n && n.value;
+  $("noticeNow").textContent = v ? `현재 공지: [${v.id}] ${v.title} (종료 ${v.until || "없음"})` : "현재 공지 없음";
+  if (v) { $("nId").value = v.id || ""; $("nTitle").value = v.title || ""; $("nBody").value = v.body || ""; $("nTitleEn").value = v.title_en || ""; $("nBodyEn").value = v.body_en || ""; $("nUntil").value = v.until || ""; }
+  try { const rows = (await api("push.history")).rows; $("pushTable").innerHTML = "<tr><th>시각</th><th>키</th></tr>" + rows.map((r) => `<tr><td class="muted">${fmtT(r.sent_at)}</td><td class="mono">${esc(r.key)}</td></tr>`).join(""); } catch (e) { toast(e.message, true); }
+}
+async function setNotice() { const notice = { id: $("nId").value.trim() || ("notice-" + Date.now()), title: $("nTitle").value.trim(), body: $("nBody").value.trim(), until: $("nUntil").value || null }; const tEn = $("nTitleEn").value.trim(), bEn = $("nBodyEn").value.trim(); if (tEn) notice.title_en = tEn; if (bEn) notice.body_en = bEn; if (!notice.title) return toast("제목이 비었어요", true); try { await api("notice.set", { notice }); toast("공지 게시"); await loadPolicies(); loadNotice(); } catch (e) { toast(e.message, true); } }
+async function clearNotice() { if (!confirm("공지를 내릴까요? 전원에게서 사라집니다.")) return; try { await api("notice.set", { notice: null }); toast("공지 내림"); await loadPolicies(); loadNotice(); } catch (e) { toast(e.message, true); } }
+async function sendPush() { const title = $("pTitle").value.trim(), body = $("pBody").value.trim(); const a = document.querySelector('input[name="pAudience"]:checked'); if (!a) return toast("공지(전원)인지 광고(마케팅 동의자만)인지 먼저 고르세요", true); const audience = a.value; if (!title || !body) return toast("제목·본문이 비었어요", true); const titleEn = $("pTitleEn").value.trim(), bodyEn = $("pBodyEn").value.trim(); if (!titleEn !== !bodyEn) return toast("영어 제목과 본문은 둘 다 쓰거나 둘 다 비워 주세요", true); const hr = new Date().getHours(); if (audience === "all" && (hr >= 22 || hr < 8) && !confirm("지금은 밤 시간대입니다. 그래도 공지를 보낼까요?")) return; const who = audience === "marketing" ? "마케팅 수신 동의자에게 광고로" : "전원에게 공지로"; const shown = audience === "marketing" ? `(광고) ${title}\n${body}\n\n미록담 · 수신 거부: 설정 › 알림 › 마케팅·이벤트 소식` : `${title}\n${body}`; const shownEn = !titleEn ? "(영어 사용자에게도 한국어로 가요)" : audience === "marketing" ? `[영어 사용자]\n(광고) ${titleEn}\n${bodyEn}\n\nMeRokDam · Unsubscribe: Settings › Notifications › Marketing & events` : `[영어 사용자]\n${titleEn}\n${bodyEn}`; if (!confirm(`${who} 보낼까요?\n\n${shown}\n\n${shownEn}`)) return; if (!confirm("정말 보내요? (취소 불가)")) return; try { const r = await api("push.send", { title, body, audience, ...(titleEn ? { title_en: titleEn, body_en: bodyEn } : {}) }); toast(r.ok ? `발송 요청 완료${r.users != null ? ` · ${r.users}명` : ""}` : (r.error === "night_blocked" ? "밤 9시~오전 8시에는 광고를 보낼 수 없어요" : "발송 실패 " + r.status), !r.ok); } catch (e) { toast(e.message, true); } }
+async function sendMarketingMail(dry) { const subject = $("mSubject").value.trim(), body = $("mBody").value.trim(); if (!subject || !body) return toast("제목·본문이 비었어요", true); const subjectEn = $("mSubjectEn").value.trim(), bodyEn = $("mBodyEn").value.trim(); if (!subjectEn !== !bodyEn) return toast("영어 제목과 본문은 둘 다 쓰거나 둘 다 비워 주세요", true); const en = subjectEn ? { subject_en: subjectEn, body_en: bodyEn } : {}; try { if (dry) { const r = await api("mail.marketing", { subject, body, ...en, dry_run: true }); return toast(r.error === "not_migrated" ? "SQL 20260930100000_marketing_consent.sql 실행 필요" : `받는 사람 ${r.recipients}명${r.recipients_en != null ? ` · 그중 영어 ${r.recipients_en}명` : ""} (앱 푸시·이메일에 동의한 사람)`, !!r.error); } if (!confirm(`마케팅 수신 동의자에게 광고 메일을 보낼까요?\n\n(광고) ${subject}\n\n${subjectEn ? `[영어 사용자]\n(광고) ${subjectEn}\n(꼬리말: 영어 수신 거부 안내)` : "(영어 사용자에게도 한국어로 가요)"}`)) return; if (!confirm("정말 보내요? (취소 불가)")) return; const r = await api("mail.marketing", { subject, body, ...en }); toast(r.error ? (r.error === "night_blocked" ? "밤 9시~오전 8시에는 광고를 보낼 수 없어요" : r.error) : `보냄 ${r.sent}${r.sent_en != null ? ` (영어 ${r.sent_en})` : ""} · 실패 ${r.failed} · 이메일 없음 ${r.no_email}`, !!r.error); } catch (e) { toast(e.message, true); } }
+
+// ── 회원
+const tierPill = (t) => `<span class="pill t-${t || "blue"}">${({ blue: "블루", purple: "퍼플", gold: "골드" })[t] || t}</span>`;
+async function searchUsers() {
+  try { const rows = (await api("users.search", { q: $("uq").value.trim() })).rows;
+    $("userTable").innerHTML = "<tr><th>이메일 · 필명</th><th>등급</th><th>일기</th><th>💧</th><th>가입 · 마지막 로그인</th><th>메모</th></tr>" + rows.map((u) => `<tr style="cursor:pointer" onclick="userDetail('${u.id}')">
+      <td>${esc(u.email || "-")} ${u.email_relay ? "<span class='pill' style='background:var(--deep);color:var(--soft)'>중계</span>" : ""} <span class="muted">${esc(u.provider || "")}</span><br><span class="muted">${esc(u.nickname || "(필명 없음)")} · <span class="mono">${esc(u.id.slice(0, 8))}</span></span></td>
+      <td>${tierPill(u.tier)}${u.tier_until ? `<br><span class="muted">~${esc(u.tier_until)}</span>` : ""}</td><td>${num(u.diaries)}</td><td>${num(u.balance)}</td>
+      <td class="muted">${esc((u.created_at || "").slice(0, 10))}<br>${u.last_sign_in_at ? fmtT(u.last_sign_in_at) : "-"}</td><td class="muted">${esc(u.admin_memo || "")}</td></tr>`).join("") || "<tr><td class='muted'>결과 없음</td></tr>";
+  } catch (e) { toast(e.message, true); }
+}
+async function userDetail(id) {
+  const el = $("userDetail"); el.classList.remove("hidden"); el.innerHTML = "불러오는 중…"; el.scrollIntoView({ behavior: "smooth" });
+  try { const d = await api("users.detail", { user_id: id }); const p = d.profile || {}, a = d.auth || {};
+    el.innerHTML = `<h3>${esc(p.nickname || "(필명 없음)")} ${tierPill(p.tier)} <span class="muted mono">${esc(id)}</span></h3>
+      <div class="grid2">
+        <div><b>계정</b> <span class="help" data-h="로그인 제공자와 이메일. 애플 '이메일 가리기'면 중계 주소라 실명·실주소를 알 수 없습니다. 이름은 애플이 첫 로그인 때 준 값(v35부터 저장). 없으면 운영 메모에 적어 두세요.">?</span><br>
+          이메일 ${esc(a.email || "-")} ${a.email_relay ? "<span class='pill' style='background:var(--deep)'>중계</span>" : ""}<br>제공자 ${esc(a.provider || "-")} · 이름 ${esc(a.name || p.signup_name || "-")}<br>가입 ${fmtT(a.created_at)} · 마지막 로그인 ${fmtT(a.last_sign_in_at)}<br>
+          성별 ${esc(p.gender || "-")} · MBTI ${esc(p.mbti || "-")} · 생년월일 ${esc(p.birth_date || "-")} · 언어 ${esc(p.locale || "-")}<br>
+          <div class="row" style="margin-top:8px"><input id="memo_${id}" value="${esc(p.admin_memo || "")}" placeholder="운영 메모 — 누구인지, 특이사항 (앱에 노출되지 않음)"><button class="ghost" onclick="saveMemo('${id}')">메모 저장</button></div></div>
+        <div><b>활동</b><br>일기 ${num(d.diaries.total)} (공개 ${num(d.diaries.public)}) · 자서전 ${d.autobiographies.length}권 · 타로 ${num(d.tarot_picks)}장<br>받은 반응 ${num(d.reactions_received)} · 이웃 ${num(d.followers)}명이 나를 · 내가 ${num(d.following)}명<br>차단함 ${d.safety.blocks_by} · 차단됨 ${d.safety.blocked_by_others} · 신고함 ${d.safety.reports_made}<br>
+          💧 잔액 ${num(d.points.balance)} · 부채 ${num(d.points.debt)}<br>
+          <div class="row" style="margin-top:8px"><select id="tier_${id}" style="width:auto"><option ${p.tier === "blue" ? "selected" : ""}>blue</option><option ${p.tier === "purple" ? "selected" : ""}>purple</option><option ${p.tier === "gold" ? "selected" : ""}>gold</option></select><input id="until_${id}" type="date" value="${esc(p.tier_until || "")}" style="width:auto" title="만료일(비우면 무기한)"><button class="ghost" onclick="setTier('${id}')">등급 저장</button><button class="ghost" onclick="grant('${id}')">💧 선물</button></div>
+          <div class="row" style="margin-top:6px"><input id="bd_${id}" type="date" value="${esc(p.birth_date || "")}" style="width:auto"><input id="mbti_${id}" value="${esc(p.mbti || "")}" placeholder="MBTI" maxlength="4" style="width:70px"><select id="g_${id}" style="width:auto"><option value="">성별-</option>${["female","male","other","none"].map((g) => `<option ${p.gender === g ? "selected" : ""}>${g}</option>`).join("")}</select><button class="ghost" onclick="saveProfile('${id}')">프로필 저장</button></div></div>
+      </div>
+      <details style="margin-top:10px"><summary>최근 일기 10 (제목만)</summary><table>${d.diaries.recent.map((x) => `<tr><td class="muted">${esc(x.diary_date)}</td><td>${esc(x.title || "(제목 없음)")}</td><td class="muted">${esc(x.kind || "ai")} · ${esc(x.visibility)} · ${(x.moods || []).join(",")}</td></tr>`).join("")}</table></details>
+      <details style="margin-top:6px"><summary>물방울 원장 20</summary><table>${d.points.ledger.map((x) => `<tr><td class="muted">${fmtT(x.created_at)}</td><td>${esc(x.reason)}</td><td class="${x.delta > 0 ? "ok" : "bad"}">${x.delta > 0 ? "+" : ""}${x.delta}</td></tr>`).join("") || "<tr><td class='muted'>없음</td></tr>"}</table></details>
+      <details style="margin-top:6px"><summary>문의 ${d.inquiries.length}</summary><table>${d.inquiries.map((q) => `<tr><td class="muted">${fmtT(q.created_at)}</td><td>${esc(q.category)}</td><td>${esc(q.message)}${q.reply ? `<br><b>답변:</b> ${esc(q.reply)}` : ""}</td><td>${esc(q.status)}</td></tr>`).join("") || "<tr><td class='muted'>없음</td></tr>"}</table></details>`;
+  } catch (e) { el.innerHTML = `<span class="bad">${esc(e.message)}</span>`; }
+}
+async function saveMemo(id) { try { await api("users.set_memo", { user_id: id, memo: $("memo_" + id).value }); toast("메모 저장"); searchUsers(); } catch (e) { toast(e.message, true); } }
+async function setTier(id) { const tier = $("tier_" + id).value, until = $("until_" + id).value || null; if (!confirm(`등급을 ${tier}${until ? " (~" + until + ")" : " (무기한)"}로 바꿀까요?`)) return; try { await api("users.set_tier", { user_id: id, tier, until }); toast("등급 변경"); userDetail(id); searchUsers(); } catch (e) { toast(e.message, true); } }
+async function grant(id) { const p = pol("point.admin_gift"); const d = p && p.value && p.value.delta; if (!confirm(`💧${d ?? "?"} 지급할까요? (point.admin_gift)`)) return; try { const r = await api("users.grant_points", { user_id: id, reason: "admin_gift" }); toast("지급 완료 · 잔액 " + r.balance); userDetail(id); } catch (e) { toast(e.message, true); } }
+async function saveProfile(id) { try { await api("users.update_profile", { user_id: id, birth_date: $("bd_" + id).value || null, mbti: $("mbti_" + id).value.trim().toUpperCase() || null, gender: $("g_" + id).value || null }); toast("프로필 저장"); } catch (e) { toast(e.message, true); } }
+
+// ── 콘텐츠·안전
+async function loadSafety() {
+  try { const rows = (await api("content.reported")).rows;
+    $("reportedTable").innerHTML = "<tr><th>신고</th><th>제목</th><th>상태</th><th>마지막 신고</th><th>조치</th></tr>" + rows.map((d) => `<tr><td><b class="${d.reports >= 3 ? "bad" : "warn"}">${d.reports}</b></td><td>${esc(d.title || "(제목 없음)")} <span class="muted mono">${esc(String(d.id).slice(0, 8))}</span></td><td>${esc(d.visibility)}${d.deleted_at ? " · 삭제됨" : ""} · 검수 ${d.moderations ?? 0}회</td><td class="muted">${fmtT(d.last_report)}</td><td><button class="ghost" onclick="viewDiary('${d.id}')">열람</button> ${d.visibility === "public" ? `<button class="danger" onclick="hideDiary('${d.id}')">비공개로</button>` : ""}</td></tr>`).join("") || "<tr><td class='muted'>신고 없음</td></tr>";
+    const m = (await api("content.moderation_fails")).rows;
+    const cr = await api("content.comment_reports");
+    $("reportedComments").innerHTML = cr.error === "not_migrated" ? "<tr><td class='warn'>SQL 20260929190000_comment_reports.sql 실행 필요</td></tr>" : "<tr><th>신고</th><th>쓴 사람 → 일기 주인</th><th>상태</th><th>마지막 신고</th><th>조치</th></tr>" + cr.rows.map((n) => `<tr><td><b class="${n.hidden ? "bad" : "warn"}">${n.reports}</b></td><td>${esc(n.author || "(알 수 없음)")} → ${esc(n.owner || "(알 수 없음)")} <span class="muted mono">${esc(String(n.id).slice(0, 8))}</span></td><td>${n.hidden ? "모두에게 숨김" : "신고자에게만 숨김"}</td><td class="muted">${fmtT(n.last_report)}</td><td><button class="ghost" onclick="viewComment('${n.id}')">열람</button> <button class="danger" onclick="delComment('${n.id}')">삭제</button></td></tr>`).join("") || "<tr><td class='muted'>신고 없음</td></tr>";
+    $("modTable").innerHTML = "<tr><th>시각</th><th>계기</th><th>회차</th><th>일기</th><th></th></tr>" + m.map((x) => `<tr><td class="muted">${fmtT(x.reviewed_at)}</td><td>${esc(x.trigger)}</td><td>${x.round}</td><td>${esc(x.diary?.title || "(제목 없음)")} <span class="muted">${esc(x.diary?.visibility || "")}</span></td><td><button class="ghost" onclick="viewDiary('${x.diary_id}')">열람</button></td></tr>`).join("") || "<tr><td class='muted'>없음</td></tr>";
+  } catch (e) { toast(e.message, true); }
+}
+async function viewDiary(id) { if (!confirm("신고·검수 처리 목적으로 일기 본문을 열람합니다. 감사 로그에 남습니다. 계속할까요?")) return; try { const d = (await api("content.diary", { diary_id: id })).diary; const el = $("diaryView"); el.classList.remove("hidden"); el.innerHTML = `<h3>${esc(d.title || "(제목 없음)")} <span class="muted">${esc(d.diary_date)} · ${esc(d.visibility)} · ${esc(d.kind || "ai")}</span></h3><div style="white-space:pre-wrap;line-height:1.8">${esc(d.body)}</div><div class="row" style="margin-top:10px">${d.visibility === "public" ? `<button class="danger" onclick="hideDiary('${d.id}')">비공개로 전환</button>` : `<button class="ghost" onclick="showDiary('${d.id}')">공개로 복원</button>`}<button class="ghost" onclick="userDetail('${d.user_id}');openTab('users')">작성자 보기</button></div>`; el.scrollIntoView({ behavior: "smooth" }); } catch (e) { toast(e.message, true); } }
+async function viewComment(id) { if (!confirm("신고 처리 목적으로 댓글 본문을 열람합니다. 감사 로그에 남습니다. 계속할까요?")) return; try { const n = (await api("content.comment", { note_id: id })).comment; const el = $("commentView"); el.classList.remove("hidden"); el.innerHTML = n ? `<div style="white-space:pre-wrap;line-height:1.8">${esc(n.body)}</div><div class="row" style="margin-top:8px"><button class="danger" onclick="delComment('${n.id}')">삭제</button><button class="ghost" onclick="userDetail('${n.author_id}');openTab('users')">쓴 사람 보기</button></div>` : "<span class='muted'>이미 지워진 댓글입니다</span>"; } catch (e) { toast(e.message, true); } }
+async function delComment(id) { if (!confirm("이 댓글을 삭제할까요? 되돌릴 수 없고, 쓴 사람에게 알림은 가지 않습니다.")) return; try { await api("content.comment_delete", { note_id: id }); toast("삭제됨"); $("commentView").classList.add("hidden"); loadSafety(); } catch (e) { toast(e.message, true); } }
+async function hideDiary(id) { if (!confirm("이 일기를 비공개로 전환할까요? 작성자에게는 알림이 가지 않습니다.")) return; try { await api("content.set_visibility", { diary_id: id, visibility: "private" }); toast("비공개 처리"); loadSafety(); $("diaryView").classList.add("hidden"); } catch (e) { toast(e.message, true); } }
+async function showDiary(id) { try { await api("content.set_visibility", { diary_id: id, visibility: "public" }); toast("공개 복원"); loadSafety(); } catch (e) { toast(e.message, true); } }
+
+// ── 문의·사연·감사
+function adReportDetails(q) {
+  const a = q.ad_report;
+  if (!a || q.category !== '광고 신고') return '';
+  const image = typeof a.creative_image_url === 'string' && a.creative_image_url.startsWith('https://')
+    ? `<img src="${esc(a.creative_image_url)}" alt="신고된 광고 소재" loading="lazy" style="display:block;max-width:180px;max-height:130px;object-fit:contain;margin-top:8px">` : '';
+  const advertiserUrl = typeof a.advertiser_url === 'string' && /^https:\/\//i.test(a.advertiser_url)
+    ? `<a href="${esc(a.advertiser_url)}" target="_blank" rel="noopener noreferrer">${esc(a.advertiser_url)}</a>` : '없음';
+  return `<div style="margin-top:8px;padding:8px 10px;background:var(--deep);border-radius:10px">
+    <b>신고된 광고</b><br>
+    표시: ${esc(a.displayed_at ? fmtT(a.displayed_at) : '미확인')} · 위치: ${esc(a.placement || '미확인')}<br>
+    출처: ${esc(a.ad_source || '미확인')} · 응답 ID: <span class="mono">${esc(a.response_id || '없음')}</span><br>
+    광고주: ${esc(a.advertiser_name || '없음')} · URL: ${advertiserUrl}<br>
+    광고 단위: <span class="mono">${esc(a.ad_unit_id || '없음')}</span> · 소재 ID: <span class="mono">${esc(a.creative_id || '없음')}</span>
+    ${image || '<div class="muted">소재 이미지 없음</div>'}
+  </div>`;
+}
+async function loadInq() { try { const rows = (await api("inquiries.list")).rows; $("inqTable").innerHTML = "<tr><th style='width:120px'>일시 · 앱</th><th style='width:80px'>분류</th><th>내용 · 답변</th><th style='width:130px'>상태</th></tr>" + rows.map((q) => `<tr>
+  <td class="muted">${fmtT(q.created_at)}<br>${esc(q.platform || "")} ${esc(q.app_version || "")}<br>${q.reply_email ? `<span class="mono">${esc(q.reply_email)}</span>` : "<span class='bad'>이메일 없음</span>"}${q.user_id ? `<br><a href="#" onclick="openTab('users');userDetail('${q.user_id}');return false">작성자</a>` : ""}</td>
+  <td>${esc(q.category)}</td>
+  <td><div style="white-space:pre-wrap">${esc(q.message)}</div>${adReportDetails(q)}${q.reply ? `<div style="margin-top:8px;padding:8px 10px;background:var(--deep);border-radius:10px"><b>📮 답변</b> <span class="muted">${fmtT(q.replied_at)}</span><div style="white-space:pre-wrap">${esc(q.reply)}</div></div>` : `<textarea id="rep_${q.id}" rows="3" placeholder="답변 — 앱 알림함으로 전달되고, 회신 이메일이 있으면 메일도 함께" style="margin-top:8px;font-family:inherit"></textarea><button class="pri" style="margin-top:6px" onclick="replyInq('${q.id}')">답변 보내기</button>`}</td>
+  <td>${esc(q.status)}<br>${q.status !== "closed" ? `<button class="ghost" style="margin-top:6px" onclick="closeInq('${q.id}')">처리 완료</button>` : ""}</td></tr>`).join("") || "<tr><td class='muted'>문의 없음</td></tr>"; } catch (e) { toast(e.message, true); } }
+async function replyInq(id) { const reply = ($("rep_" + id).value || "").trim(); if (!reply) return toast("답변이 비었어요", true); if (!confirm("이 답변을 보낼까요? (앱 알림함 + 회신 이메일)")) return; try { const r = await api("inquiries.reply", { id, reply }); toast(r.mail_error ? "앱 알림 전송 · 메일 실패: " + r.mail_error : "답변 전송 완료", !!r.mail_error); loadInq(); loadToday(); } catch (e) { toast(e.message, true); } }
+async function closeInq(id) { try { await api("inquiries.set_status", { id, status: "closed" }); loadInq(); loadToday(); } catch (e) { toast(e.message, true); } }
+async function loadStory() { try { const rows = (await api("story.list")).rows; $("storyTable").innerHTML = "<tr><th>선정일</th><th>상태</th><th>후보 id</th><th>작성자</th></tr>" + rows.map((s) => `<tr><td>${esc(s.picked_on)}</td><td>${esc(s.status)}</td><td class="mono">${esc(s.id)}</td><td><a href="#" onclick="openTab('users');userDetail('${s.user_id}');return false">보기</a></td></tr>`).join("") || "<tr><td class='muted'>후보 없음 (심사 크론 일시정지 중)</td></tr>";
+  const p = (await api("story.posts")).rows; $("postsTable").innerHTML = "<tr><th>게시</th><th>플랫폼</th><th>링크</th><th>후보</th></tr>" + p.map((x) => `<tr><td class="muted">${fmtT(x.posted_at)}${x.removed_at ? " · 내림" : ""}</td><td>${esc(x.platform)}</td><td>${x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.url)}</a>` : "-"}</td><td class="mono">${esc(String(x.candidate_id).slice(0, 8))}</td></tr>`).join("") || "<tr><td class='muted'>게시 없음</td></tr>"; } catch (e) { toast(e.message, true); } }
+async function loadAudit() { try { const rows = (await api("audit.list")).rows; $("auditTable").innerHTML = "<tr><th>일시</th><th>키</th><th>이전</th><th>이후</th><th>누가</th></tr>" + rows.map((a) => `<tr><td class="muted">${fmtT(a.changed_at)}</td><td><code>${esc(a.key)}</code></td><td class="mono">${esc(JSON.stringify(a.old_value))}</td><td class="mono">${esc(JSON.stringify(a.new_value))}</td><td class="muted">${esc(a.changed_by)}</td></tr>`).join(""); } catch (e) { toast(e.message, true); } }
+</script>
+<script src="diary-prompts.js"></script>
+<script src="jev-prompts.js?v=20261001b"></script>
+<script src="admin-ui.js"></script>
+<script src="story-automation.js?v=20261001-2"></script>
+<script src="character-items.js?v=20260928"></script>
+<script src="character-portraits.js?v=20260929"></script>
+<script src="tarot-cards.js?v=20260930e"></script>
+<script src="admin-routes.js?v=20261001-2"></script>
+</body>
+</html>
